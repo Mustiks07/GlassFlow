@@ -757,7 +757,7 @@ class IntelligenceService:
             normalized_dimensions=local.normalized_dimensions,
             facts=[
                 VerifiedFact(fact_id=f.fact_id, kind=f.kind, value=f.value, unit=f.unit, source_ref=f.source_ref)
-                for f in (result.tool_context.facts.facts if result.tool_context else local.facts.facts)[:40]
+                for f in (result.tool_context.facts.facts if result.tool_context else local.facts.facts)[:120]
             ],
             alternatives=local.alternatives,
             needs_manager=local.needs_manager or (result.llm.needs_manager if result.llm else False),

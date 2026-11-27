@@ -10,6 +10,7 @@ confirmation tool. Cross-domain work goes through injected ports.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from typing import Any, Callable, Literal
 
@@ -143,9 +144,13 @@ def _product_view(product: Product) -> dict[str, Any]:
 
 def _remember_prices(ctx: ToolContext, product: Product) -> None:
     ctx.products_seen.add(product.product_id)
+    for number in re.findall(r"\d+", product.name):
+        ctx.facts.add("name", int(number), None, f"kb:{ctx.kb.version}:{product.product_id}:название")
     for price in product.prices:
         if price.amount is not None:
             ctx.facts.add("price", price.amount, price.unit, f"kb:{ctx.kb.version}:{product.product_id}:{price.source_field}")
+        if price.minimum_quantity:
+            ctx.facts.add("threshold", price.minimum_quantity, "шт", f"kb:{ctx.kb.version}:{product.product_id}:{price.source_field}")
 
 
 def _search(ctx: ToolContext, args: SearchCatalogArgs) -> dict[str, Any]:

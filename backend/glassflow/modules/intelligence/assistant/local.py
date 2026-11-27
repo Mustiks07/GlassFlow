@@ -17,17 +17,19 @@ from glassflow.contracts.cutting import FindRequest
 
 from ..catalog.kb import KnowledgeBase, Product
 from ..catalog.mapping import MappingDecision
-from ..catalog.matching import MatchResult, match_products
-from ..catalog.text import format_decimal, format_money
-from ..nlu.extract import Extraction, extract
+from ..catalog.matching import COLOR_LEXICON, MatchResult, match_products, query_features
+from ..catalog.text import format_decimal, format_money, normalize, stem, stems_match, words
+from ..nlu.extract import WORD_NUMBERS, Extraction, extract
 from ..ports_consumed import InventoryPort, ServiceUnavailable
 from ..pricing import PricingInput, PricingResult, calculate
 from .facts import FactSet
 
 MAX_SENTENCES = 4
 PRICE_WORDS = re.compile(
-    r"сколько|стоит|стоимост|цен[аыуе]|почем|расч[её]т|рассчита|посчита|прайс|по чем|почём|дорого|за м2|за м²"
+    r"сколько(?!\s*(?:дней|дня|времени|ждать|по времени|недел|час|минут))|стоит|стоимост|цен[аыуе]|почем|"
+    r"расч[её]т|рассчита|посчита|прайс|по чем|почём|дорого|за м2|за м²"
 )
+_NAME_NUMBER = re.compile(r"\d+")
 RULE_INTENTS = {"installation", "payment", "delivery", "discount"}
 UNKNOWN_INTENTS = {"deadline", "availability", "warranty", "compatibility", "contacts"}
 UNKNOWN_TOPIC_RU = {
@@ -162,6 +164,14 @@ class LocalEngine:
     def _ref(self, record_id: str | None, field_name: str | None) -> str:
         return f"kb:{self.kb.version}:{record_id}:{field_name}"
 
+    def _name_facts(self, out: "LocalOutcome", product: Product) -> None:
+        """Numbers that are part of a product name (sizes, codes) are facts of that name, not prices."""
+        for number in _NAME_NUMBER.findall(product.name):
+            out.facts.add("name", int(number), None, self._ref(product.product_id, "название"))
+        bulk = product.price("bulk_unit")
+        if bulk and bulk.minimum_quantity:
+            out.facts.add("threshold", bulk.minimum_quantity, "шт", self._ref(product.product_id, bulk.source_field))
+
     # ------------------------------------------------------------------ entry point
     def respond(self, text: str, context: TurnContext | None = None, *, inventory_mode: str = "none") -> LocalOutcome:
         context = replace(context) if context else TurnContext()
@@ -199,7 +209,15 @@ class LocalEngine:
                     and (match.status == "not_found" or len(combined.candidates) < len(match.candidates))
                 ):
                     match, text_for_pending = combined, combined_text
+            if match.status == "not_found" and context.product_id:
+                refined = self._refine_with_context(text, context.product_id, ex)
+                if refined is not None:
+                    match = refined
             context.pending_query = text_for_pending[-300:] if match.status == "ambiguous" else None
+            if match.status == "exact" and ex.quantity is None:
+                quantity = _quantity_before_name(text, match.product)
+                if quantity is not None:
+                    ex.quantity, ex.quantity_source = quantity, "number_before_product_name"
             out.tool_calls.append(
                 ToolTrace(
                     "search_catalog",
@@ -248,6 +266,23 @@ class LocalEngine:
                 out.clarification = out.sentences[-1]
         self._trim(out)
         return out
+
+    def _refine_with_context(self, text: str, product_id: str, ex: Extraction) -> MatchResult | None:
+        """«а 8 мм?» / «а калёное?» after a product: re-resolve the previous name with the new attribute."""
+        product = self.kb.product(product_id)
+        if product is None:
+            return None
+        query = query_features(text)
+        if not (ex.thickness_mm or query.colors or query.families or query.negated_families):
+            return None
+        base = normalize(product.name)
+        if ex.thickness_mm:
+            base = re.sub(r"\d+\s*мм", " ", base)
+        if query.colors:
+            roots = [root for roots in COLOR_LEXICON.values() for root in roots]
+            base = " ".join(w for w in base.split() if not any(stems_match(stem(w), root) for root in roots))
+        refined = match_products(self.kb, f"{base} {text}")
+        return refined if refined.status != "not_found" else None
 
     # ------------------------------------------------------------------ flows
     def _models(self, ex: Extraction, out: LocalOutcome) -> None:
@@ -325,6 +360,7 @@ class LocalEngine:
             return False
         parts = []
         for product in items[:3]:
+            self._name_facts(out, product)
             retail = product.price("retail_unit")
             if retail and retail.amount is not None:
                 parts.append(f"{product.name} — {_m(retail.amount)} ₸")
@@ -375,6 +411,7 @@ class LocalEngine:
         out.product = product
         out.mapping = self.mappings.get(product.product_id)
         out.evidence.append(self._ev(product.product_id, "название"))
+        self._name_facts(out, product)
         self._update_params(ex, context, out)
         if out.missing_parameters and "dimensions_unit" in out.missing_parameters:
             return True
@@ -400,6 +437,8 @@ class LocalEngine:
             first = ex.dimensions[0]
             context.length_mm, context.width_mm = first.length_mm, first.width_mm
             out.normalized_dimensions = first.normalized_text
+            out.facts.add("dimension", first.length_mm, "мм", "input:normalized")
+            out.facts.add("dimension", first.width_mm, "мм", "input:normalized")
             if first.source_unit != "mm":
                 out.assumptions.append(f"Размер «{first.source_text}» переведен в {first.normalized_text}.")
             elif not first.explicit_unit:
@@ -428,6 +467,7 @@ class LocalEngine:
         basis = ex.price_basis
         rendered: list[str] = []
         for product in options:
+            self._name_facts(out, product)
             price_text = self._short_price(product, basis, out.facts)
             rendered.append(f"{product.name} — {price_text}" if price_text else product.name)
         same_price = len({self._short_price(p, basis, FactSet_dummy()) for p in options}) == 1 and rendered
@@ -488,6 +528,8 @@ class LocalEngine:
         retail, bulk = product.price("retail_unit"), product.price("bulk_unit")
         threshold = bulk.minimum_quantity if bulk else None
         quantity = context.quantity if ex.quantity is not None or (context.quantity and not context.quantity_assumed) else None
+        if quantity is not None:
+            out.facts.add("quantity", quantity, "шт", "context")
         if quantity is not None and not ex.tier_inquiry:
             result = self._price(PricingInput(product, quantity=quantity, price_basis="unit"), out)
             if result.lines:
@@ -629,6 +671,9 @@ class LocalEngine:
         )
         result = self._price(request, out)
         out.pricing = result
+        out.facts.add("dimension", context.length_mm, "мм", "context")
+        out.facts.add("dimension", context.width_mm, "мм", "context")
+        out.facts.add("quantity", context.quantity, "шт", "context")
         dims_text = f"{context.length_mm}×{context.width_mm} мм"
         qty_text = f", {context.quantity} шт" if context.quantity != 1 else ""
         glass = next((line for line in result.lines if line.component == "glass"), None)
@@ -773,6 +818,20 @@ class LocalEngine:
             seen.remove(PRELIMINARY_RU)
             seen[0] = seen[0].rstrip(".") + " — предварительно."
         out.sentences = seen[:MAX_SENTENCES]
+
+
+def _quantity_before_name(text: str, product: Product) -> int | None:
+    """«4 полкодержателя», «две лупы»: a count directly before a word of the product name."""
+    name_stems = {stem(w) for w in words(product.name) if not w.isdigit() and len(w) > 3}
+    value = normalize(text)
+    for match in re.finditer(r"(?<![\d.,x])(\d{1,5}|" + "|".join(WORD_NUMBERS) + r")\s+([а-яa-z-]+)", value):
+        raw, word = match.groups()
+        if re.match(r"(?:мм|см|м|шт|штук|лист|кв|м2|м²|тг|тенге|вт)\b", word):
+            continue
+        if any(stems_match(stem(word), name_stem) for name_stem in name_stems):
+            number = int(raw) if raw.isdigit() else WORD_NUMBERS[raw]
+            return number if number > 0 else None
+    return None
 
 
 class FactSet_dummy:  # noqa: N801 - throwaway sink for price-equality checks

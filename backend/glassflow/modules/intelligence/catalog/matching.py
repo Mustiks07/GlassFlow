@@ -21,6 +21,11 @@ STOPWORDS = {
     "для", "и", "с", "со", "на", "по", "из", "в", "во", "мм", "шт", "или", "а", "от", "до", "за",
 }
 LOW_WEIGHT = {"лист": 0.3, "стекл": 0.8}
+COLOR_FORMS = {
+    "прозрачное": ["прозрачное", "прозрачный", "прозрачного", "прозрачная"],
+    "серое": ["серое", "серый", "серого", "серая", "серым"],
+    "бронза": ["бронза", "бронзовое", "бронзовый", "бронзы"],
+}
 COLOR_LEXICON = {
     "прозрачное": ["прозрачн"],
     "серое": ["сер"],
@@ -49,6 +54,7 @@ def _matching_text(text: str) -> str:
     value = normalize(text)
     value = re.sub(r"(?<=\d)\s*на\s*(?=\d)", "x", value)
     value = re.sub(r"(\d)\s*-\s*(?:ти|ми|х)\b", r"\1", value)
+    value = re.sub(r"(\d)(мм|см)\b", r"\1 \2", value)
     return value
 
 
@@ -134,6 +140,11 @@ def query_features(text: str) -> QueryFeatures:
         for color, roots in COLOR_LEXICON.items()
         if color != "чёрный/белый" and any(stems_match(root, s) for root in roots for s in stems)
     }
+    for color, forms in COLOR_FORMS.items():
+        if color not in colors and any(
+            len(token) >= 5 and similarity(token, form) >= 0.8 for token in tokens if token.isalpha() for form in forms
+        ):
+            colors.add(color)
     families = set()
     negated_families = set()
     for family, roots in FAMILY_LEXICON.items():
@@ -283,7 +294,7 @@ def _score(product: Product, features: list[Feature], query: QueryFeatures, kb_f
         ]
         if not own_words:
             return None
-    if normalize(product.name) in query.text:
+    if normalize(product.name) in query.text and not soft:
         score += 3.0
     code_hit = any(label.startswith("code:") for label in matched)
     return Candidate(product, score, matched, missing, soft, code_hit)
