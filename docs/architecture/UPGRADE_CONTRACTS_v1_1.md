@@ -69,4 +69,27 @@ Recheck/export повторно проверяют match snapshot, C2 status/ver
 C3 может формулировать только из этих BuyerMatch; source факт покупки/согласия не содержит.
 Смена материала означает новый current remnant/version и новый подбор; старые explanations не переносятся.
 
-U07 контракт будет дописан перед соответствующей реализацией. U02 остается владением C3.
+## U07: одна формула экрана и PDF
+
+DTO `contracts/economics.py`. POST `/economics/scenarios` принимает EconomicsCreate; PUT /{id} принимает
+EconomicsUpdate с expected_version и Idempotency-Key. GET /{id}?dataset_id=&version= возвращает точный snapshot;
+GET /{id}/pdf?dataset_id=&version= рендерит этот же snapshot. Исторические версии сохраняются в append-only audit.
+C1 меняет inputs, берет decimal-string results с backend; формулу в JS не дублировать. В PDF те же input_hash,
+result_hash и formula_version=economics-v2. Платформа не отправляет документы клиенту/организаторам.
+
+LaborStudy: минимум10 уникальных задач, одинаковые start/end definitions и input_ref для ручного/app выполнения,
+operator/observer, timezone start/end timestamps, active seconds (включая rework), ошибки/rework и result refs.
+measurement_status=supplied_measurements — декларация источника пользователя, не автоматическая независимая проверка;
+synthetic явно помечается. Без настоящих замеров финальная конкурсная записка остается blocked.
+
+Material effect=(final-baseline)*monthly multiplier*material_use_fraction. Валовая оценка плана не прибавляется
+еще раз. Fraction — явное scenario assumption с basis; actual confirmed-use value+ref отдельны.
+Potential remnant sale и actual sale revenue+ref тоже отдельны и не включаются как прибыль в net.
+Labor effect=median paired saved seconds/3600*monthly_operations*hourly_rate.
+Net=material effect+labor-services. Payback только net>0. Sensitivity задает low/high для4 assumptions,
+показывается min/max углов плюс измеренный разброс парной экономии, не доверительный интервал.
+Операционные факты и плановые оценки не смешиваются; no-payback scenario обязателен.
+
+HTTP PDF — «сценарный расчет, не финальная конкурсная записка», competition_release_eligible=false.
+Финальная записка по-прежнему требует same-run ready manifest и actual labor evidence через release builder.
+U02 остается владением C3; исходные трудозамеры делает человек, Pro их не синтезирует для приемки.
