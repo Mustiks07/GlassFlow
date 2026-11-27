@@ -179,7 +179,8 @@ def test_gateway_client_sends_no_system_prompt_or_model():
 
     provider = GatewayProvider("https://gw.example", "tok-123456", prompt_version="v1", session_id="s", transport=httpx.MockTransport(handler))
     response = asyncio.run(provider.generate(request()))
-    assert set(seen["body"]) == {"session_id", "prompt_version", "purpose", "messages"}
+    assert set(seen["body"]) == {"session_id", "prompt_version", "purpose", "tool_profile", "messages"}
+    assert seen["body"]["tool_profile"] == "no_inventory"
     assert "system" not in json.dumps(seen["body"]) or seen["body"]["messages"][0]["role"] == "user"
     assert response.model_id == "gemini-3.8-flash" and response.provider == "judge_gateway/gemini"
     with pytest.raises(ValueError):

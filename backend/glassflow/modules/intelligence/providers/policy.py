@@ -72,7 +72,7 @@ class AIProfile(BaseModel):
     rpd: int | None = Field(default=200, ge=1)
     max_concurrency: int = Field(default=2, ge=1, le=16)
     max_output_tokens: int = Field(default=1024, ge=64, le=8192)
-    request_timeout_s: float = Field(default=20.0, gt=0, le=120)
+    request_timeout_s: float = Field(default=15.0, gt=0, le=120)
     turn_deadline_s: float = Field(default=45.0, gt=0, le=300)
     max_retries: int = Field(default=2, ge=0, le=4)
     max_tool_iterations: int = Field(default=6, ge=1, le=12)

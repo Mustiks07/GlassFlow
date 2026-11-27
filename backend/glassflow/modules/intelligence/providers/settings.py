@@ -18,9 +18,12 @@ from .gemini import GeminiProvider
 from .openrouter import OpenRouterProvider
 from .policy import AIProfile, MemoryLedger, ModelRef, ResilientClient, UsageLedger, validate_profile
 
-DEFAULT_GEMINI_PRIMARY = "gemini-3.8-flash"
-DEFAULT_GEMINI_FALLBACK = "gemini-3.5-flash-lite"
-DEFAULT_OPENROUTER_FREE = "google/gemma-4-31b-it:free"
+# Chosen by live runs on 27.11.2026 (docs/ai/MODEL_SELECTION.md): flash-lite answered fast and
+# reliably; gemini-3.8-flash / gemini-4-hydrogen returned 503 "high demand", gemini-3.6-flash timed
+# out, gemma-4 :free models were rate-limited upstream on OpenRouter.
+DEFAULT_GEMINI_PRIMARY = "gemini-3.5-flash-lite"
+DEFAULT_GEMINI_FALLBACK = "gemini-3.8-flash"
+DEFAULT_OPENROUTER_FREE = "nvidia/nemotron-3.5-super-vl:free"
 SECRET_NAMES = {"gemini": "GEMINI_API_KEY", "openrouter": "OPENROUTER_API_KEY", "judge_gateway": "GLASSFLOW_GATEWAY_TOKEN"}
 
 
@@ -63,9 +66,9 @@ def profile_from_env(env: Mapping[str, str] | None = None, secrets: SecretProvid
     else:  # auto: first provider with a configured key
         if secrets.get(SECRET_NAMES["gemini"]):
             primary = ModelRef(provider="gemini", model_id=model or DEFAULT_GEMINI_PRIMARY)
-            fallbacks.append(ModelRef(provider="gemini", model_id=DEFAULT_GEMINI_FALLBACK))
             if secrets.get(SECRET_NAMES["openrouter"]):
                 fallbacks.append(ModelRef(provider="openrouter", model_id=DEFAULT_OPENROUTER_FREE))
+            fallbacks.append(ModelRef(provider="gemini", model_id=DEFAULT_GEMINI_FALLBACK))
         elif secrets.get(SECRET_NAMES["openrouter"]):
             primary = ModelRef(provider="openrouter", model_id=model or DEFAULT_OPENROUTER_FREE)
         elif env.get("GLASSFLOW_GATEWAY_URL") and secrets.get(SECRET_NAMES["judge_gateway"]):
@@ -86,7 +89,7 @@ def profile_from_env(env: Mapping[str, str] | None = None, secrets: SecretProvid
         rpm=_int("GLASSFLOW_AI_RPM", 10),
         tpm=_int("GLASSFLOW_AI_TPM", 200_000),
         rpd=_int("GLASSFLOW_AI_RPD", 200),
-        request_timeout_s=float(env.get("GLASSFLOW_AI_TIMEOUT_S", "20")),
+        request_timeout_s=float(env.get("GLASSFLOW_AI_TIMEOUT_S", "15")),
         turn_deadline_s=float(env.get("GLASSFLOW_AI_DEADLINE_S", "45")),
     )
 

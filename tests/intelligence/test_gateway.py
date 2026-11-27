@@ -178,3 +178,10 @@ def test_local_app_through_gateway_end_to_end(kb, mappings):
     assert result.provider == "judge_gateway/scripted" and result.model_id == "scripted-model"
     assert f"{result.tool_context.last_quote.total:f}" == "6000.00"  # tool executed locally, not on the gateway
     assert len(provider.requests) == 2 and provider.requests[1].messages[-1].role == "tool"
+
+
+def test_gateway_tool_profile_without_inventory():
+    client, provider = client_for(config())
+    assert client.post("/v1/turn", json=body(tool_profile="no_inventory"), headers=auth()).status_code == 200
+    assert "find_remnants" not in {t.name for t in provider.requests[0].tools}
+    assert client.post("/v1/turn", json=body(session_id="s9", tool_profile="all_tools"), headers=auth()).status_code == 422

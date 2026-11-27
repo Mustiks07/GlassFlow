@@ -49,7 +49,7 @@ class GatewayLimits(BaseModel):
 class GatewayConfig:
     mode: str = "free_only"
     provider: str = "gemini"
-    models: list[str] = field(default_factory=lambda: ["gemini-3.8-flash", "gemini-3.5-flash-lite"])
+    models: list[str] = field(default_factory=lambda: ["gemini-3.5-flash-lite", "gemini-3.8-flash"])
     prompt_version: str = ""
     tokens: list[TokenRecord] = field(default_factory=list)
     limits: GatewayLimits = field(default_factory=GatewayLimits)
@@ -62,7 +62,7 @@ class GatewayConfig:
 
         env = env if env is not None else os.environ
         provider = env.get("GATEWAY_PROVIDER", "gemini")
-        default_models = "gemini-3.8-flash,gemini-3.5-flash-lite" if provider == "gemini" else "google/gemma-4-31b-it:free"
+        default_models = "gemini-3.5-flash-lite,gemini-3.8-flash" if provider == "gemini" else "nvidia/nemotron-3.5-super-vl:free"
         tokens: list[TokenRecord] = []
         path = env.get("GATEWAY_TOKENS_FILE")
         if path and Path(path).is_file():

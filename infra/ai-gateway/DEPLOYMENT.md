@@ -23,7 +23,7 @@ PYTHONPATH=infra/ai-gateway uv run python -m judge_gateway serve --host 0.0.0.0 
 |---|---|---|
 | `GEMINI_API_KEY` или `OPENROUTER_API_KEY` | ключ провайдера, только в секретах хостинга | — |
 | `GATEWAY_PROVIDER` | `gemini` / `openrouter` | `gemini` |
-| `GATEWAY_MODELS` | закрепленные model_id через запятую (первый — основной, далее проверенные резервы) | `gemini-3.8-flash,gemini-3.5-flash-lite` |
+| `GATEWAY_MODELS` | закрепленные model_id через запятую (первый — основной, далее проверенные резервы) | `gemini-3.5-flash-lite,gemini-3.8-flash` (OpenRouter: `nvidia/nemotron-3.5-super-vl:free`) |
 | `GATEWAY_MODE` | `free_only` / `paid_enabled` | `free_only` |
 | `GATEWAY_GLOBAL_SPEND_USD` | бюджет для `paid_enabled`; при `free_only` игнорируется (0) | `0` |
 | `GATEWAY_TOKENS_FILE` | JSON с хешами конкурсных токенов (не сами токены) | — |

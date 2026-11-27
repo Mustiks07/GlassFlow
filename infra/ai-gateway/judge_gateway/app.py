@@ -61,6 +61,7 @@ class TurnBody(BaseModel):
     session_id: str = Field(min_length=1, max_length=64)
     prompt_version: str = Field(max_length=64)
     purpose: Literal["assistant_turn", "assistant_tool_followup", "settings_check"] = "assistant_turn"
+    tool_profile: Literal["default", "no_inventory"] = "default"
     messages: list[WireMessage] = Field(min_length=1)
 
 
@@ -129,7 +130,12 @@ def create_app(
     client = ResilientClient(profile=profile, providers=providers, ledger=ledger, prompt_version=config.prompt_version)
     windows = _Window()
     state = {"day": datetime.now(UTC).date(), "requests_today": 0, "spent": Decimal("0")}
-    specs = tool_specs()
+    from glassflow.modules.intelligence.assistant.tools import ASSISTANT_TOOLSET
+
+    tool_profiles = {
+        "default": tool_specs(),
+        "no_inventory": tool_specs([name for name in ASSISTANT_TOOLSET if name != "find_remnants"]),
+    }
 
     app = FastAPI(title="GlassFlow judge_gateway", version="1.0.0", docs_url=None, redoc_url=None, openapi_url=None)
     app.state.ledger = ledger
@@ -209,7 +215,8 @@ def create_app(
         state["requests_today"] += 1
         messages = [message_from_wire(m.model_dump()) for m in body.messages]
         provider_request = ProviderRequest(
-            system=SYSTEM_PROMPT, messages=messages, tools=specs, max_output_tokens=profile.max_output_tokens, purpose=body.purpose
+            system=SYSTEM_PROMPT, messages=messages, tools=tool_profiles[body.tool_profile],
+            max_output_tokens=profile.max_output_tokens, purpose=body.purpose
         )
         try:
             outcome = await client.call(provider_request, deadline=time.monotonic() + config.limits.request_deadline_s)

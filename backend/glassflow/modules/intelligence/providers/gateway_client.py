@@ -60,10 +60,13 @@ class GatewayProvider:
     async def generate(self, request: ProviderRequest) -> ProviderResponse:
         import httpx
 
+        names = {tool.name for tool in request.tools}
         body = {
             "session_id": self._session_id,
             "prompt_version": self._prompt_version,
             "purpose": request.purpose,
+            # the gateway pins the schemas; the client only selects one of the server-side profiles
+            "tool_profile": "no_inventory" if names and "find_remnants" not in names else "default",
             "messages": [message_to_wire(m) for m in request.messages],
         }
         started = time.monotonic()

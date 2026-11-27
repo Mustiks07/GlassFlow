@@ -248,7 +248,9 @@ def test_env_profile_defaults_free_only_without_keys():
     runtime = build_runtime(prof, _Secrets({}), prompt_version="t")
     assert runtime.status == "disabled" and not runtime.available
     with_key = profile_from_env(env={"GEMINI_API_KEY": "x" * 20})
-    assert with_key.primary.model_id == "gemini-3.8-flash" and with_key.fallbacks[0].model_id == "gemini-3.5-flash-lite"
+    assert with_key.primary.model_id == "gemini-3.5-flash-lite" and with_key.fallbacks[0].model_id == "gemini-3.8-flash"
+    both = profile_from_env(env={"GEMINI_API_KEY": "x" * 20, "OPENROUTER_API_KEY": "y" * 20})
+    assert [f.label for f in both.fallbacks] == ["openrouter:nvidia/nemotron-3.5-super-vl:free", "gemini:gemini-3.8-flash"]
     assert validate_profile(with_key) == []
 
 
