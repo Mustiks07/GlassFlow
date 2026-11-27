@@ -4,6 +4,14 @@
 Контракт объявлен Pro до реализации зависимых частей. Canonical Python DTO:
 `backend/glassflow/contracts/orders.py`; OpenAPI/TS регенерируются стандартно.
 
+## A04: выбранный снимок экспорта
+
+CSV bytes, result_refs и module_provenance фиксируются в одной короткой transaction до external validator.
+После него latest_jobs не читается. Result refs относятся к выбранным jobs, даже если новый job уже завершился.
+Следующий export может выбрать его. `last_export_id/files` описывают последнюю попытку, в том числе partial;
+`accepted_export_id/accepted_files` меняются только после полного ready (все5 CSV + buyers, все проверки).
+Partial/blocked retry не убирает ссылку на ранее принятый комплект. Старые export directories неизменны и доступны.
+
 ## U01: один лист заказа, две формы
 
 `OrderSheet.order_id` — новый рабочий ID, не подмена исторического order_id исходного CSV.

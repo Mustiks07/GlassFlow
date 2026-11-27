@@ -197,6 +197,17 @@ def test_all_five_exact_downloads_on_new_ids_with_explicit_domain_fixtures(clien
     manifest = client.get(result["files"]["manifest.json"]).json()
     assert manifest["validators"]["cutting_official"]["passed"]
     assert manifest["module_provenance"]["assistant"]["synthetic"] is True
+    accepted_id = manifest["export_id"]
+    assert manifest["accepted_export_id"] == accepted_id
+    with write_transaction(factory) as session:
+        failed_retry = enqueue(session, d, "quality", {}, started["run_id"])
+        failed_retry.state, failed_retry.created_at = "failed", "2099-01-01T00:00:00+00:00"
+    partial = client.post(f"/api/v1/runs/{started['run_id']}/export",
+                          headers={"Idempotency-Key": "partial-after-accepted"}).json()
+    assert partial["status"] == "partial" and "verdicts.csv" not in partial["files"]
+    view = client.get(f"/api/v1/runs/{started['run_id']}").json()["manifest"]
+    assert view["accepted_export_id"] == accepted_id and view["accepted_files"] == manifest["files"]
+    assert client.get(result["files"]["manifest.json"]).json() == manifest
 
 
 def test_export_pins_csv_refs_and_provenance_while_validator_waits(client, imported, monkeypatch):

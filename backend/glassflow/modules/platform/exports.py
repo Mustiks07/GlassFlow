@@ -280,6 +280,8 @@ def export_run(factory, run_id, data_dir, services, correlation):
             "validators": validators,
             "result_refs": result_refs,
             "module_provenance": provenance,
+            "accepted_export_id": export_id if status == "ready" else run_data.get("accepted_export_id"),
+            "accepted_files": hashes if status == "ready" else run_data.get("accepted_files", {}),
         }
         (staging / "manifest.json").write_text(
             json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
@@ -288,6 +290,8 @@ def export_run(factory, run_id, data_dir, services, correlation):
         with write_transaction(factory) as session:
             run = get_object(session, dataset_id, "run", run_id)
             run.data = {**run.data, "last_export_id": export_id, "files": hashes, "validators": validators}
+            if status == "ready":
+                run.data = {**run.data, "accepted_export_id": export_id, "accepted_files": hashes}
         return {
             "run_id": run_id,
             "status": status,

@@ -1,5 +1,13 @@
 # Статус GPT_PRO_MUSTAFA
 
+## A04: сохранение принятого комплекта
+
+`accepted_export_id/accepted_files` теперь меняются только после full-ready всех5 CSV+buyers и validator.
+Последующий partial/blocked retry сохраняет принятую ссылку; last_export_id/files остаются последней попыткой.
+Regression расширен: первый synthetic full-format комплект ready, retry quality failed -> partial,
+accepted pointer/hashes и скачиваемый первый manifest неизменны. `tests/platform/test_exports.py`:4 PASS.
+До этого полный source suite58 PASS, Ruff/foundation14 PASS, frontend typecheck/test2/build PASS на U07 `38c0705`.
+
 ## U07: единый сценарный расчет и PDF
 
 Контракт `bc4e3f3` опубликован до реализации. economics-v2: typed inputs/labor provenance,
