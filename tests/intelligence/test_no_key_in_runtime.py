@@ -31,6 +31,6 @@ def test_runtime_has_no_hardcoded_question_ids():
 
 
 def test_runtime_has_no_secrets():
-    pattern = re.compile(r"AIza[0-9A-Za-z_\-]{20,}|sk-or-v1-[0-9a-f]{20,}|sk-[A-Za-z0-9]{32,}")
+    pattern = re.compile(r"AIza[0-9A-Za-z_\-]{30,}|AQ\.[0-9A-Za-z_\-]{30,}|sk-or-v1-[0-9a-f]{40,}|sk-[A-Za-z0-9]{32,}")
     offenders = [str(p.relative_to(ROOT)) for p in runtime_files() if pattern.search(p.read_text(encoding="utf-8"))]
     assert offenders == []

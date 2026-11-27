@@ -184,3 +184,14 @@ def test_gateway_client_sends_no_system_prompt_or_model():
     assert response.model_id == "gemini-3.8-flash" and response.provider == "judge_gateway/gemini"
     with pytest.raises(ValueError):
         GatewayProvider("http://gw.example", "t", prompt_version="v1", session_id="s")
+
+
+def test_gemini_invalid_key_400_is_auth():
+    from google.genai import errors
+
+    details = {"error": {"code": 400, "status": "INVALID_ARGUMENT", "message": "API key not valid. Please pass a valid API key.",
+                         "details": [{"@type": "type.googleapis.com/google.rpc.ErrorInfo", "reason": "API_KEY_INVALID"}]}}
+    provider = GeminiProvider("gemini-3.5-flash-lite", "AIza-test-key-0000", client=_FakeClient(_FakeModels(error=errors.ClientError(400, details))))
+    with pytest.raises(ProviderError) as info:
+        asyncio.run(provider.generate(request()))
+    assert info.value.kind == "auth" and not info.value.retryable

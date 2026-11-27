@@ -197,3 +197,12 @@ def test_edge_rate_questions_use_kb_rule(engine, text, numbers, manager):
 def test_edge_rate_unknown_thickness_has_no_invented_numbers(engine):
     out = ask(engine, "Сколько стоит обработка кромки стекла 8 мм?")
     assert "менеджер" in out.answer and not re.search(r"\b\d{3,}\b", out.answer)
+
+
+def test_verifier_flags_unsupported_negative_availability():
+    from glassflow.modules.intelligence.assistant.facts import FactSet
+    from glassflow.modules.intelligence.assistant.verifier import verify_answer
+
+    for text in ["Свободных остатков под данный размер сейчас нет.", "Этого стекла нет в наличии.", "Остатков подходящего размера нет."]:
+        assert "claim:availability" in verify_answer(text, FactSet()).unsupported, text
+    assert verify_answer("Остатков подходящего размера нет.", FactSet(), remnant_checked=True).status == "supported"

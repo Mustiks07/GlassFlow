@@ -126,9 +126,9 @@ def test_timeout_is_bounded():
     client = ResilientClient(profile=prof, providers={"gemini:gemini-3.8-flash": slow}, ledger=MemoryLedger(), prompt_version="t", sleep=lambda s: asyncio.sleep(0))
     started = time.monotonic()
     with pytest.raises(ProviderError) as info:
-        run(client.call(_req(), deadline=time.monotonic() + 3))
+        run(client.call(_req(), deadline=time.monotonic() + 5))
     assert info.value.kind == "timeout"
-    assert time.monotonic() - started < 3
+    assert time.monotonic() - started < 5
     assert len(slow.requests) == 2
 
 
@@ -139,7 +139,7 @@ def test_rate_limiter_counts_every_call():
     run(client.call(_req(), deadline=time.monotonic() + 5))
     run(client.call(_req(), deadline=time.monotonic() + 5))
     with pytest.raises(ProviderError) as info:
-        run(client.call(_req(), deadline=time.monotonic() + 2))  # third call in the same minute
+        run(client.call(_req(), deadline=time.monotonic() + 5))  # third call in the same minute
     assert info.value.kind == "rate_limit"
 
 

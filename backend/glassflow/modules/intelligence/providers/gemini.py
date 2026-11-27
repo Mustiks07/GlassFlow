@@ -47,15 +47,21 @@ class GeminiProvider:
         return {"tools": True, "structured_output": True, "thought_signatures": True, "usage": True}
 
     def _sdk(self):
-        if self._client is None:
-            from google import genai
-            from google.genai import types
+        """Injected client (tests) or a fresh SDK client for this call.
 
-            self._client = genai.Client(
-                api_key=self._api_key,
-                http_options=types.HttpOptions(retry_options=types.HttpRetryOptions(attempts=1)),
-            )
-        return self._client
+        The SDK's async transport is bound to the running event loop; a per-call client that is
+        closed in the same loop works under uvicorn, batch ``asyncio.run`` jobs and the gateway.
+        """
+        if self._client is not None:
+            return self._client, False
+        from google import genai
+        from google.genai import types
+
+        client = genai.Client(
+            api_key=self._api_key,
+            http_options=types.HttpOptions(retry_options=types.HttpRetryOptions(attempts=1)),
+        )
+        return client, True
 
     def _contents(self, messages: list[ChatMessage]):
         from google.genai import types
@@ -100,9 +106,20 @@ class GeminiProvider:
         return contents
 
     async def generate(self, request: ProviderRequest) -> ProviderResponse:
+
+        client, owned = self._sdk()
+        try:
+            return await self._generate(client, request)
+        finally:
+            if owned:
+                try:
+                    await client.aio.aclose()
+                except Exception:  # closing must never mask the call result
+                    pass
+
+    async def _generate(self, client, request: ProviderRequest) -> ProviderResponse:
         from google.genai import errors, types
 
-        client = self._sdk()
         tools = None
         tool_config = None
         if request.tools:
@@ -124,7 +141,9 @@ class GeminiProvider:
             automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
             max_output_tokens=request.max_output_tokens,
             temperature=request.temperature,
-            http_options=types.HttpOptions(timeout=int(request.timeout_s * 1000)),
+            # The API rejects deadlines below 10 s; the effective deadline is enforced by the caller
+            # (asyncio.wait_for in ResilientClient), so the transport timeout never goes below that.
+            http_options=types.HttpOptions(timeout=max(10_000, int(request.timeout_s * 1000))),
         )
         started = time.monotonic()
         try:
@@ -134,6 +153,8 @@ class GeminiProvider:
         except errors.APIError as exc:
             code = getattr(exc, "code", None) or 0
             message = sanitize(str(getattr(exc, "message", "") or exc), [self._api_key])
+            if code == 400 and ("API_KEY_INVALID" in str(getattr(exc, "details", "")) or "API key not valid" in message):
+                raise ProviderError("auth", f"Gemini: ключ API недействителен. {message}", status=code, provider=self.name, model_id=self.model_id) from None
             if code in (401, 403):
                 raise ProviderError("auth", f"Gemini: нет доступа ({code}). {message}", status=code, provider=self.name, model_id=self.model_id) from None
             if code == 429:
@@ -143,14 +164,15 @@ class GeminiProvider:
                     provider=self.name, model_id=self.model_id,
                 ) from None
             if code >= 500:
-                raise ProviderError("server", f"Gemini: ошибка сервиса ({code}).", status=code, provider=self.name, model_id=self.model_id) from None
+                raise ProviderError("server", f"Gemini: ошибка сервиса ({code}). {message}", status=code, provider=self.name, model_id=self.model_id) from None
             raise ProviderError("bad_request", f"Gemini: запрос отклонен ({code}). {message}", status=code, provider=self.name, model_id=self.model_id) from None
         except TimeoutError:
             raise ProviderError("timeout", "Gemini: тайм-аут.", provider=self.name, model_id=self.model_id) from None
         except Exception as exc:
             name = type(exc).__name__
             kind = "timeout" if "Timeout" in name else "unavailable"
-            raise ProviderError(kind, f"Gemini: сбой соединения ({name}).", provider=self.name, model_id=self.model_id) from None
+            detail = sanitize(str(exc), [self._api_key])[:160]
+            raise ProviderError(kind, f"Gemini: сбой соединения ({name}: {detail}).", provider=self.name, model_id=self.model_id) from None
         latency = int((time.monotonic() - started) * 1000)
         candidates = response.candidates or []
         if not candidates or candidates[0].content is None:

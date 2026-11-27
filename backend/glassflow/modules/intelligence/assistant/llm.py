@@ -58,10 +58,12 @@ async def run_llm_turn(
     deadline: float,
     max_iterations: int | None = None,
     correlation_id: str | None = None,
+    tool_names: list[str] | None = None,
 ) -> LlmOutcome:
     max_iterations = max_iterations or client.profile.max_tool_iterations
     messages = [ChatMessage(role="user", text=build_user_message(text, context))]
-    specs = tool_specs()
+    allowed = tool_names or ASSISTANT_TOOLSET
+    specs = tool_specs(allowed)
     outcome = LlmOutcome(status="iteration_cap")
     for iteration in range(max_iterations):
         request = ProviderRequest(
@@ -92,7 +94,9 @@ async def run_llm_turn(
             continue
         final_args = None
         for tool_call in response.tool_calls:
-            execution = execute_tool(ctx, tool_call.name, tool_call.arguments if tool_call.arguments is not None else tool_call.arguments_json)
+            execution = execute_tool(
+                ctx, tool_call.name, tool_call.arguments if tool_call.arguments is not None else tool_call.arguments_json, allowed
+            )
             outcome.executions.append(execution)
             if execution.status == "rejected":
                 outcome.tool_errors += 1

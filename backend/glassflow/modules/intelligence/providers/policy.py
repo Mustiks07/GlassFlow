@@ -36,6 +36,7 @@ GEMINI_FREE_TIER_MODELS = {
     "gemini-3-flash-preview",
     "gemini-4-hydrogen",
 }
+MIN_ATTEMPT_SECONDS = 2.0  # do not start an attempt that cannot finish inside the turn deadline
 OPENROUTER_FORBIDDEN_ROUTERS = {"openrouter/free", "openrouter/auto", "openrouter/auto:free"}
 
 
@@ -130,6 +131,7 @@ class LedgerEntry:
     cost_source: str
     prompt_version: str
     correlation_id: str | None = None
+    error_message: str | None = None  # sanitized, short; in-memory diagnostics only (not persisted)
 
 
 class UsageLedger(Protocol):
@@ -257,7 +259,7 @@ class ResilientClient:
             provider = self.providers[label]
             for attempt in range(self.profile.max_retries + 1):
                 remaining = deadline - self.clock()
-                if remaining <= 0.5:
+                if remaining < MIN_ATTEMPT_SECONDS:
                     raise last_error or ProviderError("timeout", "Истек общий срок ответа AI.")
                 if self.profile.mode == "paid_enabled" and self.spent_usd >= self.profile.budget_usd and not self._is_free(label):
                     raise ProviderError("budget", "Исчерпан денежный бюджет платного профиля.")
@@ -268,7 +270,7 @@ class ResilientClient:
                 except ProviderError as exc:
                     self._log(request, label, attempt, "error", exc.kind, None, 0, None, correlation_id)
                     raise
-                timeout = min(self.profile.request_timeout_s, max(0.5, deadline - self.clock()))
+                timeout = min(self.profile.request_timeout_s, max(MIN_ATTEMPT_SECONDS, deadline - self.clock()))
                 started = self.clock()
                 try:
                     async with self.limiter.semaphore:
@@ -278,7 +280,7 @@ class ResilientClient:
                 except ProviderError as exc:
                     error = exc
                 except Exception as exc:  # network stack errors are mapped, never leaked
-                    error = ProviderError("unavailable", f"Сбой соединения: {type(exc).__name__}", provider=provider.name)
+                    error = ProviderError("unavailable", f"Сбой соединения: {type(exc).__name__}: {str(exc)[:120]}", provider=provider.name)
                 else:
                     latency = int((self.clock() - started) * 1000)
                     response.latency_ms = response.latency_ms or latency
@@ -288,7 +290,7 @@ class ResilientClient:
                     self._log(request, label, attempt, "ok", None, response, int(queue_s * 1000), latency, correlation_id)
                     return CallOutcome(response, attempts, index > 0, label)
                 latency = int((self.clock() - started) * 1000)
-                self._log(request, label, attempt, "error", error.kind, None, int(queue_s * 1000), latency, correlation_id)
+                self._log(request, label, attempt, "error", error.kind, None, int(queue_s * 1000), latency, correlation_id, str(error)[:200])
                 last_error = error
                 if not error.retryable:
                     if error.kind in {"auth", "bad_request", "budget"}:
@@ -307,7 +309,7 @@ class ResilientClient:
         refs = [r for r in [self.profile.primary, *self.profile.fallbacks] if r and r.label == label]
         return bool(refs) and model_is_free(refs[0])
 
-    def _log(self, request, label, attempt, status, kind, response, queue_ms, latency, correlation_id) -> None:
+    def _log(self, request, label, attempt, status, kind, response, queue_ms, latency, correlation_id, message=None) -> None:
         provider, _, model = label.partition(":")
         usage = response.usage if response else None
         self.ledger.record(
@@ -330,6 +332,7 @@ class ResilientClient:
                 cost_source=usage.cost_source if usage else "no_response",
                 prompt_version=self.prompt_version,
                 correlation_id=correlation_id,
+                error_message=message,
             )
         )
 

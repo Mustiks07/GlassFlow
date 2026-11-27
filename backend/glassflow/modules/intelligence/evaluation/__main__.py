@@ -28,6 +28,10 @@ def main() -> None:
     parser.add_argument("--out", type=Path, default=ROOT / "docs" / "ai" / "evidence")
     parser.add_argument("--allow-ai", action="store_true", help="use the configured network AI profile (counts quota)")
     parser.add_argument("--repeats", type=int, default=1)
+    parser.add_argument("--model", default=None, help="live: provider:model_id, e.g. gemini:gemini-3.5-flash-lite")
+    parser.add_argument("--fallbacks", default="", help="live: comma-separated provider:model_id")
+    parser.add_argument("--cases", default="critical", help="live: critical | broad | comma-separated ids")
+    parser.add_argument("--rpm", type=int, default=12)
     args = parser.parse_args()
     if args.command == "open":
         report = evaluate_open(args.pack, args.out / "open", allow_ai=args.allow_ai)
@@ -48,19 +52,28 @@ def main() -> None:
         has_key = any(os.environ.get(name) for name in ("GEMINI_API_KEY", "OPENROUTER_API_KEY", "GLASSFLOW_GATEWAY_TOKEN"))
         target = args.out / "live"
         target.mkdir(parents=True, exist_ok=True)
-        if not has_key:
+        if not has_key or not args.model:
             summary = {
-                "status": "BLOCKED",
-                "reason": "No GEMINI_API_KEY / OPENROUTER_API_KEY / GLASSFLOW_GATEWAY_TOKEN in this environment.",
-                "required": "Set a free-tier key (or gateway URL+token) and rerun: "
-                            "uv run python -m glassflow.modules.intelligence.evaluation live",
+                "status": "BLOCKED" if not has_key else "NO_MODEL",
+                "reason": "No provider key in this environment." if not has_key else "Pass --model provider:model_id.",
+                "required": "uv run python -m glassflow.modules.intelligence.evaluation live --model gemini:gemini-3.5-flash-lite",
                 "checked_at": datetime.now(UTC).isoformat(),
                 "critical_cases": CRITICAL,
             }
-            (target / "live_status.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+            if not has_key:
+                (target / "live_status.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
         else:
-            report = evaluate_extended(args.pack, target, allow_ai=True, repeats=3)
-            summary = {k: report[k] for k in ("cases", "passed", "accuracy", "unconfirmed_commercial_claims", "latency_ms", "ai")}
+            from .live import BROAD, evaluate_live
+
+            ids = CRITICAL if args.cases == "critical" else BROAD if args.cases == "broad" else args.cases.split(",")
+            report = evaluate_live(
+                args.pack, target, model=args.model, fallbacks=[f for f in args.fallbacks.split(",") if f],
+                case_ids=ids, repeats=args.repeats, rpm=args.rpm,
+            )
+            summary = {k: report[k] for k in (
+                "runs", "ok", "accuracy", "answered_by_model", "model_answers_ok", "fallbacks_to_deterministic",
+                "verifier_rejections", "unsupported_claims_shown", "tool_errors", "model_calls", "provider_errors",
+                "models_answered", "tokens", "turn_latency_ms", "model_call_latency_ms")}
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 
 

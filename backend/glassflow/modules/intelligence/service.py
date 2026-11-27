@@ -719,7 +719,7 @@ class IntelligenceService:
         elif result.answer_path != "llm_tools":
             pricing = local.pricing
         quote_dto = None
-        new_context = local.context if result.answer_path != "llm_tools" else context
+        new_context = local.context  # deterministic understanding of the turn is the stored context
         if pricing is not None and pricing.lines or (pricing is not None and pricing.unknowns and pricing.product):
             request = QuoteRequest(
                 dataset_id=turn.dataset_id,
@@ -966,7 +966,7 @@ class IntelligenceService:
             outcome = await runtime.client.call(
                 ProviderRequest(system="Ответь одним словом: ok", messages=[ChatMessage(role="user", text="ping")],
                                 max_output_tokens=16, purpose="settings_check"),
-                deadline=_time.monotonic() + 20,
+                deadline=_time.monotonic() + runtime.profile.turn_deadline_s,
             )
         except ProviderError as exc:
             status = {"auth": "access_denied", "rate_limit": "rate_limited"}.get(exc.kind, "unavailable")

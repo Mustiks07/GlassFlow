@@ -251,7 +251,11 @@ def _remnants(ctx: ToolContext, args: FindRemnantsArgs) -> dict[str, Any]:
     if mapping is None or mapping.status != "confirmed" or not mapping.material_id:
         return {"status": "mapping_required", "candidates": [], "message_ru": "Складское соответствие не подтверждено."}
     if ctx.inventory is None:
-        return {"status": "service_unavailable", "candidates": []}
+        return {
+            "status": "service_unavailable",
+            "candidates": [],
+            "message_ru": "Проверка склада сейчас недоступна: о наличии или отсутствии остатков ничего утверждать нельзя.",
+        }
     try:
         found = ctx.inventory.find_candidates(
             FindRequest(
@@ -262,7 +266,11 @@ def _remnants(ctx: ToolContext, args: FindRemnantsArgs) -> dict[str, Any]:
             )
         )
     except ServiceUnavailable:
-        return {"status": "service_unavailable", "candidates": []}
+        return {
+            "status": "service_unavailable",
+            "candidates": [],
+            "message_ru": "Проверка склада сейчас недоступна: о наличии или отсутствии остатков ничего утверждать нельзя.",
+        }
     ctx.remnant_checked = True
     for candidate in found.candidates[:5]:
         ctx.facts.add("remnant", candidate.remnant_id, None, f"inventory:{candidate.remnant_id}:v{candidate.remnant_version}")

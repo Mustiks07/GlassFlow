@@ -26,7 +26,7 @@ from ..providers.settings import AIRuntime
 from .llm import LlmOutcome, run_llm_turn
 from .local import MAX_SENTENCES, LocalEngine, LocalOutcome, TurnContext
 from .prompts import PROMPT_VERSION
-from .tools import ToolContext
+from .tools import ASSISTANT_TOOLSET, ToolContext
 
 ENGINE_VERSION = "dialog-engine-v1"
 
@@ -132,7 +132,10 @@ class AssistantEngine:
         inventory_mode: str = "none",
         allow_ai: bool = True,
         correlation_id: str | None = None,
+        strategy: str = "hybrid",
     ) -> TurnResult:
+        """strategy: ``hybrid`` (default; AI only for unrecognized requests) or ``ai_first``
+        (evaluation of the online path: the model answers every turn, deterministic fallback)."""
         started = time.monotonic()
         local = self.local.respond(text, context, inventory_mode=inventory_mode)
         runtime = self.runtime
@@ -159,7 +162,7 @@ class AssistantEngine:
                 ai_unavailable_reason=why,
             )
 
-        if not ai_ready or not self._needs_ai(local):
+        if not ai_ready or (strategy != "ai_first" and not self._needs_ai(local)):
             return deterministic()
 
         assert runtime is not None and runtime.client is not None
@@ -177,8 +180,10 @@ class AssistantEngine:
             self.kb, self.mappings, self.dataset_id, self.inventory, self.crm, self.scenario, user_text=text
         )
         deadline = time.monotonic() + runtime.profile.turn_deadline_s
+        tool_names = [name for name in ASSISTANT_TOOLSET if not (name == "find_remnants" and inventory_mode == "none")]
         llm = await run_llm_turn(
-            runtime.client, ctx, text, (context or TurnContext()).to_dict(), deadline=deadline, correlation_id=correlation_id
+            runtime.client, ctx, text, (context or TurnContext()).to_dict(), deadline=deadline,
+            correlation_id=correlation_id, tool_names=tool_names,
         )
         if llm.status == "provider_error":
             why = llm.error.args[0] if llm.error else "AI недоступен."
