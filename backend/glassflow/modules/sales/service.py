@@ -10,11 +10,12 @@ from urllib.parse import urlsplit
 from pydantic import ValidationError
 from sqlalchemy import select
 
-from glassflow.contracts.crm import Buyer, SaleCard
+from glassflow.contracts.crm import Buyer, BuyerApplicationEvidence, SaleCard
 from glassflow.core.errors import AppError
 from glassflow.core.models import ObjectRow, now, uid
 from glassflow.core.uow import audit, canonical_hash, get_object
 from glassflow.modules.platform.imports import dataset, records
+from glassflow.modules.sales.matching import match_buyers, snapshot_hash
 
 BUYER_FIELDS = ["name", "city", "category", "url", "why", "source_url", "score"]
 CATEGORIES = {
@@ -68,6 +69,7 @@ def import_buyers(session, dataset_id, csv_bytes, evidence_bytes, correlation):
     if len(raw) != 50:
         errors.append("Нужно ровно 50 организаций")
     buyers, names, entities = [], set(), set()
+    material_ids = {r.public_id for r in records(session, dataset_id, "materials")}
     for index, row in enumerate(raw, 2):
         try:
             if None in row or any(v is None or not v.strip() for v in row.values()):
@@ -115,6 +117,24 @@ def import_buyers(session, dataset_id, csv_bytes, evidence_bytes, correlation):
                 if match["entity_id"] in entities:
                     errors.append(f"Строка {index}: дублирующийся организационный объект")
                 entities.add(match["entity_id"])
+            applications = match.get("applications", [])
+            if not isinstance(applications, list):
+                errors.append(f"Строка {index}: applications должен быть списком")
+            else:
+                for raw_application in applications:
+                    try:
+                        application = BuyerApplicationEvidence.model_validate(raw_application)
+                        checked = date.fromisoformat(application.checked_at)
+                        if (checked > date.today() or application.checked_at != match.get("checked_at", "")[:10]
+                                or application.source_url != match.get("source_url")
+                                or not set(application.material_ids) <= material_ids
+                                or not public_url(application.source_url)
+                                or (application.max_dimensions and (
+                                    application.max_dimensions.length_mm < application.min_dimensions.length_mm
+                                    or application.max_dimensions.width_mm < application.min_dimensions.width_mm))):
+                            raise ValueError()
+                    except (ValidationError, ValueError, TypeError):
+                        errors.append(f"Строка {index}: неверное основание применения/размера")
             buyer.buyer_id = hashlib.sha256(name.encode("utf8")).hexdigest()[:24]
             buyers.append(buyer.model_dump())
         except (ValidationError, ValueError, TypeError):
@@ -198,7 +218,7 @@ def source_plan(session, services, dataset_id, plan_id, revision):
 
 def generate_cards(session, body, services, correlation):
     plan = source_plan(session, services, body.dataset_id, body.plan_id, body.plan_revision)
-    buyers = registry(session, body.dataset_id, body.buyer_registry_version).data["buyers"]
+    buyer_registry = registry(session, body.dataset_id, body.buyer_registry_version)
     originals = {r.public_id: r.data for r in records(session, body.dataset_id, "stock")}
     materials = {r.public_id: r.data for r in records(session, body.dataset_id, "materials")}
     used = {p.remnant_id for p in plan.placements if p.remnant_id != "NEW"}
@@ -221,7 +241,7 @@ def generate_cards(session, body, services, correlation):
             conflicts=[f"free_original_count:{len(candidates)}", "coverage_delta:requires_C2_comparison"],
         )
     result = []
-    for remnant in candidates[:5]:
+    for remnant in candidates:
         original = originals[remnant.remnant_id]
         material = materials[original["material_id"]]
         # Contest cards describe the full original piece, never a virtual child or changed measurement.
@@ -234,6 +254,9 @@ def generate_cards(session, body, services, correlation):
                 409, "ORIGINAL_CHANGED", "Замер исходного куска изменился; выберите актуальный снимок."
             )
         length, width = int(original["длина_мм"]), int(original["ширина_мм"])
+        top = match_buyers(buyer_registry, remnant, material)[:3]
+        if len(top) < 3:
+            continue
         price = card_price(length, width, material["цена_нового_стекла_тг_за_м2"], body.factor)
         tempered = material["закалённое"] == "1"
         application = (
@@ -242,19 +265,6 @@ def generate_cards(session, body, services, correlation):
             else "вставки и элементы интерьера после проверки размеров"
         )
         condition = "с дефектом" if remnant.defect else "без отмеченного дефекта"
-        terms = (
-            ("зеркал", "мебел", "интерьер")
-            if "mirror" in remnant.material_id
-            else ("стекл", "перегород", "витрин")
-        )
-        top = sorted(
-            buyers,
-            key=lambda b: (
-                -sum(t in (b["why"] + b["category"]).casefold() for t in terms),
-                -b["score"],
-                b["buyer_id"],
-            ),
-        )[:3]
         card = SaleCard(
             card_id=uid(),
             dataset_id=body.dataset_id,
@@ -267,9 +277,12 @@ def generate_cards(session, body, services, correlation):
             title=f"{material['название']}, {length}×{width} мм",
             price_tg=price,
             description=f"Целый исходный остаток {length}×{width} мм, {condition}. Место: {remnant.location_raw}. Возможное применение: {application}. Совместимость уточняет менеджер.",
-            target_buyer=top[0]["name"],
-            top3_buyers=[b["name"] for b in top],
-            top3_buyer_ids=[b["buyer_id"] for b in top],
+            target_buyer=top[0].name,
+            top3_buyers=[b.name for b in top],
+            top3_buyer_ids=[b.buyer_id for b in top],
+            buyer_matches=top,
+            matching_policy="evidence-v1",
+            match_snapshot_hash=snapshot_hash(remnant, body.buyer_registry_version),
             status="ready",
         )
         session.add(
@@ -283,6 +296,11 @@ def generate_cards(session, body, services, correlation):
         )
         audit(session, body.dataset_id, "card.create", card.card_id, correlation, plan_revision=plan.revision)
         result.append(card.model_dump())
+        if len(result) == 5:
+            break
+    if len(result) < 5:
+        raise AppError(409, "BUYER_MATCHES_REQUIRED", "Нужно пять свободных кусков с тремя доказуемо пригодными покупателями.",
+                       conflicts=[f"explainable_cards:{len(result)}"])
     return {"cards": result}
 
 
@@ -294,11 +312,22 @@ def recheck_card(session, row, services, correlation):
     try:
         plan = source_plan(session, services, row.dataset_id, card.plan_id, card.plan_revision)
         current = services.sales_source.get_remnant(session, row.dataset_id, card.remnant_id)
-        registry(session, row.dataset_id, card.buyer_registry_version)
+        buyer_registry = registry(session, row.dataset_id, card.buyer_registry_version)
+        material = next((r.data for r in records(session, row.dataset_id, "materials")
+                         if r.public_id == current.material_id), None)
+        if material is None:
+            raise AppError(409, "MATERIAL_NOT_FOUND", "Материал текущего куска неизвестен.")
+        eligible = {m.buyer_id: m for m in match_buyers(buyer_registry, current, material)}
         stale = (
             card.remnant_id not in plan.free_original_remnant_ids
             or current.status != "available"
             or current.version != card.remnant_version
+            or card.matching_policy != "evidence-v1"
+            or card.match_snapshot_hash != snapshot_hash(current, card.buyer_registry_version)
+            or len(card.buyer_matches) != 3
+            or any(m.buyer_id not in eligible or m != eligible[m.buyer_id] for m in card.buyer_matches)
+            or [m.name for m in card.buyer_matches] != card.top3_buyers
+            or [m.buyer_id for m in card.buyer_matches] != card.top3_buyer_ids
         )
     except AppError as exc:
         if exc.status == 503:
@@ -321,3 +350,16 @@ def list_cards(session, dataset_id, services, correlation, plan_id=None):
         if plan_id is None or row.data["plan_id"] == plan_id:
             result.append(recheck_card(session, row, services, correlation))
     return result
+
+
+def current_matches(session, dataset_id, version, remnant_id, services):
+    if services.sales_source is None:
+        raise AppError(503, "CUTTING_SERVICE_UNAVAILABLE", "Текущий склад не подключен.")
+    remnant = services.sales_source.get_remnant(session, dataset_id, remnant_id)
+    if remnant.dataset_id != dataset_id or remnant.remnant_id != remnant_id:
+        raise AppError(409, "REMNANT_SCOPE", "Кусок относится к другому набору.")
+    material = next((r.data for r in records(session, dataset_id, "materials")
+                     if r.public_id == remnant.material_id), None)
+    if material is None:
+        raise AppError(409, "MATERIAL_NOT_FOUND", "Материал текущего куска неизвестен.")
+    return match_buyers(registry(session, dataset_id, version), remnant, material)

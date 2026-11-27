@@ -1,5 +1,19 @@
 # Статус GPT_PRO_MUSTAFA
 
+## U03: платформенный объяснимый подбор
+
+Контракт опубликован `8e7a09f`, U01 реализация `ea02dff`. U03 добавляет typed application evidence к reviewer records,
+не меняя официальный buyers CSV. `/buyers/matches` читает текущий C2 кусок/материал, фильтрует material IDs,
+ориентации size bounds и запрет подрезки tempered. Каждый BuyerMatch содержит точное имя/ID, registry/remnant
+versions, применение, публичную деятельность, ссылку/дату и размерное допущение; interest_confirmed=false.
+Генерация пяти cards требует трех пригодных matches на каждый original, хранит evidence snapshot hash;
+edit/recheck/export используют те же правила. Новые случайные имена без evidence не выдаются вместо matches.
+Legacy buyer CSV/evidence импортируется, но без application evidence объяснимые cards требуют доисследования C1.
+`uv run pytest tests/sales -q`:12 PASS; combined sales/export до новых двух U03 tests:14 PASS; Ruff PASS.
+Тест зеркало->tempered меняет все три объяснения, запрещает подрезку; reserved дает пустой подбор;
+несовместимый размер блокирует cards без частичных записей; wrong evidence URL -> needs_review.
+Реальные публичные источники/реестр остаются владельцем C1, actual UI/C2 интеграция NOT RUN.
+
 ## Дополнения v1.1: PRO-R1 / A04
 
 Прочитаны review и strategy из `origin/main eaf81d6`, без merge. На исходном платформенном `052255d`

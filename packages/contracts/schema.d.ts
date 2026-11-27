@@ -757,6 +757,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/buyers/matches": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Matches */
+        get: operations["matches_api_v1_buyers_matches_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/buyers/import": {
         parameters: {
             query?: never;
@@ -1116,6 +1133,48 @@ export interface components {
             score: number;
             /** Buyer Id */
             buyer_id?: string | null;
+        };
+        /** BuyerMatch */
+        BuyerMatch: {
+            /** Buyer Id */
+            buyer_id: string;
+            /** Name */
+            name: string;
+            /** Registry Version */
+            registry_version: string;
+            /** Remnant Id */
+            remnant_id: string;
+            /** Remnant Version */
+            remnant_version: number;
+            /** Material Id */
+            material_id: string;
+            dimensions: components["schemas"]["Dimensions"];
+            /** Application */
+            application: string;
+            /** Activity */
+            activity: string;
+            /** Source Url */
+            source_url: string;
+            /** Checked At */
+            checked_at: string;
+            /** Dimensions Basis */
+            dimensions_basis: string;
+            /** Constraints */
+            constraints: string[];
+            /** Explanation */
+            explanation: string;
+            /**
+             * Interest Confirmed
+             * @default false
+             * @constant
+             */
+            interest_confirmed: false;
+            /**
+             * Policy Version
+             * @default evidence-v1
+             * @constant
+             */
+            policy_version: "evidence-v1";
         };
         /** Candidate */
         Candidate: {
@@ -2100,6 +2159,15 @@ export interface components {
              * @default Коэффициент - проектное допущение, не рыночная оценка и не факт продажи
              */
             assumptions: string;
+            /** Buyer Matches */
+            buyer_matches?: components["schemas"]["BuyerMatch"][];
+            /**
+             * Matching Policy
+             * @default legacy-unexplained
+             */
+            matching_policy: string;
+            /** Match Snapshot Hash */
+            match_snapshot_hash?: string | null;
         };
         /** SettingsUpdate */
         SettingsUpdate: {
@@ -7449,6 +7517,111 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    matches_api_v1_buyers_matches_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                version: string;
+                remnant_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BuyerMatch"][];
                 };
             };
             /** @description Bad Request */

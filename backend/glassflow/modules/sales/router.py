@@ -2,7 +2,7 @@ from fastapi import APIRouter, File, Header, Query, Request, UploadFile
 from sqlalchemy import select
 
 from glassflow.contracts.common import ApiError
-from glassflow.contracts.crm import Buyer, CardsRequest, CardUpdate, SaleCard
+from glassflow.contracts.crm import Buyer, BuyerMatch, CardsRequest, CardUpdate, SaleCard
 from glassflow.core.errors import AppError
 from glassflow.core.models import ObjectRow
 from glassflow.core.uow import get_object, idempotent, write_transaction
@@ -38,6 +38,12 @@ def registries(dataset_id: str, request: Request):
                 )
             )
         ]
+
+
+@router.get("/buyers/matches", response_model=list[BuyerMatch])
+def matches(dataset_id: str, version: str, remnant_id: str, request: Request):
+    with request.app.state.session_factory() as session:
+        return service.current_matches(session, dataset_id, version, remnant_id, request.app.state.services)
 
 
 @router.post("/buyers/import")
@@ -119,16 +125,13 @@ def edit_card(card_id: str, body: CardUpdate, request: Request, idempotency_key:
             )
             card.factor = body.factor
         if body.top3_buyer_ids is not None:
-            buyers = {
-                b["buyer_id"]: b
-                for b in service.registry(session, body.dataset_id, card.buyer_registry_version).data[
-                    "buyers"
-                ]
-            }
+            buyers = {m.buyer_id: m for m in service.current_matches(session, body.dataset_id,
+                      card.buyer_registry_version, card.remnant_id, request.app.state.services)}
             if len(set(body.top3_buyer_ids)) != 3 or any(b not in buyers for b in body.top3_buyer_ids):
-                raise AppError(422, "INVALID_TOP3", "Выберите трех разных покупателей из этого реестра.")
+                raise AppError(422, "INVALID_TOP3", "Выберите трех разных пригодных покупателей этого реестра.")
             card.top3_buyer_ids = body.top3_buyer_ids
-            card.top3_buyers = [buyers[b]["name"] for b in body.top3_buyer_ids]
+            card.buyer_matches = [buyers[b] for b in body.top3_buyer_ids]
+            card.top3_buyers = [buyers[b].name for b in body.top3_buyer_ids]
             card.target_buyer = card.top3_buyers[0]
         card.version += 1
         row.version, row.data = card.version, card.model_dump()

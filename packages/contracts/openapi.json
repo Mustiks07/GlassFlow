@@ -6549,6 +6549,150 @@
         }
       }
     },
+    "/api/v1/buyers/matches": {
+      "get": {
+        "tags": [
+          "sales"
+        ],
+        "summary": "Matches",
+        "operationId": "matches_api_v1_buyers_matches_get",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Version"
+            }
+          },
+          {
+            "name": "remnant_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Remnant Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BuyerMatch"
+                  },
+                  "title": "Response Matches Api V1 Buyers Matches Get"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
     "/api/v1/buyers/import": {
       "post": {
         "tags": [
@@ -8692,6 +8836,99 @@
           "score"
         ],
         "title": "Buyer"
+      },
+      "BuyerMatch": {
+        "properties": {
+          "buyer_id": {
+            "type": "string",
+            "title": "Buyer Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "registry_version": {
+            "type": "string",
+            "title": "Registry Version"
+          },
+          "remnant_id": {
+            "type": "string",
+            "title": "Remnant Id"
+          },
+          "remnant_version": {
+            "type": "integer",
+            "title": "Remnant Version"
+          },
+          "material_id": {
+            "type": "string",
+            "title": "Material Id"
+          },
+          "dimensions": {
+            "$ref": "#/components/schemas/Dimensions"
+          },
+          "application": {
+            "type": "string",
+            "title": "Application"
+          },
+          "activity": {
+            "type": "string",
+            "title": "Activity"
+          },
+          "source_url": {
+            "type": "string",
+            "title": "Source Url"
+          },
+          "checked_at": {
+            "type": "string",
+            "title": "Checked At"
+          },
+          "dimensions_basis": {
+            "type": "string",
+            "title": "Dimensions Basis"
+          },
+          "constraints": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Constraints"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation"
+          },
+          "interest_confirmed": {
+            "type": "boolean",
+            "const": false,
+            "title": "Interest Confirmed",
+            "default": false
+          },
+          "policy_version": {
+            "type": "string",
+            "const": "evidence-v1",
+            "title": "Policy Version",
+            "default": "evidence-v1"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "buyer_id",
+          "name",
+          "registry_version",
+          "remnant_id",
+          "remnant_version",
+          "material_id",
+          "dimensions",
+          "application",
+          "activity",
+          "source_url",
+          "checked_at",
+          "dimensions_basis",
+          "constraints",
+          "explanation"
+        ],
+        "title": "BuyerMatch"
       },
       "Candidate": {
         "properties": {
@@ -11589,6 +11826,29 @@
             "type": "string",
             "title": "Assumptions",
             "default": "Коэффициент - проектное допущение, не рыночная оценка и не факт продажи"
+          },
+          "buyer_matches": {
+            "items": {
+              "$ref": "#/components/schemas/BuyerMatch"
+            },
+            "type": "array",
+            "title": "Buyer Matches"
+          },
+          "matching_policy": {
+            "type": "string",
+            "title": "Matching Policy",
+            "default": "legacy-unexplained"
+          },
+          "match_snapshot_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Match Snapshot Hash"
           }
         },
         "additionalProperties": false,
