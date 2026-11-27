@@ -133,6 +133,10 @@ def _resolve_product(kb: KnowledgeBase, client: str, manager: str) -> tuple[Prod
                 fitting.append(candidate.product)
         if len(fitting) == 1:
             return fitting[0], "price_matches_unique_client_candidate"
+        if amounts and not fitting:
+            # No candidate's KB price matches: the price is wrong for every reading of the question
+            # (ERROR is certain). The correction comes from the best-ranked candidate and is flagged.
+            return client_match.candidates[0].product, "mismatch_all_candidates_best_ranked_correction"
     if client_match.status == "not_found" and manager_match.status == "exact":
         return manager_match.product, "manager_named_product"
     return None, f"client_{client_match.status}"
@@ -164,7 +168,10 @@ def _references(kb: KnowledgeBase, product: Product, client: str, manager: str) 
 
 def check_dialog(kb: KnowledgeBase, dialog_id: str, client: str, manager: str) -> DialogVerdict:
     digest = hashlib.sha256(f"{client}\x1f{manager}".encode("utf-8")).hexdigest()
-    product, basis = _resolve_product(kb, client, manager)
+    if extract(f"{client} {manager}").model_codes:
+        product, basis = None, "model_code_question"  # AB models: KB rule decides, not a similar product
+    else:
+        product, basis = _resolve_product(kb, client, manager)
     mentions = extract_price_mentions(manager, product)
     views = [PriceMention(raw=m.raw, amount_tg=money_string(m.amount), meaning=m.meaning) for m in mentions]
     base = dict(id=dialog_id, mentions=views, input_sha256=digest)
@@ -234,6 +241,7 @@ def check_dialog(kb: KnowledgeBase, dialog_id: str, client: str, manager: str) -
             unresolved = True
     if first_error is not None:
         value, key, _ = first_error
+        ambiguous = basis == "mismatch_all_candidates_best_ranked_correction"
         return DialogVerdict(
             verdict="ERROR",
             correct=money_string(value),
@@ -241,8 +249,13 @@ def check_dialog(kb: KnowledgeBase, dialog_id: str, client: str, manager: str) -
             catalog_product_id=product.product_id,
             reference_tg=money_string(value),
             reference_meaning=key,
-            reason_code="price_mismatch",
-            explanation_ru=f"Цена в ответе не совпадает с базой: правильно {money_string(value)} ₸ ({key}).",
+            reason_code="price_mismatch_ambiguous_product" if ambiguous else "price_mismatch",
+            explanation_ru=(
+                f"Цена не совпадает ни с одной подходящей позицией базы; исправление {money_string(value)} ₸ взято "
+                f"у наиболее вероятной позиции «{product.name}» — проверьте товар."
+                if ambiguous
+                else f"Цена в ответе не совпадает с базой: правильно {money_string(value)} ₸ ({key})."
+            ),
             **base,
         )
     if unresolved:

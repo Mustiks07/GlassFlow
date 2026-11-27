@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T16:58:38.756651+00:00",
+  "generated_at": "2026-11-27T17:00:07.289993+00:00",
   "kind": "extended_synthetic_evaluation",
   "provenance": "Synthetic evaluation cases written by Claude 3 (GlassFlow team) on 2026-11-27 from the open KB. NOT organisers' hidden data. Expected numbers were computed by hand from ksm_knowledge_base.json (area mm²/1e6 × rate × qty, edge m × rule r4 rate), independently of the engine.",
   "ai": {
@@ -79,8 +79,8 @@
     "passed": 12
   },
   "latency_ms": {
-    "p50": 13.9,
-    "p95": 27.9,
+    "p50": 12.6,
+    "p95": 28.5,
     "turns": 84
   },
   "failures": [],

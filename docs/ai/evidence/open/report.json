@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T16:58:36.555217+00:00",
+  "generated_at": "2026-11-27T17:00:04.975214+00:00",
   "kind": "open_pack_runtime_evaluation",
   "runtime_path": "IntelligenceService.answer_questions / check_dialogs (same as HTTP)",
   "ai": {
@@ -25,7 +25,7 @@
       "answered": 15,
       "manager_handoff": 3
     },
-    "seconds": 0.139,
+    "seconds": 0.156,
     "paths": [
       "deterministic"
     ]

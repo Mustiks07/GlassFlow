@@ -74,3 +74,11 @@ def test_unknowns_stay_needs_review_or_follow_kb_rule(kb):
     assert unknown.verdict == "NEEDS_REVIEW"
     no_price = check_dialog(kb, "c", "Почём стекло серое 8 мм?", "Уточню у менеджера.")
     assert no_price.verdict == "OK"
+
+
+def test_ambiguous_question_wrong_for_every_candidate_is_error(kb):
+    right = check_dialog(kb, "a", "Почём зеркало 4 мм?", "Зеркало 4 мм: 11 500 тг.")
+    assert right.verdict == "OK" and right.catalog_product_id == "zerkalo-4-list-3210"
+    wrong = check_dialog(kb, "b", "Почём зеркало 4 мм?", "Зеркало 4 мм: 10 000 тг.")
+    assert wrong.verdict == "ERROR" and wrong.reason_code == "price_mismatch_ambiguous_product"
+    assert wrong.correct in {"9500", "11500"}
