@@ -8390,6 +8390,573 @@
           }
         }
       }
+    },
+    "/api/v1/economics/scenarios": {
+      "post": {
+        "tags": [
+          "economics"
+        ],
+        "summary": "Create",
+        "operationId": "create_api_v1_economics_scenarios_post",
+        "parameters": [
+          {
+            "name": "idempotency-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EconomicsCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EconomicsScenario"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/economics/scenarios/{scenario_id}": {
+      "put": {
+        "tags": [
+          "economics"
+        ],
+        "summary": "Update",
+        "operationId": "update_api_v1_economics_scenarios__scenario_id__put",
+        "parameters": [
+          {
+            "name": "scenario_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scenario Id"
+            }
+          },
+          {
+            "name": "idempotency-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EconomicsUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EconomicsScenario"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "economics"
+        ],
+        "summary": "Get",
+        "operationId": "get_api_v1_economics_scenarios__scenario_id__get",
+        "parameters": [
+          {
+            "name": "scenario_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scenario Id"
+            }
+          },
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Version"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EconomicsScenario"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/economics/scenarios/{scenario_id}/pdf": {
+      "get": {
+        "tags": [
+          "economics"
+        ],
+        "summary": "Pdf",
+        "operationId": "pdf_api_v1_economics_scenarios__scenario_id__pdf_get",
+        "parameters": [
+          {
+            "name": "scenario_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scenario Id"
+            }
+          },
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "title": "Version"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -9417,6 +9984,27 @@
         ],
         "title": "Dataset"
       },
+      "DecimalRange": {
+        "properties": {
+          "low": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Low"
+          },
+          "high": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "High"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "low",
+          "high"
+        ],
+        "title": "DecimalRange"
+      },
       "DialogRequest": {
         "properties": {
           "dataset_id": {
@@ -9517,6 +10105,515 @@
           "width_mm"
         ],
         "title": "Dimensions"
+      },
+      "EconomicInputs": {
+        "properties": {
+          "measurement_status": {
+            "type": "string",
+            "enum": [
+              "supplied_measurements",
+              "synthetic"
+            ],
+            "title": "Measurement Status"
+          },
+          "labor_studies": {
+            "items": {
+              "$ref": "#/components/schemas/LaborStudy"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "minItems": 10,
+            "title": "Labor Studies"
+          },
+          "final_material_value_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Final Material Value Tg"
+          },
+          "baseline_material_value_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Baseline Material Value Tg"
+          },
+          "baseline_validation_ref": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Baseline Validation Ref"
+          },
+          "final_validation_ref": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Final Validation Ref"
+          },
+          "baseline_description": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Baseline Description"
+          },
+          "monthly_dataset_multiplier": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Monthly Dataset Multiplier"
+          },
+          "monthly_operations": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Monthly Operations"
+          },
+          "hourly_rate_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Hourly Rate Tg"
+          },
+          "hourly_rate_basis": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Hourly Rate Basis"
+          },
+          "monthly_volume_basis": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Monthly Volume Basis"
+          },
+          "ai_monthly_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Ai Monthly Tg"
+          },
+          "ai_cost_basis": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Ai Cost Basis"
+          },
+          "hosting_monthly_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Hosting Monthly Tg"
+          },
+          "support_monthly_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Support Monthly Tg"
+          },
+          "implementation_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Implementation Tg"
+          },
+          "implementation_basis": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Implementation Basis"
+          },
+          "material_use_fraction": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Material Use Fraction",
+            "default": "1"
+          },
+          "material_use_basis": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Material Use Basis",
+            "default": "Сценарное допущение: весь прирост оценки используется"
+          },
+          "confirmed_material_use_value_tg": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d+(?:\\.\\d+)?$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed Material Use Value Tg"
+          },
+          "confirmed_material_use_ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed Material Use Ref"
+          },
+          "potential_remnant_sale_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Potential Remnant Sale Tg",
+            "default": "0"
+          },
+          "actual_sale_revenue_tg": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d+(?:\\.\\d+)?$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actual Sale Revenue Tg"
+          },
+          "actual_sale_ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actual Sale Ref"
+          },
+          "sensitivity": {
+            "$ref": "#/components/schemas/EconomicSensitivity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "measurement_status",
+          "labor_studies",
+          "final_material_value_tg",
+          "baseline_material_value_tg",
+          "baseline_validation_ref",
+          "final_validation_ref",
+          "baseline_description",
+          "monthly_dataset_multiplier",
+          "monthly_operations",
+          "hourly_rate_tg",
+          "hourly_rate_basis",
+          "monthly_volume_basis",
+          "ai_monthly_tg",
+          "ai_cost_basis",
+          "hosting_monthly_tg",
+          "support_monthly_tg",
+          "implementation_tg",
+          "implementation_basis"
+        ],
+        "title": "EconomicInputs"
+      },
+      "EconomicResult": {
+        "properties": {
+          "planned_material_value_tg": {
+            "type": "string",
+            "title": "Planned Material Value Tg"
+          },
+          "baseline_material_value_tg": {
+            "type": "string",
+            "title": "Baseline Material Value Tg"
+          },
+          "planned_material_delta_tg": {
+            "type": "string",
+            "title": "Planned Material Delta Tg"
+          },
+          "material_delta_tg": {
+            "type": "string",
+            "title": "Material Delta Tg"
+          },
+          "labor_effect_tg": {
+            "type": "string",
+            "title": "Labor Effect Tg"
+          },
+          "monthly_costs_tg": {
+            "type": "string",
+            "title": "Monthly Costs Tg"
+          },
+          "scenario_net_effect_tg": {
+            "type": "string",
+            "title": "Scenario Net Effect Tg"
+          },
+          "payback_months": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payback Months"
+          },
+          "manual_median_seconds": {
+            "type": "string",
+            "title": "Manual Median Seconds"
+          },
+          "app_median_seconds": {
+            "type": "string",
+            "title": "App Median Seconds"
+          },
+          "paired_saved_median_seconds": {
+            "type": "string",
+            "title": "Paired Saved Median Seconds"
+          },
+          "paired_saved_min_seconds": {
+            "type": "string",
+            "title": "Paired Saved Min Seconds"
+          },
+          "paired_saved_max_seconds": {
+            "type": "string",
+            "title": "Paired Saved Max Seconds"
+          },
+          "study_count": {
+            "type": "integer",
+            "title": "Study Count"
+          },
+          "manual_error_count": {
+            "type": "integer",
+            "title": "Manual Error Count"
+          },
+          "app_error_count": {
+            "type": "integer",
+            "title": "App Error Count"
+          },
+          "confirmed_material_use_value_tg": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed Material Use Value Tg"
+          },
+          "potential_remnant_sale_tg": {
+            "type": "string",
+            "title": "Potential Remnant Sale Tg"
+          },
+          "actual_sale_revenue_tg": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actual Sale Revenue Tg"
+          },
+          "net_range_low_tg": {
+            "type": "string",
+            "title": "Net Range Low Tg"
+          },
+          "net_range_high_tg": {
+            "type": "string",
+            "title": "Net Range High Tg"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "planned_material_value_tg",
+          "baseline_material_value_tg",
+          "planned_material_delta_tg",
+          "material_delta_tg",
+          "labor_effect_tg",
+          "monthly_costs_tg",
+          "scenario_net_effect_tg",
+          "payback_months",
+          "manual_median_seconds",
+          "app_median_seconds",
+          "paired_saved_median_seconds",
+          "paired_saved_min_seconds",
+          "paired_saved_max_seconds",
+          "study_count",
+          "manual_error_count",
+          "app_error_count",
+          "confirmed_material_use_value_tg",
+          "potential_remnant_sale_tg",
+          "actual_sale_revenue_tg",
+          "net_range_low_tg",
+          "net_range_high_tg"
+        ],
+        "title": "EconomicResult"
+      },
+      "EconomicSensitivity": {
+        "properties": {
+          "monthly_operations": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DecimalRange"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "monthly_dataset_multiplier": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DecimalRange"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hourly_rate_tg": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DecimalRange"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "material_use_fraction": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DecimalRange"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "EconomicSensitivity"
+      },
+      "EconomicsCreate": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "inputs": {
+            "$ref": "#/components/schemas/EconomicInputs"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "name",
+          "inputs"
+        ],
+        "title": "EconomicsCreate"
+      },
+      "EconomicsScenario": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "inputs": {
+            "$ref": "#/components/schemas/EconomicInputs"
+          },
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Version"
+          },
+          "formula_version": {
+            "type": "string",
+            "const": "economics-v2",
+            "title": "Formula Version",
+            "default": "economics-v2"
+          },
+          "source_hashes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Source Hashes"
+          },
+          "input_hash": {
+            "type": "string",
+            "title": "Input Hash"
+          },
+          "result_hash": {
+            "type": "string",
+            "title": "Result Hash"
+          },
+          "results": {
+            "$ref": "#/components/schemas/EconomicResult"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "competition_release_eligible": {
+            "type": "boolean",
+            "const": false,
+            "title": "Competition Release Eligible",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "name",
+          "inputs",
+          "scenario_id",
+          "version",
+          "source_hashes",
+          "input_hash",
+          "result_hash",
+          "results",
+          "created_at"
+        ],
+        "title": "EconomicsScenario"
+      },
+      "EconomicsUpdate": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "inputs": {
+            "$ref": "#/components/schemas/EconomicInputs"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "expected_version",
+          "inputs"
+        ],
+        "title": "EconomicsUpdate"
       },
       "Evidence": {
         "properties": {
@@ -9914,6 +11011,136 @@
           "version"
         ],
         "title": "KbHead"
+      },
+      "LaborStudy": {
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Task Id"
+          },
+          "protocol": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Protocol"
+          },
+          "observer": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Observer"
+          },
+          "operator": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Operator"
+          },
+          "measured_at": {
+            "type": "string",
+            "title": "Measured At"
+          },
+          "start_definition": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Start Definition"
+          },
+          "end_definition": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "End Definition"
+          },
+          "task_input_ref": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Task Input Ref"
+          },
+          "manual_result_ref": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Manual Result Ref"
+          },
+          "app_result_ref": {
+            "type": "string",
+            "minLength": 1,
+            "title": "App Result Ref"
+          },
+          "manual_started_at": {
+            "type": "string",
+            "title": "Manual Started At"
+          },
+          "manual_finished_at": {
+            "type": "string",
+            "title": "Manual Finished At"
+          },
+          "app_started_at": {
+            "type": "string",
+            "title": "App Started At"
+          },
+          "app_finished_at": {
+            "type": "string",
+            "title": "App Finished At"
+          },
+          "manual_active_seconds": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Manual Active Seconds"
+          },
+          "app_active_seconds": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "App Active Seconds"
+          },
+          "manual_error_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Manual Error Count"
+          },
+          "app_error_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "App Error Count"
+          },
+          "manual_rework_seconds": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Manual Rework Seconds"
+          },
+          "app_rework_seconds": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "App Rework Seconds"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "task_id",
+          "protocol",
+          "observer",
+          "operator",
+          "measured_at",
+          "start_definition",
+          "end_definition",
+          "task_input_ref",
+          "manual_result_ref",
+          "app_result_ref",
+          "manual_started_at",
+          "manual_finished_at",
+          "app_started_at",
+          "app_finished_at",
+          "manual_active_seconds",
+          "app_active_seconds",
+          "manual_error_count",
+          "app_error_count",
+          "manual_rework_seconds",
+          "app_rework_seconds"
+        ],
+        "title": "LaborStudy"
       },
       "LocalSession": {
         "properties": {

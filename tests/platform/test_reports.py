@@ -15,6 +15,7 @@ def synthetic_evidence():
         dataset_id="synthetic-dataset", run_id="synthetic-run", source_ref="Synthetic test evidence"
     )
     economics = dict(
+        measurement_status="synthetic",
         final_material_value_tg="100000",
         baseline_material_value_tg="90000",
         baseline_validation_ref="synthetic-baseline-check",
@@ -38,7 +39,13 @@ def synthetic_evidence():
                 app_active_seconds="30",
                 protocol="Synthetic protocol",
                 observer="pytest",
+                operator="synthetic-operator",
                 measured_at="2026-11-27",
+                task_input_ref=f"synthetic-input-{i}", manual_result_ref=f"synthetic-manual-{i}",
+                app_result_ref=f"synthetic-app-{i}", manual_started_at="2026-11-27T09:00:00+05:00",
+                manual_finished_at="2026-11-27T09:02:00+05:00", app_started_at="2026-11-27T10:00:00+05:00",
+                app_finished_at="2026-11-27T10:01:00+05:00", manual_error_count=0, app_error_count=0,
+                manual_rework_seconds="0", app_rework_seconds="0",
                 start_definition="Начало",
                 end_definition="Конец",
             )

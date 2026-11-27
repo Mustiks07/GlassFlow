@@ -4,7 +4,6 @@ import hashlib
 import json
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
-from statistics import median
 from xml.sax.saxutils import escape
 
 from pypdf import PdfReader
@@ -17,6 +16,8 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Flowable, PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
+from glassflow.modules.platform.economics import economic_scenario, serialized_result
+
 
 def decimal(value):
     if not isinstance(value, str):
@@ -25,78 +26,6 @@ def decimal(value):
     if not result.is_finite():
         raise ValueError("Money must be finite")
     return result
-
-
-def economic_scenario(data):
-    studies = data["labor_studies"]
-    if len(studies) < 10 or len({s["task_id"] for s in studies}) != len(studies):
-        raise ValueError("At least ten distinct paired manual/app tasks required")
-    manual, application, differences = [], [], []
-    for study in studies:
-        if not all(
-            study.get(k)
-            for k in ("protocol", "observer", "measured_at", "start_definition", "end_definition")
-        ):
-            raise ValueError("Missing real labor measurement provenance")
-        m, a = decimal(study["manual_active_seconds"]), decimal(study["app_active_seconds"])
-        if m <= 0 or a <= 0:
-            raise ValueError("Active seconds must be measured positive values")
-        manual.append(m)
-        application.append(a)
-        differences.append(m - a)
-    if not data.get("hourly_rate_basis") or not data.get("monthly_volume_basis"):
-        raise ValueError("Rate and monthly volume need explicit source or assumption")
-    final_value, baseline_value = (
-        decimal(data["final_material_value_tg"]),
-        decimal(data["baseline_material_value_tg"]),
-    )
-    if (
-        min(final_value, baseline_value) < 0
-        or not data.get("baseline_validation_ref")
-        or not data.get("final_validation_ref")
-    ):
-        raise ValueError("Both actual plans need value and validation evidence")
-    delta = (final_value - baseline_value) * decimal(data["monthly_dataset_multiplier"])
-    labor = (
-        median(differences)
-        / Decimal(3600)
-        * decimal(data["monthly_operations"])
-        * decimal(data["hourly_rate_tg"])
-    )
-    costs = sum(
-        (decimal(data[k]) for k in ("ai_monthly_tg", "hosting_monthly_tg", "support_monthly_tg")), Decimal(0)
-    )
-    if any(
-        decimal(data[k]) < 0
-        for k in (
-            "monthly_dataset_multiplier",
-            "monthly_operations",
-            "hourly_rate_tg",
-            "ai_monthly_tg",
-            "hosting_monthly_tg",
-            "support_monthly_tg",
-            "implementation_tg",
-        )
-    ):
-        raise ValueError("Costs and volumes cannot be negative")
-    if not data.get("ai_cost_basis"):
-        raise ValueError(
-            "AI cost needs actual usage/tariff/date/quota evidence or explicit scenario assumption"
-        )
-    net = delta + labor - costs
-    return {
-        "material_delta_tg": delta,
-        "labor_effect_tg": labor,
-        "monthly_costs_tg": costs,
-        "scenario_net_effect_tg": net,
-        "payback_months": decimal(data["implementation_tg"]) / net if net > 0 else None,
-        "manual_median_seconds": median(manual),
-        "app_median_seconds": median(application),
-        "paired_saved_median_seconds": median(differences),
-        "paired_saved_min_seconds": min(differences),
-        "paired_saved_max_seconds": max(differences),
-        "study_count": len(studies),
-    }
 
 
 def amount(value):
@@ -149,14 +78,19 @@ def footer(canvas, doc):
     canvas.drawRightString(A4[0] - 18 * mm, 12 * mm, str(doc.page))
 
 
-def build_economics(evidence, destination, font, *, preview=False):
+def build_economics(evidence, destination, font, *, preview=False, scenario_preview=False):
     if destination.exists() and not preview:
         raise ValueError("Existing economics artifact is protected; choose a new output version")
     manifest = require_evidence(evidence, preview)
     data, style = evidence["economics"], styles(font)
+    if not preview and data.get("measurement_status") == "synthetic":
+        raise ValueError("Synthetic labor studies cannot produce final economics")
     result = economic_scenario(data)
     story = [paragraph("Экономика условного месяца", style["title"])]
-    if preview:
+    if scenario_preview:
+        story.append(paragraph("СЦЕНАРНЫЙ РАСЧЕТ / НЕ ФИНАЛЬНАЯ ЗАПИСКА", style["heading"]))
+        story.append(paragraph(f"Замеры: {data['measurement_status']}. Источники предоставлены пользователем.", style["small"]))
+    elif preview:
         story.append(paragraph("СИНТЕТИЧЕСКИЙ ТЕСТ МАКЕТА / НЕ ДЛЯ СДАЧИ", style["heading"]))
     story.append(
         paragraph(
@@ -172,9 +106,9 @@ def build_economics(evidence, destination, font, *, preview=False):
         ),
         ("Оценка сопоставимого baseline", data["baseline_material_value_tg"], data["baseline_description"]),
         (
-            "Месячный прирост к baseline",
+            "Сценарный прирост к baseline",
             result["material_delta_tg"],
-            "(Итог - baseline) × месячный множитель; не складывается с валовой оценкой",
+            f"(Итог - baseline) × месячный множитель × доля {data.get('material_use_fraction', '1')}; без двойного счета",
         ),
         (
             "Сценарное высвобождение труда",
@@ -240,9 +174,14 @@ def build_economics(evidence, destination, font, *, preview=False):
         f"Месячный объем: {data['monthly_operations']} операций; множитель набора {data['monthly_dataset_multiplier']}. {data['monthly_volume_basis']}",
         f"AI: {data['ai_cost_basis']}",
         "Карточки не считаются продажами; CRM Precision@25 не переводится в выручку. Закупочные затраты и маржа компании неизвестны.",
+        f"Диапазон net {amount(result['net_range_low_tg'])}—{amount(result['net_range_high_tg'])} ₸: углы допущений и разброс замеров, не доверительный интервал.",
+        f"Доля использования: {data.get('material_use_basis', 'Сценарное допущение')}. Подтвержденное использование: {data.get('confirmed_material_use_value_tg') or 'нет данных'}; потенциальная продажа {data.get('potential_remnant_sale_tg', '0')}; выручка фактической продажи {data.get('actual_sale_revenue_tg') or 'нет данных'} ₸. Эти суммы не добавлены к net.",
         f"Run {manifest['run_id']}; dataset {manifest['dataset_id']}; inputs SHA256 {manifest['input_hash']}",
     ]:
         story.append(paragraph(text, style["small"]))
+    if evidence.get("scenario_identity"):
+        identity = evidence["scenario_identity"]
+        story.append(paragraph(f"Scenario {identity['scenario_id']} v{identity['version']}; formula {identity['formula_version']}; result SHA256 {identity['result_hash']}", style["small"]))
     destination.parent.mkdir(parents=True, exist_ok=True)
     SimpleDocTemplate(
         str(destination),
@@ -255,7 +194,7 @@ def build_economics(evidence, destination, font, *, preview=False):
     if len(PdfReader(destination).pages) != 1:
         destination.unlink()
         raise ValueError("Economics must fit exactly one readable page; shorten evidence notes")
-    return {k: str(v) if isinstance(v, Decimal) else v for k, v in result.items()}
+    return serialized_result(data)
 
 
 class CutDiagram(Flowable):

@@ -1,5 +1,19 @@
 # Статус GPT_PRO_MUSTAFA
 
+## U07: единый сценарный расчет и PDF
+
+Контракт `bc4e3f3` опубликован до реализации. economics-v2: typed inputs/labor provenance,
+материал=(final-baseline)*monthly multiplier*доля, труд=median paired savings*объем*ставка,
+services отдельно, payback null при net<=0. План/confirmed use/potential sale/actual revenue не смешаны.
+Sensitivity дает min/max углов допущений и наблюденного разброса трудозамеров, не доверительный интервал.
+HTTP scenarios create/update/read historical version/PDF с optimistic/idempotency, immutable audit snapshots,
+input/result hashes. Экран и PDF используют одну pure Decimal функцию; C1 получает готовые значения.
+`uv run pytest tests/platform/test_economics.py tests/platform/test_reports.py -q`:4 PASS.
+Изменение доли1->0.25 меняет net10000->2500, исторический PDF сохраняет старый расчет; replays/conflicts проверены.
+Нереальные active/elapsed/rework/без timezone/9 tasks отклоняются. Scenario PDF не называется финальной запиской.
+Positive/negative PDF реально скачаны через API, отрендерены Poppler и просмотрены: по1 странице без обрезания.
+Синтетический source явно помечен;10 реальных человеческих замеров не выполнены и не заменены fixture.
+
 ## A02: соревнование CRM-политик
 
 Протокол `f083b8e` опубликован **до** эксперимента:4 кандидата, whitelist признаков, одинаковые splits,

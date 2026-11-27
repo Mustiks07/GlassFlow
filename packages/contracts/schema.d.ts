@@ -946,6 +946,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/economics/scenarios": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create */
+        post: operations["create_api_v1_economics_scenarios_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/economics/scenarios/{scenario_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get */
+        get: operations["get_api_v1_economics_scenarios__scenario_id__get"];
+        /** Update */
+        put: operations["update_api_v1_economics_scenarios__scenario_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/economics/scenarios/{scenario_id}/pdf": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Pdf */
+        get: operations["pdf_api_v1_economics_scenarios__scenario_id__pdf_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1341,6 +1393,13 @@ export interface components {
              */
             schema_version: string;
         };
+        /** DecimalRange */
+        DecimalRange: {
+            /** Low */
+            low: string;
+            /** High */
+            high: string;
+        };
         /** DialogRequest */
         DialogRequest: {
             /** Dataset Id */
@@ -1374,6 +1433,175 @@ export interface components {
             length_mm: number;
             /** Width Mm */
             width_mm: number;
+        };
+        /** EconomicInputs */
+        EconomicInputs: {
+            /**
+             * Measurement Status
+             * @enum {string}
+             */
+            measurement_status: "supplied_measurements" | "synthetic";
+            /** Labor Studies */
+            labor_studies: components["schemas"]["LaborStudy"][];
+            /** Final Material Value Tg */
+            final_material_value_tg: string;
+            /** Baseline Material Value Tg */
+            baseline_material_value_tg: string;
+            /** Baseline Validation Ref */
+            baseline_validation_ref: string;
+            /** Final Validation Ref */
+            final_validation_ref: string;
+            /** Baseline Description */
+            baseline_description: string;
+            /** Monthly Dataset Multiplier */
+            monthly_dataset_multiplier: string;
+            /** Monthly Operations */
+            monthly_operations: string;
+            /** Hourly Rate Tg */
+            hourly_rate_tg: string;
+            /** Hourly Rate Basis */
+            hourly_rate_basis: string;
+            /** Monthly Volume Basis */
+            monthly_volume_basis: string;
+            /** Ai Monthly Tg */
+            ai_monthly_tg: string;
+            /** Ai Cost Basis */
+            ai_cost_basis: string;
+            /** Hosting Monthly Tg */
+            hosting_monthly_tg: string;
+            /** Support Monthly Tg */
+            support_monthly_tg: string;
+            /** Implementation Tg */
+            implementation_tg: string;
+            /** Implementation Basis */
+            implementation_basis: string;
+            /**
+             * Material Use Fraction
+             * @default 1
+             */
+            material_use_fraction: string;
+            /**
+             * Material Use Basis
+             * @default Сценарное допущение: весь прирост оценки используется
+             */
+            material_use_basis: string;
+            /** Confirmed Material Use Value Tg */
+            confirmed_material_use_value_tg?: string | null;
+            /** Confirmed Material Use Ref */
+            confirmed_material_use_ref?: string | null;
+            /**
+             * Potential Remnant Sale Tg
+             * @default 0
+             */
+            potential_remnant_sale_tg: string;
+            /** Actual Sale Revenue Tg */
+            actual_sale_revenue_tg?: string | null;
+            /** Actual Sale Ref */
+            actual_sale_ref?: string | null;
+            sensitivity?: components["schemas"]["EconomicSensitivity"];
+        };
+        /** EconomicResult */
+        EconomicResult: {
+            /** Planned Material Value Tg */
+            planned_material_value_tg: string;
+            /** Baseline Material Value Tg */
+            baseline_material_value_tg: string;
+            /** Planned Material Delta Tg */
+            planned_material_delta_tg: string;
+            /** Material Delta Tg */
+            material_delta_tg: string;
+            /** Labor Effect Tg */
+            labor_effect_tg: string;
+            /** Monthly Costs Tg */
+            monthly_costs_tg: string;
+            /** Scenario Net Effect Tg */
+            scenario_net_effect_tg: string;
+            /** Payback Months */
+            payback_months: string | null;
+            /** Manual Median Seconds */
+            manual_median_seconds: string;
+            /** App Median Seconds */
+            app_median_seconds: string;
+            /** Paired Saved Median Seconds */
+            paired_saved_median_seconds: string;
+            /** Paired Saved Min Seconds */
+            paired_saved_min_seconds: string;
+            /** Paired Saved Max Seconds */
+            paired_saved_max_seconds: string;
+            /** Study Count */
+            study_count: number;
+            /** Manual Error Count */
+            manual_error_count: number;
+            /** App Error Count */
+            app_error_count: number;
+            /** Confirmed Material Use Value Tg */
+            confirmed_material_use_value_tg: string | null;
+            /** Potential Remnant Sale Tg */
+            potential_remnant_sale_tg: string;
+            /** Actual Sale Revenue Tg */
+            actual_sale_revenue_tg: string | null;
+            /** Net Range Low Tg */
+            net_range_low_tg: string;
+            /** Net Range High Tg */
+            net_range_high_tg: string;
+        };
+        /** EconomicSensitivity */
+        EconomicSensitivity: {
+            monthly_operations?: components["schemas"]["DecimalRange"] | null;
+            monthly_dataset_multiplier?: components["schemas"]["DecimalRange"] | null;
+            hourly_rate_tg?: components["schemas"]["DecimalRange"] | null;
+            material_use_fraction?: components["schemas"]["DecimalRange"] | null;
+        };
+        /** EconomicsCreate */
+        EconomicsCreate: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Name */
+            name: string;
+            inputs: components["schemas"]["EconomicInputs"];
+        };
+        /** EconomicsScenario */
+        EconomicsScenario: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Name */
+            name: string;
+            inputs: components["schemas"]["EconomicInputs"];
+            /** Scenario Id */
+            scenario_id: string;
+            /** Version */
+            version: number;
+            /**
+             * Formula Version
+             * @default economics-v2
+             * @constant
+             */
+            formula_version: "economics-v2";
+            /** Source Hashes */
+            source_hashes: {
+                [key: string]: string;
+            };
+            /** Input Hash */
+            input_hash: string;
+            /** Result Hash */
+            result_hash: string;
+            results: components["schemas"]["EconomicResult"];
+            /** Created At */
+            created_at: string;
+            /**
+             * Competition Release Eligible
+             * @default false
+             * @constant
+             */
+            competition_release_eligible: false;
+        };
+        /** EconomicsUpdate */
+        EconomicsUpdate: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            inputs: components["schemas"]["EconomicInputs"];
         };
         /** Evidence */
         Evidence: {
@@ -1525,6 +1753,49 @@ export interface components {
             sha256: string;
             /** Version */
             version: number;
+        };
+        /** LaborStudy */
+        LaborStudy: {
+            /** Task Id */
+            task_id: string;
+            /** Protocol */
+            protocol: string;
+            /** Observer */
+            observer: string;
+            /** Operator */
+            operator: string;
+            /** Measured At */
+            measured_at: string;
+            /** Start Definition */
+            start_definition: string;
+            /** End Definition */
+            end_definition: string;
+            /** Task Input Ref */
+            task_input_ref: string;
+            /** Manual Result Ref */
+            manual_result_ref: string;
+            /** App Result Ref */
+            app_result_ref: string;
+            /** Manual Started At */
+            manual_started_at: string;
+            /** Manual Finished At */
+            manual_finished_at: string;
+            /** App Started At */
+            app_started_at: string;
+            /** App Finished At */
+            app_finished_at: string;
+            /** Manual Active Seconds */
+            manual_active_seconds: string;
+            /** App Active Seconds */
+            app_active_seconds: string;
+            /** Manual Error Count */
+            manual_error_count: number;
+            /** App Error Count */
+            app_error_count: number;
+            /** Manual Rework Seconds */
+            manual_rework_seconds: string;
+            /** App Rework Seconds */
+            app_rework_seconds: string;
         };
         /** LocalSession */
         LocalSession: {
@@ -8905,6 +9176,432 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["OrderSheet"];
                 };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    create_api_v1_economics_scenarios_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EconomicsCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EconomicsScenario"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    get_api_v1_economics_scenarios__scenario_id__get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                version?: number | null;
+            };
+            header?: never;
+            path: {
+                scenario_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EconomicsScenario"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    update_api_v1_economics_scenarios__scenario_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path: {
+                scenario_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EconomicsUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EconomicsScenario"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    pdf_api_v1_economics_scenarios__scenario_id__pdf_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                version: number;
+            };
+            header?: never;
+            path: {
+                scenario_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Bad Request */
             400: {
