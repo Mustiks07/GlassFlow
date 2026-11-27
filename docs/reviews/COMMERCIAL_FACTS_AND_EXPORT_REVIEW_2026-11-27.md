@@ -39,6 +39,8 @@ print(verify_answer(
 
 ## PRO-R1: возможное расхождение provenance с выбранными файлами
 
+Обновление: исправление и конкурентная регрессия независимо проверены на Pro `9c59c8a`; замечание закрыто на уровне платформы. См. [проверку этапа v1.1](PLATFORM_V1_1_REVIEW_2026-11-27.md). Далее сохранено исходное описание на старом SHA.
+
 Приоритет: средний. Источник: `backend/glassflow/modules/platform/exports.py` на Pro `0457954`, функции `prepare_export` и `export_run`. Подтверждено чтением кода; конкурентное воспроизведение пока **not_run**. Порча CSV не доказана.
 
 `prepare_export` в транзакции захватывает bytes CSV и `result_refs` из выбранных latest jobs. Затем вне транзакции выполняется официальный validator. Позже `export_run` повторно читает `latest_jobs()` для `manifest.module_provenance`.
