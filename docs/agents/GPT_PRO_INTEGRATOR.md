@@ -6,6 +6,8 @@
 
 Прочитай AGENTS.md, исходный кейс, точное ТЗ в docs/specification, docs/architecture/CONTRACTS.md и API_OPERATIONS.md, backend/glassflow/ports.py, docs/agents/COVERAGE.md и coverage.json, все четыре mission и status файла.
 
+Также прочитай актуальные `docs/clarifications/` и `docs/reviews/` из main: уточнение организаторов о трех метриках менеджеров и независимую проверку C3 на commit e83c211. Получи новый исправленный SHA C3 и повторно проверь F1–F4; исходный handoff с зелеными тестами не закрывает найденные дефекты.
+
 Входные оригиналы проверяй по docs/specification/input_manifest.json: 14 файлов из ZIP, побайтно сверенных с архивом. Старый analysis/source_manifest.json содержит также исследовательские generated pycache и не является авторитетным перечнем ZIP-оригиналов.
 
 Работай в новой ветке с префиксом codex/ от текущего main, например codex/glassflow-final-integration. В этой миссии разрешены изменения всех модулей, необходимые для согласованной интеграции и завершения требований. Сначала сохрани существующие незакоммиченные изменения, изучи worktree/branch/remote. Не делай force push и не теряй авторские изменения. Пользователь поручил итоговое объединение в main; если hosting/branch protection требуют PR, подготовь и используй этот маршрут с честной фиксацией результата.
