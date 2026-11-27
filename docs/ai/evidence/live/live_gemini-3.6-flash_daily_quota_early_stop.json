@@ -1,0 +1,123 @@
+{
+  "generated_at": "2026-11-27T21:44:26.712626+00:00",
+  "kind": "live_online_path_evaluation",
+  "strategy": "ai_first",
+  "acceptance": {
+    "status": "BLOCKED",
+    "reasons": [
+      "no confirmed call of the selected model",
+      "selected model unavailable for 36933 s (breaker after quota/overload; last error: rate_limit: Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more inf)"
+    ],
+    "online_runs": 0,
+    "online_accuracy": null,
+    "not_run": 35
+  },
+  "preflight": {
+    "ok": true,
+    "model_id": "gemini-3.6-flash",
+    "provider": "gemini",
+    "latency_ms": 1346,
+    "attempts": 1
+  },
+  "planned_runs": 36,
+  "stopped_early": "selected model unavailable for 36933 s (breaker after quota/overload; last error: rate_limit: Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more inf)",
+  "pacing": {
+    "max_wait_s": 90.0,
+    "waits_s": [],
+    "note": "evaluation waits out short breaker cooldowns; not counted in turn latency"
+  },
+  "selected_models": [
+    "gemini-3.6-flash"
+  ],
+  "paths": {
+    "llm_tools": 0,
+    "fallback": 1,
+    "deterministic": 0,
+    "cache_hits": 0
+  },
+  "latency_basis": "model_call_latency_ms: successful calls of the selected models only; turn latency includes RPM queue",
+  "failed_calls": 1,
+  "profile": {
+    "mode": "free_only",
+    "primary": "gemini:gemini-3.6-flash",
+    "fallbacks": [],
+    "rpm": 4,
+    "max_tool_iterations": 6,
+    "max_retries": 2
+  },
+  "prompt_version": "assistant-v2-2026-11-27",
+  "kb_version": "kb-f464c67fb8633008",
+  "runs": 1,
+  "ok": 1,
+  "accuracy": 1.0,
+  "answered_by_model": 0,
+  "model_answer_share": 0.0,
+  "model_answers_ok": 0,
+  "fallbacks_to_deterministic": 1,
+  "verifier_rejections": 0,
+  "unsupported_claims_shown": 0,
+  "tool_errors": 0,
+  "model_calls": 1,
+  "provider_errors": {
+    "rate_limit": 1
+  },
+  "models_answered": [],
+  "tokens": {
+    "input": 11,
+    "output": 0,
+    "thought": 12
+  },
+  "cost_usd_reported": "0",
+  "calls_with_unknown_cost": 2,
+  "turn_latency_ms": {
+    "n": 1,
+    "p50": 527.2,
+    "p95": 527.2
+  },
+  "turn_latency_without_queue_ms": {
+    "n": 1,
+    "p50": 530.0,
+    "p95": 530.0
+  },
+  "queue_ms_total": 0,
+  "model_call_latency_ms": {
+    "n": 0,
+    "p50": null,
+    "p95": null
+  },
+  "results": [
+    {
+      "id": "E026",
+      "group": "compute",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Стекло 6 мм прозрачное, 450×370 мм: 0,1665 м² × 8 000 ₸ = 1 332 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ = 656 ₸. Итого предварительно 1 988 ₸; окончательную стоимость подтверждает менеджер.",
+      "answer_path": "fallback",
+      "verifier_status": "not_applicable",
+      "mode": "local_limited",
+      "model_id": null,
+      "seconds": 0.53,
+      "model_attempts": 1,
+      "provider_errors": [
+        "rate_limit"
+      ],
+      "provider_error_messages": [
+        "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+      ],
+      "queue_ms": 0,
+      "provider_ms": 513,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "thought_tokens": 0,
+      "tools": [],
+      "tool_errors": 0,
+      "llm_status": "provider_error",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": false
+    }
+  ]
+}

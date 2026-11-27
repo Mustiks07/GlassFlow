@@ -96,3 +96,40 @@ def test_hybrid_extended_run_is_labelled_not_live(tmp_path):
     report = evaluate_extended(PACK, tmp_path, allow_ai=True)
     assert report["live_acceptance"].startswith("not_applicable")
     assert set(report["answer_paths"]) <= {"deterministic", "llm_tools", "fallback"}
+
+
+def test_live_waits_out_a_short_cooldown_instead_of_burning_cases(tmp_path):
+    """A per-minute 429 opens the breaker; the evaluator waits it out before the next case."""
+    limited = [ProviderError("rate_limit", "per-minute limit", retry_after_s=5)] * 3
+    override, _ = _runtime(limited + list(GOOD_E026))
+    client = override[1].client
+    waits = []
+
+    def fake_sleep(seconds):
+        waits.append(seconds)
+        client.unhealthy_until.clear()  # the cooldown has passed
+
+    report = evaluate_live(PACK, tmp_path, model=None, case_ids=["E026"], repeats=2, runtime_override=override,
+                           run_preflight=False, sleep=fake_sleep)
+    assert len(waits) == 1 and 0 < waits[0] <= 90
+    assert report["paths"]["fallback"] == 1 and report["paths"]["llm_tools"] == 1
+    assert report["pacing"]["waits_s"] and report["stopped_early"] is None
+    assert report["acceptance"]["status"] == "PARTIAL"
+
+
+def test_live_stops_on_daily_quota_and_reports_cases_as_not_run(tmp_path):
+    daily = [ProviderError("rate_limit", "GenerateRequestsPerDayPerProjectPerModel-FreeTier", retry_after_s=37000)]
+    override, provider = _runtime(daily * 3)
+    slept = []
+    report = evaluate_live(PACK, tmp_path, model=None, case_ids=["E026"], repeats=3, runtime_override=override,
+                           run_preflight=False, sleep=slept.append)
+    assert slept == [] and len(provider.requests) == 1  # no waiting for hours, no further quota spent
+    assert report["planned_runs"] == 3 and report["runs"] == 1 and "unavailable" in report["stopped_early"]
+    acc = report["acceptance"]
+    assert acc["status"] == "BLOCKED" and acc["not_run"] == 2 and any("PerDay" in r for r in acc["reasons"])
+
+
+def test_not_run_cases_prevent_pass():
+    online_ok = {"answer_path": "llm_tools", "selected_model": True, "cache_hit": False, "ok": True}
+    result = acceptance([online_ok], ok_calls=1, unsupported_shown=0, not_run=5, stop_reason="daily quota")
+    assert result["status"] == "PARTIAL" and result["not_run"] == 5

@@ -198,6 +198,17 @@ def test_quality_batch_reports_needs_review_as_blocker(app_client):
     assert result["complete"] is False and result["export_blockers"] == ["needs_review:b"]
 
 
+def test_review_f1_ambiguous_product_blocks_complete_export(app_client):
+    """Review F1: an unprovable correction stays NEEDS_REVIEW and keeps the batch incomplete."""
+    version = kb_version(app_client)
+    result = app_client.post("/api/v1/quality/batch", json={"dataset_id": "ds-a", "kb_version": version, "dialogs": [
+        {"id": "F1", "client": "Почём зеркало 4 мм?", "manager": "Цена 99999 тг."},
+    ]}).json()
+    verdict = result["verdicts"][0]
+    assert (verdict["verdict"], verdict["correct"]) == ("NEEDS_REVIEW", None)
+    assert result["complete"] is False and result["export_blockers"] == ["needs_review:F1"]
+
+
 def test_catalog_routes(app_client):
     search = app_client.get("/api/v1/catalog/search", params={"dataset_id": "ds-a", "q": "калёное стекло"}).json()
     assert search["status"] == "ambiguous" and len(search["candidates"]) == 4

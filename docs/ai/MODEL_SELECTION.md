@@ -17,8 +17,8 @@
 
 | Модель | Наблюдение | Evidence |
 |---|---|---|
-| `gemini-3.5-flash-lite` | доступна; вызов p50 ≈ 1,0 с, p95 ≈ 2,8 с (315 успешных вызовов); корректные tool calls; 2 ответа 429 за весь прогон | `evidence/live/live_primary_gemini-3.5-flash-lite_v2.json` |
-| `gemini-3.6-flash` | доступна, но вызов ≈ 10 с (thinking-токены); в пакетном прогоне ходы упирались в срок 90 с | ping в журнале сессии; прогон остановлен как искаженный лимитером |
+| `gemini-3.5-flash-lite` | доступна; вызов p50 ≈ 1,0 с, p95 ≈ 2,8 с (315 успешных вызовов); корректные tool calls; 2 ответа 429 за весь прогон; дневной лимит бесплатного уровня **500 запросов** (`quotaValue 500`), сброс в полночь по тихоокеанскому времени | `evidence/live/live_primary_gemini-3.5-flash-lite_v2.json`, `live_critical_x3_after_f4_quota_exhausted.json` |
+| `gemini-3.6-flash` | доступна; вызов p50 ≈ 5,2 с (thinking-токены), E026 решен верно за 4 инструмента; **на бесплатном уровне 20 запросов в день** (429 `GenerateRequestsPerDayPerProjectPerModel-FreeTier`, `quotaValue 20`) — непригодна как основная или резервная | `evidence/live/live_compare_gemini-3.6-flash_before_pacing.json`, `…_daily_quota_early_stop.json` |
 | `gemini-3.8-flash` | 503 «high demand» и 504 «Deadline expired» во время проверки | `evidence/live/live_chain_3.8-flash_to_flash-lite_before_breaker.json` |
 | `gemini-4-hydrogen` | 503 «high demand» во время проверки | ping в журнале сессии |
 | OpenRouter `google/gemma-4-31b-it:free`, `gemma-4-26b-a4b-it:free` | 429 «temporarily rate-limited upstream» | ping в журнале сессии |

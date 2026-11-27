@@ -67,8 +67,8 @@ def _live(args) -> int:
             ids = CRITICAL if args.cases == "critical" else BROAD if args.cases == "broad" else args.cases.split(",")
             report = evaluate_live(args.pack, target, model=args.model, fallbacks=fallbacks, case_ids=ids,
                                    repeats=args.repeats, rpm=args.rpm)
-            keys = ("runs", "ok", "accuracy", "paths", "model_calls", "failed_calls", "provider_errors", "models_answered",
-                    "tokens", "turn_latency_ms", "model_call_latency_ms", "preflight")
+            keys = ("planned_runs", "runs", "stopped_early", "ok", "accuracy", "paths", "model_calls", "failed_calls",
+                    "provider_errors", "models_answered", "tokens", "turn_latency_ms", "model_call_latency_ms", "preflight", "pacing")
         else:
             extra = ["E026", "E031", "E041", "E047", "E053", "E061", "E065", "E069", "E074", "E038", "H005", "H016"]
             report = evaluate_open_live(args.pack, target, model=args.model, fallbacks=fallbacks, rpm=args.rpm, extra_ids=extra)

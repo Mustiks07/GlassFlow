@@ -12,6 +12,7 @@ import asyncio
 import json
 import statistics
 import time
+from collections.abc import Callable
 from datetime import UTC, datetime
 from decimal import Decimal
 from pathlib import Path
@@ -29,6 +30,10 @@ BROAD = CRITICAL + ["E015", "E020", "E041", "E047", "E061", "E074", "E084", "H00
 
 
 ACCEPTANCE_ACCURACY = 0.95
+# Evaluation only: wait out a short breaker cooldown (per-minute limit, brief overload) before the
+# next case instead of burning it on the deterministic fallback. A longer one (daily quota) stops
+# the run; the remaining cases are reported as not run, never as passed.
+LIVE_PACING_MAX_WAIT_S = 90.0
 
 
 class LiveBlocked(Exception):
@@ -81,13 +86,14 @@ def _selected_models(runtime: AIRuntime) -> set[str]:
     return {r.model_id for r in refs}
 
 
-def acceptance(runs: list[dict], ok_calls: int, unsupported_shown: int) -> dict[str, object]:
+def acceptance(runs: list[dict], ok_calls: int, unsupported_shown: int, *, not_run: int = 0,
+               stop_reason: str | None = None) -> dict[str, object]:
     """Live acceptance only counts answers that really came from the selected model."""
     online = [r for r in runs if r["answer_path"] == "llm_tools" and not r.get("cache_hit") and r.get("selected_model")]
     reasons: list[str] = []
     if ok_calls == 0 or not online:
-        return {"status": "BLOCKED", "reasons": ["no confirmed call of the selected model"], "online_runs": 0,
-                "online_accuracy": None}
+        blocked = ["no confirmed call of the selected model"] + ([stop_reason] if stop_reason else [])
+        return {"status": "BLOCKED", "reasons": blocked, "online_runs": 0, "online_accuracy": None, "not_run": not_run}
     online_ok = sum(r["ok"] for r in online)
     accuracy = online_ok / len(online)
     if any(r.get("cache_hit") for r in runs):
@@ -99,13 +105,35 @@ def acceptance(runs: list[dict], ok_calls: int, unsupported_shown: int) -> dict[
     not_online = len(runs) - len(online)
     if reasons:
         status = "FAIL"
-    elif not_online:
+    elif not_online or not_run:
         status = "PARTIAL"
-        reasons.append(f"{not_online} of {len(runs)} runs were not answered by the selected model")
+        if not_online:
+            reasons.append(f"{not_online} of {len(runs)} runs were not answered by the selected model")
+        if not_run:
+            reasons.append(f"{not_run} planned runs not run: {stop_reason or 'stopped'}")
     else:
         status = "PASS"
     return {"status": status, "reasons": reasons, "online_runs": len(online), "online_ok": online_ok,
-            "online_accuracy": round(accuracy, 4)}
+            "online_accuracy": round(accuracy, 4), "not_run": not_run}
+
+
+def selected_cooldown_s(runtime: AIRuntime, selected: set[str]) -> float:
+    """Seconds until a selected model leaves breaker cooldown (0 if one is usable now)."""
+    client = runtime.client
+    if client is None:
+        return 0.0
+    labels = [label for label in client.chain() if label.partition(":")[2] in selected]
+    if not labels:
+        return 0.0
+    now = client.clock()
+    return max(0.0, min(client.unhealthy_until.get(label, 0.0) - now for label in labels))
+
+
+def _last_error(ledger: MemoryLedger) -> str:
+    for entry in reversed(ledger.entries):
+        if entry.status != "ok":
+            return f"{entry.error_kind}: {(entry.error_message or '')[:120]}"
+    return "none"
 
 
 def _ref(label: str) -> ModelRef:
@@ -163,6 +191,8 @@ def evaluate_live(
     name: str | None = None,
     runtime_override: tuple[AIProfile, AIRuntime, MemoryLedger] | None = None,
     run_preflight: bool = True,
+    pacing_max_wait_s: float = LIVE_PACING_MAX_WAIT_S,
+    sleep: Callable[[float], None] = time.sleep,
 ) -> dict[str, object]:
     """Raises LiveBlocked (no report of quality) when the profile cannot make a real call."""
     out.mkdir(parents=True, exist_ok=True)
@@ -181,45 +211,56 @@ def evaluate_live(
     label = name or model.replace(":", "_").replace("/", "_")
     progress = out / f"live_{label}.jsonl"  # incremental: an interrupted run keeps finished cases
     progress.write_text("", encoding="utf-8")
-    for case in _cases(case_ids or CRITICAL):
-        for repeat in range(repeats):
-            context = TurnContext()
-            first_entry = len(ledger.entries)
-            result = None
-            started = time.monotonic()
-            for text in case["turns"]:
-                turn_started = time.monotonic()
-                result = asyncio.run(engine.turn(text, context, strategy="ai_first"))
-                turn_latencies.append((time.monotonic() - turn_started) * 1000)
-                context = result.local.context
-            assert result is not None
-            facts = result.tool_context.facts if result.tool_context is not None else result.local.facts
-            ok, reasons, claims = _check(case, result.answer, result.status, facts, " ".join(case["turns"]))
-            entries = ledger.entries[first_entry:]
-            llm = result.llm
-            runs.append({
-                "id": case["id"], "group": case["group"], "repeat": repeat, "ok": ok, "reasons": reasons,
-                "unsupported_shown_claims": claims, "answer": result.answer, "answer_path": result.answer_path,
-                "verifier_status": result.verifier_status, "mode": result.mode, "model_id": result.model_id,
-                "seconds": round(time.monotonic() - started, 2),
-                "model_attempts": len(entries), "provider_errors": [e.error_kind for e in entries if e.status != "ok"],
-                "provider_error_messages": [e.error_message for e in entries if e.status != "ok"],
-                "queue_ms": sum(e.queue_ms for e in entries),
-                "provider_ms": sum(e.latency_ms or 0 for e in entries),
-                "input_tokens": sum(e.input_tokens or 0 for e in entries), "output_tokens": sum(e.output_tokens or 0 for e in entries),
-                "thought_tokens": sum(e.thought_tokens or 0 for e in entries),
-                "tools": [(x.name, x.status) for x in (llm.executions if llm else [])],
-                "tool_errors": llm.tool_errors if llm else 0,
-                "llm_status": llm.status if llm else None,
-                "llm_unsupported": llm.verification.unsupported if llm and llm.verification else [],
-                "fallback_model_used": bool(llm and llm.fallback_used),
-                "cache_hit": bool(result.cache_hit),
-                "selected_model": bool(result.model_id) and any(m in (result.model_id or "") for m in selected),
-            })
-            with progress.open("a", encoding="utf-8") as handle:
-                handle.write(json.dumps(runs[-1], ensure_ascii=False) + "\n")
-            print(f"{case['id']} r{repeat} ok={ok} path={result.answer_path} model={result.model_id} "
-                  f"{runs[-1]['seconds']}s attempts={len(entries)} {reasons or ''}{claims or ''}", flush=True)
+    planned = [(case, repeat) for case in _cases(case_ids or CRITICAL) for repeat in range(repeats)]
+    pacing_waits: list[float] = []
+    stop_reason: str | None = None
+    for index, (case, repeat) in enumerate(planned):
+        wait = selected_cooldown_s(runtime, selected)
+        if wait > pacing_max_wait_s:
+            stop_reason = (f"selected model unavailable for {wait:.0f} s (breaker after quota/overload; "
+                           f"last error: {_last_error(ledger)})")
+            print(f"stop: {stop_reason}; {len(planned) - index} runs not run", flush=True)
+            break
+        if wait > 0:
+            pacing_waits.append(round(wait, 1))
+            sleep(wait)
+        context = TurnContext()
+        first_entry = len(ledger.entries)
+        result = None
+        started = time.monotonic()
+        for text in case["turns"]:
+            turn_started = time.monotonic()
+            result = asyncio.run(engine.turn(text, context, strategy="ai_first"))
+            turn_latencies.append((time.monotonic() - turn_started) * 1000)
+            context = result.local.context
+        assert result is not None
+        facts = result.tool_context.facts if result.tool_context is not None else result.local.facts
+        ok, reasons, claims = _check(case, result.answer, result.status, facts, " ".join(case["turns"]))
+        entries = ledger.entries[first_entry:]
+        llm = result.llm
+        runs.append({
+            "id": case["id"], "group": case["group"], "repeat": repeat, "ok": ok, "reasons": reasons,
+            "unsupported_shown_claims": claims, "answer": result.answer, "answer_path": result.answer_path,
+            "verifier_status": result.verifier_status, "mode": result.mode, "model_id": result.model_id,
+            "seconds": round(time.monotonic() - started, 2),
+            "model_attempts": len(entries), "provider_errors": [e.error_kind for e in entries if e.status != "ok"],
+            "provider_error_messages": [e.error_message for e in entries if e.status != "ok"],
+            "queue_ms": sum(e.queue_ms for e in entries),
+            "provider_ms": sum(e.latency_ms or 0 for e in entries),
+            "input_tokens": sum(e.input_tokens or 0 for e in entries), "output_tokens": sum(e.output_tokens or 0 for e in entries),
+            "thought_tokens": sum(e.thought_tokens or 0 for e in entries),
+            "tools": [(x.name, x.status) for x in (llm.executions if llm else [])],
+            "tool_errors": llm.tool_errors if llm else 0,
+            "llm_status": llm.status if llm else None,
+            "llm_unsupported": llm.verification.unsupported if llm and llm.verification else [],
+            "fallback_model_used": bool(llm and llm.fallback_used),
+            "cache_hit": bool(result.cache_hit),
+            "selected_model": bool(result.model_id) and any(m in (result.model_id or "") for m in selected),
+        })
+        with progress.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(runs[-1], ensure_ascii=False) + "\n")
+        print(f"{case['id']} r{repeat} ok={ok} path={result.answer_path} model={result.model_id} "
+              f"{runs[-1]['seconds']}s attempts={len(entries)} {reasons or ''}{claims or ''}", flush=True)
     total = len(runs)
     ok_runs = sum(r["ok"] for r in runs)
     llm_runs = [r for r in runs if r["answer_path"] == "llm_tools"]
@@ -230,8 +271,13 @@ def evaluate_live(
         "generated_at": datetime.now(UTC).isoformat(),
         "kind": "live_online_path_evaluation",
         "strategy": "ai_first",
-        "acceptance": acceptance(runs, len(ok_entries), sum(1 for r in runs if r["unsupported_shown_claims"])),
+        "acceptance": acceptance(runs, len(ok_entries), sum(1 for r in runs if r["unsupported_shown_claims"]),
+                                 not_run=len(planned) - len(runs), stop_reason=stop_reason),
         "preflight": preflight_result,
+        "planned_runs": len(planned),
+        "stopped_early": stop_reason,
+        "pacing": {"max_wait_s": pacing_max_wait_s, "waits_s": pacing_waits,
+                   "note": "evaluation waits out short breaker cooldowns; not counted in turn latency"},
         "selected_models": sorted(selected),
         "paths": {path: sum(1 for r in runs if r["answer_path"] == path) for path in ("llm_tools", "fallback", "deterministic")}
         | {"cache_hits": sum(1 for r in runs if r["cache_hit"])},
@@ -274,6 +320,8 @@ def evaluate_open_live(
     pack: Path, out: Path, *, model: str | None, fallbacks: list[str] | None = None, rpm: int = 15,
     extra_ids: list[str] | None = None, runtime_override: tuple[AIProfile, AIRuntime, MemoryLedger] | None = None,
     run_preflight: bool = True,
+    pacing_max_wait_s: float = LIVE_PACING_MAX_WAIT_S,
+    sleep: Callable[[float], None] = time.sleep,
 ) -> dict[str, object]:
     """The 18 open questions answered by the ONLINE path (ai_first), scored by the unmodified
     selfcheck.py; plus optional extra single-turn cases to complete a 30-request latency series."""
@@ -291,7 +339,12 @@ def evaluate_open_live(
     questions = read_rows(pack / "2_assistant_crm" / "questions_open.csv")
     texts = [(q["id"], q["question"]) for q in questions] + [(c["id"], c["turns"][0]) for c in _cases(extra_ids or [])]
     rows, series = [], []
+    pacing_waits: list[float] = []
     for qid, text in texts:
+        wait = selected_cooldown_s(runtime, selected)
+        if 0 < wait <= pacing_max_wait_s:  # short cooldown: wait; a daily quota is not waited for (answer -> PARTIAL)
+            pacing_waits.append(round(wait, 1))
+            sleep(wait)
         first = len(ledger.entries)
         started = time.monotonic()
         result = asyncio.run(engine.turn(text, TurnContext(), strategy="ai_first"))
@@ -324,6 +377,7 @@ def evaluate_open_live(
                        "note": "selfcheck is a pass only for the online path when every open answer came from the selected model"},
         "preflight": preflight_result,
         "selected_models": sorted(selected),
+        "pacing": {"max_wait_s": pacing_max_wait_s, "waits_s": pacing_waits},
         "generated_at": datetime.now(UTC).isoformat(),
         "kind": "live_open_questions_ai_first",
         "profile": {"primary": model, "fallbacks": fallbacks or [], "rpm": rpm, "request_timeout_s": 15, "turn_deadline_s": 60},
