@@ -1,5 +1,19 @@
 # Статус GPT_PRO_MUSTAFA
 
+## Актуальный checkpoint v1.1
+
+- Исходный checkpoint `052255d`; review/strategy прочитаны из `origin/main eaf81d67cd19d1dec185d02508a00bda7d80bae6`. Ветки не объединялись, main не изменялся.
+- PRO-R1 воспроизведен FAIL до исправления, fix `cd832a3`; A04 accepted bundle `070d0c8`. U01 `ea02dff`, U03 `869686a`, A02 `9b326d2`, U07 `38c0705`, integration handoff/frozen smoke `762094c`.
+- На `762094c` повторный полный `uv run pytest`: **58 PASS** (один upstream Starlette/httpx deprecation warning); `uv run ruff check backend tests scripts` PASS; `uv run python scripts/check_foundation.py` PASS14 immutable inputs/точный specification. Это не PASS67 product scenarios.
+- Standard OpenAPI/TS regeneration, `pnpm typecheck`, `pnpm test`2, `pnpm build` PASS. Чужие UI/lock/domain files не редактировались.
+- [CI46048150892](https://github.com/Mustiks07/GlassFlow/actions/runs/46048150892), source `762094c1286524f0a8ce56ef2d8e549fe67f5d59`: **SUCCESS** Linux verify и Windows-platform, включая expanded frozen upgrade smoke/scanner/artifact. На U07 `38c0705` CI46047837389 также SUCCESS.
+- Actual local Windows build runtime `070d0c83815699348bd685910cc016346734b7d4`; backend после него не менялся. Digest `d68d44160b9e54048be8031e625b0359009a94e6ec68c605d98c575e84e433f0`, GUI EXE SHA256 `3ec10783695279698d1ebfb8ce437e8fb19d94fba6971cfa7188901cbc31b759`.
+- `uv run pyinstaller --noconfirm packaging/GlassFlow.spec`, `uv run python scripts/smoke_frozen.py`, `uv run python scripts/scan_release.py dist/GlassFlow`: PASS. Actual starts1625/1640/1563ms на build machine; native SciPy/OR-Tools, singleton, import/CRM/download/restart/restore, U01 draft/missing source503, U07 native PDF/hash/persistence. New report `docs/release/frozen-smoke.json`.
+- Positive/negative U07 PDFs из HTTP API и отдельный actual EXE PDF отрендерены Poppler и просмотрены: по1 странице, значения/кириллица/hash без обрезания. Все явно synthetic scenario, не конкурсные финалы.
+- Machine-readable границы: `docs/release/upgrade-validation.json`; контракты C1/C2/C3: `docs/architecture/UPGRADE_CONTRACTS_v1_1.md`; порядок подключения: `docs/release/PLATFORM_HANDOFF.md`.
+- Следующий точный шаг интегратора: объединить DTO и зарегистрировать `Services.order_source` на общей C2/C3 transaction; C1 добавить application evidence и формы; повторить реальные U01/U03, собрать10 human paired labor measurements и final same-run reports. Эти действия, independent CRM control, live AI/gateway и clean Windows NOT RUN/BLOCKED. U04/U06 — следующий уровень плана, не выданы за реализованные здесь.
+- Все новые commits author/committer Mustiks07; обычный push только в `codex/gpt-pro-mustafa-platform`, без force/merge main. Далее сохранена история предыдущих checkpoints.
+
 ## A04: сохранение принятого комплекта
 
 `accepted_export_id/accepted_files` теперь меняются только после full-ready всех5 CSV+buyers и validator.
@@ -74,7 +88,7 @@ Legacy buyer CSV/evidence импортируется, но без application ev
 - Foundation: `16d63c6`.
 - Обновление: 27 ноября 2026, Asia/Qyzylorda.
 - Общий статус: PLATFORM IMPLEMENTED / READY FOR INTEGRATION. Это не COMPLETE VERIFIED PRODUCT.
-- Текущий handoff: `docs/release/PLATFORM_HANDOFF.md`; проверенный runtime `0457954`, expanded Windows EXE smoke PASS, 47 pytest PASS. Ниже сохранена хронология этапов; актуальные результаты и ограничения — в заключительных checkpoints.
+- Checkpoint до v1.1: handoff `docs/release/PLATFORM_HANDOFF.md`, runtime `0457954`, expanded Windows EXE smoke PASS, 47 pytest PASS. История этапов ниже; актуальные результаты v1.1 — в начале файла.
 
 ## Проверенный этап P-01/P-02/P-04/P-05/P-06
 

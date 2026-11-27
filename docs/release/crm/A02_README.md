@@ -7,6 +7,7 @@ Original open dataset уже полностью использован: новы
 
 Новые manager-holdout и переименование manager IDs — diagnostics переносимости, не новая приемка.
 Future label доступен только evaluator; runtime выбирает25 app_id, повтор client_id разрешен.
+Целевая колонка исходного CSV — `вернулся_за_60_дней` (константа LABEL). Все поля вне allowed_features исключены из модели, включая эту колонку.
 Одинаковые train/test для всех кандидатов; imputer/scaler/encoder/C selection используют только train.
 Проверка early day90 отдельно фиксирует training counts/классы, результат и manager stress.
 

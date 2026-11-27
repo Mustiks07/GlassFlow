@@ -1,14 +1,14 @@
 {
-  "measured_at": "2026-11-27T17:39:36.938745+00:00",
+  "measured_at": "2026-11-27T18:16:03.873648+00:00",
   "os": "Windows-10-10.0.19045-SP0",
-  "exe_sha256": "74152115b87f6ceebb528b14fb496551efc895a21aace4e9781821f4872d1d95",
+  "exe_sha256": "3ec10783695279698d1ebfb8ce437e8fb19d94fba6971cfa7188901cbc31b759",
   "native_worker": {
     "scipy_x": 2,
     "ortools_x": 2,
     "ortools_optimal": true,
     "frozen_worker": true,
     "worker_executable": "GlassFlow.exe",
-    "pid": 17892
+    "pid": 16356
   },
   "pe_subsystem": {
     "main": 2,
@@ -16,15 +16,15 @@
   },
   "clean_windows": "not_run",
   "ui_flow": "not_run; C1 integration required",
-  "build_commit": "0457954921370fd1f43afbe56726e076cd6ab015",
-  "runtime_source_digest": "3a738f3507d9c946a02525b7c815bbac7ce2a93aa4c6dc82fee34c67b6c6a7a2",
+  "build_commit": "070d0c83815699348bd685910cc016346734b7d4",
+  "runtime_source_digest": "d68d44160b9e54048be8031e625b0359009a94e6ec68c605d98c575e84e433f0",
   "official_validator_cli": {
     "fixture": "synthetic all-NEW; format only, not solver acceptance",
     "exit_code": 0,
     "stdout": "деталей всего: 298; из остатков: 0; ошибок: 0; не указано в решении: 0\nплощадь деталей: 187.87 м²; закрыто остатками: 0.00 м²; ДОЛЯ = 0.00 %\nне пришлось резать нового стекла на 0 тг\nRESULT coverage=0.000000 invalid=0 money=0\n",
     "stderr": ""
   },
-  "first_start_ms": 3109.000000054948,
+  "first_start_ms": 1625.0,
   "singleton": "passed",
   "downloaded_picks_sha256": "b01cd1035793666d1c7d25db66e087d77c7b59a4c752606148bec311dcd02482",
   "official_crm_open_evaluation": {
@@ -44,9 +44,15 @@
     "distinct_orders": 110
   },
   "crm_rows": 25,
-  "restart_ms": 3140.999999945052,
+  "upgrade_checks": {
+    "u01": "draft+missing source503+restart; actual C2/C3 reservation not_run",
+    "u07": "synthetic scenario+native PDF+same hash+restart; human labor not_run",
+    "pdf_sha256": "e6ba2b1d8991ab69f7d102ec60dc89165f3dacde4e3a2c7541d9219de2ab3203",
+    "result_hash": "991c40c2e0bfd2dfca824c641c08ffbb390b6df12e377e39fac23eff0fb100b1"
+  },
+  "restart_ms": 1640.0000000139698,
   "persistence": "passed",
   "backup_restore": "passed",
-  "restore_restart_ms": 3077.999999979511,
+  "restore_restart_ms": 1562.999999965541,
   "status": "passed_on_build_machine"
 }

@@ -19,6 +19,13 @@
 Последующий A04 проверен отдельно4 export tests. Новая Windows evidence/CI фиксируются в status, не переносятся
 автоматически с прежнего runtime0457954. Старые разделы ниже — предыдущий checkpoint.
 
+Итог: на `762094c` повторно58 pytest/Ruff/foundation PASS, [CI46048150892](https://github.com/Mustiks07/GlassFlow/actions/runs/46048150892)
+**SUCCESS** оба Linux/Windows jobs, новый EXE smoke/scanner/artifact. Local build `070d0c8` (runtime не менялся):
+expanded smoke с U01 draft+fail-closed503 и U07 synthetic native PDF/hash/restart PASS. Report `frozen-smoke.json`,
+машиночитаемые границы `upgrade-validation.json`. Старый frozen report заменен actual новым, не перенесен как PASS.
+Actual downloaded native scenario PDF также отрендерен/просмотрен. Human timings и финальные economics/examples
+по-прежнему не созданы из synthetic evidence.
+
 ### Что подключить агентам
 
 - C2/C3: `Services.order_source: OrderSourcePort`, typed OrderFacts/OrderReservation. capture читает CURRENT

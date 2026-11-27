@@ -1,0 +1,52 @@
+{
+  "scope": "Pro platform additions v1.1; not whole-product acceptance",
+  "base_sha": "052255d17d2b18994d790a1df47065f01a40220a",
+  "review_main_sha": "eaf81d67cd19d1dec185d02508a00bda7d80bae6",
+  "checked_sha": "762094c1286524f0a8ce56ef2d8e549fe67f5d59",
+  "local_frozen_runtime_sha": "070d0c83815699348bd685910cc016346734b7d4",
+  "checks": {
+    "pytest": "58 passed",
+    "ruff": "pass",
+    "immutable_foundation": "14 inputs pass; does not certify67 acceptance scenarios",
+    "frontend": "typecheck,2 tests,build pass; U01/U03/U07 UI integration not_run",
+    "frozen_smoke": "pass_on_build_machine; includes synthetic U07 PDF and U01 draft persistence",
+    "release_scanner": "pass",
+    "ci": "https://github.com/Mustiks07/GlassFlow/actions/runs/46048150892",
+    "ci_status": "Linux and Windows success"
+  },
+  "PRO-R1_A04": {
+    "status": "pass",
+    "original_reproduction": "old CSV/result_refs and new provenance, controlled validator pause, assertion failed",
+    "fixed_sha": "cd832a3",
+    "accepted_bundle_sha": "070d0c8",
+    "evidence": "tests/platform/test_exports.py;4 passed, including concurrent completion and partial retry after ready",
+    "full_real_domain_run": "not_run"
+  },
+  "U01": {
+    "platform": "pass;4 HTTP/SQLite tests with explicit transactional C2/C3 fixtures",
+    "integration": "not_run; register canonical OrderSourcePort and C1 forms",
+    "sha": "ea02dff"
+  },
+  "U03": {
+    "platform": "pass;12 sales tests, material/size evidence, mirror-to-tempered, reserved rejection",
+    "public_research_and_actual_C1_C2": "not_run; C1 must supply reviewed application evidence",
+    "sha": "869686a"
+  },
+  "A02": {
+    "experiment": "pass;4 preregistered candidates,18 evaluated splits,2 leakage/decision tests",
+    "independent_control": "blocked; all organizer open rows reused",
+    "decision": "retain reference-v1; no candidate passes criteria; no automatic promotion",
+    "protocol_sha": "f083b8e",
+    "sha": "9b326d2"
+  },
+  "U07": {
+    "platform": "pass;4 scenario/report tests; one pure formula API/PDF; historical versions and hashes",
+    "visual_qa": "pass; positive,negative and actual frozen HTTP PDFs rendered and opened; explicitly synthetic",
+    "human_labor_measurements": "not_run; minimum10 real paired tasks required",
+    "final_competition_pdf": "blocked until actual evidence and ready same-run",
+    "sha": "38c0705"
+  },
+  "U04_U06": "not_run; next-level basket and confirmed-consumption coordination remain separate",
+  "clean_windows": "not_run",
+  "live_gateway": "blocked; hosting,keys,quota and full real interface acceptance required"
+}
