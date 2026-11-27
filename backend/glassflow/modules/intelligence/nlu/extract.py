@@ -193,12 +193,12 @@ def extract(text: str, *, format_exclusions: set[str] | None = None) -> Extracti
         result.processing = "sandblast"
     if re.search(r"(?:по |со )?(?:всем|всех|четыр\w*|4-?м?)\s*сторон|по периметру|по кругу|кругом|вкруговую", value):
         result.edge_sides = "all"
-    elif re.search(r"длинн\w* сторон", value):
-        result.edge_sides, result.selected_sides = "selected", ("long",)
-    elif re.search(r"коротк\w* сторон", value):
-        result.edge_sides, result.selected_sides = "selected", ("short",)
-    elif result.processing == "euro_edge" and re.search(r"сторон", value):
-        result.edge_sides = "selected"  # sides mentioned but not identifiable
+    else:
+        sides = _stated_sides(value)
+        if sides:
+            result.edge_sides, result.selected_sides = "selected", sides
+        elif result.processing == "euro_edge" and re.search(r"сторон", value):
+            result.edge_sides = "selected"  # sides mentioned but not identifiable
 
     if re.search(
         r"целого листа|целый лист|за лист\b|листом|цена листа|стоимость листа|лист цел|стоит лист|почем лист|"
@@ -219,6 +219,33 @@ def extract(text: str, *, format_exclusions: set[str] | None = None) -> Extracti
             result.unknown_services.append(label)
     result.model_codes = [f"{prefix}{number}" for prefix, number in _MODEL.findall(value) if prefix in {"ab"}]
     return result
+
+
+_ONE = r"(?:одн(?:ой|у|а)|1)\s+"
+_TWO = r"(?:(?:по\s+)?(?:двум|две|двух|обеим|обе|обоих|2)\s+)?"
+
+
+def _stated_sides(value: str) -> tuple[str, ...]:
+    """Edge sides stated in words. ``long``/``short`` = both such sides; ``long1``/``short1`` = one.
+
+    Named sides (верх/низ/лево/право) are returned as is; combinations are concatenated.
+    The real sides are resolved against the sizes by ``pricing.resolve_sides``.
+    """
+    sides: list[str] = []
+    if re.search(_ONE + r"длинн\w*", value):
+        sides.append("long1")
+    elif re.search(_TWO + r"длинн\w*\s+сторон", value):
+        sides.append("long")
+    if re.search(_ONE + r"(?:\w+\s+)?коротк\w*", value):
+        sides.append("short1")
+    elif re.search(_TWO + r"коротк\w*\s+сторон", value):
+        sides.append("short")
+    if re.search(r"сторон|кромк|кром", value):
+        for word, side in (("верхн", "top"), ("сверху", "top"), ("нижн", "bottom"), ("снизу", "bottom"),
+                           ("лев", "left"), ("слева", "left"), ("прав", "right"), ("справа", "right")):
+            if re.search(rf"\b{word}", value) and side not in sides:
+                sides.append(side)
+    return tuple(sides)
 
 
 def parse_dimension_text(text: str) -> tuple[str, DimensionsProposal | None, str | None]:

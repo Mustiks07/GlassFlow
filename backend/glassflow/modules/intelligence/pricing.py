@@ -28,12 +28,23 @@ SIDE_NAMES_RU = {"top": "верх", "bottom": "низ", "left": "левая", "r
 
 
 def resolve_sides(selected: tuple[str, ...], length_mm: int | None, width_mm: int | None) -> tuple[str, ...]:
-    """Map «длинные/короткие стороны» to the real sides; top/bottom run along length_mm."""
-    if selected in {("long",), ("short",)} and length_mm is not None and width_mm is not None:
+    """Map stated sides to real ones; top/bottom run along length_mm, left/right along width_mm.
+
+    ``long``/``short``: both sides of that kind; ``long1``/``short1``: one of them. A square has
+    no long side: top/bottom are used for «длинные» and left/right for «короткие» consistently.
+    """
+    resolved: list[str] = []
+    for side in selected:
+        if side in {"top", "bottom", "left", "right"}:
+            resolved.append(side)
+            continue
+        if side not in {"long", "short", "long1", "short1"} or length_mm is None or width_mm is None:
+            continue
         length_is_long = length_mm >= width_mm
-        want_long = selected == ("long",)
-        return ("top", "bottom") if length_is_long == want_long else ("left", "right")
-    return tuple(side for side in selected if side in {"top", "bottom", "left", "right"})
+        want_long = side.startswith("long")
+        pair = ("top", "bottom") if length_is_long == want_long else ("left", "right")
+        resolved.extend(pair if not side.endswith("1") else pair[:1])
+    return tuple(dict.fromkeys(resolved))
 
 
 def pricing_input_for(

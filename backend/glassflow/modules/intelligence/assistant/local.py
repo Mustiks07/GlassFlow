@@ -50,9 +50,24 @@ SIDES_RU = {
     "all": "по всем 4 сторонам",
     ("long",): "по двум длинным сторонам",
     ("short",): "по двум коротким сторонам",
+    ("long1",): "по одной длинной стороне",
+    ("short1",): "по одной короткой стороне",
+    ("long1", "short1"): "по одной длинной и одной короткой стороне",
     ("top", "bottom"): "по верхней и нижней сторонам",
     ("left", "right"): "по левой и правой сторонам",
 }
+_SIDE_RU = {"top": "верхней", "bottom": "нижней", "left": "левой", "right": "правой"}
+
+
+def _sides_ru(edge_sides: str | None, selected: tuple[str, ...]) -> str:
+    if edge_sides == "all":
+        return SIDES_RU["all"]
+    if tuple(selected) in SIDES_RU:
+        return SIDES_RU[tuple(selected)]
+    named = [_SIDE_RU[s] for s in selected if s in _SIDE_RU]
+    if named:
+        return "по " + " и ".join(named) + (" стороне" if len(named) == 1 else " сторонам")
+    return "по выбранным сторонам"
 
 
 _resolve_sides = resolve_sides  # kept for imports; the single implementation lives in pricing
@@ -781,7 +796,7 @@ class LocalEngine:
         else:
             out.sentences.append(glass_text + ".")
             if edge is not None:
-                sides_ru = SIDES_RU.get(context.edge_sides if context.edge_sides == "all" else tuple(context.selected_sides), "")
+                sides_ru = _sides_ru(context.edge_sides, tuple(context.selected_sides))
                 edge_len = format_decimal(edge.measure_per_unit)
                 mult = f" × {context.quantity}" if context.quantity != 1 else ""
                 out.sentences.append(

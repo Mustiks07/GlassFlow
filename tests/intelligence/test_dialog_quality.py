@@ -76,9 +76,11 @@ def test_unknowns_stay_needs_review_or_follow_kb_rule(kb):
     assert no_price.verdict == "OK"
 
 
-def test_ambiguous_question_wrong_for_every_candidate_is_error(kb):
+def test_ambiguous_question_wrong_for_every_candidate_is_needs_review(kb):
+    # Changed after review F1: the earlier version of this test asserted a best-ranked correction,
+    # which invented certainty. A correction is exported only when all interpretations prove it.
     right = check_dialog(kb, "a", "Почём зеркало 4 мм?", "Зеркало 4 мм: 11 500 тг.")
     assert right.verdict == "OK" and right.catalog_product_id == "zerkalo-4-list-3210"
     wrong = check_dialog(kb, "b", "Почём зеркало 4 мм?", "Зеркало 4 мм: 10 000 тг.")
-    assert wrong.verdict == "ERROR" and wrong.reason_code == "price_mismatch_ambiguous_product"
-    assert wrong.correct in {"9500", "11500"}
+    assert wrong.verdict == "NEEDS_REVIEW" and wrong.correct is None
+    assert wrong.reason_code == "ambiguous_product_correction_not_unique"

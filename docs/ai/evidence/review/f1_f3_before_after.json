@@ -1,0 +1,139 @@
+{
+ "review": "docs/reviews/CLAUDE_3_REVIEW_2026-11-27.md (origin/main eaf81d6)",
+ "reviewed_commit": "e83c211",
+ "command": "check_dialog on the review inputs",
+ "rows": [
+  {
+   "case": "F1",
+   "client": "Почём зеркало 4 мм?",
+   "manager": "Цена 99999 тг.",
+   "before": {
+    "verdict": "ERROR",
+    "correct": "9500",
+    "reason": "price_mismatch_ambiguous_product",
+    "mentions": [
+     [
+      "99999",
+      "unspecified"
+     ]
+    ]
+   },
+   "after": {
+    "verdict": "NEEDS_REVIEW",
+    "correct": null,
+    "reason": "ambiguous_product_correction_not_unique",
+    "mentions": [
+     [
+      "99999",
+      "unspecified"
+     ]
+    ]
+   },
+   "expected_by_review": {
+    "verdict": "NEEDS_REVIEW",
+    "correct": null
+   },
+   "fixed": true
+  },
+  {
+   "case": "F2a",
+   "client": "Сколько стоит стекло 6 мм прозрачное 1200×1800 с кромкой по двум длинным сторонам?",
+   "manager": "Итого 18720 тг.",
+   "before": {
+    "verdict": "ERROR",
+    "correct": "17280",
+    "reason": "price_mismatch",
+    "mentions": [
+     [
+      "18720",
+      "total"
+     ]
+    ]
+   },
+   "after": {
+    "verdict": "OK",
+    "correct": null,
+    "reason": "price_matches_kb",
+    "mentions": [
+     [
+      "18720",
+      "total"
+     ]
+    ]
+   },
+   "expected_by_review": {
+    "verdict": "OK",
+    "correct": null
+   },
+   "fixed": true
+  },
+  {
+   "case": "F2b",
+   "client": "Сколько стоит стекло 6 мм прозрачное 1200×1800 с кромкой по двум длинным сторонам?",
+   "manager": "Итого 17280 тг.",
+   "before": {
+    "verdict": "OK",
+    "correct": null,
+    "reason": "price_matches_kb",
+    "mentions": [
+     [
+      "17280",
+      "total"
+     ]
+    ]
+   },
+   "after": {
+    "verdict": "ERROR",
+    "correct": "18720",
+    "reason": "price_mismatch",
+    "mentions": [
+     [
+      "17280",
+      "total"
+     ]
+    ]
+   },
+   "expected_by_review": {
+    "verdict": "ERROR",
+    "correct": "18720"
+   },
+   "fixed": true
+  },
+  {
+   "case": "F3",
+   "client": "Сколько стоит стекло 6 мм прозрачное 1200×1800?",
+   "manager": "Итого 17 280 тг; цена за м²: 9000.",
+   "before": {
+    "verdict": "OK",
+    "correct": null,
+    "reason": "price_matches_kb",
+    "mentions": [
+     [
+      "17280",
+      "total"
+     ]
+    ]
+   },
+   "after": {
+    "verdict": "ERROR",
+    "correct": "8000",
+    "reason": "price_mismatch",
+    "mentions": [
+     [
+      "17280",
+      "total"
+     ],
+     [
+      "9000",
+      "per_m2"
+     ]
+    ]
+   },
+   "expected_by_review": {
+    "verdict": "ERROR",
+    "correct": "8000"
+   },
+   "fixed": true
+  }
+ ]
+}

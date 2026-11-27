@@ -7,8 +7,9 @@ the KB/Pricing, never from an answer key. Verdicts:
 
 - OK — every recognized price equals the applicable reference (absolute tolerance 0.5 ₸);
 - ERROR + correct — a price contradicts a known reference;
-- NEEDS_REVIEW — the product/price cannot be determined from the KB (internal state only;
-  exports must not turn it into OK/ERROR).
+- NEEDS_REVIEW — the product/price cannot be determined from the KB, or an ambiguous
+  question has no single provable correction (internal state; exports must not turn it into
+  OK/ERROR, and the correction is never chosen by match score).
 """
 
 from __future__ import annotations
@@ -25,14 +26,14 @@ from ..catalog.kb import KnowledgeBase, Product
 from ..catalog.matching import match_products
 from ..catalog.text import normalize
 from ..nlu.extract import extract
-from ..pricing import PricingInput, calculate
+from ..pricing import PricingInput, calculate, pricing_input_for
 
 TOLERANCE = Decimal("0.5")
 _MONEY = re.compile(
-    r"(?<![\w.,])(\d{1,3}(?:[   ]\d{3})+|\d+)(?:[.,](\d{1,2}))?\s*(?:тг|₸|тенге|тнг|kzt)(?![a-zа-я])",
+    r"(?<![\w.,])(?<!\d\s)(\d{1,3}(?:[   ]\d{3})+|\d+)(?:[.,](\d{1,2}))?\s*(?:тг|₸|тенге|тнг|kzt)(?![a-zа-я])",
     re.IGNORECASE,
 )
-_BARE_NUMBER = re.compile(r"(?<![\w.,x-])(\d{1,3}(?:[   ]\d{3})+|\d{3,})(?:[.,](\d{1,2}))?(?![\w%x]|\s*(?:мм|см|шт|%|x))")
+_BARE_NUMBER = re.compile(r"(?<![\w.,x-])(?<!\d\s)(\d{1,3}(?:[   ]\d{3})+|\d{3,})(?:[.,](\d{1,2}))?(?![\w%x]|\s*(?:мм|см|шт|%|x))")
 
 
 @dataclass
@@ -84,28 +85,46 @@ def _meaning(clause: str) -> str:
     return "unspecified"
 
 
+_PRICE_WORDS = re.compile(r"стоит|стоят|цена|цену|стоимост|итого|всего|получится|выйдет|за м|за кв|за лист|за шт|по цене|тариф")
+
+
+def _blank(match: re.Match) -> str:
+    return " " * len(match.group(0))
+
+
 def extract_price_mentions(manager_text: str, product: Product | None) -> list[_Mention]:
-    text = _strip_product_name(normalize(manager_text), product)
+    """All money values in the reply: with a currency marker AND bare numbers in a price context.
+
+    Both kinds are merged (non-overlapping, in text order) so a correct total cannot hide a
+    wrong rate written without «тг». Sizes, thickness, codes, quantities and % are not prices.
+    """
+    # «м²» → «кв м» before normalization: NFKC turns ² into 2 and «м² × 8 000» would look like a size «2x8».
+    prepared = re.sub(r"м\s?[²2](?![\d])", "кв м", manager_text)
+    text = _strip_product_name(normalize(prepared), product)
     mentions: list[_Mention] = []
+    spans: list[tuple[int, int]] = []
     for match in _MONEY.finditer(text):
-        whole = re.sub(r"[   ]", "", match.group(1))
+        whole = re.sub(r"[ \u00a0\u202f]", "", match.group(1))
         amount = Decimal(whole + ("." + match.group(2) if match.group(2) else ""))
-        mentions.append(
-            _Mention(amount, match.group(0).strip(), _meaning(_clause(text, match.start(), match.end())), match.start())
-        )
-    if mentions:
-        return mentions
-    # No currency marker: only numbers that cannot be sizes, thickness, codes, quantities or %.
-    cleaned = re.sub(r"\d+(?:[.,]\d+)?\s*x\s*\d+(?:[.,]\d+)?(?:\s*x\s*\d+)?", " ", text)
+        mentions.append(_Mention(amount, match.group(0).strip(), _meaning(_clause(text, match.start(), match.end())), match.start()))
+        spans.append(match.span())
+    strict = bool(mentions)  # with currency-marked prices present, bare numbers need a price word nearby
+    cleaned = re.sub(r"\d+(?:[.,]\d+)?\s*x\s*\d+(?:[.,]\d+)?(?:\s*x\s*\d+)?", _blank, text)  # keeps offsets
     for match in _BARE_NUMBER.finditer(cleaned):
-        context_before = cleaned[max(0, match.start() - 25) : match.start()]
-        if not re.search(r"стоит|цена|стоимост|:|—|-\s*$", context_before):
+        start, end = match.span()
+        if any(s <= start < e or s < end <= e for s, e in spans):
             continue
-        whole = re.sub(r"[   ]", "", match.group(1))
+        clause_start = max(cleaned.rfind(sep, 0, start) for sep in (",", ";", ".", "!", "?", "\n", "(")) + 1
+        context_before = cleaned[max(clause_start, start - 30) : start]  # same clause only: «артикул 100» is no price
+        if strict:
+            if not _PRICE_WORDS.search(context_before):
+                continue
+        elif not (_PRICE_WORDS.search(context_before) or re.search(r"[:—]\s*$|-\s*$", context_before)):
+            continue
+        whole = re.sub(r"[ \u00a0\u202f]", "", match.group(1))
         amount = Decimal(whole + ("." + match.group(2) if match.group(2) else ""))
-        mentions.append(
-            _Mention(amount, match.group(0).strip(), _meaning(_clause(cleaned, match.start(), match.end())), match.start())
-        )
+        mentions.append(_Mention(amount, match.group(0).strip(), _meaning(_clause(cleaned, start, end)), start))
+    mentions.sort(key=lambda m: m.start)
     return mentions
 
 
@@ -113,171 +132,226 @@ def _close(a: Decimal, b: Decimal) -> bool:
     return abs(a - b) <= TOLERANCE
 
 
-def _resolve_product(kb: KnowledgeBase, client: str, manager: str) -> tuple[Product | None, str]:
-    client_match = match_products(kb, client)
-    if client_match.status == "exact":
-        return client_match.product, "client_exact"
-    manager_match = match_products(kb, manager)
-    if client_match.status == "ambiguous" and manager_match.status == "exact":
-        ids = {c.product.product_id for c in client_match.candidates}
-        if manager_match.product.product_id in ids:
-            return manager_match.product, "manager_refined_client_ambiguity"
-        return None, "manager_product_outside_client_candidates"
-    if client_match.status == "ambiguous":
-        amounts = [m.amount for m in extract_price_mentions(manager, None)]
-        fitting = []
-        for candidate in client_match.candidates:
-            refs = _references(kb, candidate.product, client, manager)
-            values = [value for value, _ in refs.values() if value is not None]
-            if amounts and all(any(_close(amount, value) for value in values) for amount in amounts):
-                fitting.append(candidate.product)
-        if len(fitting) == 1:
-            return fitting[0], "price_matches_unique_client_candidate"
-        if amounts and not fitting:
-            # No candidate's KB price matches: the price is wrong for every reading of the question
-            # (ERROR is certain). The correction comes from the best-ranked candidate and is flagged.
-            return client_match.candidates[0].product, "mismatch_all_candidates_best_ranked_correction"
-    if client_match.status == "not_found" and manager_match.status == "exact":
-        return manager_match.product, "manager_named_product"
-    return None, f"client_{client_match.status}"
+@dataclass
+class _Refs:
+    values: dict[str, Decimal | None]
+    evidence: dict[str, Evidence]
+    total_requested: bool
+    client_basis: str
+    bulk_context: bool
 
 
-def _references(kb: KnowledgeBase, product: Product, client: str, manager: str) -> dict[str, tuple[Decimal | None, Evidence]]:
-    refs: dict[str, tuple[Decimal | None, Evidence]] = {}
+def _references(kb: KnowledgeBase, product: Product, client: str, manager: str) -> _Refs:
+    """KB prices of the product plus the order total from the SAME PricingInput normalization the
+    assistant uses (quantity, processing kind, explicitly stated edge sides)."""
 
     def ev(field_name: str | None) -> Evidence:
         return Evidence(source=kb.source, source_version=kb.version, record_id=product.product_id, field=field_name)
 
+    values: dict[str, Decimal | None] = {}
+    evidence: dict[str, Evidence] = {}
     for entry in product.prices:
-        refs[entry.price_type] = (entry.amount, ev(entry.source_field))
+        values[entry.price_type] = entry.amount
+        evidence[entry.price_type] = ev(entry.source_field)
     formats = {product.attributes["sheet_format_mm"]} if "sheet_format_mm" in product.attributes else set()
     ex = extract(client, format_exclusions=formats)
+    total_requested = False
     if ex.dimensions and not product.is_hardware:
+        total_requested = True
         dims = ex.dimensions[0]
-        processing = ex.processing if ex.processing == "euro_edge" and ex.edge_sides == "all" else "none"
-        result = calculate(
-            kb,
-            PricingInput(product, dims.length_mm, dims.width_mm, ex.quantity or 1, processing, "all", (), "per_m2"),
+        request, edge_unknown = pricing_input_for(
+            product,
+            length_mm=dims.length_mm,
+            width_mm=dims.width_mm,
+            quantity=ex.quantity or 1,
+            processing="none" if ex.processing_negated else ex.processing,
+            edge_sides=ex.edge_sides,
+            selected_sides=ex.selected_sides,
+            price_basis="per_m2",
         )
-        refs["total"] = (result.total, Evidence(source="pricing", source_version=kb.version, record_id=product.product_id, field="total"))
+        values["total"] = None if edge_unknown else calculate(kb, request).total
+        evidence["total"] = Evidence(source="pricing", source_version=kb.version, record_id=product.product_id, field="total")
     elif product.is_hardware and ex.quantity:
-        result = calculate(kb, PricingInput(product, quantity=ex.quantity, price_basis="unit"))
-        refs["total"] = (result.total, Evidence(source="pricing", source_version=kb.version, record_id=product.product_id, field="total"))
-    return refs
+        total_requested = True
+        values["total"] = calculate(kb, PricingInput(product, quantity=ex.quantity, price_basis="unit")).total
+        evidence["total"] = Evidence(source="pricing", source_version=kb.version, record_id=product.product_id, field="total")
+    bulk_context = ex.tier_inquiry or bool(re.search(r"от\s+\d+\s*(?:шт|штук)|оптом", normalize(manager)))
+    return _Refs(values, evidence, total_requested, ex.price_basis, bulk_context)
+
+
+@dataclass
+class _Evaluation:
+    verdict: str  # OK | ERROR | UNRESOLVED
+    correct: Decimal | None
+    key: str | None
+    evidence: list[Evidence]
+    mentions: list[_Mention]
+
+
+def _candidates_for(mention: _Mention, refs: _Refs, product: Product) -> tuple[list[str], str | None]:
+    """Reference keys a mention may legitimately mean, and the key that defines its correction."""
+    values = refs.values
+    if mention.meaning in {"per_m2", "per_sheet", "retail_unit", "bulk_unit", "total"}:
+        return [mention.meaning], mention.meaning
+    if product.is_hardware:
+        keys = ["retail_unit"] + (["bulk_unit"] if refs.bulk_context else []) + (["total"] if refs.total_requested else [])
+        return keys, "total" if refs.total_requested else "retail_unit"
+    if refs.total_requested:
+        return ["total", "per_m2"], "total"
+    keys = ["per_sheet", "per_m2"] if refs.client_basis == "per_sheet" else ["per_m2", "per_sheet"]
+    correction = next((k for k in keys if values.get(k) is not None), None)
+    return keys, correction
+
+
+def _evaluate(kb: KnowledgeBase, product: Product, client: str, manager: str) -> _Evaluation:
+    refs = _references(kb, product, client, manager)
+    mentions = extract_price_mentions(manager, product)
+    evidence: list[Evidence] = []
+    error: tuple[Decimal, str] | None = None
+    unresolved = False
+    for mention in mentions:
+        keys, correction_key = _candidates_for(mention, refs, product)
+        known = [(k, refs.values[k]) for k in keys if refs.values.get(k) is not None]
+        hit = next((k for k, value in known if _close(mention.amount, value)), None)
+        if hit is not None:
+            evidence.append(refs.evidence[hit])
+            continue
+        correct = refs.values.get(correction_key) if correction_key else None
+        if correct is None:
+            unresolved = True  # the meaning's reference is unknown in KB/Pricing: no correction exists
+            continue
+        evidence.append(refs.evidence[correction_key])
+        if error is None:
+            error = (correct, correction_key)
+    if error is not None:
+        return _Evaluation("ERROR", error[0], error[1], evidence, mentions)
+    if unresolved:
+        return _Evaluation("UNRESOLVED", None, None, evidence, mentions)
+    key = None
+    if mentions:
+        for k in ("retail_unit", "per_m2", "total", "per_sheet", "bulk_unit"):
+            if refs.values.get(k) is not None and _close(mentions[0].amount, refs.values[k]):
+                key = k
+                break
+    return _Evaluation("OK", None, key, evidence, mentions)
+
+
+def _views(mentions: list[_Mention]) -> list[PriceMention]:
+    return [PriceMention(raw=m.raw, amount_tg=money_string(m.amount), meaning=m.meaning) for m in mentions]
+
+
+def _from_evaluation(dialog_id: str, product: Product, evaluation: _Evaluation, reason: str, digest: str) -> DialogVerdict:
+    base = dict(id=dialog_id, mentions=_views(evaluation.mentions), input_sha256=digest, catalog_product_id=product.product_id)
+    if not evaluation.mentions:
+        return DialogVerdict(verdict="OK", evidence=[], reason_code="no_price_claim",
+                             explanation_ru="Менеджер не назвал цену; ложной цены нет.", **base)
+    if evaluation.verdict == "ERROR":
+        correct = money_string(evaluation.correct)
+        return DialogVerdict(
+            verdict="ERROR", correct=correct, evidence=evaluation.evidence, reference_tg=correct,
+            reference_meaning=evaluation.key, reason_code="price_mismatch",
+            explanation_ru=f"Цена в ответе не совпадает с базой: правильно {correct} ₸ ({evaluation.key}).", **base,
+        )
+    if evaluation.verdict == "UNRESOLVED":
+        return DialogVerdict(
+            verdict="NEEDS_REVIEW", evidence=evaluation.evidence, reason_code="price_not_in_kb",
+            explanation_ru="Цены для этого смысла числа нет в базе; проверить может только менеджер.", **base,
+        )
+    return DialogVerdict(
+        verdict="OK", evidence=evaluation.evidence, reference_tg=None, reference_meaning=evaluation.key,
+        reason_code=reason, explanation_ru="Цена совпадает с базой знаний.", **base,
+    )
 
 
 def check_dialog(kb: KnowledgeBase, dialog_id: str, client: str, manager: str) -> DialogVerdict:
     digest = hashlib.sha256(f"{client}\x1f{manager}".encode("utf-8")).hexdigest()
     if extract(f"{client} {manager}").model_codes:
-        product, basis = None, "model_code_question"  # AB models: KB rule decides, not a similar product
-    else:
-        product, basis = _resolve_product(kb, client, manager)
-    mentions = extract_price_mentions(manager, product)
-    views = [PriceMention(raw=m.raw, amount_tg=money_string(m.amount), meaning=m.meaning) for m in mentions]
-    base = dict(id=dialog_id, mentions=views, input_sha256=digest)
-    if product is None:
-        codes = extract(f"{client} {manager}").model_codes
-        rng = kb.model_range
-        missing = {code for code, _ in kb.missing_models}
-        if codes and rng and all(
-            code.startswith(rng[0]) and rng[1] <= int(re.sub(r"\D", "", code)) <= rng[2] and code not in missing
-            for code in codes
-        ):
-            return DialogVerdict(
-                verdict="OK",
-                evidence=[Evidence(source=kb.source, source_version=kb.version, record_id=rng[3], field="правило")],
-                reason_code="price_set_by_manager_per_kb_rule",
-                explanation_ru="По базе цены этих моделей рассчитывает менеджер; противоречия базе нет.",
-                **base,
-            )
-        if not mentions:
-            return DialogVerdict(
-                verdict="OK", evidence=[], reason_code="no_price_claim",
-                explanation_ru="В ответе нет цены, проверять нечего.", **base,
-            )
-        return DialogVerdict(
-            verdict="NEEDS_REVIEW", evidence=[], reason_code=basis,
-            explanation_ru="Не удалось однозначно определить товар по базе знаний.", **base,
-        )
-    refs = _references(kb, product, client, manager)
-    ex_client = extract(client)
-    bulk_context = ex_client.tier_inquiry or bool(re.search(r"от\s+\d+\s*(?:шт|штук)|оптом", normalize(manager)))
+        return _model_code_verdict(kb, dialog_id, client, manager, digest)
+    client_match = match_products(kb, client)
+    if client_match.status == "exact":
+        product = client_match.product
+        return _from_evaluation(dialog_id, product, _evaluate(kb, product, client, manager), "price_matches_kb", digest)
+    manager_match = match_products(kb, manager)
+    if client_match.status == "ambiguous":
+        ids = {c.product.product_id for c in client_match.candidates}
+        if manager_match.status == "exact" and manager_match.product.product_id in ids:
+            product = manager_match.product
+            return _from_evaluation(dialog_id, product, _evaluate(kb, product, client, manager), "manager_refined_client_ambiguity", digest)
+        if manager_match.status == "exact":
+            return _needs_review(dialog_id, manager, digest, "manager_product_outside_client_candidates",
+                                 "Менеджер назвал позицию, не подходящую под вопрос клиента.")
+        return _ambiguous_verdict(kb, dialog_id, client, manager, [c.product for c in client_match.candidates], digest)
+    if manager_match.status == "exact":
+        product = manager_match.product
+        return _from_evaluation(dialog_id, product, _evaluate(kb, product, client, manager), "manager_named_product", digest)
+    mentions = extract_price_mentions(manager, None)
     if not mentions:
-        return DialogVerdict(
-            verdict="OK", evidence=[], catalog_product_id=product.product_id, reason_code="no_price_claim",
-            explanation_ru="Менеджер не назвал цену; ложной цены нет.", **base,
-        )
-    first_error: tuple[Decimal, str, Evidence] | None = None
-    unresolved = False
-    evidence: list[Evidence] = []
-    for mention in mentions:
-        if product.is_hardware:
-            order = {
-                "retail_unit": ["retail_unit"],
-                "bulk_unit": ["bulk_unit"],
-                "total": ["total"],
-                "unspecified": ["retail_unit"] + (["bulk_unit"] if bulk_context else []) + (["total"] if "total" in refs else []),
-            }.get(mention.meaning, ["retail_unit"])
-        else:
-            if mention.meaning in {"per_m2", "per_sheet", "total"}:
-                order = [mention.meaning]
-            elif "total" in refs:
-                order = ["total", "per_m2"]
-            elif ex_client.price_basis == "per_sheet":
-                order = ["per_sheet", "per_m2"]
-            else:
-                order = ["per_m2", "per_sheet"]
-        known = [(key, refs[key]) for key in order if key in refs and refs[key][0] is not None]
-        if any(_close(mention.amount, value) for _, (value, _) in known):
-            key, (value, ref_ev) = next((k, r) for k, r in known if _close(mention.amount, r[0]))
-            evidence.append(ref_ev)
-            continue
-        if known:
-            key, (value, ref_ev) = known[0]
-            evidence.append(ref_ev)
-            if first_error is None:
-                first_error = (value, key, ref_ev)
-        else:
-            unresolved = True
-    if first_error is not None:
-        value, key, _ = first_error
-        ambiguous = basis == "mismatch_all_candidates_best_ranked_correction"
-        return DialogVerdict(
-            verdict="ERROR",
-            correct=money_string(value),
-            evidence=evidence,
-            catalog_product_id=product.product_id,
-            reference_tg=money_string(value),
-            reference_meaning=key,
-            reason_code="price_mismatch_ambiguous_product" if ambiguous else "price_mismatch",
-            explanation_ru=(
-                f"Цена не совпадает ни с одной подходящей позицией базы; исправление {money_string(value)} ₸ взято "
-                f"у наиболее вероятной позиции «{product.name}» — проверьте товар."
-                if ambiguous
-                else f"Цена в ответе не совпадает с базой: правильно {money_string(value)} ₸ ({key})."
-            ),
-            **base,
-        )
-    if unresolved:
-        return DialogVerdict(
-            verdict="NEEDS_REVIEW", evidence=evidence, catalog_product_id=product.product_id,
-            reason_code="price_not_in_kb",
-            explanation_ru="Цены для этого смысла числа нет в базе; проверить может только менеджер.", **base,
-        )
-    reference = evidence[0] if evidence else None
-    primary = None
-    for mention in mentions[:1]:
-        for key in ("retail_unit", "per_m2", "total", "per_sheet", "bulk_unit"):
-            if key in refs and refs[key][0] is not None and _close(mention.amount, refs[key][0]):
-                primary = (refs[key][0], key)
-                break
+        return DialogVerdict(id=dialog_id, verdict="OK", evidence=[], mentions=[], input_sha256=digest,
+                             reason_code="no_price_claim", explanation_ru="В ответе нет цены, проверять нечего.")
+    return _needs_review(dialog_id, manager, digest, f"client_{client_match.status}",
+                         "Не удалось однозначно определить товар по базе знаний.")
+
+
+def _needs_review(dialog_id: str, manager: str, digest: str, reason: str, explanation: str, **extra) -> DialogVerdict:
     return DialogVerdict(
-        verdict="OK",
-        evidence=evidence,
-        catalog_product_id=product.product_id,
-        reference_tg=money_string(primary[0]) if primary else None,
-        reference_meaning=primary[1] if primary else (reference.field if reference else None),
-        reason_code="price_matches_kb",
-        explanation_ru="Цена совпадает с базой знаний.",
-        **base,
+        id=dialog_id, verdict="NEEDS_REVIEW", correct=None, evidence=extra.pop("evidence", []),
+        mentions=_views(extract_price_mentions(manager, None)), input_sha256=digest, reason_code=reason,
+        explanation_ru=explanation, **extra,
     )
+
+
+def _ambiguous_verdict(kb, dialog_id, client, manager, candidates: list[Product], digest) -> DialogVerdict:
+    """Evaluate every interpretation. OK if the price fits one; ERROR only if all interpretations
+    prove the same correction; otherwise NEEDS_REVIEW with correct=None (never chosen by rank)."""
+    evaluations = [(product, _evaluate(kb, product, client, manager)) for product in candidates]
+    if all(not e.mentions for _, e in evaluations):
+        return DialogVerdict(id=dialog_id, verdict="OK", evidence=[], mentions=[], input_sha256=digest,
+                             reason_code="no_price_claim", explanation_ru="Менеджер не назвал цену; ложной цены нет.")
+    fitting = [(p, e) for p, e in evaluations if e.verdict == "OK" and e.mentions]
+    if fitting:
+        product, evaluation = fitting[0] if len(fitting) == 1 else (None, fitting[0][1])
+        names = ", ".join(p.name for p, _ in fitting)
+        return DialogVerdict(
+            id=dialog_id, verdict="OK", evidence=[ev for _, e in fitting for ev in e.evidence][:10],
+            mentions=_views(evaluation.mentions), input_sha256=digest,
+            catalog_product_id=product.product_id if product else None,
+            reason_code="price_matches_candidate_interpretation",
+            explanation_ru=f"Цена совпадает с базой для позиции: {names}.",
+        )
+    errors = [(p, e) for p, e in evaluations if e.verdict == "ERROR"]
+    corrections = {e.correct for _, e in errors}
+    if len(errors) == len(evaluations) and len(corrections) == 1:
+        correct = money_string(corrections.pop())
+        return DialogVerdict(
+            id=dialog_id, verdict="ERROR", correct=correct, evidence=[ev for _, e in errors for ev in e.evidence][:10],
+            mentions=_views(errors[0][1].mentions), input_sha256=digest, reference_tg=correct,
+            reference_meaning=errors[0][1].key, reason_code="price_mismatch_all_interpretations",
+            explanation_ru=f"Для всех подходящих позиций база дает одну цену {correct} ₸; в ответе другая.",
+        )
+    options = "; ".join(
+        f"{p.name}: {money_string(e.correct) + ' ₸' if e.correct is not None else 'цена неизвестна'}" for p, e in evaluations
+    )
+    return _needs_review(
+        dialog_id, manager, digest, "ambiguous_product_correction_not_unique",
+        f"Цена не совпадает ни с одной трактовкой вопроса, а исправления различаются ({options}); нужен выбор товара.",
+        evidence=[ev for _, e in evaluations for ev in e.evidence][:10],
+    )
+
+
+def _model_code_verdict(kb, dialog_id, client, manager, digest) -> DialogVerdict:
+    codes = extract(f"{client} {manager}").model_codes
+    rng = kb.model_range
+    missing = {code for code, _ in kb.missing_models}
+    mentions = extract_price_mentions(manager, None)
+    if codes and rng and all(
+        code.startswith(rng[0]) and rng[1] <= int(re.sub(r"\D", "", code)) <= rng[2] and code not in missing for code in codes
+    ):
+        return DialogVerdict(
+            id=dialog_id, verdict="OK", evidence=[Evidence(source=kb.source, source_version=kb.version, record_id=rng[3], field="правило")],
+            mentions=_views(mentions), input_sha256=digest, reason_code="price_set_by_manager_per_kb_rule",
+            explanation_ru="По базе цены этих моделей рассчитывает менеджер; противоречия базе нет.",
+        )
+    if not mentions:
+        return DialogVerdict(id=dialog_id, verdict="OK", evidence=[], mentions=[], input_sha256=digest,
+                             reason_code="no_price_claim", explanation_ru="В ответе нет цены, проверять нечего.")
+    return _needs_review(dialog_id, manager, digest, "model_not_in_catalog", "Модели нет в каталоге; цену проверяет менеджер.")
