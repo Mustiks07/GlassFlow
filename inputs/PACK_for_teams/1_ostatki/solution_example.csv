@@ -1,0 +1,4 @@
+part_id,remnant_id,x_mm,y_mm,rot
+P0001,NEW,,,
+P0002,R001,5,5,0
+P0003,R001,5,420,1

@@ -1,0 +1,58 @@
+{
+  "inputs\\Case_KSM_Steklo_dengi_klient.pdf": {
+    "bytes": 760665,
+    "sha256": "7a1e1b2cf3f0b88738f5a04c69a936691b2f2305ae6bcaf320e5effa8ae04d03"
+  },
+  "inputs\\PACK_for_teams\\README.txt": {
+    "bytes": 571,
+    "sha256": "d74ed6df88ee44c2f53ac1b9156c346ab69ae40d6c0f9dfff127f1f6106abf47"
+  },
+  "inputs\\PACK_for_teams\\1_ostatki\\materials.csv": {
+    "bytes": 547,
+    "sha256": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1"
+  },
+  "inputs\\PACK_for_teams\\1_ostatki\\orders_open.csv": {
+    "bytes": 13773,
+    "sha256": "9ac222565c2eb05e28137b312f412f3a05544dde0ffa051a694d00338bbcbb00"
+  },
+  "inputs\\PACK_for_teams\\1_ostatki\\solution_example.csv": {
+    "bytes": 86,
+    "sha256": "df22786760d0224e3da73a12c37833c6a0e2e2aa8c604a63b425fb7b8544a448"
+  },
+  "inputs\\PACK_for_teams\\1_ostatki\\stock_open.csv": {
+    "bytes": 12984,
+    "sha256": "4e24ce0a917e506c803bcc1378da5504becaa5f733f05b1900ca2f8f0b8db547"
+  },
+  "inputs\\PACK_for_teams\\1_ostatki\\validate.py": {
+    "bytes": 4781,
+    "sha256": "0d2760772d128ce0724f0a7090eff474667fc5e376a1fc753f03ddb8b73dac4a"
+  },
+  "inputs\\PACK_for_teams\\2_assistant_crm\\applications_open.csv": {
+    "bytes": 63544,
+    "sha256": "7df1c35f78f2d83dabb0ff6fa6d564f4ba0553b13e4348da2179c8f037bf4363"
+  },
+  "inputs\\PACK_for_teams\\2_assistant_crm\\dialogs_open.csv": {
+    "bytes": 1367,
+    "sha256": "c3b2209a6370ed7b19d527ad448b713d5e42385c8b0574119dff311b073146f3"
+  },
+  "inputs\\PACK_for_teams\\2_assistant_crm\\dialogs_open_KEY.csv": {
+    "bytes": 1883,
+    "sha256": "bb0927ab8826e53715ae1fae59fb5e599e13a9b764510efef64d9b1011bbdd01"
+  },
+  "inputs\\PACK_for_teams\\2_assistant_crm\\ksm_knowledge_base.json": {
+    "bytes": 12315,
+    "sha256": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0"
+  },
+  "inputs\\PACK_for_teams\\2_assistant_crm\\questions_open.csv": {
+    "bytes": 1962,
+    "sha256": "e6742f9978b8eea28a034e887c63308051f3e32975b945b3dc412a3048c00498"
+  },
+  "inputs\\PACK_for_teams\\2_assistant_crm\\questions_open_KEY.csv": {
+    "bytes": 2646,
+    "sha256": "e1e791f2047197619f0ec1d883715ff79a94aac86a5777227c9a5f329ac08542"
+  },
+  "inputs\\PACK_for_teams\\2_assistant_crm\\selfcheck.py": {
+    "bytes": 3798,
+    "sha256": "dc3118a6638df0de072decea3e94adc2d9edad9650d88ce29150cb51c7582b6e"
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "parts": 298,
+  "orders": 110,
+  "stock": 200,
+  "total_area_m2": 187.8691,
+  "stock_area_m2": 151.5875,
+  "eligible_parts": 271,
+  "individually_feasible_area_m2": 175.1371,
+  "tempered_parts": 29,
+  "tempered_eligible": 6,
+  "tempered_matched": 4,
+  "tempered_exact_area_m2": 1.18,
+  "defective_stock": 24,
+  "premium_parts": 95,
+  "materials": [
+    {
+      "material": "clear-4",
+      "parts": 83,
+      "stock": 58,
+      "demand_m2": 52.8397,
+      "stock_m2": 36.4996,
+      "eligible_parts": 83,
+      "eligible_area_m2": 52.8397
+    },
+    {
+      "material": "clear-6",
+      "parts": 49,
+      "stock": 34,
+      "demand_m2": 33.0591,
+      "stock_m2": 31.6327,
+      "eligible_parts": 49,
+      "eligible_area_m2": 33.0591
+    },
+    {
+      "material": "clear-8",
+      "parts": 30,
+      "stock": 27,
+      "demand_m2": 18.8391,
+      "stock_m2": 25.5814,
+      "eligible_parts": 30,
+      "eligible_area_m2": 18.8391
+    },
+    {
+      "material": "grey-8",
+      "parts": 18,
+      "stock": 8,
+      "demand_m2": 10.6579,
+      "stock_m2": 5.5167,
+      "eligible_parts": 14,
+      "eligible_area_m2": 6.2859
+    },
+    {
+      "material": "bronze-8",
+      "parts": 18,
+      "stock": 13,
+      "demand_m2": 10.2065,
+      "stock_m2": 10.0707,
+      "eligible_parts": 18,
+      "eligible_area_m2": 10.2065
+    },
+    {
+      "material": "mirror-4",
+      "parts": 71,
+      "stock": 40,
+      "demand_m2": 52.1268,
+      "stock_m2": 32.4364,
+      "eligible_parts": 71,
+      "eligible_area_m2": 52.1268
+    },
+    {
+      "material": "temp-4",
+      "parts": 12,
+      "stock": 10,
+      "demand_m2": 3.71,
+      "stock_m2": 4.43,
+      "eligible_parts": 2,
+      "eligible_area_m2": 0.68
+    },
+    {
+      "material": "temp-6",
+      "parts": 17,
+      "stock": 10,
+      "demand_m2": 6.43,
+      "stock_m2": 5.42,
+      "eligible_parts": 4,
+      "eligible_area_m2": 1.1
+    }
+  ],
+  "single": {
+    "covered_parts": 145,
+    "used_remnants": 145,
+    "area_m2": 98.489,
+    "coverage": 0.5242426774812888,
+    "invalid": [],
+    "money": 899853.3000000002,
+    "restarts": 1
+  },
+  "guillotine": {
+    "covered_parts": 175,
+    "used_remnants": 137,
+    "area_m2": 104.4021,
+    "coverage": 0.5557172520654009,
+    "invalid": [],
+    "money": 967933.0500000002,
+    "restarts": 250
+  },
+  "maxrects": {
+    "covered_parts": 166,
+    "used_remnants": 136,
+    "area_m2": 105.2198,
+    "coverage": 0.5600697506934349,
+    "invalid": [],
+    "money": 963332.0500000002,
+    "restarts": 250
+  }
+}

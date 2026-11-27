@@ -1,0 +1,12 @@
+{
+  "unchanged_sources": 17,
+  "changed_sources": [],
+  "report_pages": 15,
+  "checks": {
+    "coverage": 0.58952323719015,
+    "upper_bound": 0.6140851262927219,
+    "baseline": 0.5242426774812888,
+    "uplift_pp": 6.528055970886115,
+    "money_delta": 117888.84999999998
+  }
+}

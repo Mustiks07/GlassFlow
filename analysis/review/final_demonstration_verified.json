@@ -1,0 +1,42 @@
+{
+  "scope": "Frozen current assignments; choose among completely unused original remnants only. Not a global impossibility proof. No new demo row is added to the official research result.",
+  "demo": [
+    {
+      "w_mm": 450,
+      "h_mm": 370,
+      "eligible_free_ids": [
+        "R006"
+      ],
+      "glass_price_tg": "1332.0000",
+      "edge_price_tg": "656.00",
+      "total_tg": "1988.0000",
+      "saved_material_tg": "1332.0000"
+    },
+    {
+      "w_mm": 451,
+      "h_mm": 370,
+      "eligible_free_ids": [],
+      "glass_price_tg": "1334.96000",
+      "edge_price_tg": "656.800",
+      "total_tg": "1991.76000",
+      "saved_material_tg": "0"
+    }
+  ],
+  "R006": {
+    "remnant_id": "R006",
+    "material_id": "clear-6",
+    "длина_мм": "460",
+    "ширина_мм": "380",
+    "возраст_дней": "244",
+    "дефект": "0",
+    "место": "Стеллаж A, ячейка 6"
+  },
+  "reminder_subject": "Ask C066 about interest in a similar glass calculation; do not assign current visitor order to C066 or promise R006 to two clients.",
+  "catalog_counterexample": {
+    "rippled8_sheet": 170000,
+    "rippled8_m2": null,
+    "rippled_in_stock_materials": false,
+    "generic_grey_m2": 10000,
+    "grey8_m2": 20000
+  }
+}

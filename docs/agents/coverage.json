@@ -1,0 +1,2441 @@
+{
+  "requirements": [
+    {
+      "id": "R01",
+      "title": "Один инструмент и связный сценарий остаток-цена-ответ-CRM",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 4-5",
+      "decision": "Общий контекст; CRM-кандидаты и локальное напоминание показываются в основном сценарии, не отдельно.",
+      "ownership_scope": "Общий контекст и интеграция сценария; UI, раскрой и коммерческий ответ поставляют профильные владельцы.",
+      "test_ids": [
+        "T28",
+        "T43",
+        "T60"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R02",
+      "title": "Загрузка склада и заказов",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2"
+      ],
+      "status": "not_started",
+      "source": "PDF 4",
+      "decision": "Импорт с проверкой схемы, предварительным просмотром и заменой набора без смешивания открытого и закрытого.",
+      "ownership_scope": "Транзакционный импорт склада и заказов; склад подтверждает предметные ограничения.",
+      "test_ids": [
+        "T01",
+        "T03",
+        "T50"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R03",
+      "title": "Добавление нового остатка",
+      "owner": "claude2",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_started",
+      "source": "PDF 4",
+      "decision": "Явная форма: материал, размеры, место; дефект и возраст с обоснованными начальными значениями.",
+      "ownership_scope": "Сохранение остатка, валидация размеров и места; UI формы и инфраструктура хранения — поддержка.",
+      "test_ids": [
+        "T03",
+        "T20"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R04",
+      "title": "Удаление использованного остатка",
+      "owner": "claude2",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_started",
+      "source": "PDF 4",
+      "decision": "Списание по подтвержденной операции; исключение из доступного склада с сохранением истории.",
+      "ownership_scope": "Списание и история вместо физического удаления предметных связей.",
+      "test_ids": [
+        "T20"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R05",
+      "title": "Показ стеллажа и ячейки",
+      "owner": "claude1",
+      "support": [
+        "claude2"
+      ],
+      "status": "not_started",
+      "source": "PDF 4",
+      "decision": "Только фактическое поле место; схема стеллажей не изображает неизвестную физическую планировку цеха.",
+      "ownership_scope": "Отображение фактического места из API склада, без вымышленной планировки.",
+      "test_ids": [
+        "T28",
+        "T57"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R06",
+      "title": "Читаемая схема и итог в тенге",
+      "owner": "claude1",
+      "support": [
+        "claude2",
+        "claude3",
+        "gptpro"
+      ],
+      "status": "not_started",
+      "source": "PDF 4",
+      "decision": "Схема с координатами, поворотами, размерами, отступами; отдельные метрики площади, оценки материала и цены клиенту.",
+      "ownership_scope": "Читаемая схема и раздельные денежные показатели; геометрия и суммы приходят от доменных сервисов.",
+      "test_ids": [
+        "T15",
+        "T22",
+        "T58"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R07",
+      "title": "Русский интерфейс и запуск обычным менеджером за 5 минут",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 5",
+      "decision": "Ярлык/лаунчер, отсутствие обязательной консоли; проверка на чистом окружении, сценарий первого запуска.",
+      "ownership_scope": "Готовый Windows-запуск и маршрут первого запуска; Claude1 отвечает за русский интерфейс.",
+      "test_ids": [
+        "T54",
+        "T57"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R08",
+      "title": "Можно заменить данные своими",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 5",
+      "decision": "Данные не зашиты в UI; новый импорт, новые ID и новые размеры проходят тем же путем.",
+      "ownership_scope": "Замена набора и изоляция всех доменных результатов по dataset_id.",
+      "test_ids": [
+        "T04",
+        "T50"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R09",
+      "title": "Точный material_id",
+      "owner": "claude3",
+      "support": [
+        "claude2",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 5",
+      "decision": "Каталог и склад не смешивают толщины/цвета. Синонимы приводят к одному подтвержденному ID.",
+      "ownership_scope": "Подтвержденное разрешение материала и синонимов в каталоге; геометрия проверяет точное совпадение.",
+      "test_ids": [
+        "T10",
+        "T26",
+        "T27"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R10",
+      "title": "Размеры в мм и поворот 90 градусов",
+      "owner": "claude2",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 5,7",
+      "decision": "Целые координаты, rot строго 0/1; нормализация единиц до решения.",
+      "ownership_scope": "Единицы геометрии и единственный разрешенный поворот.",
+      "test_ids": [
+        "T08",
+        "T10"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R11",
+      "title": "Отступ 5 мм",
+      "owner": "claude2",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 5",
+      "decision": "Границы проверяются по всей детали, за исключением специального правила калёного.",
+      "ownership_scope": "Валидатор границ и специальное исключение для каленого.",
+      "test_ids": [
+        "T08"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R12",
+      "title": "Зазор 3 мм и отсутствие пересечений",
+      "owner": "claude2",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 5",
+      "decision": "Проверка всех пар на каждом использованном остатке.",
+      "ownership_scope": "Попарные зазоры и отсутствие пересечений независимо от масштаба схемы.",
+      "test_ids": [
+        "T09",
+        "T13"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R13",
+      "title": "Одна деталь целиком и только один раз",
+      "owner": "claude2",
+      "support": [
+        "gptpro",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 5",
+      "decision": "Ссылочная целостность и уникальность part_id, никакой сборки из нескольких остатков.",
+      "ownership_scope": "Полнота и уникальность размещения; экспорт потребляет подтвержденный результат.",
+      "test_ids": [
+        "T12",
+        "T13"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R14",
+      "title": "Калёное ±2 мм, одна деталь на кусок",
+      "owner": "claude2",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 5",
+      "decision": "Отдельное точное сопоставление; отсутствие резки и стандартной обрези.",
+      "ownership_scope": "Отдельная ветка допустимости каленого без обычной резки.",
+      "test_ids": [
+        "T11"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R15",
+      "title": "Премиум запрещен на дефектном",
+      "owner": "claude2",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 5",
+      "decision": "Использовать флаг премиум, не угадывать его по типу изделия.",
+      "ownership_scope": "Запрет premium на defect по явным входным флагам.",
+      "test_ids": [
+        "T10"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R16",
+      "title": "NEW без раскладки новых листов",
+      "owner": "claude2",
+      "support": [
+        "gptpro",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 6",
+      "decision": "Экспорт NEW; не заявлять оптимизацию закупки целых листов.",
+      "ownership_scope": "Неразмещенные детали помечаются NEW; экспорт не выдумывает раскладку новых листов.",
+      "test_ids": [
+        "T12",
+        "T50"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R17",
+      "title": "Максимум площади, ноль ошибок",
+      "owner": "claude2",
+      "support": [
+        "gptpro",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 6,11",
+      "decision": "Основная цель конкурсного режима - площадь. Другие цели только отдельные сценарии.",
+      "ownership_scope": "Главная цель — площадь при валидности; доказуемый статус и сравнительный результат.",
+      "test_ids": [
+        "T13",
+        "T15"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R18",
+      "title": "Указать все детали в solution.csv",
+      "owner": "claude2",
+      "support": [
+        "gptpro",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 7",
+      "decision": "Точная схема part_id,remnant_id,x_mm,y_mm,rot; координаты от верхнего левого угла; NEW без координат.",
+      "ownership_scope": "Предметная полнота и сериализация решения; GPT Pro включает файл в единый экспорт.",
+      "test_ids": [
+        "T12",
+        "T51"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R19",
+      "title": "Формат строже валидатора",
+      "owner": "claude2",
+      "support": [
+        "gptpro",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "validate.py + PDF 7",
+      "decision": "Собственная проверка полноты и rot: официальный invalid=0 сам по себе не достаточен.",
+      "ownership_scope": "Строгая геометрическая и структурная проверка сверх штатного валидатора.",
+      "test_ids": [
+        "T12",
+        "T51"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R20",
+      "title": "Только база знаний для товаров/цен/правил",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 4,6",
+      "decision": "Интернет покупателей отделен от коммерческого каталога и ответов клиенту.",
+      "ownership_scope": "Коммерческие ответы используют только KB; источники покупателей изолированы.",
+      "test_ids": [
+        "T24",
+        "T25",
+        "T33"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R21",
+      "title": "Цены в тенге и расчет площади",
+      "owner": "claude3",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_started",
+      "source": "PDF 6",
+      "decision": "Площадь в м² × ставка; формула и тип цены сохраняются. Отклонение вычислений <=0.5%.",
+      "ownership_scope": "Детерминированный денежный расчет с формулой, единицами и версией ставок.",
+      "test_ids": [
+        "T28",
+        "T29"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R22",
+      "title": "Предварительная цена, подтверждение менеджера",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 6",
+      "decision": "Явная формулировка в клиентском ответе по размерам.",
+      "ownership_scope": "Предварительный характер расчета и подтверждение менеджера в ответе и интерфейсе.",
+      "test_ids": [
+        "T24",
+        "T28"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R23",
+      "title": "Не выдумывать наличие и сроки",
+      "owner": "claude3",
+      "support": [
+        "claude2",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 6",
+      "decision": "В открытом наборе можно подтвердить только соответствующий складской остаток; нет данных о сроках и запасах фурнитуры.",
+      "ownership_scope": "Запрет неподтвержденных сроков и наличия; актуальный склад — только через сервис остатков.",
+      "test_ids": [
+        "T23",
+        "T25"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R24",
+      "title": "Неизвестная позиция или цена передается менеджеру",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 6",
+      "decision": "Адресное уточнение; нет выдуманных чисел, сроков, скидок; негативные тесты пескоструя и AB1012.",
+      "ownership_scope": "Адресное уточнение и передача менеджеру вместо выдуманной позиции или цены.",
+      "test_ids": [
+        "T25",
+        "T27"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R25",
+      "title": "Скидки и акции не обещать",
+      "owner": "claude3",
+      "support": [
+        "gptpro",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 6",
+      "decision": "Оптовая цена из KB отделена от скидки. Цена карточки остатка по отдельной разрешенной формуле.",
+      "ownership_scope": "Политика коммерческих обещаний; разрешенная цена карточки реализуется отдельно GPT Pro.",
+      "test_ids": [
+        "T25",
+        "T49"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R26",
+      "title": "Монтаж не выполняется; оплата и доставка через менеджера",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 6, KB r1-r2",
+      "decision": "Никаких кнопок обещанного монтажа или встроенного приема платежа.",
+      "ownership_scope": "Правила монтажа, оплаты и доставки в ответах и инструментах ассистента.",
+      "test_ids": [
+        "T24",
+        "T25"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R27",
+      "title": "Короткий русский ответ",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 6",
+      "decision": "Подробности расчета и источники раскрываются в менеджерской панели отдельно.",
+      "ownership_scope": "Краткий русский ответ; UI отделяет объяснение для менеджера.",
+      "test_ids": [
+        "T24",
+        "T32"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R28",
+      "title": "Сопутствующие товары",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 4",
+      "decision": "Подбор из реального KB с ценой; не утверждать неизвестную совместимость, нагрузку или достаточное количество крепежа.",
+      "ownership_scope": "Сопутствующие позиции строго из KB без неподтвержденной совместимости.",
+      "test_ids": [
+        "T30"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R29",
+      "title": "answers.csv: id,answer; 30 закрытых вопросов",
+      "owner": "claude3",
+      "support": [
+        "gptpro",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 7",
+      "decision": "Каждый исходный id один раз; новые формулировки без lookup по ID.",
+      "ownership_scope": "Runtime генерация каждого ответа и предметная схема; GPT Pro собирает answers.csv в run.",
+      "test_ids": [
+        "T31",
+        "T50",
+        "T51"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R30",
+      "title": "Выбрать 25 разных app_id из 260 закрытых строк",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 4,7",
+      "decision": "Схема picks.csv: только app_id, уникальность и принадлежность исходному набору.",
+      "ownership_scope": "Отбор 25 уникальных app_id и точный picks.csv.",
+      "test_ids": [
+        "T40",
+        "T42",
+        "T50"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R31",
+      "title": "Объяснить отбор",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 4",
+      "decision": "Эталонное правило открыто описано; ML отдельно исследуется, его преимущество не обещается.",
+      "ownership_scope": "Объяснимый baseline и отдельная оценка ML без обещания превосходства.",
+      "test_ids": [
+        "T40",
+        "T41"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R32",
+      "title": "Метка = новая заявка в течение 60 дней",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 7,14",
+      "decision": "Не продажа, не uplift; отсутствие метки в закрытом наборе не превращается в ноль.",
+      "ownership_scope": "Корректная семантика метки, горизонта и отсутствующих данных.",
+      "test_ids": [
+        "T06",
+        "T41"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R33",
+      "title": "Напоминание по прошлому клиенту и предложению",
+      "owner": "gptpro",
+      "support": [
+        "claude2",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 4",
+      "decision": "Кандидат по группе интереса; нет выдуманной связи заказ-клиент. Локальная задача, без внешней рассылки.",
+      "ownership_scope": "Локальные напоминания с независимыми адресатом и предметом; актуальность остатка проверяет склад.",
+      "test_ids": [
+        "T42",
+        "T43",
+        "T44"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R34",
+      "title": "Найти неверную цену и исправить",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 4,7,11",
+      "decision": "Общий источник ставок, разные контракты сравнения. Допуск0.5% для расчета по размерам не переносить на вердикт: D06,10050 вместо10000, естьERROR. Разбирать денежное утверждение и единицы, а не все числа текста.",
+      "ownership_scope": "Разбор денежного утверждения, точный вердикт и отдельный числовой допуск исправления.",
+      "test_ids": [
+        "T37",
+        "T38",
+        "T39"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R35",
+      "title": "verdicts.csv: id,verdict,correct; 10 строк",
+      "owner": "claude3",
+      "support": [
+        "gptpro",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 7",
+      "decision": "OK/ERROR; ERROR с числом, допуск0.5. Дубли и пропуски запрещены.",
+      "ownership_scope": "Предметная полнота вердиктов; GPT Pro включает точный verdicts.csv в общий прогон.",
+      "test_ids": [
+        "T37",
+        "T50",
+        "T51"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R36",
+      "title": "Ровно 50 разных организаций",
+      "owner": "claude1",
+      "support": [
+        "gptpro"
+      ],
+      "status": "not_started",
+      "source": "PDF 8",
+      "decision": "Проверка всех 50, не только предполагаемой выборки жюри; филиалы не множат бизнес искусственно.",
+      "ownership_scope": "Исследование и подтверждение 50 разных публичных организаций; GPT Pro хранит и валидирует реестр.",
+      "test_ids": [
+        "T47"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R37",
+      "title": "Не менее 30 организаций в Астане",
+      "owner": "claude1",
+      "support": [
+        "gptpro"
+      ],
+      "status": "not_started",
+      "source": "PDF 8",
+      "decision": "Город подтвержден источником организации.",
+      "ownership_scope": "Подтвержденная география минимум 30 организаций Астаны.",
+      "test_ids": [
+        "T47"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R38",
+      "title": "Не менее 5 категорий",
+      "owner": "claude1",
+      "support": [
+        "gptpro"
+      ],
+      "status": "not_started",
+      "source": "PDF 8",
+      "decision": "Использовать разрешенные названия категорий из PDF.",
+      "ownership_scope": "Исследование покрытия минимум пяти разрешенных категорий.",
+      "test_ids": [
+        "T47"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R39",
+      "title": "Точная схема buyers_top50.csv",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 8",
+      "decision": "name,city,category,url,why,source_url,score; score в0-100 с объяснением релевантности.",
+      "ownership_scope": "Схема хранения, валидация и экспорт buyers_top50.csv; исследованные строки поставляет Claude1.",
+      "test_ids": [
+        "T47",
+        "T51"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R40",
+      "title": "Реальность, рабочая ссылка и профиль потребности",
+      "owner": "claude1",
+      "support": [
+        "gptpro"
+      ],
+      "status": "not_started",
+      "source": "PDF 8,11",
+      "decision": "Проверка URL и source_url; причина покупки - гипотеза соответствия профилю, не подтвержденный спрос.",
+      "ownership_scope": "Ручная проверка реальности, источников и обоснования спроса как гипотезы.",
+      "test_ids": [
+        "T47",
+        "T58"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R41",
+      "title": "5 карточек свободных исходных остатков",
+      "owner": "gptpro",
+      "support": [
+        "claude2",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 7",
+      "decision": "Генерировать после окончательного плана; перед экспортом проверить>=5 свободных; если нужно, сравнить альтернативный план и потерю площади.",
+      "ownership_scope": "Пять карточек от окончательного плана; склад подтверждает свободу и альтернативу с потерей площади.",
+      "test_ids": [
+        "T17",
+        "T48"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R42",
+      "title": "Цена 30-70% нового эквивалента",
+      "owner": "gptpro",
+      "support": [
+        "claude3",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 7",
+      "decision": "Площадь полного остатка × materials.csv × коэффициент. Результат после округления тоже внутри диапазона.",
+      "ownership_scope": "Цена карточки по materials.csv и проверка диапазона после округления; коммерческую формулу рецензирует Claude3.",
+      "test_ids": [
+        "T49"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R43",
+      "title": "Точная схема sale_cards.csv",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2"
+      ],
+      "status": "not_started",
+      "source": "PDF 7",
+      "decision": "remnant_id,title,price_tg,description,target_buyer,top3_buyers. Размеры в title/description; три разных имени из реестра через ;. Для калёного не обещать подрезку; применение и профиль покупателя должны быть правдоподобны.",
+      "ownership_scope": "Точная схема карточек, top3 из реестра и ограничения применимости остатков.",
+      "test_ids": [
+        "T49",
+        "T51"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R44",
+      "title": "M1-M5 и все семь показателей",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 4,15",
+      "decision": "Число заявок, среднее время ответа, конверсия, возвраты, средний чек, жалобы, скидки.",
+      "ownership_scope": "Вычисление семи исторических показателей M1–M5 и выдача drill-down.",
+      "test_ids": [
+        "T45",
+        "T60"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R45",
+      "title": "Явные знаменатели",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 4",
+      "decision": "Средний чек всех/проданных показать раздельно до уточнения. Возвраты по метке на строках и клиенты не смешиваются.",
+      "ownership_scope": "Явные знаменатели, NULL и раздельные определения среднего чека и возвратов.",
+      "test_ids": [
+        "T45"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R46",
+      "title": "История не меняется от симуляций склада",
+      "owner": "gptpro",
+      "support": [
+        "claude2",
+        "claude3",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "Данные CRM",
+      "decision": "Исторические агрегаты, прогнозы и новые операционные события разделены; SLA-очередь требует новых timestamp/status.",
+      "ownership_scope": "Исторические агрегаты не изменяются операционными событиями и сценариями.",
+      "test_ids": [
+        "T05",
+        "T46"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R47",
+      "title": "economics.pdf одна страница",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 9,11",
+      "decision": "Тенге и часы в месяц, формулы, допущения, расходы внедрения/эксплуатации и окупаемость.",
+      "ownership_scope": "Воспроизводимая экономика и одностраничный PDF; Claude1 проверяет читаемость.",
+      "test_ids": [
+        "T58",
+        "T61"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R48",
+      "title": "Открытый набор примерно месяц",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 11",
+      "decision": "Явно условная нормировка; не выдавать синтетическую историю за реальную деятельность KSM.",
+      "ownership_scope": "Явные допущения условной месячной нормировки.",
+      "test_ids": [
+        "T61"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R49",
+      "title": "Денежный эффект без двойного счета",
+      "owner": "gptpro",
+      "support": [
+        "claude2",
+        "claude3",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 11 + поля данных",
+      "decision": "Показать оценку материала и прирост к baseline; цена карточки не оплаченная выручка, задержка ответа не рабочие минуты.",
+      "ownership_scope": "Экономическая модель без двойного счета и выдачи оценки за выручку.",
+      "test_ids": [
+        "T61"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R50",
+      "title": "README.md",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 9",
+      "decision": "Название команды, назначение, запуск5мин, модели/сервисы, стоимость/месяц, ограничения и порядок внедрения.",
+      "ownership_scope": "README поставки, запуск, стоимость, модели и ограничения; UI и AI владельцы проверяют свои сведения.",
+      "test_ids": [
+        "T54",
+        "T58"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R51",
+      "title": "code/ и зафиксированные зависимости",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 9",
+      "decision": "Полный исходный код и точные версии; ключи сервисов не в публичной папке.",
+      "ownership_scope": "Исходники, зафиксированные зависимости, чистая сборка и исключение секретов.",
+      "test_ids": [
+        "T54",
+        "T55",
+        "T59"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R52",
+      "title": "examples.pdf по3примера каждой части",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 9",
+      "decision": "Включить3раскроя со схемами,3ответа,3напоминания; для полноты добавить3QA и3объяснения продажи.",
+      "ownership_scope": "PDF из фактических предметных результатов; Claude1 проверяет визуальное качество.",
+      "test_ids": [
+        "T58",
+        "T61"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R53",
+      "title": "Пять CSV в closed_run; buyers в корне",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 8-9",
+      "decision": "Экспорт отдельного чистого запуска, без добавочных столбцов; единый источник чисел.",
+      "ownership_scope": "Единый run и упаковка всех пяти CSV с правильным расположением buyers.",
+      "test_ids": [
+        "T50",
+        "T51"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R54",
+      "title": "Закрытый прогон29.11,10:00-11:00",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 8-10",
+      "decision": "Те же входные и выходные форматы, общий обычный путь обработки, без ручной подгонки под закрытые ответы.",
+      "ownership_scope": "Подготовка воспроизводимого закрытого прогона и измерение времени; результат будущего прогона заранее неизвестен.",
+      "test_ids": [
+        "T50",
+        "T62",
+        "T63"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R55",
+      "title": "Создание файлов на Drive до11:00, допуск11:05",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 9-10",
+      "decision": "Проверять фактическое создание на Drive; локальное время файла не является доказательством.",
+      "ownership_scope": "Подготовить файлы, хеши и инструкцию проверки фактического времени Drive; исполнение командой в срок.",
+      "test_ids": [
+        "T63"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R56",
+      "title": "Ссылка и заморозка до12:00",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 9-10",
+      "decision": "Папка GoogleDrive доступна всем по ссылке; отправка в личном кабинете. После12не менять содержимое.",
+      "ownership_scope": "Подготовить гостевую проверку и чек-лист фиксации; подача ссылки и заморозка требуют фактического действия команды.",
+      "test_ids": [
+        "T64"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R57",
+      "title": "Презентацию можно менять до14:00",
+      "owner": "claude1",
+      "support": [
+        "gptpro"
+      ],
+      "status": "not_started",
+      "source": "PDF 9-10",
+      "decision": "До6слайдов, запасной файл, свой ноутбук/адаптер; видео не обязательно.",
+      "ownership_scope": "Презентация до шести слайдов, резервный файл и подготовка к финальному сроку.",
+      "test_ids": [
+        "T60",
+        "T65"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R58",
+      "title": "Регистрация всей команды14:45-15:15",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 10",
+      "decision": "Организационное обязательство команды; не функция продукта.",
+      "ownership_scope": "Подготовить организационный чек-лист; регистрация и оборудование подтверждаются людьми, не тестом кода.",
+      "test_ids": [
+        "T66"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R59",
+      "title": "Питч3мин, вопросы2мин, смена1мин",
+      "owner": "claude1",
+      "support": [
+        "gptpro",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 10",
+      "decision": "Живое демо до30сек. Главный сценарий показывает все4звена; дополнительные готовы к вопросам.",
+      "ownership_scope": "Сценарий питча, тайминг и короткий живой маршрут через четыре звена.",
+      "test_ids": [
+        "T60"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R60",
+      "title": "Четыре ответа питча",
+      "owner": "claude1",
+      "support": [
+        "gptpro"
+      ],
+      "status": "not_started",
+      "source": "PDF 10",
+      "decision": "Что сделали, закрытые результаты/проверка, месячный эффект/допущения, первая неделя внедрения.",
+      "ownership_scope": "Четыре содержательных ответа питча на подтвержденных результатах и экономике.",
+      "test_ids": [
+        "T60",
+        "T61"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R61",
+      "title": "Совпадение чисел и ограничений",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 11-12",
+      "decision": "Все публичные цифры из финального запуска; тестирование именно открываемых жюри файлов.",
+      "ownership_scope": "Единый источник публичных чисел и сквозная проверка финальных артефактов.",
+      "test_ids": [
+        "T51",
+        "T52",
+        "T58",
+        "T61"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R62",
+      "title": "Разрешенные модели/библиотеки указаны",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 13",
+      "decision": "Не выдавать готовые компоненты за собственные; не сдавать чужой проект.",
+      "ownership_scope": "Сводный реестр происхождения и лицензий; каждый владелец сообщает свои компоненты.",
+      "test_ids": [
+        "T59",
+        "T67"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R63",
+      "title": "Учебные данные, не искать реальные данные клиентов KSM",
+      "owner": "gptpro",
+      "support": [
+        "claude3",
+        "claude1"
+      ],
+      "status": "not_started",
+      "source": "PDF 13",
+      "decision": "Не обогащать CRM реальными людьми и скрытыми источниками.",
+      "ownership_scope": "Границы обработки учебной CRM и запрет обогащения данными реальных клиентов.",
+      "test_ids": [
+        "T33",
+        "T59"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R64",
+      "title": "Только публичные организации, без контактов частных лиц",
+      "owner": "claude1",
+      "support": [
+        "gptpro",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 13",
+      "decision": "Нет личных телефонов/почт/страниц, нет внешней рассылки или звонков от имени KSM/GENESIS.",
+      "ownership_scope": "Исследование только публичных организаций, без частных контактов и внешних сообщений.",
+      "test_ids": [
+        "T47",
+        "T59"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R65",
+      "title": "Не получать закрытый набор заранее и не подгонять ответы",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 13",
+      "decision": "Зафиксированный до прогона pipeline, журнал входов и процедур, открытые ключи только для оценки.",
+      "ownership_scope": "Изоляция KEY, отсутствие утечек, журнал входов и одинаковый pipeline новых данных.",
+      "test_ids": [
+        "T31",
+        "T41",
+        "T50",
+        "T59"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "R66",
+      "title": "Права и передача кода по согласованию",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_started",
+      "source": "PDF 14",
+      "decision": "Публикация конкурсной папки не означает автоматическую передачу прав компании.",
+      "ownership_scope": "Подготовить описание условий передачи и компонентов; решения о правах принимают владельцы команды.",
+      "test_ids": [
+        "T67"
+      ],
+      "evidence": []
+    }
+  ],
+  "tests": [
+    {
+      "id": "T01",
+      "title": "Загрузить исходный пакет",
+      "group": "Импорт и данные",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "200 остатков, 298 деталей, 110 заказов, 700 заявок, 18 вопросов, 8 диалогов; исходные хеши сохранены",
+      "requirement_ids": [
+        "R02"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T02",
+      "title": "Повторить импорт, затем изменить одну строку",
+      "group": "Импорт и данные",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Нет дублей активных задач; измененные байты создают новую версию",
+      "requirement_ids": [],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T03",
+      "title": "Дубли ID, неизвестный material_id, отрицательный размер",
+      "group": "Импорт и данные",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Построчные ошибки; нет тихого удаления/подстановки",
+      "requirement_ids": [
+        "R02",
+        "R03"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T04",
+      "title": "Другие данные с теми же R/P/C ID",
+      "group": "Импорт и данные",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Нет связей и кеша между dataset_id",
+      "requirement_ids": [
+        "R08"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T05",
+      "title": "Изменить цены, резервы и размеры в рабочей копии",
+      "group": "Импорт и данные",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Конкурсный повтор на исходном снимке сохраняет расчетные значения и правила",
+      "requirement_ids": [
+        "R46"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T06",
+      "title": "Импорт без метки возврата",
+      "group": "Импорт и данные",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Фактические возвраты N/A, ранжирование работает без метки",
+      "requirement_ids": [
+        "R32"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T07",
+      "title": "Прервать запись импорта или результата",
+      "group": "Импорт и данные",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Нет частично активированного снимка или готового поврежденного файла",
+      "requirement_ids": [],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T08",
+      "title": "Обычная деталь ровно на границе 5 мм и на 1 мм за ней",
+      "group": "Геометрия",
+      "owner": "claude2",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Первое допустимо, второе отклонено",
+      "requirement_ids": [
+        "R10",
+        "R11"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T09",
+      "title": "Две детали с зазором 3 мм и 2 мм",
+      "group": "Геометрия",
+      "owner": "claude2",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Первое допустимо, второе отклонено независимо от масштаба SVG",
+      "requirement_ids": [
+        "R12"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T10",
+      "title": "Поворот, несовпадающий материал, premium на defect",
+      "group": "Геометрия",
+      "owner": "claude2",
+      "support": [
+        "claude1",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Поворот корректен; несовпадение и премиум на дефекте запрещены",
+      "requirement_ids": [
+        "R09",
+        "R10",
+        "R15"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T11",
+      "title": "Каленое совпадает в пределах 2 мм, затем 3 мм; две детали",
+      "group": "Геометрия",
+      "owner": "claude2",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Допуск 2 принимается без обычной обрези; 3 и две детали запрещены",
+      "requirement_ids": [
+        "R14"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T12",
+      "title": "Дублировать или пропустить part_id",
+      "group": "Геометрия",
+      "owner": "claude2",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Строгий экспорт блокирован, даже если официальный скрипт не ловит весь формат",
+      "requirement_ids": [
+        "R13",
+        "R16",
+        "R18",
+        "R19"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T13",
+      "title": "Сгенерировать случайные малые задачи",
+      "group": "Геометрия",
+      "owner": "claude2",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Внутренняя допустимость согласована с неизмененным validate.py",
+      "requirement_ids": [
+        "R12",
+        "R13",
+        "R17"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T14",
+      "title": "Остановить поиск по лимиту и отменить job",
+      "group": "Геометрия",
+      "owner": "claude2",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Последний валидный incumbent доступен; нет ложного OPTIMAL/INFEASIBLE",
+      "requirement_ids": [],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T15",
+      "title": "Полный обычный расчет открытого набора",
+      "group": "Геометрия",
+      "owner": "claude2",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Расширенный профиль не хуже 58,9523237% с числовым допуском 0,000001 процентного пункта; invalid=missing=0",
+      "requirement_ids": [
+        "R06",
+        "R17"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T16",
+      "title": "Изменить locks и исключить занятый кусок",
+      "group": "Геометрия",
+      "owner": "claude2",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Правильный diff; действующий план неизменен до подтверждения",
+      "requirement_ids": [],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T17",
+      "title": "План использует почти все куски",
+      "group": "Геометрия",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Пять карточек связаны с реально выбранным допустимым планом; потеря площади явно показана",
+      "requirement_ids": [
+        "R41"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T18",
+      "title": "Два клиента одновременно резервируют один кусок",
+      "group": "Состояния",
+      "owner": "claude2",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Один commit, второй 409; ни одной двойной активной резервации",
+      "requirement_ids": [],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T19",
+      "title": "Повторить запрос подтверждения с тем же ключом",
+      "group": "Состояния",
+      "owner": "claude2",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Тот же результат без повторной мутации; другое тело с тем же ключом отклонено",
+      "requirement_ids": [],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T20",
+      "title": "Добавить остаток, перезапустить, зарезервировать и списать",
+      "group": "Состояния",
+      "owner": "claude2",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Новый кусок сохранен с местом; после расхода история сохранена, кусок недоступен",
+      "requirement_ids": [
+        "R03",
+        "R04"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T21",
+      "title": "Создать новую цену после подтвержденного предложения",
+      "group": "Состояния",
+      "owner": "claude3",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Новая ревизия и diff; согласованная старая цена не переписана",
+      "requirement_ids": [],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T22",
+      "title": "Перетащить деталь в недопустимое положение",
+      "group": "Состояния",
+      "owner": "claude2",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "Причина видна; сервер не принимает размещение; черновик можно исправить",
+      "requirement_ids": [
+        "R06"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T23",
+      "title": "Изменить версию остатка во время AI-ответа",
+      "group": "Состояния",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Перед резервом повторная проверка; старый текст не подтверждает доступность",
+      "requirement_ids": [
+        "R23"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T24",
+      "title": "Исходные вопросы автоматически через runtime",
+      "group": "Ассистент и цены",
+      "owner": "claude3",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "15/15 selfcheck; дополнительные ручные проверки фактов, не только чисел",
+      "requirement_ids": [
+        "R20",
+        "R22",
+        "R26",
+        "R27"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T25",
+      "title": "Неизвестные AB1012, цены AB-моделей, фацет, сроки и скидка",
+      "group": "Ассистент и цены",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Конкретное уточнение/менеджер; нет выдуманных чисел и обещаний",
+      "requirement_ids": [
+        "R20",
+        "R23",
+        "R24",
+        "R25",
+        "R26"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T26",
+      "title": "Стекло серое без толщины и серое 8 мм",
+      "group": "Ассистент и цены",
+      "owner": "claude3",
+      "support": [
+        "claude1",
+        "claude2"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Не смешаны ставки 10 000 и 20 000; складское соответствие уточняется",
+      "requirement_ids": [
+        "R09"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T27",
+      "title": "Рифленое 8 мм 500×500, затем обычное прозрачное 8 мм",
+      "group": "Ассистент и цены",
+      "owner": "claude3",
+      "support": [
+        "claude1",
+        "claude2"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Известный лист 170 000, деталь неизвестна и unmapped; после уточнения 3 000 за стекло",
+      "requirement_ids": [
+        "R09",
+        "R24"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T28",
+      "title": "450×370 clear-6 с кромкой; затем 451×370; количество 2",
+      "group": "Ассистент и цены",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Для одной детали 1 988,00 и 1 991,76; две исходные стоят 3 976,00, наличие проверяется отдельно",
+      "requirement_ids": [
+        "R01",
+        "R05",
+        "R21",
+        "R22"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T29",
+      "title": "Фурнитура 99 и 100 штук; нет цены за м² у листа",
+      "group": "Ассистент и цены",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Правильный порог KB; отсутствующая ставка не вычислена из листа",
+      "requirement_ids": [
+        "R21"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T30",
+      "title": "Сопутствующая фурнитура и запрос совместимости",
+      "group": "Ассистент и цены",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "Реальные позиции KB; недоказанная техническая совместимость не обещается",
+      "requirement_ids": [
+        "R28"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T31",
+      "title": "18 вопросов с другими ID, перестановкой и перефразировкой",
+      "group": "Ассистент и цены",
+      "owner": "claude3",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Результат следует содержимому, не таблице сохраненных ID",
+      "requirement_ids": [
+        "R29",
+        "R65"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T32",
+      "title": "Не менее 60 независимых контрольных запросов",
+      "group": "Ассистент и цены",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "≥95% корректных действий/ответов и 0 неподтвержденных коммерческих обещаний; критические случаи повторены",
+      "requirement_ids": [
+        "R27"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T33",
+      "title": "Вход просит игнорировать каталог или выполнить команду",
+      "group": "Ассистент и цены",
+      "owner": "claude3",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Данные не становятся системными инструкциями; запрещенные инструменты недоступны",
+      "requirement_ids": [
+        "R20",
+        "R63"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T34",
+      "title": "429, timeout, поврежденный tool JSON, недоступный provider",
+      "group": "Ассистент и цены",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Ограниченные повторы, сохраненный контекст, ясный режим; нет платного fallback при free_only",
+      "requirement_ids": [],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T35",
+      "title": "Переключить Gemini на проверенную OpenRouter-модель",
+      "group": "Ассистент и цены",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "Те же контракты и проверки; фактическая модель записана",
+      "requirement_ids": [],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T36",
+      "title": "Отключить сеть полностью",
+      "group": "Ассистент и цены",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "Локальные расчеты/склад/CRM/аналитика работают; ограничения диалога явно указаны",
+      "requirement_ids": [],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T37",
+      "title": "Все 8 исходных диалогов через автоматический модуль",
+      "group": "Диалоги",
+      "owner": "claude3",
+      "support": [
+        "claude1",
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "5/5 selfcheck; результат не читается из KEY",
+      "requirement_ids": [
+        "R34",
+        "R35"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T38",
+      "title": "10 050 вместо 10 000; числа размера и модели рядом",
+      "group": "Диалоги",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "ERROR, correct=10000; размеры и код товара не признаны ценой",
+      "requirement_ids": [
+        "R34"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T39",
+      "title": "Неверные 13 000 и 700 в исходных контекстах",
+      "group": "Диалоги",
+      "owner": "claude3",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Исправления 10 000 и 400; абсолютный допуск correct ≤0,5",
+      "requirement_ids": [
+        "R34"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T40",
+      "title": "Baseline на исходных 700 заявках",
+      "group": "CRM и аналитика",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "25 разных app_id, совпадение стабильной сортировки; 20 положительных открытых меток",
+      "requirement_ids": [
+        "R30",
+        "R31"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T41",
+      "title": "Обучение/оценка модели с client-group и temporal split",
+      "group": "CRM и аналитика",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Нет утечки клиентов/горизонта; отчет сравнения с baseline на тех же разбиениях",
+      "requirement_ids": [
+        "R31",
+        "R32",
+        "R65"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T42",
+      "title": "25 заявок содержат несколько одного клиента",
+      "group": "CRM и аналитика",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "CSV сохраняет 25 строк; очередь сгруппирована; повторный импорт без дублей",
+      "requirement_ids": [
+        "R30",
+        "R33"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T43",
+      "title": "Создать напоминание другому клиенту после расчета",
+      "group": "CRM и аналитика",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Заказчик не меняется; предмет и адресат задачи сохранены отдельно",
+      "requirement_ids": [
+        "R01",
+        "R33"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T44",
+      "title": "Остаток напоминания занят до открытия/подтверждения",
+      "group": "CRM и аналитика",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Задача stale, предложение куска блокировано до переподбора/закрытия",
+      "requirement_ids": [
+        "R33"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T45",
+      "title": "Показать M1–M5 и drill-down каждого показателя",
+      "group": "CRM и аналитика",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "Все семь метрик, исходные строки, корректные знаменатели и NULL",
+      "requirement_ids": [
+        "R44",
+        "R45"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T46",
+      "title": "Изменить раскрой, цены и прогнозы",
+      "group": "CRM и аналитика",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Исторические показатели M1–M5 неизменны",
+      "requirement_ids": [
+        "R46"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T47",
+      "title": "Проверить полный реестр организаций",
+      "group": "Покупатели и сдача",
+      "owner": "claude1",
+      "support": [
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "50 уникальных, ≥30 Астана, ≥5 категорий, рабочие источники, score в диапазоне",
+      "requirement_ids": [
+        "R36",
+        "R37",
+        "R38",
+        "R39",
+        "R40",
+        "R64"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T48",
+      "title": "Сгенерировать карточки и затем изменить план",
+      "group": "Покупатели и сдача",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "5 свободных исходных кусков; занятые карточки stale, экспорт блокирует их",
+      "requirement_ids": [
+        "R41"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T49",
+      "title": "Граничные цены карточек и top3",
+      "group": "Покупатели и сдача",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Цена после округления в 30–70%; три разных точных name из реестра",
+      "requirement_ids": [
+        "R25",
+        "R42",
+        "R43"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T50",
+      "title": "Полный новый набор с измененными ID/размерами",
+      "group": "Покупатели и сдача",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Все пять выходов относятся к одному run; нет ручной подгонки",
+      "requirement_ids": [
+        "R02",
+        "R08",
+        "R16",
+        "R29",
+        "R30",
+        "R35",
+        "R53",
+        "R54",
+        "R65"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T51",
+      "title": "Скачать конечные CSV и запустить штатные скрипты на Windows",
+      "group": "Покупатели и сдача",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "UTF-8 без BOM, точные колонки, без UnicodeEncodeError, сохранены exit codes",
+      "requirement_ids": [
+        "R18",
+        "R19",
+        "R29",
+        "R35",
+        "R39",
+        "R43",
+        "R53",
+        "R61"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T52",
+      "title": "Посмотреть закрытые результаты без KEY",
+      "group": "Покупатели и сдача",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Нет придуманных официальных баллов assistant/CRM/dialogs",
+      "requirement_ids": [
+        "R61"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T53",
+      "title": "Один модуль прогона упал",
+      "group": "Покупатели и сдача",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Готовые части сохранены; частичный статус, никакой подмены чужими ответами",
+      "requirement_ids": [],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T54",
+      "title": "Чистый компьютер без Python/Node/Docker",
+      "group": "Поставка",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "manual",
+      "expected_result": "Запуск по README ≤5 минут; импорт и основной маршрут без помощи автора",
+      "requirement_ids": [
+        "R07",
+        "R50",
+        "R51"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T55",
+      "title": "Запустить frozen worker, остановить и перезапустить",
+      "group": "Поставка",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Нет рекурсивного spawn; interrupted корректен; подтвержденные данные сохранены",
+      "requirement_ids": [
+        "R51"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T56",
+      "title": "Создать backup при работе и восстановить",
+      "group": "Поставка",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "automated",
+      "expected_result": "Целостность и все данные сохранены; предыдущая база защищена",
+      "requirement_ids": [],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T57",
+      "title": "Проверить UI при 1366×768, 125%, клавиатурой",
+      "group": "Поставка",
+      "owner": "claude1",
+      "support": [
+        "claude2",
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "Основные действия видимы, нет обрезанных сумм/подписей, SVG имеет таблицу",
+      "requirement_ids": [
+        "R05",
+        "R07"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T58",
+      "title": "Осмотреть итоговые PDF и гостевые скачанные файлы",
+      "group": "Поставка",
+      "owner": "claude1",
+      "support": [
+        "gptpro",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "Читаемые страницы, реальные схемы, актуальные цифры, рабочие ссылки",
+      "requirement_ids": [
+        "R06",
+        "R40",
+        "R47",
+        "R50",
+        "R52",
+        "R61"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T59",
+      "title": "Проверить пакет, JS, логи и manifest",
+      "group": "Поставка",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "Нет ключей, приватных контактов, KEY в runtime или случайных локальных путей",
+      "requirement_ids": [
+        "R51",
+        "R62",
+        "R63",
+        "R64",
+        "R65"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T60",
+      "title": "Репетиция выступления с итоговой сборкой",
+      "group": "Поставка",
+      "owner": "claude1",
+      "support": [
+        "gptpro",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "manual",
+      "expected_result": "Питч ≤3 минут; суммарный live ≤30 секунд, показ M1–M5 включен",
+      "requirement_ids": [
+        "R01",
+        "R44",
+        "R57",
+        "R59",
+        "R60"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T61",
+      "title": "Сверить экономику, UI, README и слайды",
+      "group": "Поставка",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "Один источник чисел; раздельны факт/прогноз и открытый/закрытый результаты",
+      "requirement_ids": [
+        "R47",
+        "R48",
+        "R49",
+        "R52",
+        "R60",
+        "R61"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T62",
+      "title": "Замерить профиль производительности и AI квоты",
+      "group": "Поставка",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "mixed",
+      "expected_result": "Записаны фактические p95, машина, доступность и необходимый запас запросов",
+      "requirement_ids": [
+        "R54"
+      ],
+      "evidence": [],
+      "acceptance_result": null
+    },
+    {
+      "id": "T63",
+      "title": "29 ноября создать пять готовых файлов на Drive до 11:00",
+      "group": "Организация сдачи",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "manual",
+      "expected_result": "Проверены фактическое время создания, имена, хеши и гостевое скачивание; допуск 11:05 не планируется как основной срок",
+      "requirement_ids": [
+        "R54",
+        "R55"
+      ],
+      "evidence": [],
+      "acceptance_result": null,
+      "phase": "future",
+      "owner_role": "preparation_owner",
+      "execution_responsibility": "Команда: фактическое действие и проверка в нужный срок; агент готовит материалы и чек-лист.",
+      "completion_rule": "Подготовка не является выполнением. Не ставить PASS до фактического события и сохранения проверяемого подтверждения."
+    },
+    {
+      "id": "T64",
+      "title": "До 12:00 подать ссылку и зафиксировать папку",
+      "group": "Организация сдачи",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "manual",
+      "expected_result": "Ссылка принята личным кабинетом, гостевой доступ работает; содержимое после 12:00 не меняется",
+      "requirement_ids": [
+        "R56"
+      ],
+      "evidence": [],
+      "acceptance_result": null,
+      "phase": "future",
+      "owner_role": "preparation_owner",
+      "execution_responsibility": "Команда: фактическое действие и проверка в нужный срок; агент готовит материалы и чек-лист.",
+      "completion_rule": "Подготовка не является выполнением. Не ставить PASS до фактического события и сохранения проверяемого подтверждения."
+    },
+    {
+      "id": "T65",
+      "title": "Закончить презентацию до 14:00",
+      "group": "Организация сдачи",
+      "owner": "claude1",
+      "support": [
+        "gptpro"
+      ],
+      "status": "not_run",
+      "execution_mode": "manual",
+      "expected_result": "Не более шести слайдов, актуальные цифры, проверенная резервная копия",
+      "requirement_ids": [
+        "R57"
+      ],
+      "evidence": [],
+      "acceptance_result": null,
+      "phase": "future",
+      "owner_role": "preparation_owner",
+      "execution_responsibility": "Команда: фактическое действие и проверка в нужный срок; агент готовит материалы и чек-лист.",
+      "completion_rule": "Подготовка не является выполнением. Не ставить PASS до фактического события и сохранения проверяемого подтверждения."
+    },
+    {
+      "id": "T66",
+      "title": "Проверить явку и оборудование команды",
+      "group": "Организация сдачи",
+      "owner": "gptpro",
+      "support": [
+        "claude1"
+      ],
+      "status": "not_run",
+      "execution_mode": "manual",
+      "expected_result": "Вся команда зарегистрирована 14:45–15:15 по адресу кейса; ноутбук и переходник готовы",
+      "requirement_ids": [
+        "R58"
+      ],
+      "evidence": [],
+      "acceptance_result": null,
+      "phase": "future",
+      "owner_role": "preparation_owner",
+      "execution_responsibility": "Команда: фактическое действие и проверка в нужный срок; агент готовит материалы и чек-лист.",
+      "completion_rule": "Подготовка не является выполнением. Не ставить PASS до фактического события и сохранения проверяемого подтверждения."
+    },
+    {
+      "id": "T67",
+      "title": "Проверить происхождение компонентов и условия передачи",
+      "group": "Организация сдачи",
+      "owner": "gptpro",
+      "support": [
+        "claude1",
+        "claude2",
+        "claude3"
+      ],
+      "status": "not_run",
+      "execution_mode": "manual",
+      "expected_result": "Указаны модели/библиотеки и лицензии; передача прав компании только по отдельному согласованию",
+      "requirement_ids": [
+        "R62",
+        "R66"
+      ],
+      "evidence": [],
+      "acceptance_result": null,
+      "phase": "future",
+      "owner_role": "preparation_owner",
+      "execution_responsibility": "Команда: фактическое действие и проверка в нужный срок; агент готовит материалы и чек-лист.",
+      "completion_rule": "Подготовка не является выполнением. Не ставить PASS до фактического события и сохранения проверяемого подтверждения."
+    }
+  ]
+}

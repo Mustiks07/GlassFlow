@@ -1,0 +1,47 @@
+{
+  "materials": [
+    {
+      "material": "clear-4",
+      "patterns": 971,
+      "area_m2": 29.5356,
+      "gap": 0.0
+    },
+    {
+      "material": "clear-6",
+      "patterns": 816,
+      "area_m2": 26.4987,
+      "gap": 0.0
+    },
+    {
+      "material": "clear-8",
+      "patterns": 569,
+      "area_m2": 18.839100000000002,
+      "gap": 0.0
+    },
+    {
+      "material": "grey-8",
+      "patterns": 63,
+      "area_m2": 3.8785,
+      "gap": 0.0
+    },
+    {
+      "material": "bronze-8",
+      "patterns": 108,
+      "area_m2": 6.0096,
+      "gap": 0.0
+    },
+    {
+      "material": "mirror-4",
+      "patterns": 740,
+      "area_m2": 24.811700000000002,
+      "gap": 0.0
+    }
+  ],
+  "covered_parts": 195,
+  "used_remnants": 142,
+  "covered_area_m2": 110.7532,
+  "coverage": 0.58952323719015,
+  "money": 1017742.1500000004,
+  "invalid": [],
+  "note": "Feasible pattern pool MIP. Not a proof of globally optimal cutting."
+}

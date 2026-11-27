@@ -1,0 +1,68 @@
+{
+  "normal_materials": [
+    {
+      "material": "clear-4",
+      "variables": 1361,
+      "constraints": 1324,
+      "simple_area_bound_m2": 35.5861,
+      "premium_bound_m2": 82.4454,
+      "upper_bound_m2": 30.664099999999998,
+      "relaxed_feasible_m2": 29.90489999999998,
+      "solver_status": "Time limit reached. (HiGHS Status 13: Time limit reached)"
+    },
+    {
+      "material": "clear-6",
+      "variables": 702,
+      "constraints": 653,
+      "simple_area_bound_m2": 30.9999,
+      "premium_bound_m2": 54.5474,
+      "upper_bound_m2": 28.14032,
+      "relaxed_feasible_m2": 26.673099999999998,
+      "solver_status": "Time limit reached. (HiGHS Status 13: Time limit reached)"
+    },
+    {
+      "material": "clear-8",
+      "variables": 401,
+      "constraints": 324,
+      "simple_area_bound_m2": 18.8391,
+      "premium_bound_m2": 39.3116,
+      "upper_bound_m2": 18.8391,
+      "relaxed_feasible_m2": 18.8391,
+      "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)"
+    },
+    {
+      "material": "grey-8",
+      "variables": 52,
+      "constraints": 57,
+      "simple_area_bound_m2": 5.3794,
+      "premium_bound_m2": 14.5224,
+      "upper_bound_m2": 4.225100000000003,
+      "relaxed_feasible_m2": 4.225100000000003,
+      "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)"
+    },
+    {
+      "material": "bronze-8",
+      "variables": 82,
+      "constraints": 70,
+      "simple_area_bound_m2": 9.8342,
+      "premium_bound_m2": 17.9248,
+      "upper_bound_m2": 6.2701,
+      "relaxed_feasible_m2": 6.2701,
+      "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)"
+    },
+    {
+      "material": "mirror-4",
+      "variables": 872,
+      "constraints": 961,
+      "simple_area_bound_m2": 31.7463,
+      "premium_bound_m2": 28.1913,
+      "upper_bound_m2": 26.048900000000003,
+      "relaxed_feasible_m2": 24.5233999999994,
+      "solver_status": "Time limit reached. (HiGHS Status 13: Time limit reached)"
+    }
+  ],
+  "tempered_exact_m2": 1.18,
+  "upper_bound_m2": 115.36762,
+  "upper_bound_coverage": 0.6140851262927219,
+  "note": "Necessary conditions: material, premium, inflated area and pair incompatibility maximal cliques, integer assignment. This is an upper bound, not a feasible cutting plan."
+}

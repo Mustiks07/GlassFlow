@@ -1,0 +1,34 @@
+{
+  "certificate_verified": true,
+  "checker_requires_solver": false,
+  "normal_assignment_columns": 3470,
+  "nonzero_dual_constraints": 651,
+  "official_pair_incompatibility_checks": 52833,
+  "exact_bound_numerator_mm2": 117938921540103,
+  "exact_bound_denominator": 1000000,
+  "coverage_upper_bound": 0.6277717918492344,
+  "strictly_below_65_percent": true,
+  "tempered_bruteforce_area_m2": 1.18,
+  "tempered_bruteforce_assignment": [
+    [
+      "P0081",
+      "R061"
+    ],
+    [
+      "P0101",
+      "R131"
+    ],
+    [
+      "P0208",
+      "R155"
+    ],
+    [
+      "P0222",
+      "R186"
+    ]
+  ],
+  "validated_solution_coverage": 0.58952323719015,
+  "validated_solution_parts": 195,
+  "validated_solution_invalid": 0,
+  "validated_solution_score_of_20": 11.936431625353332
+}

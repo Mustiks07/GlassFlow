@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.pdf binary
+*.png binary
+*.jpg binary
+inputs/** -text -whitespace
+analysis/** -whitespace
+*.bat text eol=crlf

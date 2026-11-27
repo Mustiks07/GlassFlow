@@ -1,0 +1,63 @@
+{
+  "counts": {
+    "stock": 200,
+    "orders": 298,
+    "solution": 298,
+    "covered": 195,
+    "used_remnants": 142,
+    "unused_remnants": 58
+  },
+  "cutting_contract": {
+    "all_ids_once": true,
+    "official_invalid": [],
+    "rot_01_or_blank": true,
+    "at_least_five_unused": true
+  },
+  "scorer_limits": [
+    {
+      "test": "empty solution",
+      "official_invalid_count": 0,
+      "interpretation": "Missing parts are reported separately by CLI; own completeness gate is necessary."
+    },
+    {
+      "test": "rot 1 changed to 2",
+      "official_invalid_count": 0,
+      "interpretation": "Validator treats nonzero rotation as truthy; contract must enforce 0 or 1. Never exploit this."
+    },
+    {
+      "test": "price answer contains expected and contradictory number",
+      "parsed_numbers": [
+        4500.0,
+        9000.0
+      ],
+      "interpretation": "Numeric presence is not semantic correctness; human review and own factual checking remain necessary."
+    },
+    {
+      "test": "unknown answer repeats a dimension",
+      "has_price_claim": true,
+      "interpretation": "Numeric heuristic can flag a harmless dimension. Keep unknown-price escalation concise; preserve detail separately."
+    }
+  ],
+  "crm": {
+    "reference_positive": 20,
+    "selected_rows": 25,
+    "selected_unique_clients": 15,
+    "tie_at_cutoff": false,
+    "label_is_future_outcome": true
+  },
+  "price_roles": {
+    "savings_and_sale_cards": "materials.csv",
+    "customer_catalog_quote": "ksm_knowledge_base.json",
+    "whole_sheet_price": "independent catalog field; not derived from square-meter price",
+    "stock_change": "invalidates availability/allocation, not automatically customer catalog price"
+  },
+  "temporal_metrics": {
+    "historical_dashboard": "only observed labeled applications; stock replanning must not change them",
+    "closed_predictions": "no observed return label; display unavailable, not zero",
+    "live_sla": "requires operational timestamps/status not supplied by historical CSV"
+  },
+  "source_integrity": {
+    "files": 17,
+    "changed": []
+  }
+}

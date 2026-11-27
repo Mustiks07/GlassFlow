@@ -1,0 +1,14 @@
+{
+  "name": "glassflow-workspace",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "engines": {"node": ">=24 <25"},
+  "scripts": {
+    "dev": "pnpm --filter @glassflow/web dev",
+    "build": "pnpm --filter @glassflow/web build",
+    "typecheck": "pnpm --filter @glassflow/web typecheck",
+    "test": "pnpm --filter @glassflow/web test",
+    "contracts:generate": "openapi-typescript packages/contracts/openapi.json -o packages/contracts/schema.d.ts"
+  },
+  "devDependencies": {"openapi-typescript": "^7.6.1"}
+}
