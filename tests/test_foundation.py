@@ -10,13 +10,12 @@ from glassflow.main import create_app
 
 
 def test_health_and_honest_readiness(tmp_path):
-    with TestClient(create_app(tmp_path)) as client:
+    with TestClient(create_app(tmp_path, testing=True)) as client:
         assert client.get("/api/v1/health").json()["app"] == "GlassFlow"
-        assert client.get("/api/v1/ready").json() == {
-            "status": "foundation",
-            "database": True,
-            "business_modules_ready": False,
-        }
+        readiness = client.get("/api/v1/ready").json()
+        assert readiness["status"] == "degraded"
+        assert readiness["database"] and readiness["schema"] and readiness["worker"]
+        assert readiness["business_modules_ready"] is False
         response = client.get("/api/v1/datasets")
         assert response.status_code == 200
         assert response.json() == []

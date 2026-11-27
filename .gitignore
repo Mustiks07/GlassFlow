@@ -21,7 +21,7 @@ test-results/
 *.sqlite*
 .runtime/
 .tools/
-release/
+/release/
 output/
 analysis/**/preview/
 analysis/pdf_pages/

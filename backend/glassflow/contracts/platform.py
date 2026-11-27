@@ -3,6 +3,7 @@ from typing import Literal
 from pydantic import Field
 
 from .common import DTO, DatasetRequest, Identifier
+from .cutting import SolverConfig
 
 
 class Dataset(DTO):
@@ -45,7 +46,10 @@ class RunRequest(DatasetRequest):
     modules: list[Literal["cutting", "assistant", "crm", "quality", "cards"]] = Field(
         default_factory=lambda: ["cutting", "assistant", "crm", "quality", "cards"]
     )
-    config_version: str
+    config_version: Identifier
+    solver_config: SolverConfig = Field(default_factory=SolverConfig)
+    ai_profile: Literal["direct", "judge_gateway", "local_limited"] = "local_limited"
+    buyer_registry_version: str | None = None
 
 
 class ExportResult(DTO):

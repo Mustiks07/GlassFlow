@@ -26,6 +26,8 @@ def install_local_security(app, *, testing=False):
             if parsed.scheme not in {"http", "https"}:
                 return error_response(request, 403, "ORIGIN_FORBIDDEN", "Источник запроса не разрешен.")
         if request.method not in {"GET", "HEAD", "OPTIONS"}:
+            if getattr(app.state, "maintenance", False) and request.url.path != "/api/v1/system/shutdown":
+                return error_response(request, 503, "RESTORE_PENDING", "Восстановление ожидает перезапуска приложения.")
             presented = request.headers.get("x-glassflow-session") or request.cookies.get(
                 "glassflow_session", ""
             )

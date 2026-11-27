@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from contextlib import closing
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -80,7 +81,7 @@ def default_data_dir():
 
 
 def backup_database(source: Path, destination: Path):
-    with sqlite3.connect(source) as original, sqlite3.connect(destination) as target:
+    with closing(sqlite3.connect(source)) as original, closing(sqlite3.connect(destination)) as target:
         original.backup(target)
         if target.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
             raise RuntimeError("Backup integrity check failed")

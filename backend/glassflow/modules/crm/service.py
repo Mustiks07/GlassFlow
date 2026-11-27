@@ -239,9 +239,13 @@ def mutate_reminder(session, reminder_id, body, services, correlation, action):
         for field in ("due_at", "owner", "text"):
             if field in body.model_fields_set:
                 data[field] = getattr(body, field)
-        validated = ReminderRequest.model_validate(
-            {k: v for k, v in data.items() if k in ReminderRequest.model_fields}
-        )
+        from pydantic import ValidationError
+        try:
+            validated = ReminderRequest.model_validate(
+                {k: v for k, v in data.items() if k in ReminderRequest.model_fields}
+            )
+        except ValidationError:
+            raise AppError(422, "INVALID_REMINDER", "Проверьте срок, ответственного и поля задачи.") from None
         validate_recipient(session, validated)
         data.update(validated.model_dump())
         if body.state == "done":

@@ -52,3 +52,7 @@ class Readiness(DTO):
     status: Literal["foundation", "ready", "degraded"]
     database: bool
     business_modules_ready: bool
+    schema_ready: bool = Field(default=False, alias="schema")
+    worker: bool = False
+    ai: Literal["unavailable", "unchecked", "available"] = "unchecked"
+    modules: dict[str, bool] = Field(default_factory=dict)

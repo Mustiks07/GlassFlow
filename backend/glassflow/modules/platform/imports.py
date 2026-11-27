@@ -260,7 +260,8 @@ def inspect_files(files, *, supply_reference=True, require_complete=True):
             parsed[kind], originals[kind] = rows, (filename, content)
     if supply_reference:
         # Five-file closed import pins precisely the organizer reference sources.
-        reference = Path(__file__).resolve().parents[4] / "inputs" / "PACK_for_teams"
+        from glassflow.core.resources import resource_root
+        reference = resource_root() / "inputs" / "PACK_for_teams"
         reference_files = []
         for kind, rel in {
             "materials": "1_ostatki/materials.csv",
@@ -373,12 +374,12 @@ def commit(session, import_id, request, services, correlation):
     return dataset_dto(result).model_dump()
 
 
-def working_copy(session, source_id, name, services, correlation):
+def working_copy(session, source_id, name, services, correlation, mode="workspace"):
     source = dataset(session, source_id)
     copy = DatasetRow(
         id=uid(),
         name=name,
-        mode="workspace",
+        mode=mode,
         parent_id=source.id,
         fingerprint=source.fingerprint,
         source_hashes=dict(source.source_hashes),

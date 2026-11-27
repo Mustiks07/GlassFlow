@@ -21,6 +21,8 @@ class Services:
     # job kind -> importable handler callable(snapshot, context), no user-supplied paths.
     job_handlers: dict = field(default_factory=dict)
     ai_check: Any = None
+    readiness: dict = field(default_factory=dict)
+    result_hooks: dict = field(default_factory=dict)
 
     def check_subject(self, session, dataset_id, subject_type, subject_ref, version):
         if subject_type == "interest":

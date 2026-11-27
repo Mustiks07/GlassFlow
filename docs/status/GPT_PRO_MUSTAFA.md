@@ -39,3 +39,15 @@ C2/C3 domain services и C1 verified buyer evidence не объединялис�
 ## Следующий точный шаг
 
 Реализовать durable process worker и run coordinator, затем обучить/оценить CRM candidate на одинаковых group/temporal/random splits без продвижения недоказанной модели.
+
+## Checkpoint 2: durable pipeline, exports, safety (27 ноября)
+
+- Предыдущий опубликованный commit: `9055924`.
+- P-03: durable queued/running/completed/failed/cancelled/interrupted jobs; spawn CPU/network lanes; bounded cancellation, validated incumbent, restart interruption; coordinator-only result writer, optional atomic result_hooks. Прогон клонирует source в отдельный contest dataset. CRM работает; не зарегистрированные cutting/assistant/quality/cards получают SERVICE_NOT_REGISTERED; независимый CRM остается доступен.
+- P-04: выполнены 13 outer splits и train-only inner GroupKFold tuning. `docs/release/crm/evaluation.json` и hash JSON candidate artifact. Temporal day90: baseline 0.76, model 0.32; reference-v1 сохранен, модель не promoted и не probability. Никакого пользовательского pickle/joblib loader.
+- P-07: importer CSV+reviewer evidence, 50/30/5, allowed categories, score, names/entity dedupe, registry hashes; incomplete evidence -> needs_review. Cards используют injected C2 source/validator, original full piece, Decimal factor .30-.70, exact names/top3 IDs, versioned stale checks, factor/buyer edits. Реальный реестр C1 отсутствует; тесты явно synthetic.
+- P-08: exact five CSV schemas + buyers separate, ID completeness/uniqueness, NEW empty fields, NEEDS_REVIEW blocked. UTF8 no BOM, temp/close/reread/fsync/atomic directory publication; immutable validate.py subprocess с UTF8 stdout/stderr/exit/hash. Partial CRM скачивается через API с manifest; export replay idempotent. Тест all-NEW является synthetic проверкой формата, не solver acceptance.
+- P-09: server-side session-memory keys, free-only default, explicit paid budget; keys не сохраняются в DB. Backup SQLite API; исправлено реальное Windows file lock: sqlite connection context не закрывает handle, теперь используется contextlib.closing. Restore integrity/FK/schema, protected backups, explicit choice, maintenance и применение после restart.
+- P-10: launcher bind socket before startup, free port, /ready wait, browser, instance locks, graceful shutdown; PyInstaller spec и build script. Native worker source smoke PASS (SciPy MILP x=2, OR-Tools x=2, spawn). Первая actual Windows frozen сборка выполняется; результат еще NOT RUN.
+- Проверки: `uv run pytest` 33 PASS; ruff/check_foundation PASS; standard OpenAPI/TS regenerated. Foundation UI не менялся.
+- Следующий шаг: actual frozen worker/backend/restart smoke, CI и performance; gated PDF/economics/examples/release tools и финальный handoff. Доменная интеграция/real AI/clean Windows/реальные buyers/manual labor measurements остаются отдельными блокерами.

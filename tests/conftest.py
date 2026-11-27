@@ -20,7 +20,7 @@ def services():
 
 @pytest.fixture
 def client(tmp_path, services):
-    with TestClient(create_app(tmp_path, services)) as connection:
+    with TestClient(create_app(tmp_path, services, testing=True)) as connection:
         connection.get("/api/v1/health")
         yield connection
 

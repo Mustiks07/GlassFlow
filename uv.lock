@@ -252,6 +252,7 @@ name = "glassflow"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "alembic" },
     { name = "fastapi" },
     { name = "pydantic" },
     { name = "python-multipart" },
@@ -286,6 +287,7 @@ platform = [
 
 [package.metadata]
 requires-dist = [
+    { name = "alembic", specifier = ">=1.15,<2" },
     { name = "fastapi", specifier = ">=0.115,<1" },
     { name = "pydantic", specifier = ">=2.10,<3" },
     { name = "python-multipart", specifier = ">=0.0.20,<1" },

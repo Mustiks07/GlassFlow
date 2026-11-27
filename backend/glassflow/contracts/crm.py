@@ -104,12 +104,14 @@ class Buyer(DTO):
     why: str
     source_url: str
     score: int = Field(ge=0, le=100)
+    buyer_id: str | None = None
 
 
 class CardsRequest(DatasetRequest):
     plan_id: str
     plan_revision: int
     buyer_registry_version: str
+    factor: MoneyString = "0.50"
 
 
 class SaleCard(DTO):
@@ -119,3 +121,20 @@ class SaleCard(DTO):
     description: str
     target_buyer: str
     top3_buyers: list[str] = Field(min_length=3, max_length=3)
+    card_id: str | None = None
+    dataset_id: str | None = None
+    plan_id: str | None = None
+    plan_revision: int | None = None
+    remnant_version: int | None = None
+    buyer_registry_version: str | None = None
+    version: int = 0
+    status: Literal["draft", "ready", "stale"] = "draft"
+    factor: MoneyString = "0.50"
+    top3_buyer_ids: list[str] = Field(default_factory=list)
+    assumptions: str = "Коэффициент - проектное допущение, не рыночная оценка и не факт продажи"
+
+
+class CardUpdate(DatasetRequest):
+    expected_version: int = Field(ge=0, strict=True)
+    factor: MoneyString | None = None
+    top3_buyer_ids: list[str] | None = Field(default=None, min_length=3, max_length=3)
