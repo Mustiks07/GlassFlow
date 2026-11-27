@@ -66,6 +66,14 @@ async def preview_import(
         raise AppError(422, "FILES_REQUIRED", "Выберите ZIP или от одного до 20 файлов.")
     content, size = [], 0
     for upload in uploads:
+        from glassflow.modules.platform.imports import runtime_file_allowed
+
+        if not (upload.filename or "").lower().endswith(".zip") and not runtime_file_allowed(
+            upload.filename or ""
+        ):
+            content.append((upload.filename or "", b""))
+            await upload.close()
+            continue
         data = await upload.read(LIMIT + 1)
         size += len(data)
         if size > LIMIT:

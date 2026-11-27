@@ -87,6 +87,15 @@ def safe_name(name):
     return p.name
 
 
+def runtime_file_allowed(name):
+    filename = safe_name(name)
+    return (
+        filename.lower().endswith((".csv", ".json"))
+        and not re.search(r"(?:^|_)KEY(?:[_.]|$)", filename, re.I)
+        and filename.casefold() != "solution_example.csv"
+    )
+
+
 def unpack(files):
     output, warnings, total = [], [], 0
     for name, content in files:
@@ -106,6 +115,9 @@ def unpack(files):
                             continue
                         if member.flag_bits & 1 or (member.external_attr >> 16) & 0o170000 == 0o120000:
                             raise AppError(422, "UNSAFE_ARCHIVE", "Шифрованные файлы и ссылки запрещены.")
+                        if not runtime_file_allowed(member.filename):
+                            output.append((member.filename, b""))  # Inspect metadata, never evaluation body.
+                            continue
                         output.append((member.filename, archive.read(member)))
             except (zipfile.BadZipFile, RuntimeError, NotImplementedError):
                 raise AppError(422, "INVALID_ZIP", "Архив поврежден или не поддерживается.") from None
@@ -116,7 +128,11 @@ def unpack(files):
     accepted = []
     for name, content in output:
         filename = safe_name(name)
-        if re.search(r"(?:^|_)KEY(?:[_.]|$)", filename, re.I) or filename.endswith(".py") or filename == "solution_example.csv":
+        if (
+            re.search(r"(?:^|_)KEY(?:[_.]|$)", filename, re.I)
+            or filename.lower().endswith(".py")
+            or filename.casefold() == "solution_example.csv"
+        ):
             warnings.append(f"{filename}: evaluation/служебный файл исключен из runtime")
         elif filename.lower().endswith((".csv", ".json")):
             accepted.append((filename, content))

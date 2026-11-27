@@ -122,3 +122,22 @@ def test_local_boundary_and_safe_errors(client):
     response = client.post("/api/v1/imports/no/commit", json={"unexpected": "secret"})
     assert response.status_code == 422
     assert "secret" not in response.text and response.json()["correlation_id"]
+
+
+def test_zip_does_not_read_or_decompress_evaluation_bodies(uploads, monkeypatch):
+    archive = io.BytesIO()
+    with zipfile.ZipFile(archive, "w") as output:
+        for name, content in uploads:
+            output.writestr(name, content)
+        output.writestr("questions_open_KEY.csv", b"synthetic evaluation sentinel, never read")
+    original_read = zipfile.ZipFile.read
+
+    def guarded_read(self, name, *args, **kwargs):
+        filename = name.filename if isinstance(name, zipfile.ZipInfo) else str(name)
+        assert "_KEY" not in filename
+        return original_read(self, name, *args, **kwargs)
+
+    monkeypatch.setattr(zipfile.ZipFile, "read", guarded_read)
+    parsed, _, errors, warnings = inspect_files([("whole-source.zip", archive.getvalue())])
+    assert not errors and len(parsed) == 7
+    assert any("KEY" in warning for warning in warnings)
