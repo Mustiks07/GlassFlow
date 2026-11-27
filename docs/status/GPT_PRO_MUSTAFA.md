@@ -1,5 +1,19 @@
 # Статус GPT_PRO_MUSTAFA
 
+## U04 implementation checkpoint
+
+Контракты опубликованы `e88b7fc`. Реализован `/baskets`: typed multi-line draft, уточнения,
+canonical request/quote/customer fingerprints, whole-basket readiness/confirmation, atomic bundle reserve/release,
+warehouse/handover/cancel, version/history/idempotency и durable stale. total=null при любой неготовой строке;
+quantity/selected sides сохраняются в C3 request, total складывается из C3 line totals без повторного умножения.
+Parser использует общую network queue с KB snapshot и memory-only secrets; результат применяется явно,
+только если scope/version/input_hash совпадают. Чужой/старый результат не переписывает строки.
+`uv run pytest tests/platform/test_baskets.py -q`:12 PASS: current source/hash/owner/all-line coverage,
+unknown rate/fittings, конкурентные baskets/one piece, rollback после первой записи/изменения цены,
+replay с новым ключом без второго reserve, restart/history, catalog-only без material reserve, actual spawn parse job.
+Ruff PASS, OpenAPI/TS стандартно регенерированы. Это тесты с synthetic DB-backed domain seams, не C2/C3 E2E.
+Следующий шаг — U06 immutable ledger/migration, canonical consumption receipt и защита от повторного списания.
+
 ## U04/U06: работа после0daac98
 
 План v1.1/общие контракты/AGENTS перечитаны, main24049e1 только прочитан, без merge.
