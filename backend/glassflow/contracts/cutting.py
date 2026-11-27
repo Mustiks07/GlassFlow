@@ -94,6 +94,19 @@ class ReleaseRequest(DatasetRequest):
     reason: str = ""
 
 
+class ReserveRequest(DatasetRequest):
+    """Whole-piece reservation after an explicit manager confirmation (e.g. a confirmed quote)."""
+
+    expected_version: NonnegativeInt
+    owner_context: str = Field(min_length=1, max_length=256)
+    material_id: Identifier
+    dimensions: Dimensions
+    premium: bool = False
+    x_mm: NonnegativeInt | None = None
+    y_mm: NonnegativeInt | None = None
+    rot: Literal[0, 1] | None = None
+
+
 class ChildRemnant(DTO):
     dimensions: Dimensions
     location_raw: str = Field(min_length=1)

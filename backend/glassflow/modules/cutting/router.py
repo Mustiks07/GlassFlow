@@ -41,6 +41,7 @@ from glassflow.contracts.cutting import (
     Remnant,
     RemnantPage,
     RemnantUpdate,
+    ReserveRequest,
     SolutionExport,
     SolveInput,
     SolveRequest,
@@ -149,6 +150,13 @@ def withdraw_remnant(request: Request, remnant_id: str, body: WithdrawRequest):
 @router.post("/remnants/{remnant_id}/restore", response_model=InventoryChange)
 def restore_remnant(request: Request, remnant_id: str, body: ReleaseRequest):
     return _run(request, lambda s: s.restore(remnant_id, body), write=True)
+
+
+@router.post("/remnants/{remnant_id}/reserve", response_model=InventoryChange)
+def reserve_remnant(request: Request, remnant_id: str, body: ReserveRequest, idempotency_key: IdempotencyKey = None):
+    return _run(request, lambda s: s.idempotent(
+        body.dataset_id, "remnant.reserve", idempotency_key, {"remnant_id": remnant_id, **body.model_dump(mode="json")},
+        lambda: s.reserve(remnant_id, body)), write=True)
 
 
 @router.post("/remnants/{remnant_id}/consume", response_model=InventoryChange)

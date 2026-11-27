@@ -60,6 +60,7 @@ from glassflow.contracts.cutting import (
     RemnantPage,
     RemnantUpdate,
     Reservation,
+    ReserveRequest,
     SolutionExport,
     SolveInput,
     SolverConfig,
@@ -422,6 +423,47 @@ class CuttingService:
         event = self._audit(request.dataset_id, "remnant.restored", "remnant", remnant_id, before, row.version,
                             {"reason": request.reason})
         return InventoryChange(remnant=self._remnant_dto(row), audit_event_id=event)
+
+    def reserve(self, remnant_id: str, request: ReserveRequest) -> InventoryChange:
+        """available -> reserved for one confirmed request. Re-reads availability; stale UI text cannot reserve.
+
+        The whole piece is reserved (never an independent reservation per part). A piece used by the
+        committed plan is refused: that requires a joint replan and an explicit plan commit.
+        """
+        self._require_mutable(request.dataset_id)
+        row = self._remnant_row(request.dataset_id, remnant_id)
+        snapshot = self.load_snapshot(request.dataset_id)
+        remnant = snapshot.remnants[remnant_id]
+        part = PartSpec("__request__", request.owner_context, request.material_id, request.dimensions.length_mm,
+                        request.dimensions.width_mm, request.premium)
+        if request.material_id not in snapshot.materials:
+            raise CuttingError(422, "UNKNOWN_MATERIAL", f"Материал {request.material_id} отсутствует в materials.")
+        reason = pair_reason(snapshot, part, remnant)
+        if reason is not None:
+            raise CuttingError(409, reason, REASON_RU.get(reason, reason), conflict_objects=[remnant_id])
+        active = self._active_plan_row(request.dataset_id)
+        if active is not None and any(a.remnant_id == remnant_id for a in self._assignments(active)):
+            raise CuttingError(409, "OCCUPIED", REASON_RU["OCCUPIED"], conflict_objects=[remnant_id])
+        if request.x_mm is not None or request.y_mm is not None or request.rot is not None:
+            probe = Snapshot(snapshot.dataset_id, snapshot.materials, {remnant_id: remnant}, {"__request__": part})
+            report = validate_plan(probe, [Assignment("__request__", remnant_id, request.x_mm, request.y_mm,
+                                                      request.rot)])
+            if not report.valid:
+                raise CuttingError(422, report.issues[0].code, report.issues[0].message_ru, conflict_objects=[remnant_id])
+        before = row.version
+        self._cas(row, request.expected_version, {"available"}, status="reserved", status_reason=None)
+        res = CutReservation(id=str(uuid.uuid4()), dataset_id=request.dataset_id, remnant_row_id=row.id,
+                             plan_row_id=None, plan_id="", plan_revision=0, owner_context=request.owner_context,
+                             status="active", version=0, created_at=now())
+        self.session.add(res)
+        try:
+            self.session.flush()
+        except IntegrityError as exc:
+            raise CuttingError(409, "DOUBLE_RESERVATION", "Остаток уже зарезервирован.", retryable=True) from exc
+        event = self._audit(request.dataset_id, "remnant.reserved", "remnant", remnant_id, before, row.version,
+                            {"reservation_id": res.id, "owner_context": request.owner_context})
+        return InventoryChange(remnant=self._remnant_dto(row), reservation=self._reservation_dto(res),
+                               audit_event_id=event)
 
     def _reservation_dto(self, res: CutReservation) -> Reservation:
         remnant = self.session.get(CutRemnant, res.remnant_row_id)

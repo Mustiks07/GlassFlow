@@ -279,6 +279,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/remnants/{remnant_id}/reserve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reserve Remnant */
+        post: operations["reserve_remnant_api_v1_remnants__remnant_id__reserve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/remnants/{remnant_id}/consume": {
         parameters: {
             query?: never;
@@ -1978,6 +1995,32 @@ export interface components {
             /** Part Ids */
             part_ids?: string[];
         };
+        /**
+         * ReserveRequest
+         * @description Whole-piece reservation after an explicit manager confirmation (e.g. a confirmed quote).
+         */
+        ReserveRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Owner Context */
+            owner_context: string;
+            /** Material Id */
+            material_id: string;
+            dimensions: components["schemas"]["Dimensions"];
+            /**
+             * Premium
+             * @default false
+             */
+            premium: boolean;
+            /** X Mm */
+            x_mm?: number | null;
+            /** Y Mm */
+            y_mm?: number | null;
+            /** Rot */
+            rot?: (0 | 1) | null;
+        };
         /** RunRequest */
         RunRequest: {
             /** Dataset Id */
@@ -3014,6 +3057,70 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["ReleaseRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InventoryChange"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    reserve_remnant_api_v1_remnants__remnant_id__reserve_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "Idempotency-Key"?: string | null;
+            };
+            path: {
+                remnant_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReserveRequest"];
             };
         };
         responses: {

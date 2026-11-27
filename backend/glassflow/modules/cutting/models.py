@@ -151,7 +151,8 @@ class CutReservation(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
     dataset_id: Mapped[str] = mapped_column(ForeignKey("cut_datasets.dataset_id"), index=True)
     remnant_row_id: Mapped[str] = mapped_column(ForeignKey("cut_remnants.id"))
-    plan_row_id: Mapped[str] = mapped_column(ForeignKey("cut_plans.id"))
+    plan_row_id: Mapped[str | None] = mapped_column(ForeignKey("cut_plans.id"), nullable=True)
+    """NULL for a whole-piece reservation confirmed from a quote (owner_context = quote:<id>@<revision>)."""
     plan_id: Mapped[str] = mapped_column(String(64))
     plan_revision: Mapped[int] = mapped_column(Integer)
     owner_context: Mapped[str] = mapped_column(String(256), default="")
