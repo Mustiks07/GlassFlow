@@ -208,3 +208,24 @@ def test_catalog_routes(app_client):
     missing = app_client.get("/api/v1/catalog", params={"dataset_id": "unknown"})
     assert missing.status_code == 404 and missing.json()["code"] == "DATASET_NOT_FOUND"
     assert set(missing.json()) == {"code", "message_ru", "field_errors", "conflict_objects", "retryable", "correlation_id"}
+
+
+def test_t53_one_failed_row_keeps_other_answers(app_client, monkeypatch):
+    from glassflow.modules.intelligence.assistant import engine as engine_module
+
+    original = engine_module.AssistantEngine.turn
+
+    async def flaky(self, text, *args, **kwargs):
+        if "ОШИБКА" in text:
+            raise RuntimeError("simulated failure")
+        return await original(self, text, *args, **kwargs)
+
+    monkeypatch.setattr(engine_module.AssistantEngine, "turn", flaky)
+    result = app_client.post("/api/v1/assistant/batch", json={"dataset_id": "ds-a", "kb_version": kb_version(app_client), "questions": [
+        {"id": "A", "question": "Сколько стоит Стекло 4 мм прозрачное за квадратный метр?"},
+        {"id": "B", "question": "ОШИБКА"},
+        {"id": "C", "question": "Сколько стоит Стекло серое за квадратный метр?"},
+    ]}).json()
+    statuses = {row["id"]: row["status"] for row in result["answers"]}
+    assert statuses == {"A": "answered", "B": "failed", "C": "answered"}
+    assert result["complete"] is False and result["export_blockers"] == ["failed:B:RuntimeError"]
