@@ -261,4 +261,6 @@ if __name__ == "__main__":
     result = smoke(args.exe.resolve())
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    # Hosted Windows runners may expose a cp1252 console; the UTF-8 report above
+    # preserves the validator text while ASCII escaping keeps CI output portable.
+    print(json.dumps(result, ensure_ascii=True, indent=2))
