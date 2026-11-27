@@ -1,5 +1,16 @@
 # Статус GPT_PRO_MUSTAFA
 
+## Дополнения v1.1: PRO-R1 / A04
+
+Прочитаны review и strategy из `origin/main eaf81d6`, без merge. На исходном платформенном `052255d`
+добавлен управляемый конкурентный regression: validator заблокирован Event, новое cutting job коммитится,
+старые CSV/result_refs остались, provenance оказался новым. До исправления **FAIL** (`new != old`),
+после исправления `uv run pytest tests/platform/test_exports.py -q`: **4 PASS**.
+Теперь JSON provenance и run_data deep-copy захватываются в первой транзакции вместе с bytes/result_refs;
+после validator latest_jobs повторно не читается. Writer-lock во время validator отсутствует, следующий export
+получает новое job; опубликованный первый export остается доступен неизменным. Fixtures явно synthetic format-only.
+Следующий пункт: общий DTO/состояния U01, публикация контракта соседям перед implementation U03/A02/U07.
+
 - Ветка: `codex/gpt-pro-mustafa-platform`; отдельный worktree `GlassFlow-platform`.
 - Foundation: `16d63c6`.
 - Обновление: 27 ноября 2026, Asia/Qyzylorda.

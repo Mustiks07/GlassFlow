@@ -9,6 +9,7 @@ import re
 import shutil
 import subprocess
 import sys
+from copy import deepcopy
 from pathlib import Path
 
 from sqlalchemy import select
@@ -220,19 +221,21 @@ def prepare_export(session, run_id, services, correlation):
         errors.append("buyers: реестр не закреплен")
     return (
         run.dataset_id,
-        dict(run.data),
+        deepcopy(run.data),
         sources,
         prepared,
         errors,
         validators,
         {k: {"job_id": v.id, "state": v.state} for k, v in jobs.items()},
+        {k: deepcopy((v.result or {}).get("provenance", {"status": "not_recorded"}))
+         for k, v in jobs.items()},
     )
 
 
 def export_run(factory, run_id, data_dir, services, correlation):
     # Recheck + capture in a short writer transaction; external validator holds no DB lock.
     with write_transaction(factory) as session:
-        dataset_id, run_data, sources, prepared, errors, validators, result_refs = prepare_export(
+        dataset_id, run_data, sources, prepared, errors, validators, result_refs, provenance = prepare_export(
             session, run_id, services, correlation
         )
     export_id = uid()
@@ -276,12 +279,8 @@ def export_run(factory, run_id, data_dir, services, correlation):
             "files": hashes,
             "validators": validators,
             "result_refs": result_refs,
+            "module_provenance": provenance,
         }
-        with factory() as session:
-            manifest["module_provenance"] = {
-                j.kind: (j.result or {}).get("provenance", {"status": "not_recorded"})
-                for j in latest_jobs(session, run_id).values()
-            }
         (staging / "manifest.json").write_text(
             json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
         )

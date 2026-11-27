@@ -197,3 +197,68 @@ def test_all_five_exact_downloads_on_new_ids_with_explicit_domain_fixtures(clien
     manifest = client.get(result["files"]["manifest.json"]).json()
     assert manifest["validators"]["cutting_official"]["passed"]
     assert manifest["module_provenance"]["assistant"]["synthetic"] is True
+
+
+def test_export_pins_csv_refs_and_provenance_while_validator_waits(client, imported, monkeypatch):
+    """PRO-R1: controlled concurrent completion, with explicit synthetic solver outputs."""
+    from concurrent.futures import ThreadPoolExecutor
+    from threading import Event
+
+    from glassflow.contracts.platform import RunRequest
+    from glassflow.core.jobs import enqueue
+    from glassflow.modules.platform import exports
+    from glassflow.modules.platform.runs import create_run
+
+    factory = client.app.state.session_factory
+    with write_transaction(factory) as session:
+        started = create_run(
+            session, RunRequest(dataset_id=imported["dataset_id"], modules=["cutting"],
+                                config_version="synthetic-pro-r1"),
+            client.app.state.services, "pro-r1",
+        )
+        old = session.get(JobRow, started["job_id"])
+        dataset_id, old_id = old.dataset_id, old.id
+        rows = [{"part_id": r.public_id, "remnant_id": "NEW", "x_mm": "", "y_mm": "", "rot": ""}
+                for r in records(session, dataset_id, "orders")]
+        old.state, old.result = "completed", {
+            "rows": rows, "validated": True, "plan_id": "synthetic-old", "plan_revision": 1,
+            "provenance": {"attempt": "old", "nested": {"model": "synthetic-old"}},
+        }
+    entered, resume = Event(), Event()
+
+    def paused_validator(*args):
+        entered.set()
+        assert resume.wait(10), "Test did not release validator"
+        return {"passed": True, "fixture": "synthetic format-only validator"}
+
+    monkeypatch.setattr(exports, "official_cutting", paused_validator)
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        future = pool.submit(exports.export_run, factory, started["run_id"],
+                             client.app.state.data_dir, client.app.state.services, "pro-r1")
+        try:
+            assert entered.wait(10)
+            # This must commit while validation is paused: no writer-lock across validator.
+            with write_transaction(factory) as session:
+                new = enqueue(session, dataset_id, "cutting", {}, started["run_id"])
+                new.state, new.created_at = "completed", "2099-01-01T00:00:00+00:00"
+                new.result = {
+                    "rows": list(reversed(rows)), "validated": True,
+                    "plan_id": "synthetic-new", "plan_revision": 2,
+                    "provenance": {"attempt": "new", "nested": {"model": "synthetic-new"}},
+                }
+                session.flush()
+                new_id = new.id
+        finally:
+            resume.set()
+        first = future.result(timeout=10)
+    manifest = client.get(first["files"]["manifest.json"]).json()
+    assert client.get(first["files"]["solution.csv"]).content == exports.csv_bytes("solution.csv", rows)
+    assert manifest["result_refs"]["cutting"]["job_id"] == old_id
+    assert manifest["module_provenance"]["cutting"]["attempt"] == "old"
+    second = exports.export_run(factory, started["run_id"], client.app.state.data_dir,
+                                client.app.state.services, "pro-r1-next")
+    newer = client.get(second["files"]["manifest.json"]).json()
+    assert client.get(second["files"]["solution.csv"]).content == exports.csv_bytes("solution.csv", list(reversed(rows)))
+    assert newer["result_refs"]["cutting"]["job_id"] == new_id
+    assert newer["module_provenance"]["cutting"]["attempt"] == "new"
+    assert client.get(first["files"]["manifest.json"]).json() == manifest
