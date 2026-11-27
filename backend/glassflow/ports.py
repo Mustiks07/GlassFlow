@@ -15,6 +15,7 @@ from glassflow.contracts.cutting import (
     ValidationResult,
 )
 from glassflow.contracts.intelligence import DialogRequest, DialogVerdict, Quote, QuoteRequest
+from glassflow.contracts.orders import OrderFacts, OrderReservation
 
 
 class JobContext(Protocol):
@@ -59,3 +60,24 @@ class SalesSourcePort(Protocol):
     def validate_plan(self, session, dataset_id: str, plan: CutPlan) -> ValidationResult: ...
 
     def get_remnant(self, session, dataset_id: str, remnant_id: str) -> Remnant: ...
+
+
+class OrderSourcePort(Protocol):
+    """U01 composition of C3 facts and C2 inventory, always in caller's UoW.
+
+    No network, nested commit, alternate DB or cached availability. capture returns
+    current canonical facts, including quote/KB/mapping and inventory revisions.
+    reserve is an atomic compare-and-reserve for this order/revision. Return the
+    post-reservation inventory version. capture must recognize the owning order.
+    Conflicts expose current remnant/version and alternatives through AppError.
+    """
+
+    def capture(self, session, dataset_id: str, quote_id: str, remnant_id: str,
+                order_id: str) -> OrderFacts: ...
+
+    def reserve(self, session, facts: OrderFacts, order_id: str,
+                order_revision: int) -> OrderReservation: ...
+
+    def reservation(self, session, dataset_id: str, reservation_id: str) -> OrderReservation: ...
+
+    def release(self, session, reservation: OrderReservation) -> OrderReservation: ...
