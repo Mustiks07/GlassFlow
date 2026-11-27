@@ -91,7 +91,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E026",
@@ -133,7 +135,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E026",
@@ -175,7 +179,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E027",
@@ -217,7 +223,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E027",
@@ -259,7 +267,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E027",
@@ -301,7 +311,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E028",
@@ -351,7 +363,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E028",
@@ -393,7 +407,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E028",
@@ -431,7 +447,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E031",
@@ -477,7 +495,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E031",
@@ -527,7 +547,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E031",
@@ -569,7 +591,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E038",
@@ -611,7 +635,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E038",
@@ -648,7 +674,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E038",
@@ -685,7 +713,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E053",
@@ -727,7 +757,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E053",
@@ -769,7 +801,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E053",
@@ -811,7 +845,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E054",
@@ -855,7 +891,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E054",
@@ -903,7 +941,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E054",
@@ -947,7 +987,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E065",
@@ -985,7 +1027,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E065",
@@ -1023,7 +1067,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E065",
@@ -1061,7 +1107,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E069",
@@ -1103,7 +1151,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E069",
@@ -1145,7 +1195,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E069",
@@ -1179,7 +1231,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E072",
@@ -1217,7 +1271,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E072",
@@ -1255,7 +1311,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E072",
@@ -1293,7 +1351,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E079",
@@ -1335,7 +1395,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E079",
@@ -1377,7 +1439,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E079",
@@ -1419,7 +1483,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E080",
@@ -1457,7 +1523,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E080",
@@ -1495,7 +1563,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E080",
@@ -1533,7 +1603,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E015",
@@ -1571,7 +1643,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E015",
@@ -1611,7 +1685,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E015",
@@ -1651,7 +1727,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E020",
@@ -1693,7 +1771,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E020",
@@ -1735,7 +1815,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E020",
@@ -1777,7 +1859,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E041",
@@ -1815,7 +1899,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E041",
@@ -1853,7 +1939,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E041",
@@ -1891,7 +1979,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E047",
@@ -1933,7 +2023,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E047",
@@ -1975,7 +2067,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E047",
@@ -2017,7 +2111,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E061",
@@ -2055,7 +2151,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E061",
@@ -2093,7 +2191,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E061",
@@ -2131,7 +2231,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E074",
@@ -2180,7 +2282,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E074",
@@ -2230,7 +2334,9 @@
       "tool_errors": 0,
       "llm_status": "iteration_cap",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": false,
+      "cache_hit": false
     },
     {
       "id": "E074",
@@ -2280,7 +2386,9 @@
       "tool_errors": 0,
       "llm_status": "iteration_cap",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": false,
+      "cache_hit": false
     },
     {
       "id": "E084",
@@ -2318,7 +2426,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E084",
@@ -2356,7 +2466,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "E084",
@@ -2394,7 +2506,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H004",
@@ -2436,7 +2550,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H004",
@@ -2478,7 +2594,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H004",
@@ -2520,7 +2638,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H005",
@@ -2560,7 +2680,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H005",
@@ -2600,7 +2722,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H005",
@@ -2640,7 +2764,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H016",
@@ -2685,7 +2811,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H016",
@@ -2731,7 +2859,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H016",
@@ -2776,7 +2906,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H026",
@@ -2818,7 +2950,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H026",
@@ -2860,7 +2994,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H026",
@@ -2902,7 +3038,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H030",
@@ -2936,7 +3074,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H030",
@@ -2974,7 +3114,9 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     },
     {
       "id": "H030",
@@ -3008,7 +3150,29 @@
       "tool_errors": 0,
       "llm_status": "final",
       "llm_unsupported": [],
-      "fallback_model_used": false
+      "fallback_model_used": false,
+      "selected_model": true,
+      "cache_hit": false
     }
-  ]
+  ],
+  "acceptance_recomputed_with_f4_rules": {
+    "broad_24x3": {
+      "status": "FAIL",
+      "reasons": [
+        "online accuracy 0.814 < 0.95"
+      ],
+      "online_runs": 70,
+      "online_ok": 57,
+      "online_accuracy": 0.8143
+    },
+    "critical_12x3": {
+      "status": "FAIL",
+      "reasons": [
+        "online accuracy 0.861 < 0.95"
+      ],
+      "online_runs": 36,
+      "online_ok": 31,
+      "online_accuracy": 0.8611
+    }
+  }
 }

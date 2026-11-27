@@ -36,7 +36,8 @@ GEMINI_FREE_TIER_MODELS = {
     "gemini-3-flash-preview",
     "gemini-4-hydrogen",
 }
-MIN_ATTEMPT_SECONDS = 2.0  # do not start an attempt that cannot finish inside the turn deadline
+MIN_ATTEMPT_SECONDS = 2.0
+LONG_RETRY_AFTER_S = 60.0  # a Retry-After beyond this (daily quota) is not waited for inside a turn  # do not start an attempt that cannot finish inside the turn deadline
 OPENROUTER_FORBIDDEN_ROUTERS = {"openrouter/free", "openrouter/auto", "openrouter/auto:free"}
 
 
@@ -259,6 +260,12 @@ class ResilientClient:
         chain = self.chain()
         if not chain:
             raise ProviderError("unavailable", "Нет настроенного провайдера с ключом для AI-профиля.")
+        now = self.clock()
+        if all(self.unhealthy_until.get(label, 0) > deadline for label in chain):
+            # every verified model is out of quota/overloaded beyond this turn: fail fast, no network
+            wait = min(self.unhealthy_until[label] for label in chain) - now
+            raise ProviderError("rate_limit", "Квота или доступность всех моделей профиля исчерпана; работает локальный режим.",
+                                retry_after_s=wait)
         last_error: ProviderError | None = None
         attempts = 0
         for index, label in enumerate(chain):
@@ -308,6 +315,8 @@ class ResilientClient:
                     if error.kind in {"auth", "bad_request", "budget"}:
                         break  # try the next verified model only for model-specific problems
                     raise error
+                if error.kind == "rate_limit" and (error.retry_after_s or 0) > LONG_RETRY_AFTER_S:
+                    break  # e.g. daily quota: waiting inside a turn is pointless; breaker keeps it out until then
                 if attempt < self.profile.max_retries:
                     delay = backoff_delay(error, attempt, self.profile.backoff_base_s, self.rng)
                     if self.clock() + delay >= deadline:

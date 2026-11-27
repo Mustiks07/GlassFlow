@@ -1,0 +1,855 @@
+{
+ "summary": {
+  "kind": "live_online_critical_x3_partial",
+  "stopped_reason": "Gemini free tier daily quota exhausted: generate_content_free_tier_requests limit 500 per day per project per model (gemini-3.5-flash-lite), retry in ~10h28m (API message 27.11.2026)",
+  "runs_finished": 22,
+  "paths": {
+   "llm_tools": 0,
+   "fallback": 22,
+   "deterministic": 0
+  },
+  "acceptance": {
+   "status": "BLOCKED",
+   "reasons": [
+    "no confirmed call of the selected model"
+   ],
+   "online_runs": 0,
+   "online_accuracy": null
+  },
+  "shown_answers_ok_by_expectations": 22,
+  "note": "Deterministic fallbacks kept every shown answer correct, but they are NOT model quality; acceptance is BLOCKED.",
+  "provider_error_kinds": [
+   "rate_limit"
+  ]
+ },
+ "runs": [
+  {
+   "id": "E026",
+   "group": "compute",
+   "repeat": 0,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Стекло 6 мм прозрачное, 450×370 мм: 0,1665 м² × 8 000 ₸ = 1 332 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ = 656 ₸. Итого предварительно 1 988 ₸; окончательную стоимость подтверждает менеджер.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 61.2,
+   "model_attempts": 2,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 992,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "thought_tokens": 0,
+   "tools": [],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E026",
+   "group": "compute",
+   "repeat": 1,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Стекло 6 мм прозрачное, 450×370 мм: 0,1665 м² × 8 000 ₸ = 1 332 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ = 656 ₸. Итого предварительно 1 988 ₸; окончательную стоимость подтверждает менеджер.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 63.35,
+   "model_attempts": 4,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 3027,
+   "input_tokens": 3119,
+   "output_tokens": 94,
+   "thought_tokens": 0,
+   "tools": [
+    [
+     "search_catalog",
+     "ok"
+    ],
+    [
+     "calculate_quote",
+     "ok"
+    ]
+   ],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E026",
+   "group": "compute",
+   "repeat": 2,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Стекло 6 мм прозрачное, 450×370 мм: 0,1665 м² × 8 000 ₸ = 1 332 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ = 656 ₸. Итого предварительно 1 988 ₸; окончательную стоимость подтверждает менеджер.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 61.21,
+   "model_attempts": 2,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 950,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "thought_tokens": 0,
+   "tools": [],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E027",
+   "group": "compute",
+   "repeat": 0,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Стекло 6 мм прозрачное, 451×370 мм: 0,16687 м² × 8 000 ₸ = 1 334,96 ₸. Евро-кромка по всем 4 сторонам: 1,642 м × 400 ₸ = 656,80 ₸. Итого предварительно 1 991,76 ₸; окончательную стоимость подтверждает менеджер.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 62.14,
+   "model_attempts": 3,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 1899,
+   "input_tokens": 1465,
+   "output_tokens": 25,
+   "thought_tokens": 0,
+   "tools": [
+    [
+     "search_catalog",
+     "ok"
+    ]
+   ],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E027",
+   "group": "compute",
+   "repeat": 1,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Стекло 6 мм прозрачное, 451×370 мм: 0,16687 м² × 8 000 ₸ = 1 334,96 ₸. Евро-кромка по всем 4 сторонам: 1,642 м × 400 ₸ = 656,80 ₸. Итого предварительно 1 991,76 ₸; окончательную стоимость подтверждает менеджер.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 61.97,
+   "model_attempts": 3,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 1884,
+   "input_tokens": 1465,
+   "output_tokens": 25,
+   "thought_tokens": 0,
+   "tools": [
+    [
+     "search_catalog",
+     "ok"
+    ]
+   ],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E027",
+   "group": "compute",
+   "repeat": 2,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Стекло 6 мм прозрачное, 451×370 мм: 0,16687 м² × 8 000 ₸ = 1 334,96 ₸. Евро-кромка по всем 4 сторонам: 1,642 м × 400 ₸ = 656,80 ₸. Итого предварительно 1 991,76 ₸; окончательную стоимость подтверждает менеджер.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 62.12,
+   "model_attempts": 3,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 1855,
+   "input_tokens": 1465,
+   "output_tokens": 25,
+   "thought_tokens": 0,
+   "tools": [
+    [
+     "search_catalog",
+     "ok"
+    ]
+   ],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E028",
+   "group": "quantity",
+   "repeat": 0,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Стекло 6 мм прозрачное, 450×370 мм, 2 шт: 0,1665 м² × 8 000 ₸ × 2 = 2 664 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ × 2 = 1 312 ₸. Итого предварительно 3 976 ₸; окончательную стоимость подтверждает менеджер.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 61.14,
+   "model_attempts": 2,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 942,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "thought_tokens": 0,
+   "tools": [],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E028",
+   "group": "quantity",
+   "repeat": 1,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Стекло 6 мм прозрачное, 450×370 мм, 2 шт: 0,1665 м² × 8 000 ₸ × 2 = 2 664 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ × 2 = 1 312 ₸. Итого предварительно 3 976 ₸; окончательную стоимость подтверждает менеджер.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 62.17,
+   "model_attempts": 3,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 1880,
+   "input_tokens": 1467,
+   "output_tokens": 25,
+   "thought_tokens": 0,
+   "tools": [
+    [
+     "search_catalog",
+     "ok"
+    ]
+   ],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E028",
+   "group": "quantity",
+   "repeat": 2,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Стекло 6 мм прозрачное, 450×370 мм, 2 шт: 0,1665 м² × 8 000 ₸ × 2 = 2 664 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ × 2 = 1 312 ₸. Итого предварительно 3 976 ₸; окончательную стоимость подтверждает менеджер.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 62.08,
+   "model_attempts": 3,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 1904,
+   "input_tokens": 1467,
+   "output_tokens": 28,
+   "thought_tokens": 0,
+   "tools": [
+    [
+     "search_catalog",
+     "ok"
+    ]
+   ],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E031",
+   "group": "unknown_price",
+   "repeat": 0,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Стекло 8 мм прозрачное, 500×500 мм: 0,25 м² × 12 000 ₸ = 3 000 ₸. Ставки евро-кромки для 8 мм в базе нет; цену назовет менеджер.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 61.01,
+   "model_attempts": 2,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 924,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "thought_tokens": 0,
+   "tools": [],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E031",
+   "group": "unknown_price",
+   "repeat": 1,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Стекло 8 мм прозрачное, 500×500 мм: 0,25 м² × 12 000 ₸ = 3 000 ₸. Ставки евро-кромки для 8 мм в базе нет; цену назовет менеджер.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 62.15,
+   "model_attempts": 3,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 1858,
+   "input_tokens": 1464,
+   "output_tokens": 27,
+   "thought_tokens": 0,
+   "tools": [
+    [
+     "search_catalog",
+     "ok"
+    ]
+   ],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E031",
+   "group": "unknown_price",
+   "repeat": 2,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Стекло 8 мм прозрачное, 500×500 мм: 0,25 м² × 12 000 ₸ = 3 000 ₸. Ставки евро-кромки для 8 мм в базе нет; цену назовет менеджер.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 63.06,
+   "model_attempts": 4,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 2803,
+   "input_tokens": 3146,
+   "output_tokens": 52,
+   "thought_tokens": 0,
+   "tools": [
+    [
+     "search_catalog",
+     "ok"
+    ],
+    [
+     "search_catalog",
+     "ok"
+    ]
+   ],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E038",
+   "group": "unknown_price",
+   "repeat": 0,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Ставки за м² для «Рифлёное стекло прозрачное 8 мм» в базе нет — есть только цена целого листа; стоимость детали рассчитает менеджер. Уточните, пожалуйста, размеры и количество — передам запрос менеджеру.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 61.29,
+   "model_attempts": 2,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 979,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "thought_tokens": 0,
+   "tools": [],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E038",
+   "group": "unknown_price",
+   "repeat": 1,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Ставки за м² для «Рифлёное стекло прозрачное 8 мм» в базе нет — есть только цена целого листа; стоимость детали рассчитает менеджер. Уточните, пожалуйста, размеры и количество — передам запрос менеджеру.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 61.23,
+   "model_attempts": 2,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 1080,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "thought_tokens": 0,
+   "tools": [],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E038",
+   "group": "unknown_price",
+   "repeat": 2,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Ставки за м² для «Рифлёное стекло прозрачное 8 мм» в базе нет — есть только цена целого листа; стоимость детали рассчитает менеджер. Уточните, пожалуйста, размеры и количество — передам запрос менеджеру.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 61.23,
+   "model_attempts": 2,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 993,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "thought_tokens": 0,
+   "tools": [],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E053",
+   "group": "unknown_price",
+   "repeat": 0,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Цена этой модели зеркала в базе не указана — стоимость рассчитает менеджер. Уточните, пожалуйста, размер и вариант подсветки — передам запрос менеджеру.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 61.0,
+   "model_attempts": 2,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 919,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "thought_tokens": 0,
+   "tools": [],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E053",
+   "group": "unknown_price",
+   "repeat": 1,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Цена этой модели зеркала в базе не указана — стоимость рассчитает менеджер. Уточните, пожалуйста, размер и вариант подсветки — передам запрос менеджеру.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 62.32,
+   "model_attempts": 3,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 2139,
+   "input_tokens": 1452,
+   "output_tokens": 20,
+   "thought_tokens": 0,
+   "tools": [
+    [
+     "search_catalog",
+     "ok"
+    ]
+   ],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E053",
+   "group": "unknown_price",
+   "repeat": 2,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Цена этой модели зеркала в базе не указана — стоимость рассчитает менеджер. Уточните, пожалуйста, размер и вариант подсветки — передам запрос менеджеру.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 61.14,
+   "model_attempts": 2,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 1042,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "thought_tokens": 0,
+   "tools": [],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E054",
+   "group": "unknown_price",
+   "repeat": 0,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Модели AB1012 в каталоге нет — подобрать вариант и назвать цену поможет менеджер. Уточните, пожалуйста, размер и вариант подсветки — передам запрос менеджеру.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 62.06,
+   "model_attempts": 3,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 1793,
+   "input_tokens": 1455,
+   "output_tokens": 20,
+   "thought_tokens": 0,
+   "tools": [
+    [
+     "search_catalog",
+     "ok"
+    ]
+   ],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E054",
+   "group": "unknown_price",
+   "repeat": 1,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Модели AB1012 в каталоге нет — подобрать вариант и назвать цену поможет менеджер. Уточните, пожалуйста, размер и вариант подсветки — передам запрос менеджеру.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 61.08,
+   "model_attempts": 2,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 1011,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "thought_tokens": 0,
+   "tools": [],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E054",
+   "group": "unknown_price",
+   "repeat": 2,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Модели AB1012 в каталоге нет — подобрать вариант и назвать цену поможет менеджер. Уточните, пожалуйста, размер и вариант подсветки — передам запрос менеджеру.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 60.97,
+   "model_attempts": 2,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 936,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "thought_tokens": 0,
+   "tools": [],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  },
+  {
+   "id": "E065",
+   "group": "rule",
+   "repeat": 0,
+   "ok": true,
+   "reasons": [],
+   "unsupported_shown_claims": [],
+   "answer": "Скидок и акций помощник не обещает: условия называет только менеджер. Предварительную стоимость по прайсу могу рассчитать сразу.",
+   "answer_path": "fallback",
+   "verifier_status": "not_applicable",
+   "mode": "local_limited",
+   "model_id": null,
+   "seconds": 61.23,
+   "model_attempts": 2,
+   "provider_errors": [
+    "rate_limit",
+    "rate_limit"
+   ],
+   "provider_error_messages": [
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T",
+    "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+   ],
+   "queue_ms": 0,
+   "provider_ms": 1079,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "thought_tokens": 0,
+   "tools": [],
+   "tool_errors": 0,
+   "llm_status": "provider_error",
+   "llm_unsupported": [],
+   "fallback_model_used": false,
+   "cache_hit": false,
+   "selected_model": false
+  }
+ ]
+}

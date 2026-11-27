@@ -294,3 +294,23 @@ def test_failing_primary_cannot_starve_fallback():
     outcome = run(client.call(_req(), deadline=time.monotonic() + 5.2))
     assert outcome.response.text == "ok"
     assert len(slow.requests) < 3  # stopped retrying the primary within its share of the deadline
+
+
+def test_daily_quota_retry_after_is_not_waited_and_fails_fast_next_time():
+    # Live finding: free tier answered 429 RESOURCE_EXHAUSTED with retryDelay ≈ 37 710 s (500 RPD).
+    sleeps = []
+
+    async def fake_sleep(seconds):
+        sleeps.append(seconds)
+
+    quota = ProviderError("rate_limit", "429 daily quota", retry_after_s=37_710)
+    provider = ScriptedProvider([quota, quota])
+    clock = [0.0]
+    client = ResilientClient(profile=profile(fallbacks=[]), providers={"gemini:gemini-3.8-flash": provider},
+                             ledger=MemoryLedger(), prompt_version="t", sleep=fake_sleep, clock=lambda: clock[0])
+    with pytest.raises(ProviderError):
+        run(client.call(_req(), deadline=clock[0] + 90))
+    assert sleeps == [] and len(provider.requests) == 1  # no 60 s waits, no repeated doomed requests
+    with pytest.raises(ProviderError) as info:
+        run(client.call(_req(), deadline=clock[0] + 90))
+    assert info.value.kind == "rate_limit" and len(provider.requests) == 1  # fast fail, no network
