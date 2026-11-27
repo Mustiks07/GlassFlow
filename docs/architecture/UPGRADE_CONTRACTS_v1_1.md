@@ -29,6 +29,30 @@ Offer содержит canonical C3 Quote, warehouse — canonical C2 Remnant + 
 Неизвестное место остается пустым с location_known=false. Stale лист не выдает действующее предложение/задание.
 Ни цена, ни совместимость, ни координаты не вычисляются в платформе.
 
+### PRO-U01-F1: принадлежность расчета
+
+`OrderFacts.quote_customer_ref` — клиент **сохраненного расчета C3**, прочитанный capture в том же Session.
+Это поле заполняет canonical adapter из quote repository; его нельзя копировать из OrderSheet.customer_ref,
+запроса bind, текущего менеджера или источника reminder. Bind не принимает клиентское утверждение о владельце.
+Если объединенный C3 Quote имеет `customer_id`, он должен точно совпадать с quote_customer_ref.
+Все три идентификатора — customer_ref листа, quote_customer_ref и (если есть) Quote.customer_id — согласованы.
+
+- Известный чужой клиент ->409 QUOTE_CUSTOMER_MISMATCH до bind/confirm/reserve.
+- Нет подтвержденного владельца (null/legacy missing) ->409 QUOTE_CUSTOMER_REQUIRED.
+- Противоречие explicit attestation и Quote.customer_id ->409 QUOTE_CUSTOMER_INCONSISTENT.
+
+Анонимный расчет остается самостоятельным черновиком C3; заказ можно создать без привязанного расчета.
+Для binding сначала требуется **явное** назначение клиента в C3 либо новый расчет нужного клиента.
+Платформа не присваивает anonymous quote автоматически и не переписывает клиента чужого расчета.
+Ownership включен в facts_hash. Перед confirm/reserve/warehouse-check/handover выполняется current capture;
+изменение принадлежности сохраняет durable stale, stale_code и историю, текущие формы скрываются.
+Уже сохраненная неизвестная принадлежность не восстанавливается автоматически из клиента заказа: explicit rebind.
+Для разрешения конфликта нужен корректный расчет и новый bind; если есть активный резерв, сначала explicit release.
+Историческое подтвержденное предложение сохраняется как snapshot прежнего события, не как текущая готовность.
+Post-reserve capture также проверяет клиента: конфликт откатывает C2 mutation и платформу в одной transaction.
+Idempotent replay — сохраненный результат прежней команды; текущая готовность читается через GET/recheck.
+После merge повторить на actual C3 quote repository/C2 reservation service, без копирования правил C3 в Pro.
+
 Регистрация: `Services.order_source: OrderSourcePort` (см. ports.py), реализует интегратор из C2/C3:
 
 - capture(session,dataset_id,quote_id,remnant_id,order_id) -> current OrderFacts:

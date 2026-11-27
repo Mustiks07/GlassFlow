@@ -57,7 +57,7 @@ def mutate(order_id, body, action, request, key):
                             lambda: orders.apply(session, order_id, body, action,
                                                   request.app.state.services, request.state.correlation_id))
     if result.get("conflict"):
-        raise AppError(409, result["conflict"], "Лист устарел; перечитайте его и привяжите новые факты.",
+        raise AppError(409, result["conflict"], result["sheet"].get("stale_reason") or "Лист устарел; привяжите новые факты.",
                        conflicts=[f"order:{order_id}:{result['sheet']['version']}",
                                   *result["sheet"]["stale_conflicts"]])
     return result["sheet"]

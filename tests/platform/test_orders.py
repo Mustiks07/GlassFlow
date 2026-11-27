@@ -2,8 +2,10 @@
 
 from concurrent.futures import ThreadPoolExecutor
 
+import pytest
 from fastapi.testclient import TestClient
 
+from glassflow.contracts.intelligence import Quote
 from glassflow.contracts.orders import OrderFacts, OrderReservation
 from glassflow.core.errors import AppError
 from glassflow.core.models import ObjectRow
@@ -58,7 +60,7 @@ def setup(client, imported, services):
         remnant=dict(dataset_id=d, remnant_id="synthetic-R", material_id="synthetic-clear",
                      dimensions=dict(length_mm=1000, width_mm=1000), defect=False, location_raw="",
                      status="available", version=0), requested_dimensions=dict(length_mm=450, width_mm=370),
-        quantity=1, kb_version="synthetic-kb1", mapping_version="synthetic-map1", compatible=True,
+        quantity=1, quote_customer_ref="C-test", kb_version="synthetic-kb1", mapping_version="synthetic-map1", compatible=True,
         alternative_remnant_ids=["synthetic-alternative"])
     with write_transaction(client.app.state.session_factory) as session:
         session.add(ObjectRow(dataset_id=d, kind="synthetic", id="facts", version=0, data=facts))
@@ -182,3 +184,128 @@ def test_order_reserve_and_source_changes_share_rollback(client, imported, servi
         facts = OrderFacts.model_validate(session.get(ObjectRow, (d, "synthetic", "facts")).data)
         assert facts.remnant.status == "available" and facts.quote.total_tg == "1988"
         assert session.get(ObjectRow, (d, "synthetic", "synthetic-reservation")) is None
+
+
+@pytest.mark.parametrize("owner,code", [("C-other", "QUOTE_CUSTOMER_MISMATCH"), (None, "QUOTE_CUSTOMER_REQUIRED"),
+                                       ("missing", "QUOTE_CUSTOMER_REQUIRED")])
+def test_bind_rejects_other_or_anonymous_quote_customer_without_mutations(client, imported, services, owner, code):
+    d = setup(client, imported, services)
+    sheet = new_order(client, d, "f1-unbound")
+    with write_transaction(client.app.state.session_factory) as session:
+        row = session.get(ObjectRow, (d, "synthetic", "facts"))
+        row.data = ({k: v for k, v in row.data.items() if k != "quote_customer_ref"}
+                    if owner == "missing" else {**row.data, "quote_customer_ref": owner})
+    response = command(client, sheet, "bind", quote_id="synthetic-Q", quote_revision=1,
+                       remnant_id="synthetic-R", remnant_version=0)
+    assert response.status_code == 409 and response.json()["code"] == code
+    saved = client.get(f"/api/v1/order-sheets/{sheet['order_id']}", params={"dataset_id": d}).json()
+    assert saved == sheet and saved["quote_state"] == "missing"
+    with client.app.state.session_factory() as session:
+        assert session.get(ObjectRow, (d, "synthetic", "facts")).data["remnant"]["status"] == "available"
+        assert session.get(ObjectRow, (d, "synthetic", "synthetic-reservation")) is None
+    events = client.get(f"/api/v1/order-sheets/{sheet['order_id']}/history", params={"dataset_id": d}).json()
+    assert [e["action"] for e in events] == ["order.create"]
+
+
+@pytest.mark.parametrize("confirmed", [False, True])
+@pytest.mark.parametrize("owner,code", [("C-other", "QUOTE_CUSTOMER_MISMATCH"), (None, "QUOTE_CUSTOMER_REQUIRED")])
+def test_customer_changed_before_confirm_or_reserve_is_durable_stale(client, imported, services, confirmed, owner, code):
+    d = setup(client, imported, services)
+    sheet = bound(client, d, "f1-current-owner")
+    if confirmed:
+        sheet = command(client, sheet, "confirm").json()
+    with write_transaction(client.app.state.session_factory) as session:
+        row = session.get(ObjectRow, (d, "synthetic", "facts"))
+        # Isolate ownership from geometry/price and even quote revision.
+        row.data = {**row.data, "quote_customer_ref": owner}
+    response = command(client, sheet, "reserve" if confirmed else "confirm")
+    assert response.status_code == 409 and response.json()["code"] == code
+    url, params = f"/api/v1/order-sheets/{sheet['order_id']}", {"dataset_id": d}
+    stale = client.get(url, params=params).json()
+    assert stale["quote_state"] == stale["warehouse_state"] == "stale"
+    assert stale["stale_code"] == code and stale["offer"] is None and stale["warehouse_task"] is None
+    assert stale["facts"] == sheet["facts"]  # Original proof is retained, never reassigned.
+    assert stale["version"] == sheet["version"] + 1
+    assert command(client, stale, "confirm", key="f1-no-silent-reconfirm").status_code == 409
+    assert command(client, stale, "reserve", key="f1-no-silent-rereserve").status_code == 409
+    with client.app.state.session_factory() as session:
+        data = session.get(ObjectRow, (d, "synthetic", "facts")).data
+        assert data["quote_customer_ref"] == owner and data["remnant"]["status"] == "available"
+        assert session.get(ObjectRow, (d, "synthetic", "synthetic-reservation")) is None
+    events = client.get(url + "/history", params=params).json()
+    assert events[-2]["sheet"] == sheet and events[-1]["action"] == "order.stale"
+    if confirmed:
+        assert events[-2]["action"] == "order.confirm"
+        assert events[-2]["sheet"]["offer"]["confirmed"] is True
+    with TestClient(create_app(client.app.state.data_dir, services, testing=True)) as restarted:
+        assert restarted.get(url, params=params).json() == stale
+
+
+@pytest.mark.parametrize("owner,canonical,code", [
+    ("C-test", "C-test", None), ("C-other", "C-other", "QUOTE_CUSTOMER_MISMATCH"),
+    ("C-test", "C-other", "QUOTE_CUSTOMER_INCONSISTENT"),
+    ("C-test", None, "QUOTE_CUSTOMER_INCONSISTENT"), (None, None, "QUOTE_CUSTOMER_REQUIRED"),
+])
+def test_explicit_customer_attestation_agrees_with_extended_c3_quote(client, imported, services, owner, canonical, code):
+    class SyntheticCustomerQuote(Quote):
+        """Test compatibility with C3's additive customer_id, without editing C3 files."""
+        customer_id: str | None = None
+
+    class ExtendedSource(SyntheticOrderSource):
+        def capture(self, session, dataset_id, quote_id, remnant_id, order_id):
+            facts = super().capture(session, dataset_id, quote_id, remnant_id, order_id)
+            facts.quote = SyntheticCustomerQuote(**facts.quote.model_dump(), customer_id=canonical)
+            facts.quote_customer_ref = owner
+            return facts
+
+    d = setup(client, imported, services)
+    services.order_source = ExtendedSource()
+    sheet = new_order(client, d, "f1-c3-compatible")
+    response = command(client, sheet, "bind", quote_id="synthetic-Q", quote_revision=1,
+                       remnant_id="synthetic-R", remnant_version=0)
+    if code:
+        assert response.status_code == 409 and response.json()["code"] == code
+        with client.app.state.session_factory() as session:
+            assert session.get(ObjectRow, (d, "synthetic", "synthetic-reservation")) is None
+    else:
+        assert response.status_code == 200, response.text
+        sheet = command(client, response.json(), "confirm").json()
+        reserved = command(client, sheet, "reserve")
+        assert reserved.status_code == 200, reserved.text
+        assert reserved.json()["facts"]["quote_customer_ref"] == sheet["customer_ref"]
+
+
+def test_missing_legacy_ownership_is_not_assigned_on_read(client, imported, services):
+    d = setup(client, imported, services)
+    sheet = command(client, bound(client, d, "f1-legacy"), "confirm").json()
+    with write_transaction(client.app.state.session_factory) as session:
+        row = session.get(ObjectRow, (d, "order_sheet", sheet["order_id"]))
+        row.data = {**row.data, "facts": {k: v for k, v in row.data["facts"].items() if k != "quote_customer_ref"}}
+    url, params = f"/api/v1/order-sheets/{sheet['order_id']}", {"dataset_id": d}
+    stale = client.get(url, params=params).json()
+    assert stale["stale_code"] == "QUOTE_CUSTOMER_REQUIRED" and stale["offer"] is None
+    assert stale["facts"]["quote_customer_ref"] is None
+    refreshed = command(client, stale, "bind", quote_id="synthetic-Q", quote_revision=1,
+                         remnant_id="synthetic-R", remnant_version=0)
+    assert refreshed.status_code == 200 and refreshed.json()["quote_state"] == "draft"
+    assert refreshed.json()["facts"]["quote_customer_ref"] == "C-test"
+
+
+def test_owner_change_during_reservation_rolls_back_inventory(client, imported, services):
+    class ChangingOwner(SyntheticOrderSource):
+        def reserve(self, session, facts, order_id, order_revision):
+            ref = super().reserve(session, facts, order_id, order_revision)
+            row = session.get(ObjectRow, (facts.dataset_id, "synthetic", "facts"))
+            row.data = {**row.data, "quote_customer_ref": "C-other"}
+            return ref
+
+    d = setup(client, imported, services)
+    sheet = command(client, bound(client, d, "f1-atomic"), "confirm").json()
+    services.order_source = ChangingOwner()
+    response = command(client, sheet, "reserve")
+    assert response.status_code == 409 and response.json()["code"] == "QUOTE_CUSTOMER_MISMATCH"
+    with client.app.state.session_factory() as session:
+        data = session.get(ObjectRow, (d, "synthetic", "facts")).data
+        assert data["quote_customer_ref"] == "C-test" and data["remnant"]["status"] == "available"
+        assert session.get(ObjectRow, (d, "synthetic", "synthetic-reservation")) is None
+        assert session.get(ObjectRow, (d, "order_sheet", sheet["order_id"])).data == sheet

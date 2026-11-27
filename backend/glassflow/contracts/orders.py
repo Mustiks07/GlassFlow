@@ -11,6 +11,9 @@ from .intelligence import Quote
 
 class OrderFacts(DatasetRequest):
     quote: Quote
+    # Canonical C3 ownership; never populated from the order or bind request.
+    # None also supports reading legacy history, but cannot authorize binding.
+    quote_customer_ref: Identifier | None = None
     remnant: Remnant
     requested_dimensions: Dimensions
     quantity: int = Field(gt=0, strict=True)
@@ -84,6 +87,7 @@ class OrderSheet(OrderCreate):
     reservation: OrderReservation | None = None
     reminder_ids: list[str] = Field(default_factory=list)
     stale_reason: str | None = None
+    stale_code: str | None = None
     stale_conflicts: list[str] = Field(default_factory=list)
     offer: OrderOffer | None = None
     warehouse_task: WarehouseTask | None = None

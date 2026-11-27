@@ -1,5 +1,27 @@
 # Платформа GlassFlow: handoff интегратору
 
+## PRO-U01-F1 после review main25e433f
+
+На исходном `9c59c8a` дефект независимо воспроизведен с **настоящим DTO C3 6cc73b9**,
+загруженным только в память отдельного процесса: заказ C-test принял Quote.customer_id=C-other,
+bind/confirm/reserve200. Никакие C3 source файлы не изменялись. После fix тот же compatibility-прогон:
+другой клиент409 QUOTE_CUSTOMER_MISMATCH; anonymous409 QUOTE_CUSTOMER_REQUIRED; matching client200/200/200.
+Это проверка HTTP/SQLite+DTO с explicit test adapter, не end-to-end C3.
+
+Новый платформенный `OrderFacts.quote_customer_ref` обязателен по смыслу для bind: он приходит из C3 stored owner,
+не из order/customer request. Default null оставлен только для чтения старых snapshots. Если C3 DTO уже имеет
+customer_id, противоречие с explicit owner блокируется409 QUOTE_CUSTOMER_INCONSISTENT. Подробности в общем контракте.
+Anonymous нельзя автоматически сделать расчетом клиента заказа: сначала explicit assignment в C3 или новый quote.
+Изменение owner между bind/confirm/reserve -> durable stale+stale_code, формы скрыты; старые snapshots сохранены.
+Конфликт внутри reserve откатывает inventory mutation. Имеющийся чужой quote не переписывается платформой.
+
+`tests/platform/test_orders.py`:18 PASS (прежние4 +14 F1 cases): matching/other/null/legacy owner,
+изменение до confirm/reserve, durable stale/restart/history, extended C3 customer_id contradiction,
+post-reserve owner mutation rollback. Две новые bind-регрессии до runtime fix были FAIL (200 вместо409).
+Actual C2/C3 integration повторить после объединения; старый локальный EXE report относится к070d0c8,
+а не автоматически к этому исправлению. Общая миссия остается INTEGRATION REQUIRED, U04/U06 — следующий уровень.
+Полный source suite после F1:72 PASS; Ruff/foundation14/typecheck PASS, contracts стандартно регенерированы.
+
 ## Дополнения v1.1 после checkpoint052255d
 
 Из актуального main прочитаны review/upgrade plan на `eaf81d6`, без merge. Все изменения только в платформенном

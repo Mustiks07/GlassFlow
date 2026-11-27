@@ -11501,6 +11501,19 @@
           "quote": {
             "$ref": "#/components/schemas/Quote"
           },
+          "quote_customer_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quote Customer Ref"
+          },
           "remnant": {
             "$ref": "#/components/schemas/Remnant"
           },
@@ -11838,6 +11851,17 @@
               }
             ],
             "title": "Stale Reason"
+          },
+          "stale_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stale Code"
           },
           "stale_conflicts": {
             "items": {

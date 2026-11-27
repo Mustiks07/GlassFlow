@@ -1,5 +1,22 @@
 # Статус GPT_PRO_MUSTAFA
 
+## PRO-U01-F1: принадлежность расчета клиенту
+
+Review прочитан из main `25e433f28ce97b48fc3402c8e67f46147eed9b40` (также через GitHub main API).
+На исходном `9c59c8a` отдельно повторен exact review scenario: in-memory C3 intelligence DTO6cc73b9,
+order C-test + quote C-other -> bind/confirm/reserve200. Чужой код на диске не менялся.
+После добавления explicit platform quote_customer_ref, но до runtime проверки, новые regression tests
+other/null получили FAIL200 вместо409. После fix `uv run pytest tests/platform/test_orders.py -q`:18 PASS.
+Проверяются known match/mismatch, anonymous/legacy missing, изменение до confirm/reserve, history/restart,
+отсутствие stock mutation, canonical C3 customer_id contradiction и общий rollback при owner change внутри reserve.
+Повтор с actual C3 DTO6cc73b9: other409, anonymous409, matching bind/confirm/reserve200. Это seam acceptance,
+не подключенный actual quote repository/reservation service. Legacy/current source ownership не присваивается автоматически;
+anonymous требует explicit C3 assignment/new quote, конфликт требует нового bind. Порты/контракт/handoff обновлены.
+Standard OpenAPI/TS regeneration выполнена. Полный `uv run pytest`:72 PASS (18 U01),
+`uv run ruff check backend tests scripts`, `uv run python scripts/check_foundation.py` (14 immutable inputs)
+и `pnpm typecheck`:PASS. Один upstream Starlette/httpx deprecation warning.
+Следующий шаг: own-branch Mustiks07 commit/push и CI; actual C2/C3 acceptance остается not_run.
+
 ## Актуальный checkpoint v1.1
 
 - Исходный checkpoint `052255d`; review/strategy прочитаны из `origin/main eaf81d67cd19d1dec185d02508a00bda7d80bae6`. Ветки не объединялись, main не изменялся.

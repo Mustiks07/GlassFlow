@@ -67,6 +67,10 @@ class OrderSourcePort(Protocol):
 
     No network, nested commit, alternate DB or cached availability. capture returns
     current canonical facts, including quote/KB/mapping and inventory revisions.
+    OrderFacts.quote_customer_ref comes from C3's stored quote owner (never from
+    the order's customer_ref). If Quote exposes customer_id, both must agree.
+    Anonymous/unknown ownership cannot authorize bind/confirm/reserve; Pro never
+    assigns or changes the customer in C3. Ownership is part of the facts hash.
     reserve is an atomic compare-and-reserve for this order/revision. Return the
     post-reservation inventory version. capture must recognize the owning order.
     Conflicts expose current remnant/version and alternatives through AppError.

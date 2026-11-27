@@ -8,6 +8,33 @@ from glassflow.core.models import AuditRow, ObjectRow, now, uid
 from glassflow.core.uow import audit, canonical_hash, get_object
 from glassflow.modules.platform.imports import dataset
 
+CUSTOMER_ERRORS = {
+    "QUOTE_CUSTOMER_REQUIRED": "Клиент расчета не подтвержден. Сначала явно назначьте клиента в источнике C3.",
+    "QUOTE_CUSTOMER_MISMATCH": "Расчет принадлежит другому клиенту; выберите расчет клиента заказа.",
+    "QUOTE_CUSTOMER_INCONSISTENT": "Принадлежность расчета не совпадает с данными источника C3.",
+}
+_MISSING = object()
+
+
+def quote_customer_error(facts, customer_ref):
+    if facts.quote_customer_ref is None:
+        return "QUOTE_CUSTOMER_REQUIRED"
+    # Base C3 DTO in foundation lacks customer_id; merged C3 DTO already has it.
+    # Explicit platform attestation must also agree with that canonical field.
+    canonical_customer = getattr(facts.quote, "customer_id", _MISSING)
+    if canonical_customer is not _MISSING and canonical_customer != facts.quote_customer_ref:
+        return "QUOTE_CUSTOMER_INCONSISTENT"
+    if facts.quote_customer_ref != customer_ref:
+        return "QUOTE_CUSTOMER_MISMATCH"
+    return None
+
+
+def require_quote_customer(facts, customer_ref):
+    code = quote_customer_error(facts, customer_ref)
+    if code:
+        raise AppError(409, code, CUSTOMER_ERRORS[code],
+                       conflicts=[f"quote:{facts.quote.quote_id}:{facts.quote.revision}"])
+
 
 def source(services):
     if services.order_source is None:
@@ -17,7 +44,8 @@ def source(services):
 
 def project(sheet):
     sheet.offer, sheet.warehouse_task = None, None
-    if sheet.facts and sheet.quote_state not in {"missing", "stale"} and sheet.lifecycle != "cancelled":
+    if (sheet.facts and not quote_customer_error(sheet.facts, sheet.customer_ref)
+            and sheet.quote_state not in {"missing", "stale"} and sheet.lifecycle != "cancelled"):
         facts = sheet.facts
         sheet.offer = OrderOffer(order_id=sheet.order_id, revision=sheet.revision,
                                  facts_hash=sheet.facts_hash, quote=facts.quote,
@@ -71,6 +99,7 @@ def capture(session, sheet, services, quote_id=None, remnant_id=None):
             or facts.remnant.dataset_id != sheet.dataset_id
             or facts.quote.quote_id != quote_id or facts.remnant.remnant_id != remnant_id):
         raise AppError(409, "ORDER_SOURCE_SCOPE", "Источник вернул факты другого заказа/набора.")
+    require_quote_customer(facts, sheet.customer_ref)
     return facts
 
 
@@ -89,8 +118,11 @@ def recheck(session, sheet, services, correlation):
     if not sheet.facts or sheet.quote_state == "stale" or sheet.lifecycle != "open":
         return project(sheet)
     reason = None
+    stale_code = "ORDER_STALE"
     try:
         current = capture(session, sheet, services)
+        # Legacy snapshots without ownership cannot inherit a client's identity on read.
+        require_quote_customer(sheet.facts, sheet.customer_ref)
         sheet.stale_conflicts = [
             f"quote:{current.quote.quote_id}:{current.quote.revision}",
             f"remnant:{current.remnant.remnant_id}:{current.remnant.version}:{current.remnant.status}",
@@ -108,9 +140,14 @@ def recheck(session, sheet, services, correlation):
     except AppError as exc:
         if exc.status not in {404, 409}:
             raise
-        reason = "Источник изменен или удален; требуется пересчет."
+        if exc.code in CUSTOMER_ERRORS:
+            stale_code, reason = exc.code, CUSTOMER_ERRORS[exc.code]
+            sheet.stale_conflicts = exc.conflicts
+        else:
+            reason = "Источник изменен или удален; требуется пересчет."
     if reason:
         sheet.quote_state, sheet.warehouse_state, sheet.stale_reason = "stale", "stale", reason
+        sheet.stale_code = stale_code
         save(session, sheet, "stale", correlation)
     else:
         sheet.stale_conflicts = []
@@ -140,6 +177,7 @@ def apply(session, order_id, body, action, services, correlation):
         sheet.facts, sheet.facts_hash = facts, canonical_hash(facts.model_dump(mode="json"))
         sheet.quote_state, sheet.warehouse_state = "draft", "unchecked"
         sheet.stale_reason, sheet.reservation, sheet.reminder_ids = None, None, []
+        sheet.stale_code = None
         sheet.stale_conflicts = []
     elif action in {"release", "cancel"}:
         if active_reservation(sheet):
@@ -153,11 +191,12 @@ def apply(session, order_id, body, action, services, correlation):
         elif sheet.facts:
             sheet.quote_state, sheet.warehouse_state = "stale", "stale"
             sheet.stale_reason = "Резерв снят; повторно выберите актуальные факты."
+            sheet.stale_code = "ORDER_STALE"
     else:
         sheet = recheck(session, sheet, services, correlation)
         if sheet.quote_state == "stale":
             # Return a durable stale transition; route raises conflict AFTER transaction commit.
-            return {"sheet": sheet.model_dump(mode="json"), "conflict": "ORDER_STALE"}
+            return {"sheet": sheet.model_dump(mode="json"), "conflict": sheet.stale_code or "ORDER_STALE"}
         if sheet.facts is None or not usable(sheet.facts):
             raise AppError(409, "ORDER_FACTS_REQUIRED", "Сначала привяжите проверенный расчет и кусок.")
         if action == "confirm":

@@ -1908,6 +1908,8 @@ export interface components {
             /** Dataset Id */
             dataset_id: string;
             quote: components["schemas"]["Quote"];
+            /** Quote Customer Ref */
+            quote_customer_ref?: string | null;
             remnant: components["schemas"]["Remnant"];
             requested_dimensions: components["schemas"]["Dimensions"];
             /** Quantity */
@@ -2029,6 +2031,8 @@ export interface components {
             reminder_ids?: string[];
             /** Stale Reason */
             stale_reason?: string | null;
+            /** Stale Code */
+            stale_code?: string | null;
             /** Stale Conflicts */
             stale_conflicts?: string[];
             offer?: components["schemas"]["OrderOffer"] | null;
