@@ -116,7 +116,7 @@ def unpack(files):
     accepted = []
     for name, content in output:
         filename = safe_name(name)
-        if "key" in filename.casefold() or filename.endswith(".py") or filename == "solution_example.csv":
+        if re.search(r"(?:^|_)KEY(?:[_.]|$)", filename, re.I) or filename.endswith(".py") or filename == "solution_example.csv":
             warnings.append(f"{filename}: evaluation/служебный файл исключен из runtime")
         elif filename.lower().endswith((".csv", ".json")):
             accepted.append((filename, content))
@@ -142,7 +142,7 @@ def inspect_files(files, *, supply_reference=True, require_complete=True):
             continue
         if content.startswith(b"\xef\xbb\xbf"):
             warnings.append(f"{filename}: BOM распознан, исходные байты сохранены")
-        if filename.endswith(".json"):
+        if filename.casefold().endswith(".json"):
             try:
                 value = json.loads(
                     text, parse_float=str, parse_constant=lambda _: (_ for _ in ()).throw(ValueError())
@@ -160,7 +160,25 @@ def inspect_files(files, *, supply_reference=True, require_complete=True):
                     or len(set(product_ids)) != len(product_ids)
                 ):
                     raise ValueError()
-                kind, rows = "kb", [{"id": "kb", "content": value}]
+                for product in value["товары"]:
+                    if not all(
+                        isinstance(product.get(k), str) and product[k].strip()
+                        for k in ("id", "название", "вид")
+                    ):
+                        raise ValueError()
+                    for field, price in product.items():
+                        if (
+                            field.startswith("цена")
+                            and price is not None
+                            and (isinstance(price, bool) or not re.fullmatch(r"\d+(?:\.\d+)?", str(price)))
+                        ):
+                            raise ValueError()
+                if not isinstance(value["правила"], list) or any(
+                    not isinstance(r, dict) or not r.get("id") or not isinstance(r.get("правило"), str)
+                    for r in value["правила"]
+                ):
+                    raise ValueError()
+                kind, rows = "kb", [{"public_id": "kb", "source_row": 1, "data": value}]
             except (ValueError, RecursionError):
                 error(filename, 0, "json", "", "Ожидается KB: товары[] с уникальными id и правила")
                 continue
@@ -187,6 +205,9 @@ def inspect_files(files, *, supply_reference=True, require_complete=True):
                         continue
                     row = dict(raw)
                     for field, value in raw.items():
+                        if len(value) > 16000:
+                            error(filename, number, field, value, "Поле превышает 16000 символов")
+                            continue
                         if not value.strip():
                             if kind == "applications" and field in OPTIONAL:
                                 row[field] = None
@@ -204,7 +225,11 @@ def inspect_files(files, *, supply_reference=True, require_complete=True):
                         if field in FLAGS and value not in {"0", "1"}:
                             error(filename, number, field, value, "Допустимы 0/1")
                         if field in INTEGERS:
-                            if not re.fullmatch(r"\d+", value) or (field in POSITIVE and int(value) <= 0):
+                            if (
+                                len(value) > 10
+                                or not re.fullmatch(r"\d+", value)
+                                or (field in POSITIVE and int(value) <= 0)
+                            ):
                                 error(
                                     filename,
                                     number,
@@ -231,7 +256,10 @@ def inspect_files(files, *, supply_reference=True, require_complete=True):
                                     value,
                                     "Требуется неотрицательное десятичное число",
                                 )
-                    if all(re.fullmatch(r"\d+", raw.get(f, "")) for f in ("длина_мм", "ширина_мм")):
+                    if all(
+                        len(raw.get(f, "")) <= 10 and re.fullmatch(r"\d+", raw.get(f, ""))
+                        for f in ("длина_мм", "ширина_мм")
+                    ):
                         if int(raw["длина_мм"]) < int(raw["ширина_мм"]):
                             error(
                                 filename,
@@ -261,6 +289,7 @@ def inspect_files(files, *, supply_reference=True, require_complete=True):
     if supply_reference:
         # Five-file closed import pins precisely the organizer reference sources.
         from glassflow.core.resources import resource_root
+
         reference = resource_root() / "inputs" / "PACK_for_teams"
         reference_files = []
         for kind, rel in {
@@ -363,8 +392,6 @@ def commit(session, import_id, request, services, correlation):
             )
         )
         for row in rows:
-            if kind == "kb":
-                row = {"public_id": "kb", "source_row": 1, "data": row["content"]}
             session.add(RecordRow(dataset_id=result.id, kind=kind, **row))
     session.flush()
     for hook in services.import_hooks:

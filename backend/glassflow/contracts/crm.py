@@ -35,6 +35,8 @@ class ReminderRequest(DatasetRequest):
     due_at: str | None = None
     owner: str
     subject_version: int | None = Field(default=None, ge=0, strict=True)
+    compatibility_ref: str | None = None
+    compatibility_version: int | None = Field(default=None, ge=0, strict=True)
     text: str = Field(default="", max_length=4000)
     active_period: str | None = Field(default=None, max_length=100)
 

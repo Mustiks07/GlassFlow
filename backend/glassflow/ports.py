@@ -6,7 +6,14 @@ For semantics and ownership see docs/architecture/CONTRACTS.md.
 
 from typing import Protocol
 
-from glassflow.contracts.cutting import Candidates, CutPlan, FindRequest, SolveInput, ValidationResult
+from glassflow.contracts.cutting import (
+    Candidates,
+    CutPlan,
+    FindRequest,
+    Remnant,
+    SolveInput,
+    ValidationResult,
+)
 from glassflow.contracts.intelligence import DialogRequest, DialogVerdict, Quote, QuoteRequest
 
 
@@ -38,3 +45,17 @@ class UnitOfWork(Protocol):
     def commit(self) -> None: ...
 
     def rollback(self) -> None: ...
+
+
+class SalesSourcePort(Protocol):
+    """Additive platform seam for C2; uses caller transaction, never nested commit.
+
+    get_plan returns the CURRENT selected revision, not an arbitrary historical revision.
+    validate_plan calls C2's independent validator; original membership comes from source records.
+    """
+
+    def get_plan(self, session, dataset_id: str, plan_id: str) -> CutPlan: ...
+
+    def validate_plan(self, session, dataset_id: str, plan: CutPlan) -> ValidationResult: ...
+
+    def get_remnant(self, session, dataset_id: str, remnant_id: str) -> Remnant: ...

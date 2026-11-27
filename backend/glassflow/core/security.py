@@ -27,7 +27,9 @@ def install_local_security(app, *, testing=False):
                 return error_response(request, 403, "ORIGIN_FORBIDDEN", "Источник запроса не разрешен.")
         if request.method not in {"GET", "HEAD", "OPTIONS"}:
             if getattr(app.state, "maintenance", False) and request.url.path != "/api/v1/system/shutdown":
-                return error_response(request, 503, "RESTORE_PENDING", "Восстановление ожидает перезапуска приложения.")
+                return error_response(
+                    request, 503, "RESTORE_PENDING", "Восстановление ожидает перезапуска приложения."
+                )
             presented = request.headers.get("x-glassflow-session") or request.cookies.get(
                 "glassflow_session", ""
             )
@@ -35,7 +37,12 @@ def install_local_security(app, *, testing=False):
                 return error_response(
                     request, 403, "LOCAL_SESSION_REQUIRED", "Откройте приложение для начала сессии."
                 )
-        response = await call_next(request)
+        try:
+            response = await call_next(request)
+        except Exception:
+            response = error_response(
+                request, 500, "INTERNAL_ERROR", "Внутренняя ошибка. Сохраните код обращения."
+            )
         response.headers["X-Correlation-ID"] = request.state.correlation_id
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["Referrer-Policy"] = "no-referrer"

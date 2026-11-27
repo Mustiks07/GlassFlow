@@ -17,8 +17,17 @@ from glassflow.core.uow import audit, canonical_hash, get_object
 from glassflow.modules.platform.imports import dataset, records
 
 BUYER_FIELDS = ["name", "city", "category", "url", "why", "source_url", "score"]
-CATEGORIES = {"мебельная фабрика", "дизайн-студия", "строительная компания", "окна и двери",
-              "магазин", "торговый центр", "кафе или ресторан", "салон", "другое"}
+CATEGORIES = {
+    "мебельная фабрика",
+    "дизайн-студия",
+    "строительная компания",
+    "окна и двери",
+    "магазин",
+    "торговый центр",
+    "кафе или ресторан",
+    "салон",
+    "другое",
+}
 
 
 def normalized_name(value):
@@ -27,7 +36,13 @@ def normalized_name(value):
 
 def public_url(value):
     p = urlsplit(value)
-    return p.scheme in {"http", "https"} and bool(p.hostname) and "." in p.hostname and not p.username and not p.password
+    return (
+        p.scheme in {"http", "https"}
+        and bool(p.hostname)
+        and "." in p.hostname
+        and not p.username
+        and not p.password
+    )
 
 
 def import_buyers(session, dataset_id, csv_bytes, evidence_bytes, correlation):
@@ -39,11 +54,17 @@ def import_buyers(session, dataset_id, csv_bytes, evidence_bytes, correlation):
             raise ValueError("Expected exact buyer columns")
         raw = list(reader)
         payload = json.loads(evidence_bytes.decode("utf-8-sig"))
-        if not isinstance(payload, dict) or not isinstance(payload.get("records"), list) or not payload.get("dedupe_policy"):
+        if (
+            not isinstance(payload, dict)
+            or not isinstance(payload.get("records"), list)
+            or not payload.get("dedupe_policy")
+        ):
             raise ValueError("Expected evidence records and dedupe_policy")
         evidence = payload["records"]
     except (UnicodeError, ValueError, csv.Error):
-        raise AppError(422, "BUYER_FORMAT_INVALID", "Нужны точный CSV покупателей и evidence records/dedupe_policy.") from None
+        raise AppError(
+            422, "BUYER_FORMAT_INVALID", "Нужны точный CSV покупателей и evidence records/dedupe_policy."
+        ) from None
     if len(raw) != 50:
         errors.append("Нужно ровно 50 организаций")
     buyers, names, entities = [], set(), set()
@@ -54,7 +75,11 @@ def import_buyers(session, dataset_id, csv_bytes, evidence_bytes, correlation):
             if not re.fullmatch(r"\d+", row["score"]):
                 raise ValueError()
             buyer = Buyer(**{**row, "score": int(row["score"])})
-            if buyer.category not in CATEGORIES or not public_url(buyer.url) or not public_url(buyer.source_url):
+            if (
+                buyer.category not in CATEGORIES
+                or not public_url(buyer.url)
+                or not public_url(buyer.source_url)
+            ):
                 raise ValueError()
             name = normalized_name(buyer.name)
             if name in names:
@@ -66,7 +91,16 @@ def import_buyers(session, dataset_id, csv_bytes, evidence_bytes, correlation):
                 match = {}
             else:
                 match = matching[0]
-            required = ["name", "city", "profile", "source_url", "checked_at", "reviewer", "confirmation", "entity_id"]
+            required = [
+                "name",
+                "city",
+                "profile",
+                "source_url",
+                "checked_at",
+                "reviewer",
+                "confirmation",
+                "entity_id",
+            ]
             if not all(isinstance(match.get(k), str) and match[k].strip() for k in required):
                 errors.append(f"Строка {index}: неполное evidence")
             elif match["city"] != buyer.city or match["source_url"] != buyer.source_url:
@@ -89,23 +123,43 @@ def import_buyers(session, dataset_id, csv_bytes, evidence_bytes, correlation):
         errors.append("Нужно не менее 30 организаций в Астане")
     if len({b["category"] for b in buyers}) < 5:
         errors.append("Нужно не менее 5 разрешенных категорий")
-    version = canonical_hash([hashlib.sha256(csv_bytes).hexdigest(), hashlib.sha256(evidence_bytes).hexdigest()])
+    version = canonical_hash(
+        [hashlib.sha256(csv_bytes).hexdigest(), hashlib.sha256(evidence_bytes).hexdigest()]
+    )
     row = session.get(ObjectRow, (dataset_id, "buyer_registry", version))
     if row is None:
-        row = ObjectRow(dataset_id=dataset_id, kind="buyer_registry", id=version, version=0,
-            data={"buyers": buyers, "evidence": payload, "errors": errors, "created_at": now(),
-                  "status": "needs_review" if errors else "verified", "csv_sha256": hashlib.sha256(csv_bytes).hexdigest(),
-                  "evidence_sha256": hashlib.sha256(evidence_bytes).hexdigest(),
-                  "verification": "Проверены полнота и согласованность evidence рецензента; не факт покупки"})
+        row = ObjectRow(
+            dataset_id=dataset_id,
+            kind="buyer_registry",
+            id=version,
+            version=0,
+            data={
+                "buyers": buyers,
+                "evidence": payload,
+                "errors": errors,
+                "created_at": now(),
+                "status": "needs_review" if errors else "verified",
+                "csv_sha256": hashlib.sha256(csv_bytes).hexdigest(),
+                "evidence_sha256": hashlib.sha256(evidence_bytes).hexdigest(),
+                "verification": "Проверены полнота и согласованность evidence рецензента; не факт покупки",
+            },
+        )
         session.add(row)
         audit(session, dataset_id, "buyers.import", version, correlation)
-    return {"version": version, "status": row.data["status"], "errors": row.data["errors"], "count": len(buyers)}
+    return {
+        "version": version,
+        "status": row.data["status"],
+        "errors": row.data["errors"],
+        "count": len(buyers),
+    }
 
 
 def registry(session, dataset_id, version, require_verified=True):
     row = get_object(session, dataset_id, "buyer_registry", version)
     if require_verified and row.data["status"] != "verified":
-        raise AppError(409, "BUYERS_NOT_VERIFIED", "Реестр не прошел проверку evidence.", conflicts=row.data["errors"])
+        raise AppError(
+            409, "BUYERS_NOT_VERIFIED", "Реестр не прошел проверку evidence.", conflicts=row.data["errors"]
+        )
     return row
 
 
@@ -127,11 +181,18 @@ def source_plan(session, services, dataset_id, plan_id, revision):
     if source is None:
         raise AppError(503, "CUTTING_SERVICE_UNAVAILABLE", "Источник утвержденного плана не подключен.")
     plan = source.get_plan(session, dataset_id, plan_id)
-    if plan.dataset_id != dataset_id or plan.revision != revision or plan.status not in {"validated", "committed"}:
+    if (
+        plan.dataset_id != dataset_id
+        or plan.plan_id != plan_id
+        or plan.revision != revision
+        or plan.status not in {"validated", "committed"}
+    ):
         raise AppError(409, "STALE_PLAN", "Нужна финальная проверенная ревизия выбранного плана.")
     validation = source.validate_plan(session, dataset_id, plan)
     if not validation.valid:
-        raise AppError(409, "INVALID_PLAN", "План не прошел независимую проверку.", conflicts=validation.errors)
+        raise AppError(
+            409, "INVALID_PLAN", "План не прошел независимую проверку.", conflicts=validation.errors
+        )
     return plan
 
 
@@ -146,34 +207,80 @@ def generate_cards(session, body, services, correlation):
         if rid not in originals or rid in used or rid in {r.remnant_id for r in candidates}:
             continue
         current = services.sales_source.get_remnant(session, body.dataset_id, rid)
-        if current.dataset_id == body.dataset_id and current.status == "available":
+        if (
+            current.dataset_id == body.dataset_id
+            and current.remnant_id == rid
+            and current.status == "available"
+        ):
             candidates.append(current)
     if len(candidates) < 5:
-        raise AppError(409, "RECOMPUTE_REQUIRED", "Меньше пяти целых свободных исходных кусков; нужен совместный пересчет с C2.",
-                       conflicts=[f"free_original_count:{len(candidates)}", "coverage_delta:requires_C2_comparison"])
+        raise AppError(
+            409,
+            "RECOMPUTE_REQUIRED",
+            "Меньше пяти целых свободных исходных кусков; нужен совместный пересчет с C2.",
+            conflicts=[f"free_original_count:{len(candidates)}", "coverage_delta:requires_C2_comparison"],
+        )
     result = []
     for remnant in candidates[:5]:
         original = originals[remnant.remnant_id]
         material = materials[original["material_id"]]
         # Contest cards describe the full original piece, never a virtual child or changed measurement.
         if (remnant.dimensions.length_mm, remnant.dimensions.width_mm, remnant.material_id) != (
-                int(original["длина_мм"]), int(original["ширина_мм"]), original["material_id"]):
-            raise AppError(409, "ORIGINAL_CHANGED", "Замер исходного куска изменился; выберите актуальный снимок.")
+            int(original["длина_мм"]),
+            int(original["ширина_мм"]),
+            original["material_id"],
+        ):
+            raise AppError(
+                409, "ORIGINAL_CHANGED", "Замер исходного куска изменился; выберите актуальный снимок."
+            )
         length, width = int(original["длина_мм"]), int(original["ширина_мм"])
         price = card_price(length, width, material["цена_нового_стекла_тг_за_м2"], body.factor)
         tempered = material["закалённое"] == "1"
-        application = "готовая вставка подходящего размера без подрезки" if tempered else "вставки и элементы интерьера после проверки размеров"
+        application = (
+            "готовая вставка подходящего размера без подрезки"
+            if tempered
+            else "вставки и элементы интерьера после проверки размеров"
+        )
         condition = "с дефектом" if remnant.defect else "без отмеченного дефекта"
-        terms = ("зеркал", "мебел", "интерьер") if "mirror" in remnant.material_id else ("стекл", "перегород", "витрин")
-        top = sorted(buyers, key=lambda b: (-sum(t in (b["why"] + b["category"]).casefold() for t in terms),
-                                             -b["score"], b["buyer_id"]))[:3]
-        card = SaleCard(card_id=uid(), dataset_id=body.dataset_id, plan_id=plan.plan_id, plan_revision=plan.revision,
-            remnant_id=remnant.remnant_id, remnant_version=remnant.version, buyer_registry_version=body.buyer_registry_version,
-            factor=body.factor, title=f"{material['название']}, {length}×{width} мм", price_tg=price,
+        terms = (
+            ("зеркал", "мебел", "интерьер")
+            if "mirror" in remnant.material_id
+            else ("стекл", "перегород", "витрин")
+        )
+        top = sorted(
+            buyers,
+            key=lambda b: (
+                -sum(t in (b["why"] + b["category"]).casefold() for t in terms),
+                -b["score"],
+                b["buyer_id"],
+            ),
+        )[:3]
+        card = SaleCard(
+            card_id=uid(),
+            dataset_id=body.dataset_id,
+            plan_id=plan.plan_id,
+            plan_revision=plan.revision,
+            remnant_id=remnant.remnant_id,
+            remnant_version=remnant.version,
+            buyer_registry_version=body.buyer_registry_version,
+            factor=body.factor,
+            title=f"{material['название']}, {length}×{width} мм",
+            price_tg=price,
             description=f"Целый исходный остаток {length}×{width} мм, {condition}. Место: {remnant.location_raw}. Возможное применение: {application}. Совместимость уточняет менеджер.",
-            target_buyer=top[0]["name"], top3_buyers=[b["name"] for b in top],
-            top3_buyer_ids=[b["buyer_id"] for b in top], status="ready")
-        session.add(ObjectRow(dataset_id=body.dataset_id, kind="sale_card", id=card.card_id, version=0, data=card.model_dump()))
+            target_buyer=top[0]["name"],
+            top3_buyers=[b["name"] for b in top],
+            top3_buyer_ids=[b["buyer_id"] for b in top],
+            status="ready",
+        )
+        session.add(
+            ObjectRow(
+                dataset_id=body.dataset_id,
+                kind="sale_card",
+                id=card.card_id,
+                version=0,
+                data=card.model_dump(),
+            )
+        )
         audit(session, body.dataset_id, "card.create", card.card_id, correlation, plan_revision=plan.revision)
         result.append(card.model_dump())
     return {"cards": result}
@@ -188,8 +295,11 @@ def recheck_card(session, row, services, correlation):
         plan = source_plan(session, services, row.dataset_id, card.plan_id, card.plan_revision)
         current = services.sales_source.get_remnant(session, row.dataset_id, card.remnant_id)
         registry(session, row.dataset_id, card.buyer_registry_version)
-        stale = (card.remnant_id not in plan.free_original_remnant_ids or current.status != "available"
-                 or current.version != card.remnant_version)
+        stale = (
+            card.remnant_id not in plan.free_original_remnant_ids
+            or current.status != "available"
+            or current.version != card.remnant_version
+        )
     except AppError as exc:
         if exc.status == 503:
             raise
@@ -205,7 +315,9 @@ def recheck_card(session, row, services, correlation):
 def list_cards(session, dataset_id, services, correlation, plan_id=None):
     dataset(session, dataset_id)
     result = []
-    for row in session.scalars(select(ObjectRow).where(ObjectRow.dataset_id == dataset_id, ObjectRow.kind == "sale_card")):
+    for row in session.scalars(
+        select(ObjectRow).where(ObjectRow.dataset_id == dataset_id, ObjectRow.kind == "sale_card")
+    ):
         if plan_id is None or row.data["plan_id"] == plan_id:
             result.append(recheck_card(session, row, services, correlation))
     return result

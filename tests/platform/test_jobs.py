@@ -21,6 +21,13 @@ def synthetic_validator(snapshot, result):
     return result.get("valid") is True
 
 
+def synthetic_private_worker(snapshot, context):
+    return {
+        "key_present": context.private_config.get("api_key") == "synthetic-session-key",
+        "retried": bool(snapshot.get("retry_of")),
+    }
+
+
 def wait_job(client, job_id, state, timeout=15):
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
@@ -32,8 +39,11 @@ def wait_job(client, job_id, state, timeout=15):
 
 
 def test_independent_run_crm_and_missing_dependencies(client, imported):
-    response = client.post("/api/v1/runs", json={"dataset_id": imported["dataset_id"], "config_version": "test-v1"},
-                           headers={"Idempotency-Key": "run"})
+    response = client.post(
+        "/api/v1/runs",
+        json={"dataset_id": imported["dataset_id"], "config_version": "test-v1"},
+        headers={"Idempotency-Key": "run"},
+    )
     assert response.status_code == 202, response.text
     run_id = response.json()["run_id"]
     deadline = time.monotonic() + 15
@@ -64,7 +74,9 @@ def test_cancel_keeps_valid_incumbent_and_restart_interrupted(client, imported):
             break
         time.sleep(0.05)
     assert current["last_valid_result"]["value"] == 12
-    cancel = client.post(f"/api/v1/jobs/{job_id}/cancel", params={"dataset_id": imported["dataset_id"]}).json()
+    cancel = client.post(
+        f"/api/v1/jobs/{job_id}/cancel", params={"dataset_id": imported["dataset_id"]}
+    ).json()
     assert cancel["cancel_requested"] is True
     cancelled = wait_job(client, job_id, {"cancelled"})
     assert cancelled["stopped"] is True and cancelled["last_valid_result"]["value"] == 12
@@ -80,3 +92,45 @@ def test_cancel_keeps_valid_incumbent_and_restart_interrupted(client, imported):
     with factory() as session:
         row = session.scalar(select(JobRow).where(JobRow.id == orphan_id))
         assert row.state == "interrupted" and row.last_valid_result == {"valid": True}
+
+
+def test_network_secret_only_memory_and_retry_idempotent(client, imported):
+    owner = {"X-GlassFlow-Session": client.get("/api/v1/session").json()["session_token"]}
+    response = client.patch(
+        "/api/v1/settings",
+        json={"profile": "direct", "model_id": "synthetic-free-model", "api_key": "synthetic-session-key"},
+        headers=owner,
+    )
+    assert response.status_code == 200
+    client.app.state.coordinator.handlers["assistant"] = Handler(synthetic_private_worker, lane="network")
+    started = client.post(
+        "/api/v1/runs",
+        json={
+            "dataset_id": imported["dataset_id"],
+            "modules": ["assistant"],
+            "ai_profile": "direct",
+            "config_version": "synthetic-private-test",
+        },
+        headers={"Idempotency-Key": "private-run"},
+    ).json()
+    result = wait_job(client, started["job_id"], {"completed", "failed"})
+    assert result["state"] == "completed" and result["result"]["key_present"] is True
+    assert not any(
+        b"synthetic-session-key" in p.read_bytes() for p in client.app.state.data_dir.glob("*.db*")
+    )
+    factory = client.app.state.session_factory
+    with write_transaction(factory) as session:
+        previous = enqueue(session, imported["dataset_id"], "assistant", {"ai_profile": "local_limited"})
+        previous.state = "interrupted"
+        previous_id = previous.id
+    url = f"/api/v1/jobs/{previous_id}/retry"
+    response = client.post(
+        url, params={"dataset_id": imported["dataset_id"]}, headers={"Idempotency-Key": "retry"}
+    )
+    assert response.status_code == 202, response.text
+    again = client.post(
+        url, params={"dataset_id": imported["dataset_id"]}, headers={"Idempotency-Key": "retry"}
+    )
+    assert again.json() == response.json()
+    retried = wait_job(client, response.json()["job_id"], {"completed"})
+    assert retried["retry_of"] == previous_id and retried["result"]["retried"] is True

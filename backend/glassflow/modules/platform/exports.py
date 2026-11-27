@@ -1,4 +1,5 @@
 """One-run strict CSV exporter. Pricing/answers/geometry come from their owning services."""
+
 import csv
 import hashlib
 import io
@@ -12,16 +13,18 @@ import sys
 from sqlalchemy import select
 
 from glassflow.core.errors import AppError
-from glassflow.core.models import JobRow, SourceRow, uid
+from glassflow.core.models import SourceRow, uid
 from glassflow.core.uow import get_object, write_transaction
 from glassflow.modules.platform.imports import records
-from glassflow.modules.platform.runs import MODULE_FILES, find_run
+from glassflow.modules.platform.runs import MODULE_FILES, find_run, latest_jobs
 from glassflow.modules.sales.service import BUYER_FIELDS, recheck_card, registry
 
 SCHEMAS = {
     "solution.csv": ["part_id", "remnant_id", "x_mm", "y_mm", "rot"],
     "sale_cards.csv": ["remnant_id", "title", "price_tg", "description", "target_buyer", "top3_buyers"],
-    "answers.csv": ["id", "answer"], "picks.csv": ["app_id"], "verdicts.csv": ["id", "verdict", "correct"],
+    "answers.csv": ["id", "answer"],
+    "picks.csv": ["app_id"],
+    "verdicts.csv": ["id", "verdict", "correct"],
     "buyers_top50.csv": BUYER_FIELDS,
 }
 
@@ -45,7 +48,9 @@ def ids_equal(rows, field, expected):
 
 
 def exact_rows(name, rows):
-    if not isinstance(rows, list) or any(not isinstance(r, dict) or set(r) != set(SCHEMAS[name]) for r in rows):
+    if not isinstance(rows, list) or any(
+        not isinstance(r, dict) or set(r) != set(SCHEMAS[name]) for r in rows
+    ):
         raise AppError(409, "EXPORT_SCHEMA_MISMATCH", "Результат не соответствует точным колонкам CSV.")
     return [{k: "" if v is None else str(v) for k, v in r.items()} for r in rows]
 
@@ -58,9 +63,13 @@ def validate_rows(session, dataset_id, name, rows, plan_used=None):
         for row in rows:
             if row["remnant_id"] == "NEW":
                 if any(row[f] for f in ("x_mm", "y_mm", "rot")):
-                    raise AppError(409, "NEW_FIELDS_NOT_EMPTY", "Для NEW координаты и поворот должны быть пустыми.")
-            elif row["remnant_id"] not in originals or row["rot"] not in {"0", "1"} or any(
-                not re.fullmatch(r"\d+", row[f]) for f in ("x_mm", "y_mm")
+                    raise AppError(
+                        409, "NEW_FIELDS_NOT_EMPTY", "Для NEW координаты и поворот должны быть пустыми."
+                    )
+            elif (
+                row["remnant_id"] not in originals
+                or row["rot"] not in {"0", "1"}
+                or any(not re.fullmatch(r"\d+", row[f]) for f in ("x_mm", "y_mm"))
             ):
                 raise AppError(409, "INVALID_PLACEMENT_FORMAT", "Неверные ID, целые координаты или поворот.")
     elif name == "picks.csv":
@@ -74,15 +83,24 @@ def validate_rows(session, dataset_id, name, rows, plan_used=None):
         for row in rows:
             if name == "answers.csv" and not row["answer"].strip():
                 raise AppError(409, "EMPTY_ANSWER", "Обязательный ответ отсутствует.")
-            if name == "verdicts.csv" and (row["verdict"] not in {"OK", "ERROR"} or
-                (row["verdict"] == "ERROR" and not re.fullmatch(r"\d+(?:\.\d+)?", row["correct"])) or
-                (row["verdict"] == "OK" and row["correct"] != "")):
+            if name == "verdicts.csv" and (
+                row["verdict"] not in {"OK", "ERROR"}
+                or (row["verdict"] == "ERROR" and not re.fullmatch(r"\d+(?:\.\d+)?", row["correct"]))
+                or (row["verdict"] == "OK" and row["correct"] != "")
+            ):
                 raise AppError(409, "UNRESOLVED_VERDICT", "Нужен OK с пустым correct или ERROR с числом.")
     elif name == "sale_cards.csv":
         original = {r.public_id for r in records(session, dataset_id, "stock")}
         chosen = [r["remnant_id"] for r in rows]
-        if len(rows) != 5 or len(set(chosen)) != 5 or not set(chosen) <= original or set(chosen) & set(plan_used or []):
-            raise AppError(409, "INVALID_CARDS", "Нужны пять разных целых свободных исходных кусков выбранного плана.")
+        if (
+            len(rows) != 5
+            or len(set(chosen)) != 5
+            or not set(chosen) <= original
+            or set(chosen) & set(plan_used or [])
+        ):
+            raise AppError(
+                409, "INVALID_CARDS", "Нужны пять разных целых свободных исходных кусков выбранного плана."
+            )
         for row in rows:
             names = row["top3_buyers"].split(";")
             if len(names) != 3 or len(set(names)) != 3 or not re.fullmatch(r"\d+(?:\.\d+)?", row["price_tg"]):
@@ -92,22 +110,39 @@ def validate_rows(session, dataset_id, name, rows, plan_used=None):
 
 def official_cutting(staging, source_files, solution):
     from glassflow.core.resources import resource_root
+
     organizer = resource_root() / "inputs" / "PACK_for_teams" / "1_ostatki" / "validate.py"
     if not organizer.is_file():
         raise AppError(503, "OFFICIAL_VALIDATOR_MISSING", "Не найден неизмененный validate.py.")
     for kind in ("stock", "orders", "materials"):
         (staging / f"input-{kind}.csv").write_bytes(source_files[kind])
-    command = [sys.executable, "-X", "utf8", str(organizer), str(staging / "input-stock.csv"),
-               str(staging / "input-orders.csv"), str(solution), str(staging / "input-materials.csv")]
+    command = [
+        sys.executable,
+        "-X",
+        "utf8",
+        str(organizer),
+        str(staging / "input-stock.csv"),
+        str(staging / "input-orders.csv"),
+        str(solution),
+        str(staging / "input-materials.csv"),
+    ]
     if getattr(sys, "frozen", False):
         # Frozen exe is not a general Python interpreter; its protected CLI executes only this bundled script.
         command = [sys.executable, "--official-validator", str(staging)]
     environment = {**os.environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"}
-    result = subprocess.run(command, capture_output=True, encoding="utf8", errors="replace", env=environment, timeout=60)
+    result = subprocess.run(
+        command, capture_output=True, encoding="utf8", errors="replace", env=environment, timeout=60
+    )
     output = result.stdout
     passed = result.returncode == 0 and bool(re.search(r"RESULT .*invalid=0\b", output))
-    report = {"script": "validate.py", "script_sha256": hashlib.sha256(organizer.read_bytes()).hexdigest(),
-              "exit_code": result.returncode, "stdout": output, "stderr": result.stderr, "passed": passed}
+    report = {
+        "script": "validate.py",
+        "script_sha256": hashlib.sha256(organizer.read_bytes()).hexdigest(),
+        "exit_code": result.returncode,
+        "stdout": output,
+        "stderr": result.stderr,
+        "passed": passed,
+    }
     for path in staging.glob("input-*.csv"):
         path.unlink()
     return report
@@ -115,8 +150,11 @@ def official_cutting(staging, source_files, solution):
 
 def prepare_export(session, run_id, services, correlation):
     run = find_run(session, run_id)
-    jobs = {j.kind: j for j in session.scalars(select(JobRow).where(JobRow.run_id == run_id))}
-    sources = {r.kind: r.content for r in session.scalars(select(SourceRow).where(SourceRow.dataset_id == run.dataset_id))}
+    jobs = latest_jobs(session, run_id)
+    sources = {
+        r.kind: r.content
+        for r in session.scalars(select(SourceRow).where(SourceRow.dataset_id == run.dataset_id))
+    }
     prepared, errors, validators = {}, [], {}
     cutting_rows, plan_ref = None, None
     cut = jobs.get("cutting")
@@ -138,9 +176,15 @@ def prepare_export(session, run_id, services, correlation):
                     card = recheck_card(session, stored, services, correlation)
                     if card.status != "ready" or (card.plan_id, card.plan_revision) != plan_ref:
                         raise AppError(409, "STALE_CARD", "Карточка устарела.")
-                    rows.append({k: ";".join(card.top3_buyers) if k == "top3_buyers" else getattr(card, k)
-                                 for k in SCHEMAS[name]})
-            if module == "cutting" and (not all(v is not None for v in plan_ref) or not job.result.get("validated")):
+                    rows.append(
+                        {
+                            k: ";".join(card.top3_buyers) if k == "top3_buyers" else getattr(card, k)
+                            for k in SCHEMAS[name]
+                        }
+                    )
+            if module == "cutting" and (
+                not all(v is not None for v in plan_ref) or not job.result.get("validated")
+            ):
                 raise AppError(409, "UNVERIFIED_PLAN", "Нет ссылки на проверенную ревизию плана.")
             if module == "assistant" and job.result.get("needs_review"):
                 raise AppError(409, "UNVERIFIED_ANSWERS", "Ответы требуют проверки.")
@@ -155,25 +199,37 @@ def prepare_export(session, run_id, services, correlation):
     if buyer_version:
         try:
             buyers = registry(session, run.dataset_id, buyer_version).data["buyers"]
-            prepared["buyers_top50.csv"] = csv_bytes("buyers_top50.csv", [{k: b[k] for k in BUYER_FIELDS} for b in buyers])
+            prepared["buyers_top50.csv"] = csv_bytes(
+                "buyers_top50.csv", [{k: b[k] for k in BUYER_FIELDS} for b in buyers]
+            )
         except AppError as exc:
             errors.append(f"buyers: {exc.code}")
     else:
         errors.append("buyers: реестр не закреплен")
-    return run.dataset_id, dict(run.data), sources, prepared, errors, validators, {
-        k: {"job_id": v.id, "state": v.state} for k, v in jobs.items()}
+    return (
+        run.dataset_id,
+        dict(run.data),
+        sources,
+        prepared,
+        errors,
+        validators,
+        {k: {"job_id": v.id, "state": v.state} for k, v in jobs.items()},
+    )
 
 
 def export_run(factory, run_id, data_dir, services, correlation):
     # Recheck + capture in a short writer transaction; external validator holds no DB lock.
     with write_transaction(factory) as session:
         dataset_id, run_data, sources, prepared, errors, validators, result_refs = prepare_export(
-            session, run_id, services, correlation)
+            session, run_id, services, correlation
+        )
     export_id = uid()
     root = data_dir / "exports" / run_id
     root.mkdir(parents=True, exist_ok=True)
     staging = root / f".staging-{export_id}"
     final = root / export_id
+    if staging.resolve().parent != root.resolve() or final.resolve().parent != root.resolve():
+        raise AppError(422, "UNSAFE_EXPORT_PATH", "Путь экспорта выходит за выделенный каталог.")
     staging.mkdir()
     try:
         for name, content in prepared.items():
@@ -196,17 +252,41 @@ def export_run(factory, run_id, data_dir, services, correlation):
                 if "sale_cards.csv" in prepared:
                     prepared.pop("sale_cards.csv")
                     (staging / "sale_cards.csv").unlink()
-        status = "ready" if set(prepared) == set(SCHEMAS) and not errors else "partial" if prepared else "blocked"
+        status = (
+            "ready" if set(prepared) == set(SCHEMAS) and not errors else "partial" if prepared else "blocked"
+        )
         hashes = {name: hashlib.sha256(content).hexdigest() for name, content in prepared.items()}
-        manifest = {**run_data, "export_id": export_id, "status": status, "errors": errors, "files": hashes,
-                    "validators": validators, "result_refs": result_refs}
-        (staging / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
+        manifest = {
+            **run_data,
+            "export_id": export_id,
+            "status": status,
+            "errors": errors,
+            "files": hashes,
+            "validators": validators,
+            "result_refs": result_refs,
+        }
+        with factory() as session:
+            manifest["module_provenance"] = {
+                j.kind: (j.result or {}).get("provenance", {"status": "not_recorded"})
+                for j in latest_jobs(session, run_id).values()
+            }
+        (staging / "manifest.json").write_text(
+            json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
+        )
         os.replace(staging, final)
         with write_transaction(factory) as session:
             run = get_object(session, dataset_id, "run", run_id)
             run.data = {**run.data, "last_export_id": export_id, "files": hashes, "validators": validators}
-        return {"run_id": run_id, "status": status, "files": {name: f"/api/v1/runs/{run_id}/files/{export_id}/{name}"
-                for name in [*prepared, "manifest.json"]}, "errors": errors}
+        return {
+            "run_id": run_id,
+            "status": status,
+            "files": {
+                name: f"/api/v1/runs/{run_id}/files/{export_id}/{name}"
+                for name in [*prepared, "manifest.json"]
+            },
+            "errors": errors,
+        }
     except BaseException:
-        shutil.rmtree(staging, ignore_errors=True)
+        if staging.resolve().parent == root.resolve() and staging.name.startswith(".staging-"):
+            shutil.rmtree(staging, ignore_errors=True)
         raise

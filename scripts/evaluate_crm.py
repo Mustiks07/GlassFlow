@@ -1,4 +1,5 @@
 """Explicit offline evaluation. No runtime import of KEY or user pickle/joblib."""
+
 import argparse
 import csv
 import hashlib
@@ -8,7 +9,9 @@ from glassflow.modules.crm.evaluation import evaluate
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", type=Path, default=Path("inputs/PACK_for_teams/2_assistant_crm/applications_open.csv"))
+    parser.add_argument(
+        "--input", type=Path, default=Path("inputs/PACK_for_teams/2_assistant_crm/applications_open.csv")
+    )
     parser.add_argument("--output", type=Path, default=Path("docs/release/crm"))
     args = parser.parse_args()
     with args.input.open(encoding="utf-8-sig", newline="") as handle:

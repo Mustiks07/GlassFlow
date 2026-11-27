@@ -16,7 +16,7 @@ POLICY = "reference-v1"
 def baseline_key(row):
     return (
         -int(row["прошлых_заявок"]),
-        int(row.get("жалоба") or 0),
+        int(row["жалоба"]) if row.get("жалоба") is not None else 2,
         row["manager"] == "M4",
         int(row["дней_с_последнего_контакта"]),
     )
@@ -34,7 +34,7 @@ def rank_rows(rows, policy="reference"):
         grouped[row["client_id"]].append(row["app_id"])
         reasons = [
             f"Прошлых заявок: {row['прошлых_заявок']}",
-            f"Жалоба: {row.get('жалоба') if row.get('жалоба') is not None else 'неизвестно (baseline: 0)'}",
+            f"Жалоба: {row.get('жалоба') if row.get('жалоба') is not None else 'неизвестно (после известных значений при равных признаках)'}",
             f"Дней с контакта: {row['дней_с_последнего_контакта']}",
             "Стабильная сортировка; M4 - признак эталона, не причинная оценка менеджера",
         ]
@@ -158,7 +158,13 @@ def validate_recipient(session, body):
 def create_reminder(session, body, services, correlation):
     validate_recipient(session, body)
     check = services.check_subject(
-        session, body.dataset_id, body.subject_type, body.subject_ref, body.subject_version
+        session,
+        body.dataset_id,
+        body.subject_type,
+        body.subject_ref,
+        body.subject_version,
+        body.compatibility_ref,
+        body.compatibility_version,
     )
     if not check["valid"]:
         raise AppError(409, "STALE_SUBJECT", "Предмет устарел или несовместим; выберите другой.")
@@ -173,6 +179,7 @@ def create_reminder(session, body, services, correlation):
     )
     for row in active:
         if row.data["unique"] == unique and row.data["state"] not in {"done", "cancelled"}:
+            refresh_reminder(session, row, services, correlation)
             return reminder_dto(row)
     data = body.model_dump()
     data.update(
@@ -200,7 +207,13 @@ def refresh_reminder(session, row, services, correlation):
     if data["state"] in {"done", "cancelled", "stale"}:
         return
     check = services.check_subject(
-        session, row.dataset_id, data["subject_type"], data["subject_ref"], data["subject_version"]
+        session,
+        row.dataset_id,
+        data["subject_type"],
+        data["subject_ref"],
+        data["subject_version"],
+        data.get("compatibility_ref"),
+        data.get("compatibility_version"),
     )
     new_state = data["state"]
     if not check["valid"] or check.get("version") != data["subject_version"]:
@@ -240,6 +253,7 @@ def mutate_reminder(session, reminder_id, body, services, correlation, action):
             if field in body.model_fields_set:
                 data[field] = getattr(body, field)
         from pydantic import ValidationError
+
         try:
             validated = ReminderRequest.model_validate(
                 {k: v for k, v in data.items() if k in ReminderRequest.model_fields}
@@ -248,6 +262,14 @@ def mutate_reminder(session, reminder_id, body, services, correlation, action):
             raise AppError(422, "INVALID_REMINDER", "Проверьте срок, ответственного и поля задачи.") from None
         validate_recipient(session, validated)
         data.update(validated.model_dump())
+        if data["state"] in {"scheduled", "due"}:
+            data["state"] = (
+                "draft"
+                if not data["due_at"]
+                else "due"
+                if datetime.fromisoformat(data["due_at"]) <= datetime.now(UTC)
+                else "scheduled"
+            )
         if body.state == "done":
             data["state"] = "done"
     row.version += 1

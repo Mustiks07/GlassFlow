@@ -138,14 +138,22 @@ def owner_check(request: Request):
 @router.post("/runs", response_model=Job, status_code=202)
 def create_run(body: RunRequest, request: Request, idempotency_key: str | None = Header(None)):
     from glassflow.modules.platform.runs import create_run as start
+
     with write_transaction(request.app.state.session_factory) as session:
-        return idempotent(session, body.dataset_id, "run.create", idempotency_key, body.model_dump(),
-                          lambda: start(session, body, request.app.state.services, request.state.correlation_id))
+        return idempotent(
+            session,
+            body.dataset_id,
+            "run.create",
+            idempotency_key,
+            body.model_dump(),
+            lambda: start(session, body, request.app.state.services, request.state.correlation_id),
+        )
 
 
 @router.get("/runs/{run_id}")
 def get_run(run_id: str, request: Request):
     from glassflow.modules.platform.runs import run_view
+
     with request.app.state.session_factory() as session:
         return run_view(session, run_id)
 
@@ -153,6 +161,7 @@ def get_run(run_id: str, request: Request):
 @router.get("/jobs/{job_id}", response_model=Job)
 def get_job(job_id: str, request: Request, dataset_id: str | None = None):
     from glassflow.core.jobs import get_job, job_dto
+
     with request.app.state.session_factory() as session:
         return job_dto(get_job(session, job_id, dataset_id))
 
@@ -160,6 +169,7 @@ def get_job(job_id: str, request: Request, dataset_id: str | None = None):
 @router.post("/jobs/{job_id}/cancel", response_model=Job)
 def cancel_job(job_id: str, request: Request, dataset_id: str):
     from glassflow.core.jobs import get_job, job_dto
+
     with write_transaction(request.app.state.session_factory) as session:
         row = get_job(session, job_id, dataset_id)
         if row.state in {"queued", "running"}:
@@ -175,6 +185,7 @@ def export_run(run_id: str, request: Request, idempotency_key: str | None = Head
     from glassflow.core.uow import canonical_hash
     from glassflow.modules.platform.exports import export_run as execute
     from glassflow.modules.platform.runs import find_run
+
     # A local process owns this DB; serialize only exports, keeping solver/HTTP responsive.
     if not hasattr(request.app.state, "export_lock"):
         request.app.state.export_lock = threading.Lock()
@@ -190,8 +201,13 @@ def export_run(run_id: str, request: Request, idempotency_key: str | None = Head
                 if previous.request_hash != canonical_hash({}):
                     raise AppError(409, "IDEMPOTENCY_CONFLICT", "Ключ использован другим запросом.")
                 return previous.result
-        result = execute(request.app.state.session_factory, run_id, request.app.state.data_dir,
-                         request.app.state.services, request.state.correlation_id)
+        result = execute(
+            request.app.state.session_factory,
+            run_id,
+            request.app.state.data_dir,
+            request.app.state.services,
+            request.state.correlation_id,
+        )
         with write_transaction(request.app.state.session_factory) as session:
             return idempotent(session, dataset_id, operation, idempotency_key, {}, lambda: result)
 
@@ -202,6 +218,7 @@ def download_export(run_id: str, export_id: str, filename: str, request: Request
 
     from glassflow.modules.platform.exports import SCHEMAS
     from glassflow.modules.platform.runs import find_run
+
     try:
         if str(UUID(export_id)) != export_id:
             raise ValueError()
@@ -214,19 +231,52 @@ def download_export(run_id: str, export_id: str, filename: str, request: Request
     path = request.app.state.data_dir / "exports" / run_id / export_id / filename
     if not path.is_file():
         raise AppError(404, "FILE_NOT_FOUND", "Файл не найден.")
-    return FileResponse(path, filename=filename, media_type="text/csv; charset=utf-8" if filename.endswith(".csv") else "application/json")
+    return FileResponse(
+        path,
+        filename=filename,
+        media_type="text/csv; charset=utf-8" if filename.endswith(".csv") else "application/json",
+    )
 
 
 @router.get("/settings", response_model=AISettings)
 def settings(request: Request):
     from glassflow.modules.platform.system import get_settings
+
     with request.app.state.session_factory() as session:
         return get_settings(session, request.app.state.secrets)
+
+
+@router.post("/jobs/{job_id}/retry", response_model=Job, status_code=202)
+def retry_job(job_id: str, dataset_id: str, request: Request, idempotency_key: str | None = Header(None)):
+    from glassflow.core.jobs import enqueue, get_job, job_dto
+    from glassflow.modules.platform.runs import latest_jobs
+
+    with write_transaction(request.app.state.session_factory) as session:
+
+        def action():
+            original = get_job(session, job_id, dataset_id)
+            if original.state not in {"failed", "cancelled", "interrupted"}:
+                raise AppError(
+                    409, "JOB_NOT_RETRYABLE", "Повтор доступен только после сбоя, отмены или прерывания."
+                )
+            snapshot = dict(original.input)
+            if original.kind == "cards" and original.run_id:
+                cutting = latest_jobs(session, original.run_id).get("cutting")
+                if not cutting or cutting.state != "completed":
+                    raise AppError(409, "CUTTING_NOT_COMPLETED", "Сначала завершите финальный раскрой.")
+                snapshot["cutting_result"] = cutting.result
+            snapshot["retry_of"] = job_id
+            created = enqueue(session, dataset_id, original.kind, snapshot, original.run_id)
+            session.flush()
+            return job_dto(created).model_dump()
+
+        return idempotent(session, dataset_id, f"job.retry:{job_id}", idempotency_key, {}, action)
 
 
 @router.patch("/settings", response_model=AISettings)
 def update_settings(body: SettingsUpdate, request: Request):
     from glassflow.modules.platform.system import save_settings
+
     require_owner(request)
     with write_transaction(request.app.state.session_factory) as session:
         result = save_settings(session, body, request.app.state.secrets)
@@ -244,24 +294,40 @@ async def check_ai(request: Request):
     import asyncio
 
     from glassflow.modules.platform.system import get_settings
+
     require_owner(request)
     with request.app.state.session_factory() as session:
         settings = get_settings(session, request.app.state.secrets)
     checker = request.app.state.services.ai_check
     if checker is None:
-        raise AppError(503, "AI_ADAPTER_UNAVAILABLE", "Проверка AI-провайдера пока не подключена; локальное ядро доступно.")
+        raise AppError(
+            503,
+            "AI_ADAPTER_UNAVAILABLE",
+            "Проверка AI-провайдера пока не подключена; локальное ядро доступно.",
+        )
     secret = request.app.state.secrets.get(f"{settings.profile}:{settings.provider}")
     try:
-        operation = checker(settings, secret) if asyncio.iscoroutinefunction(checker) else asyncio.to_thread(checker, settings, secret)
+        operation = (
+            checker(settings, secret)
+            if asyncio.iscoroutinefunction(checker)
+            else asyncio.to_thread(checker, settings, secret)
+        )
         result = await asyncio.wait_for(operation, timeout=settings.timeout_seconds)
-        return {k: result[k] for k in ("available", "provider", "model_id", "capabilities", "checked_at") if k in result}
+        return {
+            k: result[k]
+            for k in ("available", "provider", "model_id", "capabilities", "checked_at")
+            if k in result
+        }
     except Exception:
-        raise AppError(503, "AI_CONNECTION_FAILED", "AI-профиль не прошел проверку подключения.", retryable=True) from None
+        raise AppError(
+            503, "AI_CONNECTION_FAILED", "AI-профиль не прошел проверку подключения.", retryable=True
+        ) from None
 
 
 @router.post("/system/backup")
 def backup(request: Request):
     from glassflow.modules.platform.system import create_backup
+
     require_owner(request)
     return create_backup(request.app.state.data_dir)
 
@@ -269,14 +335,22 @@ def backup(request: Request):
 @router.post("/system/restore")
 def restore(body: RestoreRequest, request: Request):
     from glassflow.modules.platform.system import request_restore
+
     require_owner(request)
     request.app.state.coordinator.stop()
     try:
         result = request_restore(request.app.state.data_dir, body)
     except BaseException:
         from glassflow.core.jobs import Coordinator
+
         coordinator = request.app.state.coordinator
-        replacement = Coordinator(request.app.state.session_factory, coordinator.handlers, tick=coordinator.tick)
+        replacement = Coordinator(
+            request.app.state.session_factory,
+            coordinator.handlers,
+            tick=coordinator.tick,
+            result_hooks=coordinator.result_hooks,
+            private_context=coordinator.private_context,
+        )
         request.app.state.coordinator = replacement
         replacement.start()
         raise
@@ -288,8 +362,11 @@ def restore(body: RestoreRequest, request: Request):
 def shutdown(request: Request):
     from fastapi.responses import JSONResponse
     from starlette.background import BackgroundTask
+
     require_owner(request)
     request.app.state.coordinator.stop()
     callback = getattr(request.app.state, "shutdown_callback", None)
-    return JSONResponse({"status": "stopping" if callback else "worker_stopped", "restart_required": True},
-                         background=BackgroundTask(callback) if callback else None)
+    return JSONResponse(
+        {"status": "stopping" if callback else "worker_stopped", "restart_required": True},
+        background=BackgroundTask(callback) if callback else None,
+    )

@@ -1,6 +1,9 @@
 # Build on Windows x64 after pnpm build. No secrets, KEY, user models or runtime DB.
 from pathlib import Path
-from PyInstaller.utils.hooks import collect_submodules, copy_metadata
+import hashlib
+import json
+import subprocess
+from PyInstaller.utils.hooks import collect_submodules, copy_metadata, collect_dynamic_libs
 
 root = Path(SPECPATH).parent
 web = root / "apps/web/dist"
@@ -11,6 +14,17 @@ sources = ["1_ostatki/materials.csv", "1_ostatki/stock_open.csv", "1_ostatki/ord
            "2_assistant_crm/applications_open.csv", "2_assistant_crm/questions_open.csv", "2_assistant_crm/dialogs_open.csv"]
 datas = [(str(web), "apps/web/dist"),
          (str(root / "backend/glassflow/core/migrations"), "glassflow/core/migrations")]
+runtime_files = sorted([*root.joinpath("backend").rglob("*.py"), *web.rglob("*")])
+source_hashes = {str(p.relative_to(root)).replace('\\', '/'): hashlib.sha256(p.read_bytes()).hexdigest()
+                 for p in runtime_files if p.is_file()}
+for name in ("uv.lock", "pnpm-lock.yaml", "pyproject.toml"):
+    source_hashes[name] = hashlib.sha256((root / name).read_bytes()).hexdigest()
+stamp = root / "build/build-info.json"
+stamp.parent.mkdir(parents=True, exist_ok=True)
+stamp.write_text(json.dumps({"commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
+    "source_digest": hashlib.sha256(json.dumps(source_hashes, sort_keys=True).encode()).hexdigest(),
+    "files": source_hashes, "frozen": True}, indent=2), encoding="utf8")
+datas.append((str(stamp), "glassflow"))
 for relative in sources:
     datas.append((str(root / "inputs/PACK_for_teams" / relative), "inputs/PACK_for_teams/" + str(Path(relative).parent)))
 for package in ("sqlalchemy", "pydantic", "scikit-learn", "scipy", "ortools"):
@@ -19,7 +33,7 @@ hidden = collect_submodules("glassflow") + ["scipy.optimize", "ortools.sat.pytho
     "sklearn.linear_model", "sklearn.compose", "sklearn.preprocessing", "sklearn.pipeline", "sklearn.model_selection",
     "alembic.ddl.sqlite", "sqlalchemy.dialects.sqlite"]
 a = Analysis([str(root / "packaging/entrypoint.py")], pathex=[str(root / "backend")],
-             binaries=[], datas=datas, hiddenimports=hidden,
+             binaries=collect_dynamic_libs("ortools"), datas=datas, hiddenimports=hidden,
              excludes=["tkinter", "matplotlib", "pytest", "IPython", "notebook"], noarchive=False)
 pyz = PYZ(a.pure)
 exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name="GlassFlow", debug=False,

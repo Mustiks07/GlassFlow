@@ -11,8 +11,11 @@ from glassflow.modules.platform.imports import records
 
 
 def test_partial_download_exact_utf8_and_replay(client, imported):
-    job = client.post("/api/v1/runs", json={"dataset_id": imported["dataset_id"], "modules": ["crm"],
-                     "config_version": "synthetic-v1"}, headers={"Idempotency-Key": "run"}).json()
+    job = client.post(
+        "/api/v1/runs",
+        json={"dataset_id": imported["dataset_id"], "modules": ["crm"], "config_version": "synthetic-v1"},
+        headers={"Idempotency-Key": "run"},
+    ).json()
     deadline = time.monotonic() + 15
     while time.monotonic() < deadline:
         progress = client.get(f"/api/v1/jobs/{job['job_id']}").json()
@@ -41,25 +44,156 @@ def test_organizer_validator_and_strict_additional_checks(client, imported):
     from glassflow.core.jobs import enqueue
     from glassflow.modules.platform.exports import export_run
     from glassflow.modules.platform.runs import create_run
+
     factory = client.app.state.session_factory
     with write_transaction(factory) as session:
-        run_job = create_run(session, RunRequest(dataset_id=imported["dataset_id"], modules=["cutting"],
-            config_version="synthetic-v1"), client.app.state.services, "synthetic")
+        run_job = create_run(
+            session,
+            RunRequest(dataset_id=imported["dataset_id"], modules=["cutting"], config_version="synthetic-v1"),
+            client.app.state.services,
+            "synthetic",
+        )
         job = session.get(JobRow, run_job["job_id"])
-        rows = [{"part_id": r.public_id, "remnant_id": "NEW", "x_mm": "", "y_mm": "", "rot": ""}
-                for r in records(session, job.dataset_id, "orders")]
-        job.state, job.result = "completed", {"rows": rows, "validated": True, "plan_id": "synthetic", "plan_revision": 0}
+        rows = [
+            {"part_id": r.public_id, "remnant_id": "NEW", "x_mm": "", "y_mm": "", "rot": ""}
+            for r in records(session, job.dataset_id, "orders")
+        ]
+        job.state, job.result = (
+            "completed",
+            {"rows": rows, "validated": True, "plan_id": "synthetic", "plan_revision": 0},
+        )
         # NEEDS_REVIEW must not become a false OK export.
         quality = enqueue(session, job.dataset_id, "quality", {}, job.run_id)
-        quality.state, quality.result = "completed", {"rows": [{"id": "D01", "verdict": "NEEDS_REVIEW", "correct": ""}]}
+        quality.state, quality.result = (
+            "completed",
+            {"rows": [{"id": "D01", "verdict": "NEEDS_REVIEW", "correct": ""}]},
+        )
         with pytest.raises(Exception):
             validate_rows(session, job.dataset_id, "solution.csv", rows[:-1])
         with pytest.raises(Exception):
             validate_rows(session, job.dataset_id, "solution.csv", rows + [rows[0]])
         with pytest.raises(Exception):
             validate_rows(session, job.dataset_id, "solution.csv", [dict(rows[0], x_mm="0")] + rows[1:])
-    result = export_run(factory, run_job["run_id"], client.app.state.data_dir, client.app.state.services, "synthetic")
+    result = export_run(
+        factory, run_job["run_id"], client.app.state.data_dir, client.app.state.services, "synthetic"
+    )
     assert "solution.csv" in result["files"] and "verdicts.csv" not in result["files"]
     manifest = client.get(result["files"]["manifest.json"]).json()
     official = manifest["validators"]["cutting_official"]
     assert official["passed"] and official["exit_code"] == 0 and "invalid=0" in official["stdout"]
+
+
+def test_all_five_exact_downloads_on_new_ids_with_explicit_domain_fixtures(client, uploads, services):
+    """Format/integration seam check only; synthetic C2/C3/buyer fixtures are not domain acceptance."""
+    from conftest import import_dataset
+    from sales.test_sales import SyntheticSource, import_synthetic_buyers
+    from sqlalchemy import select
+
+    from glassflow.core.jobs import enqueue
+
+    transformed = []
+    keys = {
+        "stock": ["remnant_id"],
+        "orders": ["order_id", "part_id"],
+        "applications": ["app_id", "client_id"],
+        "questions": ["id"],
+        "dialogs": ["id"],
+    }
+    for name, content in uploads:
+        kind = next((k for k in keys if name.startswith(k)), None)
+        if kind:
+            reader = csv.DictReader(io.StringIO(content.decode("utf8"), newline=""))
+            fields, rows = reader.fieldnames, list(reader)
+            for row in rows:
+                for field in keys[kind]:
+                    row[field] = "SYNTHETIC-" + row[field]
+            buffer = io.StringIO(newline="")
+            writer = csv.DictWriter(buffer, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(rows)
+            content = buffer.getvalue().encode("utf8")
+        transformed.append((name, content))
+    imported = import_dataset(client, transformed)
+    version = import_synthetic_buyers(client, imported["dataset_id"])
+    services.sales_source = SyntheticSource()
+    started = client.post(
+        "/api/v1/runs",
+        json={
+            "dataset_id": imported["dataset_id"],
+            "config_version": "synthetic-seams",
+            "buyer_registry_version": version,
+        },
+        headers={"Idempotency-Key": "full-format-run"},
+    ).json()
+    factory = client.app.state.session_factory
+    deadline = time.monotonic() + 15
+    while time.monotonic() < deadline:
+        view = client.get(f"/api/v1/runs/{started['run_id']}").json()
+        if not any(j["state"] in {"queued", "running"} for j in view["jobs"]):
+            break
+        time.sleep(0.05)
+    d = view["manifest"]["dataset_id"]
+    cards = client.post(
+        "/api/v1/sale-cards",
+        json={
+            "dataset_id": d,
+            "plan_id": "synthetic-plan",
+            "plan_revision": 1,
+            "buyer_registry_version": version,
+        },
+        headers={"Idempotency-Key": "full-cards"},
+    ).json()
+    assert isinstance(cards, list) and len(cards) == 5, cards
+    with write_transaction(factory) as session:
+        jobs = {j.kind: j for j in session.scalars(select(JobRow).where(JobRow.run_id == started["run_id"]))}
+        outputs = {
+            "cutting": {
+                "rows": [
+                    {"part_id": r.public_id, "remnant_id": "NEW", "x_mm": "", "y_mm": "", "rot": ""}
+                    for r in records(session, d, "orders")
+                ],
+                "plan_id": "synthetic-plan",
+                "plan_revision": 1,
+                "validated": True,
+            },
+            "assistant": {
+                "rows": [
+                    {"id": r.public_id, "answer": "Явный синтетический ответ теста формата, не C3 runtime."}
+                    for r in records(session, d, "questions")
+                ]
+            },
+            "quality": {
+                "rows": [
+                    {"id": r.public_id, "verdict": "OK", "correct": ""}
+                    for r in records(session, d, "dialogs")
+                ]
+            },
+            "cards": {
+                "card_ids": [c["card_id"] for c in cards],
+                "plan_id": "synthetic-plan",
+                "plan_revision": 1,
+            },
+        }
+        for kind, result in outputs.items():
+            job = jobs.get(kind) or enqueue(session, d, kind, {}, started["run_id"])
+            job.state, job.stage, job.result = (
+                "completed",
+                "completed",
+                {**result, "provenance": {"synthetic": True}},
+            )
+    result = client.post(
+        f"/api/v1/runs/{started['run_id']}/export", headers={"Idempotency-Key": "full-export"}
+    ).json()
+    assert result["status"] == "ready", result
+    from glassflow.modules.platform.exports import SCHEMAS
+
+    for name, fields in SCHEMAS.items():
+        content = client.get(result["files"][name]).content
+        reader = csv.DictReader(io.StringIO(content.decode("utf8"), newline=""))
+        assert reader.fieldnames == fields and not content.startswith(b"\xef\xbb\xbf")
+        rows = list(reader)
+        if name in {"solution.csv", "answers.csv", "picks.csv", "verdicts.csv"}:
+            assert all(next(iter(r.values())).startswith("SYNTHETIC-") for r in rows)
+    manifest = client.get(result["files"]["manifest.json"]).json()
+    assert manifest["validators"]["cutting_official"]["passed"]
+    assert manifest["module_provenance"]["assistant"]["synthetic"] is True

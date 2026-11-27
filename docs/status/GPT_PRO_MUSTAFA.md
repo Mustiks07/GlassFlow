@@ -51,3 +51,24 @@ C2/C3 domain services и C1 verified buyer evidence не объединялис�
 - P-10: launcher bind socket before startup, free port, /ready wait, browser, instance locks, graceful shutdown; PyInstaller spec и build script. Native worker source smoke PASS (SciPy MILP x=2, OR-Tools x=2, spawn). Первая actual Windows frozen сборка выполняется; результат еще NOT RUN.
 - Проверки: `uv run pytest` 33 PASS; ruff/check_foundation PASS; standard OpenAPI/TS regenerated. Foundation UI не менялся.
 - Следующий шаг: actual frozen worker/backend/restart smoke, CI и performance; gated PDF/economics/examples/release tools и финальный handoff. Доменная интеграция/real AI/clean Windows/реальные buyers/manual labor measurements остаются отдельными блокерами.
+
+## Checkpoint 3: Windows, release tooling и итоговая платформа
+
+- Автор следующих commits: Mustiks07, GitHub noreply identity, worktree-only config. Старые опубликованные commits не переписывались.
+- На фактической Windows build машине собран PyInstaller onedir. Первый native smoke выявил пропущенные OR-Tools DLL; исправлено collect_dynamic_libs. Повторный actual EXE smoke PASS: frozen child SciPy/OR-Tools x=2, HTTP import, CRM25, скачанный picks.csv, штатный shutdown, restart/persistence. Evidence `docs/release/frozen-smoke.json`; clean Windows/полный UI flow остаются NOT RUN.
+- Новый Alembic head `0002_immutable_history`: SQL triggers запрещают изменение/удаление original bytes, source rows, audit, replay и dataset identity. Старый head не редактировался; upgrade делает online backup.
+- Jobs: retry_of/new attempt/idempotency, latest attempt per module, bounded CPU/network processes, RSS guard, actual timestamps. Network secrets передаются только memory-only context.private_config, не snapshot/SQLite. AI jobs не получают CRM applications; модульные snapshots минимальны. Typed SolveInput mapping готов для C2.
+- Specific-remnant reminder требует compatibility_ref/version (quote/part), resolver возвращает compatibility_valid/version. Проверяются и версия куска, и версия обоснования совместимости; тестируются stale по обоим источникам. SalesSourcePort добавлен обратно совместимо, детали в handoff.
+- P-10: launcher/single instance/free port/static UI; frozen source digest/build stamp; Windows CI и native smoke artifact. Remote CI пока не объявлен PASS.
+- Actual benchmark: import preview 20, median 65.37 ms / p95 105.19 ms; dashboard100 median 70.00 / p95 128.38 ms; CRM100 median 41.81 / p95 104.85 ms. CPU/RAM/OS/samples в `platform-benchmark.json`. Измерения выполнялись во время сборки, не на эталонной чистой машине.
+- P-11: safe settings и HTTPS probe/integration guide готовы. C3 gateway engine/hosting/endpoint/token/quota отсутствуют: deployment и real full flow BLOCKED.
+- P-12: evidence-gated one-page economics и шестистраничный examples renderer; formulas без double count/payback при net<=0; минимум10 real paired labor studies. Synthetic layout PDFs отрендерены Poppler и просмотрены, кириллица/таблицы/схемы без обрезания. Это НЕ final economics/examples для жюри. Без actual C2/C3/manual evidence final build отказывается.
+- Release assembler требует ready same-run пяти CSV + buyers, hashed visually reviewed PDFs и team README; не перезаписывает существующий финал, исключает KEY/DB/secrets и synthetic provenance. Конкретный frozen bundle просканирован, source licenses metadata собрана без локальных machine paths. T67 legal acceptance NOT RUN.
+- Полный контроль перед этим checkpoint: pytest42 PASS, ruff PASS, check_foundation14 immutable PASS, pnpm typecheck/test (2)/build PASS, generated contracts обновлены. Последние изменения privacy snapshots/release fixture guard дополнительно проверяются перед финальным push.
+- Открыты и прочитаны README, actual downloaded CSV/manifest; synthetic PDF previews просмотрены все страницы. Final presentation/реальные buyers/final PDFs отсутствуют в этой ветке, не подменялись генерацией.
+
+## Передача интегратору
+
+Основной отчет: `docs/release/PLATFORM_HANDOFF.md`. Календарь T63-T67: `SUBMISSION_CHECKLIST.md`.
+Оставшиеся внешние/совместные пункты: C1 UI и real buyer evidence; C2/C3 actual repositories/migration snippets/handlers/validators; live providers и HTTPS gateway; team name;10 real paired labor timings/cost assumptions; actual run economics/examples; clean Windows; guest downloads/submission/attendance/rights.
+Ни один из этих пунктов не считается PASS по платформенным fixtures. Статус: PLATFORM IMPLEMENTED / INTEGRATION REQUIRED; полная конкурсная миссия еще не принята.

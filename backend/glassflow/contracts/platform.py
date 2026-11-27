@@ -40,6 +40,10 @@ class Job(DTO):
     total: int | None = None
     result: dict | None = None
     last_valid_result: dict | None = None
+    retry_of: str | None = None
+    created_at: str | None = None
+    started_at: str | None = None
+    finished_at: str | None = None
 
 
 class RunRequest(DatasetRequest):
@@ -82,15 +86,20 @@ class AISettings(DTO):
     paid_enabled: bool = False
     monthly_budget_tg: str = Field(default="0", pattern=r"^\d+(?:\.\d+)?$")
     rpm: int = Field(default=1, ge=1, le=1000, strict=True)
+    tpm: int = Field(default=1000, ge=1, le=10_000_000, strict=True)
+    rpd: int = Field(default=100, ge=1, le=1_000_000, strict=True)
     max_parallel: int = Field(default=1, ge=1, le=8, strict=True)
     timeout_seconds: int = Field(default=30, ge=1, le=120, strict=True)
     max_retries: int = Field(default=2, ge=0, le=2, strict=True)
+    max_tool_iterations: int = Field(default=6, ge=1, le=6, strict=True)
+    max_output_tokens: int = Field(default=2048, ge=1, le=32768, strict=True)
+    fallback_models: list[str] = Field(default_factory=list, max_length=3)
     gateway_url: str | None = None
     secret_present: bool = False
 
 
 class SettingsUpdate(AISettings):
-    api_key: str | None = Field(default=None, max_length=4096, exclude=True)
+    api_key: str | None = Field(default=None, max_length=4096, exclude=True, repr=False)
 
 
 class RestoreRequest(DTO):

@@ -3,7 +3,7 @@ from uuid import uuid4
 from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import IntegrityError, OperationalError
 from starlette.exceptions import HTTPException
 
 
@@ -13,17 +13,7 @@ class FeatureUnavailable(Exception):
 
 
 async def feature_unavailable_handler(request: Request, exc: FeatureUnavailable) -> JSONResponse:
-    return JSONResponse(
-        status_code=501,
-        content={
-            "code": "FEATURE_NOT_IMPLEMENTED",
-            "message_ru": f"Модуль {exc.feature} еще не реализован в каркасе проекта.",
-            "field_errors": [],
-            "conflict_objects": [],
-            "retryable": False,
-            "correlation_id": str(uuid4()),
-        },
-    )
+    return error_response(request, 501, "FEATURE_NOT_IMPLEMENTED", f"Модуль {exc.feature} не подключен.")
 
 
 class AppError(Exception):
@@ -69,6 +59,12 @@ def install_error_handlers(app):
     async def database_error(request, exc):
         return error_response(
             request, 503, "DATABASE_UNAVAILABLE", "База временно недоступна.", retryable=True
+        )
+
+    @app.exception_handler(IntegrityError)
+    async def constraint_error(request, exc):
+        return error_response(
+            request, 409, "CONSTRAINT_CONFLICT", "Нарушена уникальность, ссылка или неизменность истории."
         )
 
     @app.exception_handler(Exception)

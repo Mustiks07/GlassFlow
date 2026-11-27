@@ -1,0 +1,30 @@
+{
+  "measured_at": "2026-11-27T16:29:24.951277+00:00",
+  "os": "Windows-10-10.0.19045-SP0",
+  "exe_sha256": "5ef98d81c47224797e144740db94eb35af8a3cce1ccb98b9bf03588b4bc676a4",
+  "native_worker": {
+    "scipy_x": 2,
+    "ortools_x": 2,
+    "ortools_optimal": true,
+    "frozen_worker": true,
+    "pid": 3796
+  },
+  "clean_windows": "not_run",
+  "ui_flow": "not_run; C1 integration required",
+  "first_start_ms": 3265.00000001397,
+  "downloaded_picks_sha256": "b01cd1035793666d1c7d25db66e087d77c7b59a4c752606148bec311dcd02482",
+  "import_counts": {
+    "materials": 8,
+    "stock": 200,
+    "orders": 298,
+    "kb": 1,
+    "applications": 700,
+    "questions": 18,
+    "dialogs": 8,
+    "distinct_orders": 110
+  },
+  "crm_rows": 25,
+  "restart_ms": 2890.00000001397,
+  "persistence": "passed",
+  "status": "passed_on_build_machine"
+}

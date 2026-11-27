@@ -46,7 +46,7 @@ def create_database(data_dir: Path | None = None):
             if current
             else None
         )
-    if version != "0001_platform" and database_path.exists() and database_path.stat().st_size:
+    if version != "0002_immutable_history" and database_path.exists() and database_path.stat().st_size:
         stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%f")
         backup_database(database_path, directory / f"pre-migration-{stamp}.db")
     config = Config()

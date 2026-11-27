@@ -1,4 +1,5 @@
 """Local owner operations; secrets stay only in session memory."""
+
 import hashlib
 import json
 import os
@@ -29,11 +30,20 @@ def save_settings(session, body, secrets):
     if body.mode == "free_only" and (body.paid_enabled or Decimal(body.monthly_budget_tg) != 0):
         raise AppError(422, "FREE_ONLY_BUDGET", "В бесплатном режиме paid_enabled=false и бюджет=0.")
     if body.mode == "paid_enabled" and (not body.paid_enabled or Decimal(body.monthly_budget_tg) <= 0):
-        raise AppError(422, "PAID_OPT_IN_REQUIRED", "Для платного режима явно включите оплату и положительный бюджет.")
+        raise AppError(
+            422, "PAID_OPT_IN_REQUIRED", "Для платного режима явно включите оплату и положительный бюджет."
+        )
     if body.profile == "judge_gateway":
         from urllib.parse import urlsplit
+
         parsed = urlsplit(body.gateway_url or "")
-        if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password or parsed.query:
+        if (
+            parsed.scheme != "https"
+            or not parsed.hostname
+            or parsed.username
+            or parsed.password
+            or parsed.query
+        ):
             raise AppError(422, "HTTPS_GATEWAY_REQUIRED", "Нужен HTTPS-адрес шлюза без токена в URL.")
     data = body.model_dump(exclude={"api_key", "secret_present"})
     data["version"] = previous.version + 1
@@ -44,7 +54,10 @@ def save_settings(session, body, secrets):
     else:
         row.version, row.data = data["version"], data
     # Caller installs the secret after the DB transaction succeeds.
-    return {**data, "secret_present": bool(body.api_key) if body.api_key is not None else previous.secret_present}
+    return {
+        **data,
+        "secret_present": bool(body.api_key) if body.api_key is not None else previous.secret_present,
+    }
 
 
 def backup_path(data_dir, backup_id):
@@ -67,8 +80,12 @@ def create_backup(data_dir):
     backup_database(data_dir / "glassflow.db", temporary)
     final = directory / f"{backup_id}.db"
     os.replace(temporary, final)
-    return {"backup_id": backup_id, "sha256": hashlib.sha256(final.read_bytes()).hexdigest(),
-            "created_at": now(), "integrity": "ok"}
+    return {
+        "backup_id": backup_id,
+        "sha256": hashlib.sha256(final.read_bytes()).hexdigest(),
+        "created_at": now(),
+        "integrity": "ok",
+    }
 
 
 def validate_backup(path):
@@ -77,10 +94,16 @@ def validate_backup(path):
         with closing(sqlite3.connect(f"file:{Path(path).as_posix()}?mode=ro", uri=True)) as connection:
             if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                 raise ValueError()
-            if connection.execute("SELECT version_num FROM alembic_version").fetchone() != ("0001_platform",):
+            if connection.execute("SELECT version_num FROM alembic_version").fetchone() not in {
+                ("0001_platform",),
+                ("0002_immutable_history",),
+            }:
                 raise ValueError()
             tables = {r[0] for r in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-            if not {"datasets", "source_files", "source_records", "platform_objects", "jobs", "settings"} <= tables:
+            if (
+                not {"datasets", "source_files", "source_records", "platform_objects", "jobs", "settings"}
+                <= tables
+            ):
                 raise ValueError()
             if list(connection.execute("PRAGMA foreign_key_check")):
                 raise ValueError()
@@ -94,8 +117,11 @@ def request_restore(data_dir, body):
     path = backup_path(data_dir, body.backup_id)
     validate_backup(path)
     protected = create_backup(data_dir)
-    manifest = {"backup_id": body.backup_id, "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-                "protected_backup_id": protected["backup_id"]}
+    manifest = {
+        "backup_id": body.backup_id,
+        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "protected_backup_id": protected["backup_id"],
+    }
     temporary = data_dir / ".pending-restore.tmp"
     temporary.write_text(json.dumps(manifest), encoding="utf8")
     os.replace(temporary, data_dir / "pending-restore.json")

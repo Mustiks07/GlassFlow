@@ -1,4 +1,5 @@
 """Durable queue, spawn workers and one coordinator writer. Workers never open SQLite."""
+
 import multiprocessing as mp
 import threading
 import time
@@ -17,7 +18,8 @@ class Handler:
     function: object
     lane: str = "cpu"
     validate: object = None
-    timeout_seconds: float = 660
+    timeout_seconds: float = 3660
+    memory_limit_mb: int = 2048
 
 
 class Cancelled(Exception):
@@ -29,8 +31,9 @@ def serialize(value):
 
 
 class ProcessContext:
-    def __init__(self, sender, cancelled, snapshot, validator):
+    def __init__(self, sender, cancelled, snapshot, validator, private_config=None):
         self.sender, self.event, self.snapshot, self.validator = sender, cancelled, snapshot, validator
+        self.private_config = private_config or {}  # Memory-only provider credentials; never part of JobRow.
 
     def cancelled(self):
         return self.event.is_set()
@@ -48,10 +51,12 @@ class ProcessContext:
         self.sender.send(("incumbent", serialize(result)))
 
 
-def process_entry(sender, cancel, handler, snapshot):
+def process_entry(sender, cancel, handler, snapshot, private_config=None):
     try:
-        context = ProcessContext(sender, cancel, snapshot, handler.validate)
+        context = ProcessContext(sender, cancel, snapshot, handler.validate, private_config)
         result = serialize(handler.function(snapshot, context))
+        if not isinstance(result, dict):
+            raise ValueError("Job handler must return a typed object/envelope")
         if handler.validate is not None and not handler.validate(snapshot, result):
             raise ValueError("Invalid final result")
         sender.send(("result", result))
@@ -65,16 +70,41 @@ def process_entry(sender, cancel, handler, snapshot):
 
 
 def job_dto(row):
-    return Job(job_id=row.id, dataset_id=row.dataset_id, run_id=row.run_id, state=row.state, stage=row.stage,
-               result_ref=row.id if row.result is not None else None,
-               last_valid_result_ref=row.id if row.last_valid_result is not None else None,
-               result=row.result, last_valid_result=row.last_valid_result, error_code=row.error_code,
-               cancel_requested=row.cancel_requested, stopped=row.stopped, completed=row.completed, total=row.total)
+    return Job(
+        job_id=row.id,
+        dataset_id=row.dataset_id,
+        run_id=row.run_id,
+        state=row.state,
+        stage=row.stage,
+        result_ref=row.id if row.result is not None else None,
+        last_valid_result_ref=row.id if row.last_valid_result is not None else None,
+        result=row.result,
+        last_valid_result=row.last_valid_result,
+        error_code=row.error_code,
+        cancel_requested=row.cancel_requested,
+        stopped=row.stopped,
+        completed=row.completed,
+        total=row.total,
+        retry_of=row.input.get("retry_of"),
+        created_at=row.created_at,
+        started_at=row.started_at,
+        finished_at=row.finished_at,
+    )
 
 
 def enqueue(session, dataset_id, kind, snapshot, run_id=None):
-    job = JobRow(id=uid(), dataset_id=dataset_id, run_id=run_id, kind=kind, input=snapshot,
-                 state="queued", stage="queued", completed=0, cancel_requested=False, stopped=False)
+    job = JobRow(
+        id=uid(),
+        dataset_id=dataset_id,
+        run_id=run_id,
+        kind=kind,
+        input=snapshot,
+        state="queued",
+        stage="queued",
+        completed=0,
+        cancel_requested=False,
+        stopped=False,
+    )
     session.add(job)
     return job
 
@@ -87,7 +117,9 @@ def get_job(session, job_id, dataset_id=None):
 
 
 class Coordinator:
-    def __init__(self, factory, handlers, *, network_parallel=2, tick=None, result_hooks=None):
+    def __init__(
+        self, factory, handlers, *, network_parallel=2, tick=None, result_hooks=None, private_context=None
+    ):
         self.factory, self.handlers = factory, handlers
         self.capacity = {"cpu": 1, "network": network_parallel}
         self.active = {}
@@ -97,6 +129,7 @@ class Coordinator:
         self.healthy = True
         self.tick = tick
         self.result_hooks = result_hooks or {}
+        self.private_context = private_context or {}
 
     def start(self):
         with write_transaction(self.factory) as session:
@@ -107,7 +140,8 @@ class Coordinator:
 
     def stop(self):
         self.stop_event.set()
-        self.thread.join(timeout=6)
+        if self.thread.ident is not None:
+            self.thread.join(timeout=6)
         self.healthy = False
 
     def loop(self):
@@ -134,8 +168,9 @@ class Coordinator:
         used = {lane: sum(a["lane"] == lane for a in self.active.values()) for lane in self.capacity}
         launches = []
         with write_transaction(self.factory) as session:
-            queued = session.scalars(select(JobRow).where(JobRow.state == "queued")
-                                     .order_by(JobRow.created_at).limit(50)).all()
+            queued = session.scalars(
+                select(JobRow).where(JobRow.state == "queued").order_by(JobRow.created_at).limit(50)
+            ).all()
             for row in queued:
                 if row.cancel_requested:
                     row.state, row.stopped, row.finished_at = "cancelled", True, now()
@@ -157,10 +192,28 @@ class Coordinator:
         for job_id, handler, snapshot in launches:
             receiver, sender = self.context.Pipe(duplex=False)
             event = self.context.Event()
-            process = self.context.Process(target=process_entry, args=(sender, event, handler, snapshot), daemon=True)
-            self.active[job_id] = {"process": process, "receiver": receiver, "event": event,
-                "lane": handler.lane, "deadline": time.monotonic() + handler.timeout_seconds,
-                "cancel_at": None}
+            private = {}
+            resolver = self.private_context.get(handler.lane)
+            if resolver:
+                private = resolver(snapshot)
+            process = self.context.Process(
+                target=process_entry, args=(sender, event, handler, snapshot, private), daemon=True
+            )
+            self.active[job_id] = {
+                "process": process,
+                "receiver": receiver,
+                "event": event,
+                "lane": handler.lane,
+                "deadline": time.monotonic()
+                + min(
+                    handler.timeout_seconds,
+                    snapshot.get("solver_config", {}).get("time_limit_seconds", 3600) + 60
+                    if handler.lane == "cpu"
+                    else handler.timeout_seconds,
+                ),
+                "memory_limit_mb": handler.memory_limit_mb,
+                "cancel_at": None,
+            }
             try:
                 process.start()
                 sender.close()
@@ -182,7 +235,11 @@ class Coordinator:
                     with write_transaction(self.factory) as session:
                         row = get_job(session, job_id)
                         if kind == "progress":
-                            row.stage, row.completed, row.total = value["stage"], value["completed"], value["total"]
+                            row.stage, row.completed, row.total = (
+                                value["stage"],
+                                value["completed"],
+                                value["total"],
+                            )
                         elif kind == "incumbent":
                             row.last_valid_result = value
                         elif kind == "result":
@@ -192,7 +249,11 @@ class Coordinator:
                                     with session.begin_nested():
                                         hook(session, row.dataset_id, value)
                                 except Exception:
-                                    row.state, row.stage, row.error_code = "failed", "persist", "RESULT_PERSIST_FAILED"
+                                    row.state, row.stage, row.error_code = (
+                                        "failed",
+                                        "persist",
+                                        "RESULT_PERSIST_FAILED",
+                                    )
                                     row.stopped, row.finished_at, ended = True, now(), True
                             if not ended:
                                 row.result = value
@@ -209,6 +270,12 @@ class Coordinator:
             except (EOFError, OSError):
                 pass
             if ended or job_id not in self.active:
+                continue
+            from glassflow.core.memory import resident_bytes
+
+            used_memory = resident_bytes(active["process"].pid)
+            if used_memory is not None and used_memory > active["memory_limit_mb"] * 1024**2:
+                self.finish(job_id, "failed", "MEMORY_BUDGET_EXCEEDED")
                 continue
             with self.factory() as session:
                 cancelled = get_job(session, job_id).cancel_requested

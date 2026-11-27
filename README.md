@@ -1,75 +1,135 @@
 # GlassFlow
 
-Рабочее место менеджера KSM: **запрос клиента → проверенный расчет → подходящий остаток → следующее действие → проверяемый результат**.
+Рабочее место менеджера KSM: запрос → проверенный расчет → остаток → следующее действие → проверяемый результат.
 
-**Состояние репозитория: общая база разработки.** Запускаются интерфейс, API и SQLite. Бизнес-модули предстоит реализовать четырем агентам; предметные API сейчас возвращают явный `501 FEATURE_NOT_IMPLEMENTED`. Это не готовая конкурсная поставка.
+**Статус этой ветки: реализована платформа, готовится интеграция C1/C2/C3. Полный конкурсный продукт еще не принят.**
+Имя команды: **TEAM_NAME_REQUIRED** — команда должна задать его до выпуска финального README.
 
-## Агентам: начать здесь
+В `codex/gpt-pro-mustafa-platform` работают импорт, SQLite, неизменная история, CRM, аналитика, локальные задачи,
+процессная очередь, manifest, строгий экспорт завершенных частей, backup/restore, настройки и Windows launcher.
+Cutting, pricing/assistant/QA и UI принадлежат другим веткам. Их отсутствие дает явные 501/503/failed dependency,
+а не выдуманный результат. `/api/v1/ready` сообщает `degraded` до фактической регистрации и проверки всех сервисов.
 
-| Агент | Ветка | Полное задание |
-|---|---|---|
-| Клауд первый, Ильяс | `codex/claude-1-ilyas-ui` | [Интерфейс, E2E, покупатели, презентация](docs/agents/CLAUDE_1_ILYAS.md) |
-| Клауд второй, Мырзабек | `codex/claude-2-myrzabek-cutting` | [Склад, геометрия, раскрой](docs/agents/CLAUDE_2_MYRZABEK.md) |
-| Клауд третий, Мустафа | `codex/claude-3-mustafa-ai` | [Каталог, расчеты, AI и контроль ответов](docs/agents/CLAUDE_3_MUSTAFA.md) |
-| GPT Pro Мустафы | `codex/gpt-pro-mustafa-platform` | [Платформа, CRM, аналитика, экспорты, сборка](docs/agents/GPT_PRO_MUSTAFA.md) |
-| Отдельная финальная сессия GPT Pro | создаст `codex/integration` после завершения четырех веток | [Интеграция и окончательная приемка](docs/agents/GPT_PRO_INTEGRATOR.md) |
+## Запуск из исходников
 
-Это полные назначения до результата, а не стартовые пакеты. [Порядок совместной работы](docs/agents/README.md), [правила владения файлами](AGENTS.md), [все 66 требований и 67 проверок](docs/agents/COVERAGE.md).
+Нужны Python **3.12**, Node **24**, uv и pnpm **11.25.0**; версии закреплены lock-файлами.
 
-## Основание проекта
-
-- [Полное ТЗ, 51 страница](docs/specification/GlassFlow_Development_Specification_v1.pdf) и [текст для агентов](docs/specification/GlassFlow_Development_Specification_v1.txt).
-- [Исходный кейс](inputs/Case_KSM_Steklo_dengi_klient.pdf), [пакет организаторов](inputs/PACK_for_teams/README.txt), [контрольные суммы исходников](docs/specification/input_manifest.json).
-- [Архитектура и контракты](docs/architecture/CONTRACTS.md), [реестр всех обязательных API-операций](docs/architecture/API_OPERATIONS.md).
-- Исследовательские результаты находятся в `analysis/cutting`, `analysis/crm`, `analysis/review`. Это ориентиры на открытых данных; runtime не должен читать готовые ответы или evaluation KEY.
-
-## Запуск для разработчиков
-
-Нужны Python **3.12**, Node.js **24**, **uv** и **pnpm 11.25.0**. Команды выполняются из корня репозитория. Python и Node версии закреплены в `.python-version` / `.node-version`.
-
-```sh
+```powershell
 uv sync --locked --all-groups
 pnpm install --frozen-lockfile
+pnpm build
+uv run python -m glassflow.launcher
 ```
 
-Первый терминал:
+Launcher выбирает свободный адрес `127.0.0.1`, дожидается БД/миграций/worker и открывает браузер.
+Данные сохраняются в `%LOCALAPPDATA%/GlassFlow`; `GLASSFLOW_DATA_DIR` явно задает другой локальный каталог.
+Повторный процесс не открывает вторую БД. Автообновления отключены.
 
-```sh
-uv run uvicorn glassflow.main:app --host 127.0.0.1 --port 8000
+Для разработки API: `uv run uvicorn glassflow.main:app --host 127.0.0.1 --port 8000`.
+UI в отдельном терминале: `pnpm dev`; адрес [127.0.0.1:5173](http://127.0.0.1:5173).
+Swagger: [API docs](http://127.0.0.1:8000/docs). Собранный UI также обслуживается backend.
+
+## Windows без Python и Node
+
+```powershell
+./scripts/build_windows.ps1
+uv run python scripts/smoke_frozen.py
+uv run python scripts/scan_release.py dist/GlassFlow
 ```
 
-Второй терминал:
+Результат — `dist/GlassFlow/GlassFlow.exe` и соседние файлы; переносится вся папка.
+Для менеджера: распаковать подготовленный ZIP и открыть EXE. Сейчас это проверенный **platform smoke bundle**,
+не финальная конкурсная поставка: C1/C2/C3 еще не объединены. Проверка на чистом компьютере без автора остается NOT RUN;
+обещание полного запуска <=5 минут пока не подтверждено.
 
-```sh
-pnpm dev
-```
+[Фактический frozen smoke](docs/release/frozen-smoke.json) проверяет SciPy/OR-Tools в дочернем EXE, импорт,
+CRM job, скачанный CSV, штатное завершение и сохранность после повторного запуска.
+Измерения относятся только к указанной в отчете build-машине, не к чистой Windows 11.
 
-Открыть **http://127.0.0.1:5173**. Документация API: **http://127.0.0.1:8000/docs**. SQLite создается в `.runtime/`. Frontend проксирует `/api` на 8000. После `pnpm build` backend также обслуживает собранный интерфейс на 8000 (перезапустить backend после сборки).
+## Свои данные и API
 
-Для каркаса AI-ключ не нужен. Пример будущих настроек — `.env.example`; автоматическое чтение `.env` пока не реализовано. Ключи нельзя коммитить. Gemini/OpenRouter подключает назначенный агент; модель и доступность бесплатной квоты проверяются на реальном аккаунте.
+Сначала открыть `GET /api/v1/session` либо приложение: локальная сессия устанавливает cookie.
+Для owner-only настроек/backup/restore/shutdown нужен возвращенный `X-GlassFlow-Session`.
+Токен локальной сессии не является ключом провайдера и не передается покупателям.
 
-## Проверка базы
+1. `POST /api/v1/imports/preview`: multipart `files` (семь файлов) или `file` (ZIP).
+2. Исправить построчные errors; `POST /imports/{id}/commit`, JSON name/mode, заголовок `Idempotency-Key`.
+3. Рабочая копия: `POST /datasets/{id}/working-copy`. Предметные операции явно передают dataset_id.
+4. `POST /crm/rank`, `GET /analytics/managers`, API локальных reminders доступны без сети.
+5. `POST /runs`: immutable исходник, config_version, modules. Ответ 202 содержит job_id и run_id.
+6. `GET /jobs/{id}`, cancel/retry; `GET /runs/{id}`; `POST /runs/{id}/export` с Idempotency-Key.
 
-```sh
+Обязательные типы: materials, stock, orders, applications, questions, dialogs, KB. CSV — comma/UTF-8;
+BOM распознается, оригинальные байты/SHA сохраняются. ZIP ограничен 50 МиБ распакованных данных и 1000 entries;
+до 100000 строк в одном CSV. Ошибки и неизвестные материалы не удаляются молча. Evaluation KEY/служебные ответы
+не поступают в runtime. Для пяти новых файлов добавляются исходные materials/KB; конкурсный run фиксирует именно их.
+Чужие server paths из UI не принимаются. История защищена append-only SQLite triggers.
+
+Экспорт: UTF-8 без BOM, ровно заданные колонки и ID, пять файлов из одного run; buyers_top50 отдельно.
+`NEEDS_REVIEW`, чужие ревизии карточек и неготовые зависимости блокируют full-ready. Готовые части скачиваются
+с явным partial manifest. Экспорт не рассчитывает цены/ответы заново; solution проверяет неизмененный validate.py.
+
+## CRM и напоминания
+
+Зафиксирована `reference-v1`: stable sort(-прошлых_заявок, жалоба, manager==M4, дней_с_последнего_контакта),
+затем 25 app_id. UI получает сгруппированных клиентов и объяснения; приоритет не называется вероятностью.
+На открытых данных baseline дает 20/25; результат закрытого набора неизвестен.
+
+[Оценка logistic candidate](docs/release/crm/evaluation.json) содержит 13 одинаковых для baseline/model splits
+(client-group, temporal purge 60 дней, random control) и train-only tuning. На одном temporal split модель хуже;
+она не promoted. JSON candidate имеет hash/список признаков; пользовательские pickle/joblib не загружаются.
+
+Адресат reminder отличается от заказчика quote. Due_at — реальный UTC timestamp, не синтетический день_года.
+Specific-remnant и quote_example требуют актуальной проверки C2/C3 через порт; без него 503.
+При изменении источника задача/карточка получает stale; внешних email/WhatsApp и рассылок нет.
+M1–M5/unknown показывают исходные строки, знаменатели, полноту и NULL, отдельно paid average и среднюю всех заявок.
+Ответ_через_мин — задержка, не активный труд. Метка возврата означает новое обращение за 60 дней, не покупку.
+
+## AI, расходы и ограничения
+
+По умолчанию `local_limited`, Gemini как основной provider setting, `free_only`, paid_enabled=false, бюджет 0.
+Конкретный model_id/реальная квота не заявлены проверенными. OpenRouter — альтернативный адаптер C3.
+Ключ задается через owner settings и хранится только в памяти сессии; не возвращается в ответах и не пишется в БД/JS/EXE.
+После рестарта его нужно ввести заново. Для платного профиля необходимы явное включение и положительный бюджет.
+RPM/TPM/RPD, retries, timeout, tool/output limits передаются адаптеру; доступность аккаунта проверяется отдельно.
+
+`judge_gateway` требует HTTPS и отзывной judge token; серверный provider key в Windows не поставляется.
+[Gateway integration](infra/judge-integration/README.md): engine/deployment/endpoint/токен C3 пока отсутствуют,
+поэтому live-AI и маршрут жюри BLOCKED. Локальная CRM/аналитика/импорт от сети не зависят.
+
+Фактическая месячная стоимость полного продукта пока неизвестна: нужны AI usage/quota, hosting и support.
+Нулевой default budget не является обещанием бесплатной работы любого объема.
+Экономика требует финального раскроя/baseline и минимум 10 измеренных пар активного времени;
+[генератор и формулы](docs/economics/README.md) не выдают исследовательские ориентиры за факт.
+[Examples](docs/examples/README.md) выпускаются только из реальных результатов, синтетический preview не включается в поставку.
+
+## Проверки и источники
+
+```powershell
 uv run ruff check backend tests scripts
 uv run pytest
 uv run python scripts/check_foundation.py
 pnpm typecheck
 pnpm test
 pnpm build
-```
-
-Проверяются старт, честная readiness, SQLite, строгие mm-типы, OpenAPI, целостность исходников и полнота распределения ТЗ. Это **не** 67 приемочных тестов продукта: их фактический статус пока `not_run`.
-
-После согласованного изменения DTO владелец контрактов выполняет:
-
-```sh
 uv run python scripts/export_openapi.py
 pnpm contracts:generate
 ```
 
-Общий backend — модульный монолит. `backend/glassflow/modules/` разделен по владельцам; `packages/contracts/` содержит OpenAPI и TypeScript-схему. Frontend, AI-инструменты и экспорты обязаны использовать одни и те же предметные сервисы.
+Эти проверки и platform tests не равны 67 приемочным сценариям всего продукта.
+Для source-копии релизной папки, где намеренно нет evaluation KEY: `scripts/check_foundation.py --runtime-source`.
+Исходный Git сохраняет полный неизмененный пакет, и обычный integrity check проверяет его целиком.
+[ТЗ](docs/specification/GlassFlow_Development_Specification_v1.pdf), [контракты](docs/architecture/CONTRACTS.md),
+[операции](docs/architecture/API_OPERATIONS.md), [handoff платформы](docs/release/PLATFORM_HANDOFF.md).
 
-## Готовность конкурсной версии
+Стек: Python/FastAPI/Pydantic/SQLAlchemy/Alembic/SQLite; SciPy/OR-Tools; scikit-learn; ReportLab;
+React/TypeScript/Vite. [Python metadata/licenses](docs/release/python-licenses.json),
+[frontend licenses](docs/release/frontend-licenses.json). Metadata inventory не заменяет юридическую проверку;
+передача прав KSM требует отдельного согласования команды.
 
-Ее подтверждает отдельная интеграционная сессия после слияния четырех веток: реальные сценарии, новые входные данные, пять точных CSV одного run, офлайн-ядро, живой AI при наличии ключа, EXE на чистой Windows и проверенные открываемые жюри материалы. Скриншоты заглушек и исследовательские результаты не заменяют эту приемку. Первое место и результат на скрытых данных заранее не гарантируются.
+## Первая неделя пилота
+
+День 1: менеджер подтверждает каталог, materials mapping, ставки и места. День 2: цех проверяет технологические
+ограничения отдельно от конкурсной геометрии. День 3: парные измерения реальных расчетов и активного времени.
+День 4: локальная очередь клиентов под контролем менеджера. День 5: фактические расходы, удобство и решение
+о дальнейшем пилоте/общем сервере. Исторический Precision@25 не считается измеренным приростом выручки.

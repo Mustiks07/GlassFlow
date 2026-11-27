@@ -1,4 +1,5 @@
 """Protected desktop entrypoint; also used by the actual frozen worker smoke."""
+
 import argparse
 import json
 import multiprocessing as mp
@@ -14,6 +15,10 @@ from pathlib import Path
 
 from glassflow.core.db import default_data_dir
 from glassflow.core.resources import resource_root
+
+
+class AlreadyRunningError(RuntimeError):
+    pass
 
 
 class InstanceLock:
@@ -32,14 +37,16 @@ class InstanceLock:
         try:
             if os.name == "nt":
                 import msvcrt
+
                 msvcrt.locking(self.handle.fileno(), msvcrt.LK_NBLCK, 1)
             else:
                 import fcntl
+
                 fcntl.flock(self.handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except OSError:
             self.handle.close()
             self.handle = None
-            raise RuntimeError("GlassFlow уже запущен для этой базы.") from None
+            raise AlreadyRunningError("GlassFlow уже запущен для этой базы.") from None
         return self
 
     def __exit__(self, *args):
@@ -51,6 +58,7 @@ def native_worker(sender):
     try:
         from ortools.sat.python import cp_model
         from scipy.optimize import Bounds, milp
+
         scipy_result = milp(c=[-1.0], integrality=[1], bounds=Bounds([0], [2]))
         model = cp_model.CpModel()
         x = model.new_int_var(0, 2, "x")
@@ -58,9 +66,15 @@ def native_worker(sender):
         solver = cp_model.CpSolver()
         solver.parameters.num_search_workers = 1
         status = solver.solve(model)
-        sender.send({"scipy_x": int(round(scipy_result.x[0])), "ortools_x": solver.value(x),
-                     "ortools_optimal": status == cp_model.OPTIMAL,
-                     "frozen_worker": bool(getattr(sys, "frozen", False)), "pid": os.getpid()})
+        sender.send(
+            {
+                "scipy_x": int(round(scipy_result.x[0])),
+                "ortools_x": solver.value(x),
+                "ortools_optimal": status == cp_model.OPTIMAL,
+                "frozen_worker": bool(getattr(sys, "frozen", False)),
+                "pid": os.getpid(),
+            }
+        )
     except BaseException:
         sender.send({"error": "NATIVE_WORKER_FAILED"})
     finally:
@@ -91,11 +105,19 @@ def smoke_native():
 
 def official_validator(directory):
     path = Path(directory).resolve()
-    if not all((path / n).is_file() for n in ("input-stock.csv", "input-orders.csv", "solution.csv", "input-materials.csv")):
+    if not all(
+        (path / n).is_file()
+        for n in ("input-stock.csv", "input-orders.csv", "solution.csv", "input-materials.csv")
+    ):
         raise RuntimeError("Validator input files missing")
     script = resource_root() / "inputs/PACK_for_teams/1_ostatki/validate.py"
-    sys.argv = [str(script), str(path / "input-stock.csv"), str(path / "input-orders.csv"),
-                str(path / "solution.csv"), str(path / "input-materials.csv")]
+    sys.argv = [
+        str(script),
+        str(path / "input-stock.csv"),
+        str(path / "input-orders.csv"),
+        str(path / "solution.csv"),
+        str(path / "input-materials.csv"),
+    ]
     runpy.run_path(str(script), run_name="__main__")
 
 
@@ -103,6 +125,7 @@ def serve(data_dir, no_browser=False, port=0):
     import uvicorn
 
     from glassflow.main import create_app
+
     with InstanceLock(data_dir):
         app = create_app(data_dir)
         # The bound socket stays open: another process cannot claim it between probing and startup.
@@ -110,11 +133,14 @@ def serve(data_dir, no_browser=False, port=0):
         listener.bind(("127.0.0.1", port))
         listener.listen(128)
         actual_port = listener.getsockname()[1]
-        server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=actual_port,
-                                             log_level="warning", access_log=False))
+        server = uvicorn.Server(
+            uvicorn.Config(app, host="127.0.0.1", port=actual_port, log_level="warning", access_log=False)
+        )
         app.state.shutdown_callback = lambda: setattr(server, "should_exit", True)
         origin = f"http://127.0.0.1:{actual_port}"
-        (data_dir / "launch.json").write_text(json.dumps({"port": actual_port, "pid": os.getpid()}), encoding="utf8")
+        (data_dir / "launch.json").write_text(
+            json.dumps({"port": actual_port, "pid": os.getpid()}), encoding="utf8"
+        )
 
         def open_when_ready():
             deadline = time.monotonic() + 30
@@ -130,6 +156,7 @@ def serve(data_dir, no_browser=False, port=0):
                     time.sleep(0.1)
             server.should_exit = True
             print("Не удалось запустить локальное ядро GlassFlow за 30 секунд.", file=sys.stderr)
+
         opener = threading.Thread(target=open_when_ready, daemon=True)
         opener.start()
         try:
@@ -157,7 +184,14 @@ def main():
     else:
         if not (resource_root() / "apps/web/dist/index.html").is_file():
             raise RuntimeError("Не найден интерфейс. Выполните pnpm build перед упаковкой.")
-        serve(default_data_dir(), args.no_browser, args.port)
+        try:
+            serve(default_data_dir(), args.no_browser, args.port)
+        except AlreadyRunningError:
+            info = default_data_dir() / "launch.json"
+            if info.is_file() and not args.no_browser:
+                port = json.loads(info.read_text(encoding="utf8"))["port"]
+                webbrowser.open(f"http://127.0.0.1:{int(port)}")
+            print("GlassFlow уже работает. Второй экземпляр над базой не запущен.")
 
 
 if __name__ == "__main__":
