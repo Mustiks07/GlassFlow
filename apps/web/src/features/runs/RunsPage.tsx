@@ -215,6 +215,13 @@ function RunStatus({ run }: { run: RunView }) {
   const status = RUN_STATUS[run.status];
   const requested = (run.manifest.modules as RunModule[] | undefined) ?? MODULES.map(module => module.id);
   const jobOf = (module: RunModule): Job | undefined => run.jobs.find(job => job.kind === module);
+  /** Pro's Job DTO has no `kind` yet (requested): fall back to missing_modules, which the run view reports authoritatively. */
+  const stateOf = (module: RunModule): string => {
+    const job = jobOf(module);
+    if (job) return job.state;
+    if (!run.missing_modules.includes(module)) return 'completed';
+    return run.status === 'running' ? 'running' : 'failed';
+  };
   return (
     <div className="stack">
       <div className="row wrap">
@@ -239,7 +246,7 @@ function RunStatus({ run }: { run: RunView }) {
           <tbody>
             {MODULES.filter(module => requested.includes(module.id)).map(module => {
               const job = jobOf(module.id);
-              const state = MODULE_STATE[job?.state ?? 'not_started'] ?? MODULE_STATE.not_started;
+              const state = MODULE_STATE[stateOf(module.id)] ?? MODULE_STATE.not_started;
               return (
                 <tr key={module.id}>
                   <td>{module.label}</td>

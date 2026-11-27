@@ -35,7 +35,8 @@ export function useJob(jobId: string | null) {
 }
 
 export function jobCancelLabel(job: Job): string | null {
-  if (job.state === 'cancelled' || job.stopped) return 'Остановка подтверждена';
+  // `stopped` alone also marks a normally finished worker; only a requested cancel is a cancellation.
+  if (job.state === 'cancelled' || (job.cancel_requested && job.stopped)) return 'Остановка подтверждена';
   if (job.cancel_requested) return 'Запрошена остановка — ждем подтверждения';
   return null;
 }
