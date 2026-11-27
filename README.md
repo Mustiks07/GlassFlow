@@ -20,6 +20,8 @@
 
 [Проверка результата C2](docs/reviews/CLAUDE_2_REVIEW_2026-11-27.md): качество сохраненного раскроя подтверждено, до приемки нужны исправления закреплений и актуальности свободных остатков.
 
+[План усиления конкурсной версии v1.1](docs/strategy/COMPETITION_UPGRADE_PLAN_v1_1.md): дополнительные функции, связь с критериями, владельцы и приемка; статус — рекомендованный план, не выполненная разработка. [Дополнительный обзор](docs/reviews/COMMERCIAL_FACTS_AND_EXPORT_REVIEW_2026-11-27.md) содержит воспроизводимую слабость проверки коммерческих чисел и риск согласованности provenance экспорта.
+
 ## Основание проекта
 
 - [Полное ТЗ, 51 страница](docs/specification/GlassFlow_Development_Specification_v1.pdf) и [текст для агентов](docs/specification/GlassFlow_Development_Specification_v1.txt).
