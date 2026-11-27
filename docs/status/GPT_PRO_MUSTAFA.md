@@ -15,7 +15,14 @@ anonymous требует explicit C3 assignment/new quote, конфликт тр
 Standard OpenAPI/TS regeneration выполнена. Полный `uv run pytest`:72 PASS (18 U01),
 `uv run ruff check backend tests scripts`, `uv run python scripts/check_foundation.py` (14 immutable inputs)
 и `pnpm typecheck`:PASS. Один upstream Starlette/httpx deprecation warning.
-Следующий шаг: own-branch Mustiks07 commit/push и CI; actual C2/C3 acceptance остается not_run.
+Fix commit `e247927bfb01b4e796786ac13048421ac085017a`, author/committer Mustiks07, push выполнен.
+[CI46050467129](https://github.com/Mustiks07/GlassFlow/actions/runs/46050467129): SUCCESS Linux verify и Windows-platform,
+включая72 tests, build, native EXE smoke/scanner/artifact. После fix меняется только документационная evidence.
+Новая CI сборка относится к F1; локальный старый frozen-smoke.json070d0c8 остается историческим, не выдается за F1.
+Следующий шаг интегратора: повторить F1 на actual C3 quote repository/C2 reservation service.
+Вся моя расширенная очередь НЕ закрыта: U04 (платформенная корзина/координация) и U06 (подтвержденное использование)
+еще не реализованы; human labor/final same-run reports, live gateway/clean Windows и общая приемка остаются открытыми.
+Текущий запрос PRO-U01-F1 завершен на уровне платформы; исходная матрица67 не помечена целиком PASS.
 
 ## Актуальный checkpoint v1.1
 

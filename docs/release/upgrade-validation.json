@@ -1,17 +1,18 @@
 {
   "scope": "Pro platform additions v1.1; not whole-product acceptance",
   "base_sha": "052255d17d2b18994d790a1df47065f01a40220a",
-  "review_main_sha": "eaf81d67cd19d1dec185d02508a00bda7d80bae6",
-  "checked_sha": "762094c1286524f0a8ce56ef2d8e549fe67f5d59",
+  "review_main_sha": "25e433f28ce97b48fc3402c8e67f46147eed9b40",
+  "checked_sha": "e247927bfb01b4e796786ac13048421ac085017a",
   "local_frozen_runtime_sha": "070d0c83815699348bd685910cc016346734b7d4",
+  "local_frozen_report_scope": "Historical pre-F1 report; current F1 Windows build/smoke is in CI artifact",
   "checks": {
-    "pytest": "58 passed",
+    "pytest": "72 passed;18 U01 cases",
     "ruff": "pass",
     "immutable_foundation": "14 inputs pass; does not certify67 acceptance scenarios",
     "frontend": "typecheck,2 tests,build pass; U01/U03/U07 UI integration not_run",
-    "frozen_smoke": "pass_on_build_machine; includes synthetic U07 PDF and U01 draft persistence",
+    "frozen_smoke": "pass in Windows CI on e247927; local report070d0c8 is historical",
     "release_scanner": "pass",
-    "ci": "https://github.com/Mustiks07/GlassFlow/actions/runs/46048150892",
+    "ci": "https://github.com/Mustiks07/GlassFlow/actions/runs/46050467129",
     "ci_status": "Linux and Windows success"
   },
   "PRO-R1_A04": {
@@ -23,9 +24,18 @@
     "full_real_domain_run": "not_run"
   },
   "U01": {
-    "platform": "pass;4 HTTP/SQLite tests with explicit transactional C2/C3 fixtures",
+    "platform": "pass;18 HTTP/SQLite tests with explicit transactional C2/C3 fixtures",
     "integration": "not_run; register canonical OrderSourcePort and C1 forms",
     "sha": "ea02dff"
+  },
+  "PRO-U01-F1": {
+    "status": "pass at platform level; full domain integration not_run",
+    "base_sha": "9c59c8a7d124b7f84a78304f23090ab1af62c30e",
+    "fix_sha": "e247927bfb01b4e796786ac13048421ac085017a",
+    "reproduction": "Actual C3 DTO6cc73b9 loaded only in memory: foreign customer accepted bind/confirm/reserve200 before fix",
+    "regressions": "14 new cases: match,mismatch,anonymous,missing legacy proof,owner change,stale/history/restart,canonical field contradiction,inventory rollback",
+    "postfix_c3_dto_compatibility": "other409; anonymous409; matching200/200/200; isolated HTTP/SQLite fixture, not C3 service E2E",
+    "anonymous_policy": "No auto assignment; draft order may exist without binding; explicit C3 assignment or new quote required"
   },
   "U03": {
     "platform": "pass;12 sales tests, material/size evidence, mirror-to-tempered, reserved rejection",

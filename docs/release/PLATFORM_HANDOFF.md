@@ -21,6 +21,10 @@ post-reserve owner mutation rollback. Две новые bind-регрессии 
 Actual C2/C3 integration повторить после объединения; старый локальный EXE report относится к070d0c8,
 а не автоматически к этому исправлению. Общая миссия остается INTEGRATION REQUIRED, U04/U06 — следующий уровень.
 Полный source suite после F1:72 PASS; Ruff/foundation14/typecheck PASS, contracts стандартно регенерированы.
+Fix `e247927bfb01b4e796786ac13048421ac085017a` отправлен от Mustiks07.
+[CI46050467129](https://github.com/Mustiks07/GlassFlow/actions/runs/46050467129): SUCCESS Linux и Windows,
+включая72 tests и новую EXE build/smoke/scanner/artifact. Последующие изменения — только документационная evidence.
+Остаток собственной очереди Pro: U04/U06 еще не реализованы; «F1 исправлен» не означает полную миссию или общий product PASS.
 
 ## Дополнения v1.1 после checkpoint052255d
 
