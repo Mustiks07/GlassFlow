@@ -1,6 +1,10 @@
 import os
+import sqlite3
+from datetime import UTC, datetime
 from pathlib import Path
 
+from alembic import command
+from alembic.config import Config
 from fastapi import Request
 from sqlalchemy import String, create_engine, event
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
@@ -17,9 +21,10 @@ class AppMetadata(Base):
 
 
 def create_database(data_dir: Path | None = None):
-    directory = data_dir or Path(os.environ.get("GLASSFLOW_DATA_DIR", ".runtime"))
+    directory = data_dir or default_data_dir()
     directory.mkdir(parents=True, exist_ok=True)
-    engine = create_engine(f"sqlite:///{(directory / 'glassflow.db').resolve().as_posix()}")
+    database_path = (directory / "glassflow.db").resolve()
+    engine = create_engine(f"sqlite:///{database_path.as_posix()}")
 
     @event.listens_for(engine, "connect")
     def configure_sqlite(connection, _record):
@@ -29,8 +34,25 @@ def create_database(data_dir: Path | None = None):
         cursor.execute("PRAGMA busy_timeout=5000")
         cursor.close()
 
-    # Foundation only. GPT Pro replaces schema bootstrap with versioned Alembic migrations.
-    Base.metadata.create_all(engine)
+    from glassflow.core import models  # noqa: F401
+
+    with engine.connect() as connection:
+        current = connection.exec_driver_sql(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='alembic_version'"
+        ).first()
+        version = (
+            connection.exec_driver_sql("SELECT version_num FROM alembic_version").scalar()
+            if current
+            else None
+        )
+    if version != "0001_platform" and database_path.exists() and database_path.stat().st_size:
+        stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%f")
+        backup_database(database_path, directory / f"pre-migration-{stamp}.db")
+    config = Config()
+    config.set_main_option("script_location", str(Path(__file__).with_name("migrations")))
+    with engine.begin() as connection:
+        config.attributes["connection"] = connection
+        command.upgrade(config, "head")
     factory = sessionmaker(engine, expire_on_commit=False)
     with factory.begin() as session:
         if session.get(AppMetadata, "foundation_version") is None:
@@ -46,3 +68,19 @@ def session_dependency(request: Request):
 
 def session_is_ready(session: Session) -> bool:
     return session.get(AppMetadata, "foundation_version") is not None
+
+
+def default_data_dir():
+    configured = os.environ.get("GLASSFLOW_DATA_DIR")
+    if configured:
+        return Path(configured)
+    if os.name == "nt":
+        return Path(os.environ["LOCALAPPDATA"]) / "GlassFlow"
+    return Path.home() / ".local" / "share" / "GlassFlow"
+
+
+def backup_database(source: Path, destination: Path):
+    with sqlite3.connect(source) as original, sqlite3.connect(destination) as target:
+        original.backup(target)
+        if target.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
+            raise RuntimeError("Backup integrity check failed")

@@ -1,0 +1,32 @@
+"""Explicit composition seams. Missing dependencies fail closed; no fixture fallback."""
+
+from dataclasses import dataclass, field
+from typing import Any, Protocol
+
+from glassflow.core.errors import AppError
+
+
+class SubjectResolver(Protocol):
+    def check(
+        self, session, dataset_id: str, subject_type: str, subject_ref: str, expected_version: int | None
+    ) -> dict: ...
+
+
+@dataclass
+class Services:
+    # Called inside the import transaction, may flush, must not commit or call network.
+    import_hooks: list = field(default_factory=list)
+    subjects: SubjectResolver | None = None
+    sales_source: Any = None
+    # job kind -> importable handler callable(snapshot, context), no user-supplied paths.
+    job_handlers: dict = field(default_factory=dict)
+    ai_check: Any = None
+
+    def check_subject(self, session, dataset_id, subject_type, subject_ref, version):
+        if subject_type == "interest":
+            if not subject_ref or not subject_ref.strip():
+                raise AppError(422, "SUBJECT_REQUIRED", "Укажите товарную группу.")
+            return {"valid": True, "version": None}
+        if self.subjects is None:
+            raise AppError(503, "SUBJECT_SERVICE_UNAVAILABLE", "Проверка предмета пока не подключена.")
+        return self.subjects.check(session, dataset_id, subject_type, subject_ref, version)

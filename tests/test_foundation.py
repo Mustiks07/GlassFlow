@@ -18,8 +18,8 @@ def test_health_and_honest_readiness(tmp_path):
             "business_modules_ready": False,
         }
         response = client.get("/api/v1/datasets")
-        assert response.status_code == 501
-        assert response.json()["code"] == "FEATURE_NOT_IMPLEMENTED"
+        assert response.status_code == 200
+        assert response.json() == []
     assert (tmp_path / "glassflow.db").is_file()
 
 

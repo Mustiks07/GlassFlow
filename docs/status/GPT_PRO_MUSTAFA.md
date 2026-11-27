@@ -1,46 +1,41 @@
 # Статус GPT_PRO_MUSTAFA
 
-Этот файл — рабочий checkpoint агента. Начальное состояние: not_started; foundation не означает готовность модуля.
+- Ветка: `codex/gpt-pro-mustafa-platform`; отдельный worktree `GlassFlow-platform`.
+- Foundation: `16d63c6`.
+- Обновление: 27 ноября 2026, Asia/Qyzylorda.
+- Общий статус: IN PROGRESS. Это не COMPLETE VERIFIED PRODUCT.
 
-- Ветка: codex/gpt-pro-mustafa-platform
-- Foundation commit: заполнить после начала.
-- Последний проверенный commit: не задан.
-- Последнее обновление: не задано.
-- Общий статус: not_started.
-- Миссия: ../agents/GPT_PRO_MUSTAFA.md
+## Проверенный этап P-01/P-02/P-04/P-05/P-06
 
-## План и результат
+Реализованы Alembic v1 с upgrade foundation и backup перед миграцией; SQLite WAL/FK/busy_timeout; короткий BEGIN IMMEDIATE UoW; atomic idempotency/body hash/replay и audit. Единый error envelope, локальные Host/Origin/session-token проверки.
 
-| Пункт миссии | Статус | Реализованное поведение | Evidence / commit | Что осталось |
-|---|---|---|---|---|
-| Все пункты полной миссии | not_started | Не реализованы этой сессией | Нет | Пройти весь backlog |
+Импорт: семь типов, CSV UTF-8/BOM, bounded ZIP, traversal/symlink/KEY исключение, построчные ошибки, immutable bytes/SHA/source rows, snapshot dedupe и явная рабочая копия. Import hooks выполняются внутри той же transaction; собственная mutable inventory/catalog не создаются.
+
+CRM: reference-v1 stable baseline, ровно 25 заявок, сгруппированная клиентская очередь, observed precision только при наличии всех меток. Исторические M1-M5/unknown, фильтры, восемь представлений семи метрик с отдельной средней суммой всех заявок, Decimal, знаменатели, полнота и drill-down IDs. Напоминания: recipient отдельно, UTC, uniqueness, optimistic/idempotent transitions, stale recheck через dependency port.
 
 ## Проверки
 
-| ID / команда | Вход / хеш / среда | Фактический результат | PASS / FAIL / NOT RUN / BLOCKED | Evidence |
-|---|---|---|---|---|
-| Приемка модуля | Не запускалась | Нет результата | NOT RUN | Нет |
+- Foundation до изменений: `uv sync --locked --all-groups`, `pnpm install --frozen-lockfile`, pytest (7), ruff, check_foundation, pnpm typecheck/test/build: PASS.
+- После этапа: `uv run pytest`: 17 PASS, включая реальные исходные counts 200/298/110/700/18/8 и baseline 20/25; synthetic rollback, isolation, конкурентный idempotency, без label, stale reminders.
+- `uv run ruff check backend tests scripts`; `uv run python scripts/check_foundation.py`: PASS.
+- OpenAPI и TS стандартно регенерированы, без ручных правок.
 
-Primary tests: T01, T02, T03, T04, T05, T06, T07, T17, T23, T36, T40, T41, T42, T43, T44, T45, T46, T48, T49, T50, T51, T52, T53, T54, T55, T56, T59, T61, T62, T63, T64, T66, T67.
+## Контрактные точки интеграции
 
-Support tests: T12, T14, T15, T18, T19, T20, T21, T24, T31, T33, T37, T47, T57, T58, T60, T65.
+`Services` в `core/registry.py`: import_hooks(session,dataset_id,parsed) должны только flush и не commit; subjects.check(session,dataset_id,type,ref,expected_version) возвращает valid/version/reason. Specific-remnant check обязан проверять совместимость и available через C2, quote_example - актуальную ревизию C3. При отсутствии зависимости 503; production fallback/fixtures отсутствуют.
 
-## Контракты и интеграция
+Источник rows: `platform.imports.records(session,dataset_id,kind)`, неизменные исходные поля + source_row. Hooks должны принимать grouped rows public_id/source_row/data. C2/C3 migration snippets пока отсутствуют в этой ветке: регистрация и совместная DB остаются интеграционной проверкой.
 
-Перечислить реализованные routers/ports, DTO/миграции, новые поля, потребителей и несовместимости. Указать каждый fixture-only маршрут и условие реальной проверки. Общие contract change requests записывать конкретным предложением, не применять молча.
+HTTP: import commit/working-copy/reminder mutations требуют Idempotency-Key; GET health/session устанавливает local cookie. /session возвращает локальный токен для owner-only системных операций. Дополнительные поля DTO обратно совместимы.
 
-## Артефакты и источники
+## Остальной backlog
 
-Пути, хеши, происхождение, фактический run/build и визуальная проверка документов. Секреты здесь не хранить.
+P-03 durable jobs/run coordinator; P-04 logistic evaluation/artifact; P-07 buyers/cards; P-08 strict exports; P-09 backup/restore/settings; P-10 launcher/frozen/CI/performance; P-11 gateway integration; P-12 economics/examples/release; P-13 общий handoff. Продолжать последовательно в этой сессии.
 
-## Внешние блокеры
+## Внешние условия и честные статусы
 
-Пока не исследованы. Для каждого: причина, затронутые пункты, что уже проверено независимо, точное требуемое действие и возможность продолжать другие задачи.
+C2/C3 domain services и C1 verified buyer evidence не объединялись. Live provider/gateway, чистая Windows, ручные сравнения активного труда, team name, guest downloads и T63-T67: NOT RUN/BLOCKED до фактических входов/действий. Зеленые unit tests не закрывают эти сценарии.
 
-## Следующий шаг
+## Следующий точный шаг
 
-Прочитать полную миссию, ТЗ и архитектуру; проверить ветку/foundation и начать первый незавершенный пункт.
-
-## Итоговый handoff
-
-Заполняется после всей миссии: commits, completed/remaining, воспроизводимые команды запуска/проверок, actual results, ограничения и порядок проверки после объединения. Отдельно READY FOR INTEGRATION и фактически завершенная полная приемка.
+Реализовать durable process worker и run coordinator, затем обучить/оценить CRM candidate на одинаковых group/temporal/random splits без продвижения недоказанной модели.

@@ -38,6 +38,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Local Session */
+        get: operations["local_session_api_v1_session_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/datasets": {
         parameters: {
             query?: never;
@@ -106,7 +123,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/runs": {
+    "/api/v1/datasets/{dataset_id}/working-copy": {
         parameters: {
             query?: never;
             header?: never;
@@ -115,23 +132,23 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Create Run */
-        post: operations["create_run_api_v1_runs_post"];
+        /** Create Working Copy */
+        post: operations["create_working_copy_api_v1_datasets__dataset_id__working_copy_post"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/api/v1/jobs/{job_id}": {
+    "/api/v1/datasets/{dataset_id}/sources/{kind}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get Job */
-        get: operations["get_job_api_v1_jobs__job_id__get"];
+        /** Source Manifest */
+        get: operations["source_manifest_api_v1_datasets__dataset_id__sources__kind__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -140,7 +157,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/jobs/{job_id}/cancel": {
+    "/api/v1/system/owner-check": {
         parameters: {
             query?: never;
             header?: never;
@@ -149,25 +166,8 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Cancel Job */
-        post: operations["cancel_job_api_v1_jobs__job_id__cancel_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/runs/{run_id}/export": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Export Run */
-        post: operations["export_run_api_v1_runs__run_id__export_post"];
+        /** Owner Check */
+        post: operations["owner_check_api_v1_system_owner_check_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -379,6 +379,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/crm/applications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Applications */
+        get: operations["applications_api_v1_crm_applications_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/crm/reminders": {
         parameters: {
             query?: never;
@@ -391,6 +408,58 @@ export interface paths {
         put?: never;
         /** Create Reminder */
         post: operations["create_reminder_api_v1_crm_reminders_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/crm/reminders/{reminder_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Reminder */
+        get: operations["get_reminder_api_v1_crm_reminders__reminder_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Reminder */
+        patch: operations["update_reminder_api_v1_crm_reminders__reminder_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/crm/reminders/{reminder_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm Reminder */
+        post: operations["confirm_reminder_api_v1_crm_reminders__reminder_id__confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/crm/reminders/{reminder_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Reminder */
+        post: operations["cancel_reminder_api_v1_crm_reminders__reminder_id__cancel_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -509,7 +578,9 @@ export interface components {
         /** Body_preview_import_api_v1_imports_preview_post */
         Body_preview_import_api_v1_imports_preview_post: {
             /** File */
-            file: string;
+            file?: string | null;
+            /** Files */
+            files?: string[] | null;
         };
         /** Buyer */
         Buyer: {
@@ -662,6 +733,20 @@ export interface components {
             row_counts: {
                 [key: string]: number;
             };
+            /** Parent Id */
+            parent_id?: string | null;
+            /**
+             * Version
+             * @default 0
+             */
+            version: number;
+            /** Created At */
+            created_at?: string | null;
+            /**
+             * Schema Version
+             * @default 1
+             */
+            schema_version: string;
         };
         /** DialogRequest */
         DialogRequest: {
@@ -708,22 +793,6 @@ export interface components {
             /** Field */
             field?: string | null;
         };
-        /** ExportResult */
-        ExportResult: {
-            /** Run Id */
-            run_id: string;
-            /**
-             * Status
-             * @enum {string}
-             */
-            status: "ready" | "partial" | "blocked";
-            /** Files */
-            files: {
-                [key: string]: string;
-            };
-            /** Errors */
-            errors: string[];
-        };
         /** FindRequest */
         FindRequest: {
             /** Dataset Id */
@@ -769,6 +838,25 @@ export interface components {
              */
             version: string;
         };
+        /** ImportCommit */
+        ImportCommit: {
+            /**
+             * Name
+             * @default Набор данных
+             */
+            name: string;
+            /**
+             * Mode
+             * @default source
+             * @enum {string}
+             */
+            mode: "source" | "contest";
+            /**
+             * Explicit Copy
+             * @default false
+             */
+            explicit_copy: boolean;
+        };
         /** ImportPreview */
         ImportPreview: {
             /** Import Id */
@@ -801,6 +889,35 @@ export interface components {
             last_valid_result_ref?: string | null;
             /** Error Code */
             error_code?: string | null;
+            /** Run Id */
+            run_id?: string | null;
+            /** Dataset Id */
+            dataset_id?: string | null;
+            /**
+             * Cancel Requested
+             * @default false
+             */
+            cancel_requested: boolean;
+            /**
+             * Stopped
+             * @default false
+             */
+            stopped: boolean;
+            /**
+             * Completed
+             * @default 0
+             */
+            completed: number;
+            /** Total */
+            total?: number | null;
+            /** Result */
+            result?: {
+                [key: string]: unknown;
+            } | null;
+            /** Last Valid Result */
+            last_valid_result?: {
+                [key: string]: unknown;
+            } | null;
         };
         /** ManagerMetrics */
         ManagerMetrics: {
@@ -818,6 +935,31 @@ export interface components {
             mean_application_tg: string | null;
             complaints: components["schemas"]["Ratio"];
             discounts: components["schemas"]["Ratio"];
+            /** Evidence */
+            evidence?: {
+                [key: string]: components["schemas"]["MetricEvidence"];
+            };
+            /** Source Manager Values */
+            source_manager_values?: string[];
+        };
+        /** MetricEvidence */
+        MetricEvidence: {
+            /** Numerator */
+            numerator: string | null;
+            /** Denominator */
+            denominator: number;
+            /** Source App Ids */
+            source_app_ids: string[];
+            /** Known App Ids */
+            known_app_ids: string[];
+            /** Source Rows */
+            source_rows: number[];
+            /** Total */
+            total: number;
+            /** Completeness */
+            completeness: number | null;
+            /** Definition */
+            definition: string;
         };
         /** NewRemnant */
         NewRemnant: {
@@ -960,6 +1102,20 @@ export interface components {
             policy: string;
             /** Observed Precision */
             observed_precision?: number | null;
+            /**
+             * Policy Version
+             * @default reference-v1
+             */
+            policy_version: string;
+            /** Grouped Clients */
+            grouped_clients?: {
+                [key: string]: string[];
+            };
+            /**
+             * Target Definition
+             * @default Новое обращение в течение 60 дней; не покупка и не выручка
+             */
+            target_definition: string;
         };
         /** Ratio */
         Ratio: {
@@ -1001,6 +1157,15 @@ export interface components {
             due_at?: string | null;
             /** Owner */
             owner: string;
+            /** Subject Version */
+            subject_version?: number | null;
+            /**
+             * Text
+             * @default
+             */
+            text: string;
+            /** Active Period */
+            active_period?: string | null;
             /** Reminder Id */
             reminder_id: string;
             /** Version */
@@ -1010,8 +1175,8 @@ export interface components {
              * @enum {string}
              */
             state: "draft" | "scheduled" | "due" | "done" | "cancelled" | "stale";
-            /** Subject Version */
-            subject_version?: number | null;
+            /** Stale Reason */
+            stale_reason?: string | null;
         };
         /** ReminderRequest */
         ReminderRequest: {
@@ -1032,6 +1197,30 @@ export interface components {
             due_at?: string | null;
             /** Owner */
             owner: string;
+            /** Subject Version */
+            subject_version?: number | null;
+            /**
+             * Text
+             * @default
+             */
+            text: string;
+            /** Active Period */
+            active_period?: string | null;
+        };
+        /** ReminderUpdate */
+        ReminderUpdate: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Due At */
+            due_at?: string | null;
+            /** Owner */
+            owner?: string | null;
+            /** Text */
+            text?: string | null;
+            /** State */
+            state?: "done" | null;
         };
         /** Remnant */
         Remnant: {
@@ -1059,15 +1248,6 @@ export interface components {
              * @default 0
              */
             version: number;
-        };
-        /** RunRequest */
-        RunRequest: {
-            /** Dataset Id */
-            dataset_id: string;
-            /** Modules */
-            modules?: ("cutting" | "assistant" | "crm" | "quality" | "cards")[];
-            /** Config Version */
-            config_version: string;
         };
         /** SaleCard */
         SaleCard: {
@@ -1147,6 +1327,21 @@ export interface components {
             /** Missing Part Ids */
             missing_part_ids: string[];
         };
+        /** VersionAction */
+        VersionAction: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+        };
+        /** WorkingCopy */
+        WorkingCopy: {
+            /**
+             * Name
+             * @default Рабочая копия
+             */
+            name: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -1196,9 +1391,68 @@ export interface operations {
             };
         };
     };
-    list_datasets_api_v1_datasets_get: {
+    local_session_api_v1_session_get: {
         parameters: {
             query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_datasets_api_v1_datasets_get: {
+        parameters: {
+            query?: {
+                offset?: number;
+                limit?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -1214,8 +1468,44 @@ export interface operations {
                     "application/json": components["schemas"]["Dataset"][];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1245,6 +1535,33 @@ export interface operations {
                     "application/json": components["schemas"]["Dataset"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1254,8 +1571,8 @@ export interface operations {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1272,7 +1589,7 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody: {
+        requestBody?: {
             content: {
                 "multipart/form-data": components["schemas"]["Body_preview_import_api_v1_imports_preview_post"];
             };
@@ -1287,6 +1604,33 @@ export interface operations {
                     "application/json": components["schemas"]["ImportPreview"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1296,8 +1640,8 @@ export interface operations {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1310,13 +1654,19 @@ export interface operations {
     commit_import_api_v1_imports__import_id__commit_post: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
             path: {
                 import_id: string;
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImportCommit"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {
@@ -1327,6 +1677,33 @@ export interface operations {
                     "application/json": components["schemas"]["Dataset"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -1336,8 +1713,8 @@ export interface operations {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1347,57 +1724,154 @@ export interface operations {
             };
         };
     };
-    create_run_api_v1_runs_post: {
+    create_working_copy_api_v1_datasets__dataset_id__working_copy_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path: {
+                dataset_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WorkingCopy"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Dataset"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    source_manifest_api_v1_datasets__dataset_id__sources__kind__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                dataset_id: string;
+                kind: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    owner_check_api_v1_system_owner_check_post: {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["RunRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Job"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Not Implemented */
-            501: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiError"];
-                };
-            };
-        };
-    };
-    get_job_api_v1_jobs__job_id__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                job_id: string;
-            };
-            cookie?: never;
-        };
         requestBody?: never;
         responses: {
             /** @description Successful Response */
@@ -1406,20 +1880,11 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Job"];
+                    "application/json": unknown;
                 };
             };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Not Implemented */
-            501: {
+            /** @description Bad Request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1427,39 +1892,8 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-        };
-    };
-    cancel_job_api_v1_jobs__job_id__cancel_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                job_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Job"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Not Implemented */
-            501: {
+            /** @description Not Found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1467,39 +1901,17 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-        };
-    };
-    export_run_api_v1_runs__run_id__export_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                run_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
+            /** @description Conflict */
+            409: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ExportResult"];
+                    "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Not Implemented */
-            501: {
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -2034,6 +2446,24 @@ export interface operations {
                     "application/json": components["schemas"]["Ranking"];
                 };
             };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -2043,13 +2473,56 @@ export interface operations {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+        };
+    };
+    applications_api_v1_crm_applications_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                client_id?: string | null;
+                offset?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Not Found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
                     "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -2058,6 +2531,8 @@ export interface operations {
         parameters: {
             query: {
                 dataset_id: string;
+                offset?: number;
+                limit?: number;
             };
             header?: never;
             path?: never;
@@ -2074,6 +2549,24 @@ export interface operations {
                     "application/json": components["schemas"]["Reminder"][];
                 };
             };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -2083,21 +2576,14 @@ export interface operations {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiError"];
-                };
-            };
         };
     };
     create_reminder_api_v1_crm_reminders_post: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
             path?: never;
             cookie?: never;
         };
@@ -2116,6 +2602,24 @@ export interface operations {
                     "application/json": components["schemas"]["Reminder"];
                 };
             };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -2125,13 +2629,220 @@ export interface operations {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+        };
+    };
+    get_reminder_api_v1_crm_reminders__reminder_id__get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path: {
+                reminder_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reminder"];
+                };
+            };
+            /** @description Not Found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
                     "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_reminder_api_v1_crm_reminders__reminder_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path: {
+                reminder_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReminderUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reminder"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    confirm_reminder_api_v1_crm_reminders__reminder_id__confirm_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path: {
+                reminder_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VersionAction"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reminder"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_reminder_api_v1_crm_reminders__reminder_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path: {
+                reminder_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VersionAction"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reminder"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -2140,6 +2851,12 @@ export interface operations {
         parameters: {
             query: {
                 dataset_id: string;
+                manager?: string | null;
+                product_group?: string | null;
+                channel?: string | null;
+                client_type?: string | null;
+                day_from?: number | null;
+                day_to?: number | null;
             };
             header?: never;
             path?: never;
@@ -2156,6 +2873,24 @@ export interface operations {
                     "application/json": components["schemas"]["ManagerMetrics"][];
                 };
             };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
             /** @description Validation Error */
             422: {
                 headers: {
@@ -2163,15 +2898,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Not Implemented */
-            501: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ApiError"];
                 };
             };
         };
