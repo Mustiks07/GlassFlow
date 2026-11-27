@@ -3,7 +3,7 @@ import { Ban, CheckCircle2, GitCompare, Pencil, Play, Plus, Save, Trash2, Undo2 
 import { useEffect, useMemo, useState } from 'react';
 import { newIdempotencyKey } from '../../api/client';
 import { useApi } from '../../api/context';
-import type { CutPlan, Dataset, Material, Part, Placement, ProposedPlanComparison, Remnant, SolverConfig, ValidationResult } from '../../api/types';
+import type { CutPlan, Dataset, DraftEdit, Material, Part, PlanComparison, Remnant, SolverConfig, ValidationResult } from '../../api/types';
 import { formatAreaM2, formatDims, formatInt, formatMoney, formatPercent, formatSignedInt, formatSignedMoney } from '../../lib/format';
 import { useAppStore } from '../../state/store';
 import { Button, ConfirmDialog, Details, EmptyState, ErrorState, LoadingState, Metric, Panel, StaleNotice, StatusBadge, TableWrap } from '../../ui/kit';
@@ -27,8 +27,10 @@ function Cutting({ dataset }: { dataset: Dataset }) {
   const setActivePlan = useAppStore(state => state.setActivePlan);
   const plans = useQuery({ queryKey: ['plans', dataset.dataset_id], queryFn: ({ signal }) => api.listPlans(dataset.dataset_id, signal) });
   const remnants = useQuery({ queryKey: ['remnants', dataset.dataset_id], queryFn: ({ signal }) => api.listRemnants(dataset.dataset_id, signal) });
-  const parts = useQuery({ queryKey: ['parts', dataset.dataset_id], queryFn: ({ signal }) => api.listParts(dataset.dataset_id, signal) });
-  const materials = useQuery({ queryKey: ['materials', dataset.dataset_id], queryFn: ({ signal }) => api.listMaterials(dataset.dataset_id, signal) });
+  // Parts and materials come from C2's read-only solve-input snapshot (no separate list endpoints).
+  const snapshot = useQuery({ queryKey: ['solve-input', dataset.dataset_id], queryFn: ({ signal }) => api.solveInput(dataset.dataset_id, signal), staleTime: 60_000 });
+  const parts = { ...snapshot, data: snapshot.data?.parts };
+  const materials = { ...snapshot, data: snapshot.data?.materials };
 
   const planSummary = plans.data?.find(plan => plan.plan_id === storedPlanId) ?? plans.data?.find(plan => plan.status === 'committed') ?? plans.data?.[0];
   const planId = planSummary?.plan_id ?? null;
@@ -86,7 +88,7 @@ function Cutting({ dataset }: { dataset: Dataset }) {
               <select aria-label="Версия плана" value={planSummary.plan_id} onChange={event => setActivePlan(dataset.dataset_id, event.target.value)}>
                 {plans.data.map(item => (
                   <option key={item.plan_id} value={item.plan_id}>
-                    {item.plan_id} · рев. {item.revision} · {PLAN_STATUS_LABEL[item.status]}
+                    {item.plan_id} · рев. {item.revision} · {PLAN_STATUS_LABEL[item.status] ?? item.status} · {formatPercent(item.coverage, 2)}
                   </option>
                 ))}
               </select>
@@ -138,6 +140,7 @@ function Cutting({ dataset }: { dataset: Dataset }) {
 function PlanMetrics({ plan }: { plan: CutPlan }) {
   const m = plan.metrics;
   const newCount = plan.placements.filter(item => item.remnant_id === 'NEW').length;
+  const stopReason = plan.stop_reason && plan.stop_reason !== 'completed' ? plan.stop_reason : null;
   return (
     <div className="stack">
       <div className="metrics-row">
@@ -155,6 +158,8 @@ function PlanMetrics({ plan }: { plan: CutPlan }) {
         </StatusBadge>
         <span className="small muted">
           <span className="mono">{plan.plan_id}</span> · ревизия {plan.revision}
+          {stopReason && <> · остановка: {stopReason}</>}
+          {plan.inventory_current === false && <> · склад изменился после расчета</>}
         </span>
       </div>
     </div>
@@ -182,14 +187,15 @@ function SolvePanel({
   const job = useJob(jobId);
   const solve = useMutation({
     mutationFn: () => {
-      const locks: Placement[] =
-        mode === 'keep' && plan ? plan.placements.filter(item => item.remnant_id !== 'NEW').map(item => ({ ...item, lock_kind: 'placement' as const })) : [];
       const budgets = { quick: 5, standard: 60, extended: 600 } as const;
+      const excluded = plan ? useCuttingStore.getState().drafts[draftKey(dataset.dataset_id, plan.plan_id)]?.excluded ?? [] : [];
       return api.solve(
         {
           dataset_id: dataset.dataset_id,
           base_plan_id: plan?.plan_id ?? null,
-          locks,
+          locks: (plan?.placements ?? []).filter(item => item.lock_kind !== 'none'),
+          mode: mode === 'keep' ? 'keep_committed' : 'replan',
+          excluded_remnant_ids: excluded,
           config: { profile, seed: 42, time_limit_seconds: budgets[profile], workers: 1, minimum_free_remnants: Number(minFree) || 0 },
         },
         key,
@@ -452,7 +458,10 @@ function PartsTable({ parts, plan, datasetId }: { parts: { data?: Part[]; isLoad
                     <td>
                       {isNew ? (
                         <span className="small">
-                          <StatusBadge tone="neutral">NEW</StatusBadge> {plan?.new_reasons?.[part.part_id] ? reasonLabel(plan.new_reasons[part.part_id]) : 'причина не передана'}
+                          <StatusBadge tone="neutral">NEW</StatusBadge> {(() => {
+                            const code = plan?.metrics.new_reasons?.[part.part_id] ?? plan?.new_reasons?.[part.part_id];
+                            return code ? reasonLabel(code) : 'причина не передана';
+                          })()}
                         </span>
                       ) : (
                         <button className="link-btn mono" onClick={() => select(placement!.remnant_id, part.part_id)}>
@@ -510,15 +519,33 @@ function EditorPanel({ dataset, plan, remnants, parts, materials }: { dataset: D
     return delta;
   }, [effective, plan.placements, parts]);
 
+  /** C2 draft = list of edits against base_revision; the server returns the new revision and its validation. */
+  const edits = useMemo<DraftEdit[]>(() => {
+    const before = new Map(plan.placements.map(item => [item.part_id, item]));
+    const list: DraftEdit[] = [];
+    for (const item of effective) {
+      const old = before.get(item.part_id);
+      if (!old) continue;
+      const moved = old.remnant_id !== item.remnant_id || old.x_mm !== item.x_mm || old.y_mm !== item.y_mm || old.rot !== item.rot;
+      if (moved) {
+        list.push(item.remnant_id === 'NEW' ? { part_id: item.part_id, action: 'unplace' } : { part_id: item.part_id, action: 'move', remnant_id: item.remnant_id, x_mm: item.x_mm, y_mm: item.y_mm, rot: item.rot });
+      }
+      if (old.lock_kind !== item.lock_kind && item.remnant_id !== 'NEW') {
+        list.push(item.lock_kind === 'none' ? { part_id: item.part_id, action: 'unlock' } : { part_id: item.part_id, action: 'lock', lock_kind: item.lock_kind });
+      }
+    }
+    return list;
+  }, [effective, plan.placements]);
+
   const save = useMutation({
-    mutationFn: async () => {
-      const saved = await api.saveDraft(plan.plan_id, { dataset_id: dataset.dataset_id, base_revision: plan.revision, placements: effective, excluded_remnant_ids: draft?.excluded ?? [] });
-      const result = await api.validatePlan(saved.plan_id, dataset.dataset_id, saved.revision);
-      return { saved, result };
-    },
-    onSuccess: ({ saved, result }) => {
-      setSavedDraft(saved);
-      setValidation(result);
+    mutationFn: () => api.draftPlan(plan.plan_id, { dataset_id: dataset.dataset_id, base_revision: plan.revision, edits }),
+    onSuccess: result => {
+      // Continue on the new server revision (draft chain); the committed plan stays the active one.
+      discard(key);
+      setSavedDraft(null);
+      setValidation(result.validation);
+      queryClient.setQueryData(['plan', dataset.dataset_id, result.plan.plan_id], result.plan);
+      setActivePlan(dataset.dataset_id, result.plan.plan_id);
       setCommitKey(newIdempotencyKey());
       queryClient.invalidateQueries({ queryKey: ['plans', dataset.dataset_id] });
     },
@@ -527,14 +554,14 @@ function EditorPanel({ dataset, plan, remnants, parts, materials }: { dataset: D
     mutationFn: (target: CutPlan) => {
       const used = new Set(target.placements.filter(item => item.remnant_id !== 'NEW').map(item => item.remnant_id));
       const expected = Object.fromEntries(remnants.filter(item => used.has(item.remnant_id)).map(item => [item.remnant_id, item.version ?? 0]));
-      return api.commitPlan(target.plan_id, { dataset_id: dataset.dataset_id, plan_revision: target.revision, expected_remnant_versions: expected }, commitKey);
+      return api.commitPlan(target.plan_id, { dataset_id: dataset.dataset_id, plan_revision: target.revision, expected_remnant_versions: expected, owner_context: 'ui:cutting-workspace' }, commitKey);
     },
     onSuccess: committed => {
       setCommitOpen(false);
       discard(key);
       setSavedDraft(null);
       setValidation(null);
-      setActivePlan(dataset.dataset_id, committed.plan_id);
+      setActivePlan(dataset.dataset_id, committed.plan.plan_id);
       queryClient.invalidateQueries({ queryKey: ['plans', dataset.dataset_id] });
       queryClient.invalidateQueries({ queryKey: ['remnants', dataset.dataset_id] });
       queryClient.invalidateQueries({ queryKey: ['sale-cards', dataset.dataset_id] });
@@ -574,7 +601,7 @@ function EditorPanel({ dataset, plan, remnants, parts, materials }: { dataset: D
               Отменить черновик
             </Button>
             {mutable && (
-              <Button icon={<Save size={14} aria-hidden="true" />} onClick={() => save.mutate()} busy={save.isPending} disabled={!changed || Boolean(outdatedDraft)}>
+              <Button icon={<Save size={14} aria-hidden="true" />} onClick={() => save.mutate()} busy={save.isPending} disabled={edits.length === 0 || Boolean(outdatedDraft)}>
                 Сохранить и проверить
               </Button>
             )}
@@ -597,16 +624,21 @@ function EditorPanel({ dataset, plan, remnants, parts, materials }: { dataset: D
           </Button>
         </div>
       )}
+      {(draft?.excluded ?? []).map(remnantId => (
+        <ExclusionImpact key={remnantId} dataset={dataset} planId={plan.plan_id} remnantId={remnantId} />
+      ))}
       {save.error && <ErrorState error={save.error} onRetry={() => save.mutate()} context="Сохранение черновика" />}
       {validation && (
         <div className={`state ${validation.valid ? 'state-ok' : 'state-error'}`} role="status">
           <div>
             <strong>{validation.valid ? 'Сервер: черновик допустим' : 'Сервер: черновик недопустим — активный план не изменен'}</strong>
-            {validation.errors.length > 0 && (
+            {(validation.issues?.length ? validation.issues.map(issue => issue.message_ru) : validation.errors).length > 0 && (
               <ul className="plain small">
-                {validation.errors.slice(0, 12).map((error, index) => (
-                  <li key={index}>{error}</li>
-                ))}
+                {(validation.issues?.length ? validation.issues.map(issue => `${issue.part_id ? `${issue.part_id}: ` : ''}${issue.message_ru}`) : validation.errors)
+                  .slice(0, 12)
+                  .map((error, index) => (
+                    <li key={index}>{error}</li>
+                  ))}
               </ul>
             )}
             {validation.missing_part_ids.length > 0 && <p className="small">Пропущены: {validation.missing_part_ids.join(', ')}</p>}
@@ -655,9 +687,9 @@ function ComparePanel({ dataset, basePlanId, candidatePlanId, onAdopt, onClose }
   const { api } = useApi();
   const compare = useQuery({
     queryKey: ['compare', dataset.dataset_id, basePlanId, candidatePlanId],
-    queryFn: () => api.comparePlans({ dataset_id: dataset.dataset_id, base_plan_id: basePlanId, candidate_plan_id: candidatePlanId }),
+    queryFn: () => api.comparePlans({ dataset_id: dataset.dataset_id, base: { plan_id: basePlanId }, candidate: { plan_id: candidatePlanId } }),
   });
-  const data: ProposedPlanComparison | undefined = compare.data;
+  const data: PlanComparison | undefined = compare.data;
   return (
     <Panel
       title="Сравнение версий"
@@ -679,26 +711,55 @@ function ComparePanel({ dataset, basePlanId, candidatePlanId, onAdopt, onClose }
         <div className="stack">
           <div className="metrics-row">
             <Metric label="Δ покрытой площади" value={`${formatSignedInt(data.delta_covered_area_mm2)} мм²`} detail={formatAreaM2(data.delta_covered_area_mm2)} tone={data.delta_covered_area_mm2 >= 0 ? 'ok' : 'warn'} />
-            <Metric label="Δ оценки материала" value={formatSignedMoney(data.delta_replacement_value_tg)} />
+            <Metric label="Δ оценки материала" value={formatSignedMoney(data.delta_value_tg)} />
             <Metric label="Δ полностью покрытых заказов" value={formatSignedInt(data.delta_fully_covered_orders)} />
-            <Metric label="Покрытие: было → стало" value={`${formatPercent(data.base.metrics.coverage, 3)} → ${formatPercent(data.candidate.metrics.coverage, 3)}`} />
+            <Metric label="Δ покрытия" value={`${data.delta_coverage >= 0 ? '+' : '−'}${formatPercent(Math.abs(data.delta_coverage), 3)}`} />
+            <Metric label="Δ свободных исходных кусков" value={formatSignedInt(data.delta_free_original_remnants)} tone={data.delta_free_original_remnants < 0 ? 'warn' : undefined} />
           </div>
-          <Details summary={`Детали, ставшие NEW (${data.newly_new_part_ids.length}) и размещенные заново (${data.newly_placed_part_ids.length})`}>
+          <Details summary={`Детали, ставшие NEW (${data.newly_new_part_ids.length}) и покрытые заново (${data.newly_covered_part_ids.length}); изменений размещения: ${data.changes.filter(item => item.kind !== 'unchanged').length}`}>
             <p className="small mono">NEW: {data.newly_new_part_ids.join(', ') || '—'}</p>
-            <p className="small mono">Размещены: {data.newly_placed_part_ids.join(', ') || '—'}</p>
+            <p className="small mono">Покрыты: {data.newly_covered_part_ids.join(', ') || '—'}</p>
           </Details>
-          {(data.affected_quote_ids.length > 0 || data.affected_sale_card_ids.length > 0) && (
+          {data.affected_reserved_remnant_ids.length > 0 && (
             <div className="state state-warn">
               <div>
-                <strong>Затронутые объекты станут устаревшими после подтверждения</strong>
-                <p className="small">
-                  Предложения: {data.affected_quote_ids.join(', ') || '—'} · Карточки: {data.affected_sale_card_ids.join(', ') || '—'}
-                </p>
+                <strong>Затронуты зарезервированные куски — нужно отдельное подтверждение</strong>
+                <p className="small mono">{data.affected_reserved_remnant_ids.join(', ')}</p>
               </div>
             </div>
           )}
         </div>
       )}
     </Panel>
+  );
+}
+
+/** Server-side consequences of excluding one remnant (C2 /cutting/impact): the active plan is not changed. */
+function ExclusionImpact({ dataset, planId, remnantId }: { dataset: Dataset; planId: string; remnantId: string }) {
+  const { api } = useApi();
+  const impact = useQuery({
+    queryKey: ['impact', dataset.dataset_id, planId, remnantId],
+    queryFn: () => api.impact({ dataset_id: dataset.dataset_id, remnant_id: remnantId, change: 'exclude', plan_id: planId }),
+  });
+  if (impact.isLoading) return <LoadingState label={`Считаем последствия исключения ${remnantId}…`} />;
+  if (impact.isError) return <ErrorState error={impact.error} onRetry={() => impact.refetch()} context={`Последствия исключения ${remnantId}`} />;
+  const data = impact.data!;
+  return (
+    <div className="state state-info" role="status">
+      <div>
+        <strong>Исключение {remnantId}: прогноз сервера</strong>
+        <p className="small">
+          Затронуто деталей: {data.affected_part_ids.length} · новые NEW: <span className="mono">{data.new_part_ids.join(', ') || '—'}</span> · Δ площади{' '}
+          {formatSignedInt(data.delta_covered_area_mm2)} мм² · Δ оценки {formatSignedMoney(data.delta_value_tg)}
+        </p>
+        {(data.affected_reservation_ids.length > 0 || data.affected_order_ids.length > 0) && (
+          <p className="small">
+            Резервы: {data.affected_reservation_ids.join(', ') || '—'} · заказы: {data.affected_order_ids.join(', ') || '—'}
+          </p>
+        )}
+        {data.note_ru && <p className="small muted">{data.note_ru}</p>}
+        <p className="small muted">Действующий план не изменен. Для нового размещения запустите расчет: исключенные куски передаются в solver.</p>
+      </div>
+    </div>
   );
 }

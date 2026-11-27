@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { newIdempotencyKey } from '../../api/client';
 import { useApi } from '../../api/context';
 import { asApiError } from '../../api/errors';
-import type { Buyer, CutPlan, Dataset, SaleCard } from '../../api/types';
+import type { Buyer, Dataset, PlanSummary, SaleCard } from '../../api/types';
 import { formatInt, formatMoney } from '../../lib/format';
 import { href } from '../../state/router';
 import { useAppStore } from '../../state/store';
@@ -54,11 +54,18 @@ function Sales({ dataset }: { dataset: Dataset }) {
   const [factor, setFactor] = useState('0.50');
   const [open, setOpen] = useState(false);
   const [key, setKey] = useState(newIdempotencyKey);
-  const chosenPlan: CutPlan | undefined =
+  const chosenPlan: PlanSummary | undefined =
     plans.data?.find(plan => plan.plan_id === (planId || activePlanId)) ?? plans.data?.find(plan => plan.status === 'committed') ?? plans.data?.[0];
+  // Live re-check of fully free ORIGINAL pieces right now (C2 /plans/{id}/free-remnants), not the stored list.
+  const free = useQuery({
+    queryKey: ['free-remnants', dataset.dataset_id, chosenPlan?.plan_id, chosenPlan?.revision],
+    enabled: Boolean(chosenPlan),
+    queryFn: ({ signal }) => api.freeRemnants(chosenPlan!.plan_id, dataset.dataset_id, signal),
+  });
+  const freeCount = free.data?.count ?? 0;
 
   const generate = useMutation({
-    mutationFn: (plan: CutPlan) =>
+    mutationFn: (plan: PlanSummary) =>
       api.createSaleCards(
         { dataset_id: dataset.dataset_id, plan_id: plan.plan_id, plan_revision: plan.revision, buyer_registry_version: version as string, factor: factor.replace(',', '.') },
         key,
@@ -116,7 +123,12 @@ function Sales({ dataset }: { dataset: Dataset }) {
                 ))}
               </select>
             </label>
-            <Metric label="Свободных исходных кусков" value={chosenPlan.free_original_remnant_ids.length} tone={chosenPlan.free_original_remnant_ids.length >= 5 ? 'ok' : 'warn'} />
+            <Metric
+              label="Свободных исходных кусков (сейчас)"
+              value={free.isLoading ? '…' : free.isError ? 'ошибка' : freeCount}
+              tone={free.data?.minimum_free_remnants_met ? 'ok' : 'warn'}
+              detail={free.data?.no_longer_free_remnant_ids.length ? `заняты после плана: ${free.data.no_longer_free_remnant_ids.join(', ')}` : 'живая перепроверка склада'}
+            />
             <Metric label="Версия реестра" value={version ? version.slice(0, 8) : 'нет'} />
             <Field label="Коэффициент" error={factorProblem ?? undefined} hint="0,50 — проектное значение, не оценка рынка">
               {props => <input {...props} value={factor} onChange={event => setFactor(event.target.value)} style={{ width: 110 }} />}
@@ -125,11 +137,12 @@ function Sales({ dataset }: { dataset: Dataset }) {
               variant="primary"
               icon={<Sparkles size={14} aria-hidden="true" />}
               onClick={() => setOpen(true)}
-              disabled={chosenPlan.free_original_remnant_ids.length < 5 || !version || Boolean(factorProblem)}
+              disabled={freeCount < 5 || !version || Boolean(factorProblem)}
             >
               Сгенерировать 5 карточек
             </Button>
-            {chosenPlan.free_original_remnant_ids.length < 5 && (
+            {free.isError && <ErrorState error={free.error} onRetry={() => free.refetch()} context="Перепроверка свободных кусков" />}
+            {free.data && freeCount < 5 && (
               <p className="small text-warn">Меньше пяти свободных кусков. Пересчитайте раскрой с условием пяти свободных; фиктивные куски не создаются.</p>
             )}
           </div>
@@ -168,7 +181,7 @@ function Sales({ dataset }: { dataset: Dataset }) {
           action="Сервер выберет пять разных полностью неиспользованных исходных кусков выбранной ревизии плана и подберет по три покупателя из реестра по профилю применения."
           affected={[
             { label: 'План', value: `${chosenPlan.plan_id} · ревизия ${chosenPlan.revision}` },
-            { label: 'Свободных кусков', value: String(chosenPlan.free_original_remnant_ids.length) },
+            { label: 'Свободных кусков сейчас', value: String(freeCount) },
             { label: 'Коэффициент', value: factor.replace('.', ',') },
             { label: 'Версия реестра покупателей', value: <span className="mono">{version}</span> },
           ]}

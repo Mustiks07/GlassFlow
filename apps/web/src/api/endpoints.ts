@@ -48,35 +48,36 @@ export function createEndpoints(api: ApiClient) {
     shutdown: () => api.post<{ status: string; restart_required?: boolean }>('/system/shutdown'),
     journal: (signal?: AbortSignal) => api.get<T.JournalEntry[]>('/system/journal', { signal }),
 
-    // ----- cutting (Claude 2) -----
+    // ----- cutting (Claude 2, 5897472) -----
     listRemnants: (datasetId: string, signal?: AbortSignal) =>
       api.get<T.Remnant[]>('/remnants', { signal, query: { dataset_id: datasetId, limit: 200 } }),
     addRemnant: (body: T.NewRemnant, idempotencyKey: string) => api.post<T.Remnant>('/remnants', body, { idempotencyKey }),
-    measureRemnant: (remnantId: string, body: T.ProposedMeasurement, idempotencyKey: string) =>
-      api.patch<T.Remnant>(`/remnants/${enc(remnantId)}/measurement`, body, { idempotencyKey }),
-    consumeRemnant: (remnantId: string, body: T.ProposedConsume, idempotencyKey: string) =>
-      api.post<T.Remnant>(`/remnants/${enc(remnantId)}/consume`, body, { idempotencyKey }),
-    reserveRemnant: (remnantId: string, body: T.ProposedReserve, idempotencyKey: string) =>
-      api.post<T.Remnant>(`/remnants/${enc(remnantId)}/reserve`, body, { idempotencyKey }),
-    releaseRemnant: (remnantId: string, body: T.ProposedConsume, idempotencyKey: string) =>
-      api.post<T.Remnant>(`/remnants/${enc(remnantId)}/release`, body, { idempotencyKey }),
-    listParts: (datasetId: string, signal?: AbortSignal) =>
-      api.get<T.Part[]>('/cutting/parts', { signal, query: { dataset_id: datasetId } }),
-    listMaterials: (datasetId: string, signal?: AbortSignal) =>
-      api.get<T.Material[]>('/cutting/materials', { signal, query: { dataset_id: datasetId } }),
+    measureRemnant: (remnantId: string, body: T.MeasurementUpdate, idempotencyKey: string) =>
+      api.patch<T.ImpactReport>(`/remnants/${enc(remnantId)}/measurement`, body, { idempotencyKey }),
+    consumeRemnant: (remnantId: string, body: T.ConsumeRequest, idempotencyKey: string) =>
+      api.post<T.InventoryChange>(`/remnants/${enc(remnantId)}/consume`, body, { idempotencyKey }),
+    withdrawRemnant: (remnantId: string, body: T.WithdrawRequest, idempotencyKey: string) =>
+      api.post<T.InventoryChange>(`/remnants/${enc(remnantId)}/withdraw`, body, { idempotencyKey }),
+    reserveRemnant: (remnantId: string, body: T.ReserveRequest, idempotencyKey: string) =>
+      api.post<T.InventoryChange>(`/remnants/${enc(remnantId)}/reserve`, body, { idempotencyKey }),
+    solveInput: (datasetId: string, signal?: AbortSignal) =>
+      api.post<T.SolveInputView>('/cutting/solve-input', { dataset_id: datasetId }, { signal }),
+    impact: (body: { dataset_id: string; remnant_id: string; change: 'exclude' | 'measurement'; dimensions?: T.Dimensions | null; plan_id?: string | null }) =>
+      api.post<T.ImpactReport>('/cutting/impact', body),
     listPlans: (datasetId: string, signal?: AbortSignal) =>
-      api.get<T.CutPlan[]>('/plans', { signal, query: { dataset_id: datasetId } }),
+      api.get<T.PlanSummary[]>('/plans', { signal, query: { dataset_id: datasetId, limit: 200 } }),
     findCandidates: (body: T.FindRequest, signal?: AbortSignal) => api.post<T.Candidates>('/cutting/candidates', body, { signal }),
     solve: (body: T.SolveRequest, idempotencyKey: string) => api.post<T.Job>('/cutting/solve', body, { idempotencyKey }),
     getPlan: (planId: string, datasetId: string, signal?: AbortSignal) =>
       api.get<T.CutPlan>(`/plans/${enc(planId)}`, { signal, query: { dataset_id: datasetId } }),
-    saveDraft: (planId: string, body: T.ProposedPlanDraft) => api.post<T.CutPlan>(`/plans/${enc(planId)}/draft`, body),
+    draftPlan: (planId: string, body: T.DraftRequest) => api.post<T.DraftResult>(`/plans/${enc(planId)}/draft`, body),
     validatePlan: (planId: string, datasetId: string, revision?: number) =>
       api.post<T.ValidationResult>(`/plans/${enc(planId)}/validate`, undefined, { query: { dataset_id: datasetId, revision } }),
     commitPlan: (planId: string, body: T.CommitPlan, idempotencyKey: string) =>
-      api.post<T.CutPlan>(`/plans/${enc(planId)}/commit`, body, { idempotencyKey }),
-    comparePlans: (body: { dataset_id: string; base_plan_id: string; candidate_plan_id: string }) =>
-      api.post<T.ProposedPlanComparison>('/plans/compare', body),
+      api.post<T.CommitResult>(`/plans/${enc(planId)}/commit`, body, { idempotencyKey }),
+    comparePlans: (body: { dataset_id: string; base: T.PlanRef; candidate: T.PlanRef }) => api.post<T.PlanComparison>('/plans/compare', body),
+    freeRemnants: (planId: string, datasetId: string, signal?: AbortSignal) =>
+      api.get<T.FreeRemnantsCheck>(`/plans/${enc(planId)}/free-remnants`, { signal, query: { dataset_id: datasetId } }),
 
     // ----- intelligence (Claude 3) -----
     listCatalog: (datasetId: string, kbVersion: string, signal?: AbortSignal) =>

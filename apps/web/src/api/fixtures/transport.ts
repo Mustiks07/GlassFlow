@@ -314,50 +314,72 @@ export function createFixtureTransport(): Transport {
       state.remnants[datasetId!].push(created);
       return ok(created);
     }
-    if (seg[0] === 'remnants' && seg[2] === 'reserve') {
-      const blocked = mutableOnly();
-      if (blocked) return blocked;
-      const target = state.remnants[datasetId!].find(item => item.remnant_id === seg[1]);
-      if (!target) return fail(404, 'REMNANT_NOT_FOUND', 'Остаток не найден в этом наборе.');
-      if (body.expected_version !== target.version || target.status !== 'available')
-        return fail(409, 'REMNANT_CONFLICT', 'Остаток уже изменен или занят. Показано актуальное состояние.', { conflict_objects: [target.remnant_id] });
-      target.status = 'reserved';
-      target.version = (target.version ?? 0) + 1;
-      return ok(target);
-    }
     if (seg[0] === 'remnants' && seg.length === 3) {
       const blocked = mutableOnly();
       if (blocked) return blocked;
       const target = state.remnants[datasetId!].find(item => item.remnant_id === seg[1]);
       if (!target) return fail(404, 'REMNANT_NOT_FOUND', 'Остаток не найден в этом наборе.');
-      if (body.expected_version !== target.version) return fail(409, 'VERSION_CONFLICT', 'Версия остатка изменилась.', { conflict_objects: [target.remnant_id] });
-      if (seg[2] === 'consume') target.status = 'consumed';
+      if (body.expected_version !== target.version) return fail(409, 'VERSION_CONFLICT', 'Версия остатка изменилась. Показано актуальное состояние.', { conflict_objects: [target.remnant_id] });
+      let reservation = null;
+      if (seg[2] === 'reserve') {
+        if (target.status !== 'available') return fail(409, 'REMNANT_CONFLICT', 'Остаток уже занят.', { conflict_objects: [target.remnant_id] });
+        target.status = 'reserved';
+        target.active_reservation_id = nextId('RES');
+        reservation = { reservation_id: target.active_reservation_id, dataset_id: datasetId!, remnant_id: target.remnant_id, plan_id: '', plan_revision: 0, owner_context: String(body.owner_context), status: 'active', version: 0, created_at: new Date().toISOString() };
+      }
+      if (seg[2] === 'consume') {
+        if (target.status !== 'reserved' || body.reservation_id !== target.active_reservation_id) return fail(409, 'RESERVATION_MISMATCH', 'Списание возможно только по действующему резерву.');
+        target.status = 'consumed';
+      }
+      if (seg[2] === 'withdraw') target.status = 'withdrawn';
       if (seg[2] === 'release') target.status = 'available';
-      if (seg[2] === 'measurement') target.dimensions = body.dimensions as Remnant['dimensions'];
+      if (seg[2] === 'measurement') {
+        target.dimensions = body.dimensions as Remnant['dimensions'];
+        target.version = (target.version ?? 0) + 1;
+        return ok({ dataset_id: datasetId, remnant_id: target.remnant_id, remnant_version: target.version, plan_id: 'PLAN-1', plan_revision: 1, affected_part_ids: [], new_part_ids: [], delta_covered_area_mm2: 0, delta_value_tg: '0.00', affected_reservation_ids: [], affected_order_ids: [], requires_commit: true, note_ru: 'Фикстура: последствия замера не рассчитываются' });
+      }
       target.version = (target.version ?? 0) + 1;
-      return ok(target);
+      return ok({ remnant: target, reservation, audit_event_id: nextId('EVT'), children: [] });
     }
-    if (path === '/cutting/parts') return ok(data.parts);
-    if (path === '/cutting/materials') return ok(data.materials);
-    if (path === '/plans' && method === 'GET') return ok(state.plans[datasetId!]);
+    if (path === '/cutting/solve-input') return ok({ dataset_id: datasetId, materials: data.materials, remnants: state.remnants[datasetId!], parts: data.parts });
+    if (path === '/cutting/impact') {
+      const plan = state.plans[datasetId!].find(item => item.status === 'committed') ?? state.plans[datasetId!][0];
+      const affected = plan.placements.filter(item => item.remnant_id === body.remnant_id).map(item => item.part_id);
+      const area = affected.reduce((sum, id) => {
+        const p = data.parts.find(item => item.part_id === id)!;
+        return sum + p.dimensions.length_mm * p.dimensions.width_mm;
+      }, 0);
+      return ok({ dataset_id: datasetId, remnant_id: body.remnant_id, remnant_version: 0, plan_id: plan.plan_id, plan_revision: plan.revision, affected_part_ids: affected, new_part_ids: affected, delta_covered_area_mm2: -area, delta_value_tg: '-0.00', affected_reservation_ids: [], affected_order_ids: [], requires_commit: true, note_ru: 'Фикстура: оценка в тенге не рассчитывается' });
+    }
+    if (path === '/plans' && method === 'GET')
+      return ok(state.plans[datasetId!].map(plan => ({ plan_id: plan.plan_id, revision: plan.revision, status: plan.status, search_status: plan.search_status, coverage: plan.metrics.coverage, created_at: null, source: plan.source ?? 'solver' })));
     if (path === '/plans/compare') {
       const list = state.plans[datasetId!];
-      const base = list.find(item => item.plan_id === body.base_plan_id);
-      const candidate = list.find(item => item.plan_id === body.candidate_plan_id);
+      const base = list.find(item => item.plan_id === (body.base as { plan_id: string }).plan_id);
+      const candidate = list.find(item => item.plan_id === (body.candidate as { plan_id: string }).plan_id);
       if (!base || !candidate) return fail(404, 'PLAN_NOT_FOUND', 'План не найден.');
       const baseNew = new Set(base.placements.filter(item => item.remnant_id === 'NEW').map(item => item.part_id));
       const candNew = new Set(candidate.placements.filter(item => item.remnant_id === 'NEW').map(item => item.part_id));
       return ok({
-        base: { plan_id: base.plan_id, revision: base.revision, metrics: base.metrics },
-        candidate: { plan_id: candidate.plan_id, revision: candidate.revision, metrics: candidate.metrics },
+        dataset_id: datasetId,
+        base: { plan_id: base.plan_id, revision: base.revision },
+        candidate: { plan_id: candidate.plan_id, revision: candidate.revision },
         delta_covered_area_mm2: candidate.metrics.covered_area_mm2 - base.metrics.covered_area_mm2,
-        delta_replacement_value_tg: '0.00',
+        delta_coverage: candidate.metrics.coverage - base.metrics.coverage,
+        delta_value_tg: '0.00',
         delta_fully_covered_orders: candidate.metrics.fully_covered_orders - base.metrics.fully_covered_orders,
+        delta_free_original_remnants: candidate.free_original_remnant_ids.length - base.free_original_remnant_ids.length,
         newly_new_part_ids: [...candNew].filter(id => !baseNew.has(id)),
-        newly_placed_part_ids: [...baseNew].filter(id => !candNew.has(id)),
-        affected_quote_ids: [],
-        affected_sale_card_ids: (state.cards[datasetId!] ?? []).map(card => card.card_id as string),
+        newly_covered_part_ids: [...baseNew].filter(id => !candNew.has(id)),
+        changes: [],
+        affected_reserved_remnant_ids: [],
       });
+    }
+    if (seg[0] === 'plans' && seg[2] === 'free-remnants') {
+      const plan = state.plans[datasetId!].find(item => item.plan_id === seg[1]);
+      if (!plan) return fail(404, 'PLAN_NOT_FOUND', 'План не найден.');
+      const free = plan.free_original_remnant_ids.map(id => state.remnants[datasetId!].find(item => item.remnant_id === id)!).filter(r => r.status === 'available');
+      return ok({ dataset_id: datasetId, plan_id: plan.plan_id, revision: plan.revision, plan_status: plan.status, as_of: new Date().toISOString(), free_original: free.map(r => ({ remnant_id: r.remnant_id, version: r.version ?? 0, material_id: r.material_id, dimensions: r.dimensions, defect: r.defect, location_raw: r.location_raw })), count: free.length, minimum_free_remnants: 5, minimum_free_remnants_met: free.length >= 5, no_longer_free_remnant_ids: plan.free_original_remnant_ids.filter(id => !free.some(r => r.remnant_id === id)) });
     }
     if (seg[0] === 'plans' && seg.length === 2) {
       const plan = state.plans[datasetId!]?.find(item => item.plan_id === seg[1]);
@@ -369,16 +391,26 @@ export function createFixtureTransport(): Transport {
       const list = state.plans[datasetId!];
       const base = list.find(item => item.plan_id === seg[1]);
       if (!base) return fail(404, 'PLAN_NOT_FOUND', 'План не найден.');
-      const draft: CutPlan = { ...base, plan_id: nextId('PLAN-DRAFT'), revision: base.revision + 1, status: 'draft', placements: body.placements as CutPlan['placements'], parent_plan_id: base.plan_id };
+      if (body.base_revision !== base.revision) return fail(409, 'REVISION_CONFLICT', 'План изменился; обновите черновик.', { conflict_objects: [base.plan_id] });
+      const placements = base.placements.map(item => ({ ...item }));
+      for (const edit of body.edits as { part_id: string; action: string; remnant_id?: string; x_mm?: number; y_mm?: number; rot?: 0 | 1; lock_kind?: 'none' | 'assignment' | 'placement' }[]) {
+        const target = placements.find(item => item.part_id === edit.part_id);
+        if (!target) continue;
+        if (edit.action === 'unplace') Object.assign(target, { remnant_id: 'NEW', x_mm: null, y_mm: null, rot: null });
+        if (edit.action === 'move') Object.assign(target, { remnant_id: edit.remnant_id, x_mm: edit.x_mm, y_mm: edit.y_mm, rot: edit.rot });
+        if (edit.action === 'lock') target.lock_kind = edit.lock_kind ?? 'placement';
+        if (edit.action === 'unlock') target.lock_kind = 'none';
+      }
+      // Fixture validator: only the 5 mm edge from the origin — enough to drive UI states, not product geometry.
+      const invalid = placements.filter(item => item.remnant_id !== 'NEW' && item.x_mm !== null && item.y_mm !== null && ((item.x_mm ?? 0) < 5 || (item.y_mm ?? 0) < 5));
+      const draft: CutPlan = { ...base, plan_id: nextId('PLAN-DRAFT'), revision: base.revision + 1, status: invalid.length ? 'invalid' : 'validated', placements, parent_plan_id: base.plan_id, source: 'edit' };
       list.push(draft);
-      return ok(draft);
+      return ok({ plan: draft, validation: { valid: invalid.length === 0, errors: invalid.map(item => `${item.part_id}: ближе 5 мм к краю (фикстура)`), invalid_part_ids: invalid.map(item => item.part_id), missing_part_ids: [], issues: invalid.map(item => ({ code: 'TRIM', message_ru: 'ближе 5 мм к краю остатка (фикстура)', part_id: item.part_id })) } });
     }
     if (seg[0] === 'plans' && seg[2] === 'validate') {
       const plan = state.plans[datasetId!]?.find(item => item.plan_id === seg[1]);
       if (!plan) return fail(404, 'PLAN_NOT_FOUND', 'План не найден.');
-      // Fixture validator: flags placements closer than 5 mm to the origin edges only — enough to drive UI states.
       const invalid = plan.placements.filter(item => item.remnant_id !== 'NEW' && item.x_mm !== null && item.y_mm !== null && ((item.x_mm ?? 0) < 5 || (item.y_mm ?? 0) < 5));
-      plan.status = invalid.length ? 'invalid' : 'validated';
       return ok({ valid: invalid.length === 0, errors: invalid.map(item => `${item.part_id}: ближе 5 мм к краю (фикстура)`), invalid_part_ids: invalid.map(item => item.part_id), missing_part_ids: [] });
     }
     if (seg[0] === 'plans' && seg[2] === 'commit') {
@@ -390,24 +422,28 @@ export function createFixtureTransport(): Transport {
       const expected = body.expected_remnant_versions as Record<string, number>;
       const conflicts = Object.entries(expected).filter(([id, version]) => state.remnants[datasetId!].find(item => item.remnant_id === id)?.version !== version).map(([id]) => id);
       if (conflicts.length) return fail(409, 'VERSION_CONFLICT', 'Версии остатков изменились; обновите план.', { conflict_objects: conflicts });
-      for (const item of list) if (item.status === 'committed') item.status = 'superseded';
+      let superseded: string | null = null;
+      for (const item of list) if (item.status === 'committed') {
+        item.status = 'superseded';
+        superseded = item.plan_id;
+      }
       plan.status = 'committed';
       for (const card of state.cards[datasetId!] ?? []) {
         card.status = 'stale';
         card.stale_reason = `План изменен: ${plan.plan_id} ревизия ${plan.revision}`;
       }
-      return ok(plan);
+      return ok({ plan, reservations: [], released_reservation_ids: [], superseded_plan: superseded });
     }
-    if (path === '/cutting/solve') return ok(createJob('solve', { dataset_id: datasetId! }));
+    if (path === '/cutting/solve') return ok(createJob('solve', { dataset_id: datasetId! }), 202);
     if (path === '/cutting/candidates') {
       const dims = body.dimensions as { length_mm: number; width_mm: number };
       if (body.material_id === 'clear-6' && dims.length_mm <= 450 && dims.width_mm <= 370) {
         const r = state.remnants[datasetId!].find(item => item.remnant_id === 'R006')!;
-        if (r.status !== 'available') return ok({ candidates: [], reason_codes: ['occupied_by_reservation'], scope: 'free_whole_remnants' });
-        const candidate: Candidate = { remnant_id: 'R006', remnant_version: r.version ?? 0, x_mm: 5, y_mm: 5, rot: 0, location_raw: r.location_raw, length_mm: 460, width_mm: 380, material_id: 'clear-6' };
+        if (r.status !== 'available') return ok({ candidates: [], reason_codes: ['OCCUPIED'], scope: 'free_whole_remnants' });
+        const candidate: Candidate = { remnant_id: 'R006', remnant_version: r.version ?? 0, x_mm: 5, y_mm: 5, rot: 0, location_raw: r.location_raw, remnant_dimensions: { length_mm: 460, width_mm: 380 } };
         return ok({ candidates: [candidate], reason_codes: [], scope: 'free_whole_remnants' });
       }
-      return ok({ candidates: [], reason_codes: ['no_free_whole_remnant'], scope: 'free_whole_remnants' });
+      return ok({ candidates: [], reason_codes: ['NO_COMPATIBLE_REMNANT'], scope: 'free_whole_remnants' });
     }
 
     // ---------- intelligence ----------

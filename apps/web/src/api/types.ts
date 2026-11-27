@@ -123,7 +123,7 @@ export interface JournalEntry {
   correlation_id?: string | null;
 }
 
-// ---------- cutting (owner: Claude 2) ----------
+// ---------- cutting (owner: Claude 2, contracts from 5897472) ----------
 export type Material = {
   material_id: string;
   name: string;
@@ -131,34 +131,73 @@ export type Material = {
   unit_price_tg: string;
   tempered: boolean;
 };
-export type Remnant = S['Remnant'] & Partial<{ rack: string | null; cell: string | null; material_name: string; tempered: boolean }>;
+export type Remnant = S['Remnant'] &
+  Partial<{
+    internal_id: string | null;
+    origin: 'source' | 'working' | 'child';
+    original: boolean;
+    rack: string | null;
+    cell: string | null;
+    parent_remnant_id: string | null;
+    active_reservation_id: string | null;
+    status_reason: string | null;
+    tempered: boolean;
+  }>;
 export type NewRemnant = S['NewRemnant'];
 export type Placement = S['Placement'];
-export type CutMetrics = S['CutMetrics'];
-export type CutPlan = S['CutPlan'] &
+export interface PlanIssue {
+  code: string;
+  message_ru: string;
+  part_id?: string | null;
+  remnant_id?: string | null;
+  other_part_id?: string | null;
+  coordinates?: Record<string, number>;
+}
+export type CutMetrics = S['CutMetrics'] &
+  Partial<{
+    total_orders: number;
+    covered_parts: number;
+    total_parts: number;
+    used_original_remnants: number;
+    free_original_remnants: number;
+    coverage_percent: string;
+    new_reasons: Record<string, string>;
+  }>;
+export type CutPlan = Omit<S['CutPlan'], 'metrics'> & { metrics: CutMetrics } &
   Partial<{
     parent_plan_id: string | null;
-    /** Requested: reasons for parts left NEW, keyed by part_id. */
-    new_reasons: Record<string, UnplacedReason>;
-    excluded_remnant_ids: string[];
-    version: number;
+    parent_revision: number | null;
+    stop_reason: string;
+    issues: PlanIssue[];
+    source: 'solver' | 'edit' | 'import';
+    inventory_current: boolean | null;
+    /** Older shape kept for compatibility; C2 reports reasons in metrics.new_reasons. */
+    new_reasons: Record<string, string>;
   }>;
-export type ValidationResult = S['ValidationResult'];
-export type Candidate = S['Candidate'] & Partial<{ length_mm: number; width_mm: number; material_id: string; tempered: boolean }>;
-export type Candidates = S['Candidates'];
+/** GET /plans → PlanSummary[] (no placements). */
+export interface PlanSummary {
+  plan_id: string;
+  revision: number;
+  status: string;
+  search_status: string;
+  coverage: number;
+  created_at?: string | null;
+  source: string;
+}
+export type ValidationResult = S['ValidationResult'] & Partial<{ issues: PlanIssue[]; plan_revision: number | null }>;
+export type Candidate = S['Candidate'] &
+  Partial<{
+    copy_index: number;
+    remnant_dimensions: Dimensions | null;
+    age_days: number | null;
+    shares_remnant_with_plan: boolean;
+    tempered: boolean;
+  }>;
+export type Candidates = S['Candidates'] & Partial<{ reasons_ru: string[]; covered_quantity: number; requested_quantity: number; inventory_version: string }>;
 export type FindRequest = S['FindRequest'];
-export type SolveRequest = S['SolveRequest'];
+export type SolveRequest = S['SolveRequest'] & Partial<{ excluded_remnant_ids: string[]; mode: 'replan' | 'keep_committed' }>;
 export type SolverConfig = S['SolverConfig'];
-export type CommitPlan = S['CommitPlan'];
-
-export type UnplacedReason =
-  | 'material_mismatch'
-  | 'size_does_not_fit'
-  | 'premium_on_defect'
-  | 'occupied_by_reservation'
-  | 'lock_conflict'
-  | 'search_limited'
-  | 'unknown';
+export type CommitPlan = S['CommitPlan'] & Partial<{ owner_context: string }>;
 
 export type Part = {
   part_id: string;
@@ -168,49 +207,129 @@ export type Part = {
   premium: boolean;
   product_type: string;
 };
-
-/** POST /plans/{id}/draft (owner: Claude 2). */
-export interface ProposedPlanDraft {
+/** POST /cutting/solve-input — read-only snapshot (used for parts and materials lists). */
+export interface SolveInputView {
+  dataset_id: string;
+  materials: Material[];
+  remnants: Remnant[];
+  parts: Part[];
+}
+export interface DraftEdit {
+  part_id: string;
+  action: 'move' | 'unplace' | 'lock' | 'unlock';
+  remnant_id?: string | null;
+  x_mm?: number | null;
+  y_mm?: number | null;
+  rot?: 0 | 1 | null;
+  lock_kind?: Placement['lock_kind'] | null;
+}
+export interface DraftRequest {
   dataset_id: string;
   base_revision: number;
-  placements: Placement[];
-  excluded_remnant_ids: string[];
+  edits: DraftEdit[];
 }
-
-/** POST /plans/compare (owner: Claude 2). */
-export interface ProposedPlanComparison {
-  base: { plan_id: string; revision: number; metrics: CutMetrics };
-  candidate: { plan_id: string; revision: number; metrics: CutMetrics };
+export interface DraftResult {
+  plan: CutPlan;
+  validation: ValidationResult;
+}
+export interface Reservation {
+  reservation_id: string;
+  dataset_id: string;
+  remnant_id: string;
+  plan_id: string;
+  plan_revision: number;
+  owner_context: string;
+  status: 'active' | 'released' | 'consumed';
+  version: number;
+  created_at: string;
+}
+export interface CommitResult {
+  plan: CutPlan;
+  reservations: Reservation[];
+  released_reservation_ids: string[];
+  superseded_plan: string | null;
+}
+export interface InventoryChange {
+  remnant: Remnant;
+  reservation: Reservation | null;
+  audit_event_id: string;
+  children: Remnant[];
+}
+export interface PlanRef {
+  plan_id: string;
+  revision?: number | null;
+}
+export interface PlanComparison {
+  dataset_id: string;
+  base: PlanRef;
+  candidate: PlanRef;
   delta_covered_area_mm2: number;
-  delta_replacement_value_tg: string;
+  delta_coverage: number;
+  delta_value_tg: string;
   delta_fully_covered_orders: number;
+  delta_free_original_remnants: number;
   newly_new_part_ids: string[];
-  newly_placed_part_ids: string[];
-  affected_quote_ids: string[];
-  affected_sale_card_ids: string[];
+  newly_covered_part_ids: string[];
+  changes: { part_id: string; kind: string }[];
+  affected_reserved_remnant_ids: string[];
 }
-
-export interface ProposedMeasurement {
+export interface ImpactReport {
+  dataset_id: string;
+  remnant_id: string;
+  remnant_version: number;
+  plan_id: string | null;
+  plan_revision: number | null;
+  affected_part_ids: string[];
+  new_part_ids: string[];
+  delta_covered_area_mm2: number;
+  delta_value_tg: string;
+  affected_reservation_ids: string[];
+  affected_order_ids: string[];
+  requires_commit: boolean;
+  note_ru: string;
+}
+export interface FreeRemnantsCheck {
+  dataset_id: string;
+  plan_id: string;
+  revision: number;
+  plan_status: string;
+  as_of: string;
+  free_original: { remnant_id: string; version: number; material_id: string; dimensions: Dimensions; defect: boolean; location_raw: string }[];
+  count: number;
+  minimum_free_remnants: number;
+  minimum_free_remnants_met: boolean;
+  no_longer_free_remnant_ids: string[];
+}
+export interface MeasurementUpdate {
   dataset_id: string;
   expected_version: number;
-  previous_dimensions: Dimensions;
   dimensions: Dimensions;
+  previous_dimensions?: Dimensions | null;
   reason: string;
 }
-
-export interface ProposedConsume {
+export interface ConsumeRequest {
   dataset_id: string;
   expected_version: number;
-  reservation_id: string | null;
+  reservation_id: string;
   reason: string;
 }
-
-/** POST /remnants/{id}/reserve (owner: Claude 2) — reserve a whole remnant for a confirmed quote. */
-export interface ProposedReserve {
+export interface WithdrawRequest {
   dataset_id: string;
   expected_version: number;
-  owner_context: { kind: 'quote'; quote_id: string; quote_revision: number };
+  reason: string;
 }
+export interface ReserveRequest {
+  dataset_id: string;
+  expected_version: number;
+  owner_context: string;
+  material_id: string;
+  dimensions: Dimensions;
+  premium: boolean;
+  x_mm?: number | null;
+  y_mm?: number | null;
+  rot?: 0 | 1 | null;
+}
+export type UnplacedReason = string;
 
 // ---------- intelligence (owner: Claude 3, contracts from 4616645) ----------
 export type MappingStatus = 'confirmed' | 'proposed' | 'ambiguous' | 'unmapped';

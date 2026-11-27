@@ -11,6 +11,17 @@ export const REASON_LABEL: Record<string, string> = {
   no_free_whole_remnant: 'Нет свободного целого куска при текущих закреплениях',
   tempered_tolerance: 'Калёное: нет куска в допуске ±2 мм',
   unmapped_material: 'Товар каталога не сопоставлен складскому материалу',
+  // Claude 2 reason codes (5897472), texts aligned with the service's own Russian messages.
+  LIMITED_SEARCH: 'Поиск не нашел размещение за лимит; это не доказательство невозможности',
+  LOCK_CONFLICT: 'Конфликт закреплений',
+  MATERIAL_MISMATCH: 'Нет остатка того же материала',
+  NO_COMPATIBLE_REMNANT: 'Нет совместимого свободного остатка',
+  OCCUPIED: 'Подходящие куски заняты действующими заданиями (режим без перестройки)',
+  PREMIUM_ON_DEFECT: 'Премиум-деталь нельзя резать из остатка с дефектом',
+  REMNANT_UNAVAILABLE: 'Подходящие остатки списаны, исключены или зарезервированы',
+  SIZE_TOO_LARGE: 'Деталь не помещается в рабочую область остатка с отступом 5 мм',
+  TEMPERED_SIZE_MISMATCH: 'Калёное стекло: размеры не совпадают с целым куском в пределах ±2 мм',
+  UNKNOWN_MATERIAL: 'Материал отсутствует в materials',
 };
 
 export function reasonLabel(code: string | UnplacedReason): string {

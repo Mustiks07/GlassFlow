@@ -111,11 +111,10 @@ export function makePlan(datasetId: string, planId = 'PLAN-1', revision = 1): Cu
       invalid: 0,
       missing: 0,
       fully_covered_orders: 7,
+      new_reasons: { P0009: 'PREMIUM_ON_DEFECT', P0011: 'SIZE_TOO_LARGE' },
     },
     free_original_remnant_ids: ['R002', 'R003', 'R004', 'R006', 'R012', 'R013', 'R014', 'R015', 'R016'],
     search_status: 'limited',
-    new_reasons: { P0009: 'premium_on_defect', P0011: 'size_does_not_fit' },
-    excluded_remnant_ids: [],
   };
 }
 

@@ -170,7 +170,11 @@ export function ConsumeDialog({ dataset, remnant, onClose }: { dataset: Dataset;
   const [reason, setReason] = useState('');
   const [key] = useState(newIdempotencyKey);
   const mutation = useMutation({
-    mutationFn: () => api.consumeRemnant(remnant.remnant_id, { dataset_id: dataset.dataset_id, expected_version: remnant.version ?? 0, reservation_id: null, reason: reason.trim() }, key),
+    // Reserved pieces are consumed against their reservation; a free piece is withdrawn from stock (C2 contract).
+    mutationFn: () =>
+      remnant.status === 'reserved' && remnant.active_reservation_id
+        ? api.consumeRemnant(remnant.remnant_id, { dataset_id: dataset.dataset_id, expected_version: remnant.version ?? 0, reservation_id: remnant.active_reservation_id, reason: reason.trim() }, key)
+        : api.withdrawRemnant(remnant.remnant_id, { dataset_id: dataset.dataset_id, expected_version: remnant.version ?? 0, reason: reason.trim() }, key),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['remnants', dataset.dataset_id] });
       onClose();
@@ -180,15 +184,19 @@ export function ConsumeDialog({ dataset, remnant, onClose }: { dataset: Dataset;
     <ConfirmDialog
       open
       onOpenChange={open => !open && onClose()}
-      title={`Списать ${remnant.remnant_id}`}
-      action="Кусок станет «списан» и исчезнет из подбора. История сохраняется; отмена списания — отдельная корректирующая операция, не простой undo."
+      title={remnant.status === 'reserved' ? `Списать использованный ${remnant.remnant_id}` : `Исключить ${remnant.remnant_id} со склада`}
+      action={
+        remnant.status === 'reserved'
+          ? 'Зарезервированный кусок будет списан по его резерву и исчезнет из подбора. История сохраняется; отмена — отдельная корректирующая операция.'
+          : 'Свободный кусок будет исключен со склада (withdrawn) и не попадет в подбор. Возврат — отдельная операция восстановления.'
+      }
       affected={[
         { label: 'Остаток', value: <span className="mono">{remnant.remnant_id}</span> },
         { label: 'Размер', value: formatDims(remnant.dimensions) },
         { label: 'Место', value: remnant.location_raw },
         { label: 'Ожидаемая версия', value: String(remnant.version ?? 0) },
       ]}
-      confirmLabel="Списать остаток"
+      confirmLabel={remnant.status === 'reserved' ? 'Списать по резерву' : 'Исключить со склада'}
       danger
       onConfirm={() => reason.trim() && mutation.mutate()}
       busy={mutation.isPending}

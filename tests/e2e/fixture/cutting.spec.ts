@@ -15,7 +15,11 @@ test('T22: invalid edit → visible reason → server invalid → active plan un
   await expect(page.getByText(/Черновик/).first()).toBeVisible();
   await page.getByRole('button', { name: 'Сохранить и проверить' }).click();
   await expect(page.getByText('Сервер: черновик недопустим — активный план не изменен')).toBeVisible();
-  await expect(page.getByRole('combobox', { name: 'Версия плана' })).toContainText('PLAN-1 · рев. 1 · Подтвержден');
+  // The editor continues on the invalid draft revision; the committed plan is still the active one.
+  const versions = page.getByRole('combobox', { name: 'Версия плана' });
+  await expect(versions).toContainText('рев. 2 · Недопустим');
+  await expect(versions.locator('option', { hasText: 'PLAN-1 · рев. 1 · Подтвержден' })).toHaveCount(1);
+  await expect(table.getByText('сервер: недопустимо')).toBeVisible();
   await table.getByLabel('x для P0002').fill('5');
   await table.getByLabel('x для P0002').press('Enter');
   await page.getByRole('button', { name: 'Сохранить и проверить' }).click();
@@ -57,6 +61,6 @@ test('NEW parts show distinct reasons; UNKNOWN is not called impossible', async 
   await open(page, 'cutting');
   await page.getByRole('tab', { name: /Детали заказов/ }).click();
   await page.getByLabel('Состояние').selectOption('new');
-  await expect(page.getByText('Премиум-деталь нельзя на дефектный кусок')).toBeVisible();
-  await expect(page.getByText('Размер не проходит ни в один свободный кусок')).toBeVisible();
+  await expect(page.getByText('Премиум-деталь нельзя резать из остатка с дефектом')).toBeVisible();
+  await expect(page.getByText('Деталь не помещается в рабочую область остатка с отступом 5 мм')).toBeVisible();
 });

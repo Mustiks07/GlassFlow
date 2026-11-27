@@ -89,12 +89,18 @@ export function CandidatePanel({
         {
           dataset_id: dataset.dataset_id,
           expected_version: candidate.remnant_version,
-          owner_context: { kind: 'quote', quote_id: quote!.quote_id, quote_revision: quote!.revision },
+          owner_context: `quote:${quote!.quote_id}:rev${quote!.revision}`,
+          material_id: quote!.material_id as string,
+          dimensions: quote!.dimensions as { length_mm: number; width_mm: number },
+          premium: false,
+          x_mm: candidate.x_mm,
+          y_mm: candidate.y_mm,
+          rot: candidate.rot,
         },
         reserveKey,
       ),
-    onSuccess: remnant => {
-      setReserved(remnant);
+    onSuccess: change => {
+      setReserved(change.remnant);
       setReserveOpen(false);
       setReserveKey(newIdempotencyKey());
       queryClient.invalidateQueries({ queryKey: ['remnants', dataset.dataset_id] });
@@ -139,8 +145,8 @@ export function CandidatePanel({
         <div>
           <strong>Свободного подходящего куска нет в режиме «без перестройки»</strong>
           <ul className="plain small">
-            {(reasonCodes.length ? reasonCodes : ['unknown']).map(code => (
-              <li key={code}>{reasonLabel(code)}</li>
+            {(!fromQuote && direct.data?.reasons_ru?.length ? direct.data.reasons_ru : (reasonCodes.length ? reasonCodes : ['unknown']).map(reasonLabel)).map(text => (
+              <li key={text}>{text}</li>
             ))}
           </ul>
           <p className="small muted">
@@ -163,10 +169,11 @@ export function CandidatePanel({
                   <input type="radio" name="candidate" checked={chosen?.remnant_id === candidate.remnant_id} onChange={() => setSelectedId(candidate.remnant_id)} />
                   <span>
                     <strong className="mono">{candidate.remnant_id}</strong>
-                    {remnant && (
+                    {(candidate.remnant_dimensions || remnant) && (
                       <>
                         {' '}
-                        · {formatDims(remnant.dimensions)} · {remnant.material_id}
+                        · {formatDims(candidate.remnant_dimensions ?? remnant!.dimensions)}
+                        {remnant && <> · {remnant.material_id}</>}
                       </>
                     )}
                     <br />
@@ -267,8 +274,8 @@ export function CandidatePanel({
 }
 
 function CandidateScheme({ candidate, remnant, dims }: { candidate: Candidate; remnant?: Remnant; dims: { length_mm: number; width_mm: number } }) {
-  const length = candidate.length_mm ?? remnant?.dimensions.length_mm;
-  const width = candidate.width_mm ?? remnant?.dimensions.width_mm;
+  const length = candidate.remnant_dimensions?.length_mm ?? remnant?.dimensions.length_mm;
+  const width = candidate.remnant_dimensions?.width_mm ?? remnant?.dimensions.width_mm;
   if (!length || !width) return <p className="small muted">Размер куска не получен — схема недоступна.</p>;
   const fp = footprint(dims.length_mm, dims.width_mm, candidate.rot);
   return (

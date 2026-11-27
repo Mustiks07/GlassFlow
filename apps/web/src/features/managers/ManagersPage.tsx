@@ -25,8 +25,8 @@ const METRICS: { key: MetricKey; label: string; note: string }[] = [
   { key: 'application_count', label: 'Число заявок', note: 'строки applications после фильтра' },
   { key: 'mean_response_minutes', label: 'Среднее время ответа', note: 'задержка ответа клиенту, не трудозатраты' },
   { key: 'conversion', label: 'Конверсия', note: 'продано=1 / известные «продано»' },
-  { key: 'returns', label: 'Доля возвратов', note: 'вернулся_за_60_дней=1 / известные метки' },
-  { key: 'mean_sale_tg', label: 'Средний чек', note: 'среднее сумма_тг по продано=1' },
+  { key: 'returns', label: 'Доля возвратов', note: 'заявки с возвратом / все заявки менеджера (с известной меткой)' },
+  { key: 'mean_sale_tg', label: 'Средний чек', note: 'по проданным заявкам (среднее сумма_тг при продано=1)' },
   { key: 'complaints', label: 'Доля жалоб', note: 'жалоба=1 / известные' },
   { key: 'discounts', label: 'Доля скидок', note: 'скидка=1 / известные' },
 ];
@@ -207,7 +207,7 @@ function Managers({ dataset }: { dataset: Dataset }) {
                 <tr>
                   <th scope="col">Менеджер</th>
                   {METRICS.map(metric => (
-                    <th scope="col" key={metric.key} className="num">
+                    <th scope="col" key={metric.key} className="num" title={`${metric.label}: ${metric.note}`}>
                       {metric.label}
                       <small>{metric.note}</small>
                     </th>
