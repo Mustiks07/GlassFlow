@@ -1,5 +1,7 @@
 # Дополнения v1.1: контракт платформы
 
+Контракты следующего уровня U04/U06: [U04_U06_CONTRACTS.md](U04_U06_CONTRACTS.md).
+
 Источник: plan v1.1 из main `eaf81d6`. Это добавление, не изменение 66R/67T.
 Контракт объявлен Pro до реализации зависимых частей. Canonical Python DTO:
 `backend/glassflow/contracts/orders.py`; OpenAPI/TS регенерируются стандартно.

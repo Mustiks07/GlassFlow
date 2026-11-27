@@ -6,6 +6,7 @@ For semantics and ownership see docs/architecture/CONTRACTS.md.
 
 from typing import Protocol
 
+from glassflow.contracts.baskets import Basket, BasketBind, BasketFacts, BasketReservation
 from glassflow.contracts.cutting import (
     Candidates,
     CutPlan,
@@ -15,6 +16,7 @@ from glassflow.contracts.cutting import (
     ValidationResult,
 )
 from glassflow.contracts.intelligence import DialogRequest, DialogVerdict, Quote, QuoteRequest
+from glassflow.contracts.material_use import MaterialUseAssessment, MaterialUseReceipt, MaterialUseScope
 from glassflow.contracts.orders import OrderFacts, OrderReservation
 
 
@@ -85,3 +87,37 @@ class OrderSourcePort(Protocol):
     def reservation(self, session, dataset_id: str, reservation_id: str) -> OrderReservation: ...
 
     def release(self, session, reservation: OrderReservation) -> OrderReservation: ...
+
+
+class BasketSourcePort(Protocol):
+    """U04: read canonical C3 quotes and one C2 jointly validated selection.
+
+    All methods use caller Session, no nested commit/network/solver. Heavy work
+    is performed beforehand through owning domain jobs. capture returns CURRENT
+    versions, full line coverage and saved input/request hashes, never echoes
+    caller-supplied ownership or validation as evidence. reserve/release apply
+    the entire selection atomically, including multiple lines sharing a piece.
+    """
+    def capture(self, session, basket: Basket, binding: BasketBind) -> BasketFacts: ...
+
+    def reserve(self, session, basket: Basket) -> BasketReservation: ...
+
+    def reservation(self, session, dataset_id: str, reservation_id: str) -> BasketReservation: ...
+
+    def release(self, session, reservation: BasketReservation) -> BasketReservation: ...
+
+
+class MaterialUsePort(Protocol):
+    """U06 C2 boundary, same Session/transaction, no nested commit.
+
+    assess reads a validated actual execution and the canonical reservation owner.
+    confirm compare-and-consumes ONCE using confirmation_id as durable C2 token;
+    returns a unique canonical event ref and post-mutation inventory versions.
+    No source event/reservation may be consumed again by another application path.
+    Failure in platform receipt validation/ledger insert rolls back C2 mutation.
+    """
+    def assess(self, session, scope: MaterialUseScope, execution_ref: str,
+               execution_version: int) -> MaterialUseAssessment: ...
+
+    def confirm(self, session, assessment: MaterialUseAssessment, confirmation_id: str,
+                operator: str, note: str) -> MaterialUseReceipt: ...

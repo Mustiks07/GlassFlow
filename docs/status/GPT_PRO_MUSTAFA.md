@@ -1,5 +1,14 @@
 # Статус GPT_PRO_MUSTAFA
 
+## U04/U06: работа после0daac98
+
+План v1.1/общие контракты/AGENTS перечитаны, main24049e1 только прочитан, без merge.
+Объявлены DTO Basket/BasketFacts/joint stock selection и MaterialUseAssessment/Receipt,
+порты Services.basket_source/material_use. Контракт `docs/architecture/U04_U06_CONTRACTS.md`
+публикуется до dependent implementation: whole-basket atomicity, C3 owner/request hashes,
+unknown price->total null, immutable usage ledger/semantic dedupe и same-UoW C2 consume.
+Ruff новых DTO/ports PASS. Следующий шаг — U04 persistence/state/history/jobs, затем U06 ledger/migration/tests.
+
 ## PRO-U01-F1: принадлежность расчета клиенту
 
 Review прочитан из main `25e433f28ce97b48fc3402c8e67f46147eed9b40` (также через GitHub main API).

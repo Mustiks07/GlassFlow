@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from typing import Any, Protocol
 
 from glassflow.core.errors import AppError
-from glassflow.ports import OrderSourcePort, SalesSourcePort
+from glassflow.ports import BasketSourcePort, MaterialUsePort, OrderSourcePort, SalesSourcePort
 
 
 class SubjectResolver(Protocol):
@@ -28,6 +28,8 @@ class Services:
     subjects: SubjectResolver | None = None
     sales_source: SalesSourcePort | None = None
     order_source: OrderSourcePort | None = None
+    basket_source: BasketSourcePort | None = None
+    material_use: MaterialUsePort | None = None
     # job kind -> importable handler callable(snapshot, context), no user-supplied paths.
     job_handlers: dict = field(default_factory=dict)
     ai_check: Any = None
