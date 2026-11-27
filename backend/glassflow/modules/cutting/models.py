@@ -115,6 +115,8 @@ class CutPlanRow(Base):
     metrics_json: Mapped[str] = mapped_column(Text, default="{}")
     evidence_json: Mapped[str] = mapped_column(Text, default="{}")
     issues_json: Mapped[str] = mapped_column(Text, default="[]")
+    locks_json: Mapped[str] = mapped_column(Text, default="[]")
+    """Requested lock constraints of the task (enforced until an explicit edit removes them)."""
     inventory_token: Mapped[str] = mapped_column(String(64), default="")
     created_at: Mapped[str] = mapped_column(String(40))
     committed_at: Mapped[str | None] = mapped_column(String(40), nullable=True)

@@ -87,6 +87,7 @@ CREATE TABLE cut_plans (
 	metrics_json TEXT NOT NULL, 
 	evidence_json TEXT NOT NULL, 
 	issues_json TEXT NOT NULL, 
+	locks_json TEXT NOT NULL, 
 	inventory_token VARCHAR(64) NOT NULL, 
 	created_at VARCHAR(40) NOT NULL, 
 	committed_at VARCHAR(40), 

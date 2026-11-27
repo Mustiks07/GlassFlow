@@ -139,13 +139,17 @@ def test_t17_five_free_constraint_and_exact_area_loss_reported():
 
 
 def test_fixed_work_profile_is_deterministic():
-    remnants = [(f"R{i}", "clear-4", 500 + 37 * i, 400 + 23 * i, i % 3 == 0) for i in range(8)]
-    parts = [(f"P{j}", f"O{j % 4}", "clear-4", 100 + 31 * (j % 7), 80 + 17 * (j % 5), j % 4 == 0) for j in range(30)]
+    """Same seed + fixed work => identical plan. Small CP-SAT deterministic budgets keep the test short;
+    both runs must finish by work counters (``completed``), never by the wall-clock safety cap."""
+    remnants = [(f"R{i}", "clear-4", 500 + 37 * i, 400 + 23 * i, i % 3 == 0) for i in range(4)]
+    parts = [(f"P{j}", f"O{j % 4}", "clear-4", 100 + 31 * (j % 7), 80 + 17 * (j % 5), j % 4 == 0) for j in range(12)]
     snap = make_snapshot(remnants, parts)
-    s = SolverSettings(profile="standard", time_limit_seconds=300, fixed_work=True, workers=1,
-                       minimum_free_remnants=1, seed=7)
+    s = SolverSettings(profile="standard", time_limit_seconds=600, fixed_work=True, workers=1,
+                       minimum_free_remnants=1, seed=7, pricing_seconds=0.05, lns_seconds=0.1)
     a, b = solve(snap, s), solve(snap, s)
+    assert a.stop_reason == b.stop_reason == "completed"
     assert a.assignments == b.assignments and a.covered_area == b.covered_area
+    assert validate_plan(snap, a.rows(snap)).valid
 
 
 def test_engine_keep_committed_mode_keeps_whole_pieces_untouched():

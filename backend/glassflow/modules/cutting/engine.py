@@ -56,8 +56,12 @@ class _Bridge:
             self.context.progress(stage, completed, total)
 
     def incumbent(self, outcome: SolveOutcome) -> None:
-        if self.context is not None:
-            self.context.incumbent(self.to_plan(outcome))
+        if self.context is None:
+            return
+        plan = self.to_plan(outcome)
+        # Only a plan valid for the ORIGINAL task (including every requested lock) is published.
+        if plan.status == "validated":
+            self.context.incumbent(plan)
 
 
 class CuttingEngine:
@@ -121,9 +125,12 @@ class CuttingEngine:
     def _plan(full: Snapshot, data: SolveInput, config: SolverConfig, outcome: SolveOutcome,
               merged: dict[str, Assignment], unavailable: set[str], meta: dict, started: float) -> CutPlan:
         rows = [merged.get(pid, Assignment(pid, NEW)) for pid in full.part_order]
-        # Satisfied locks carry their lock_kind in the plan; unsatisfied ones are reported as LOCK_CONFLICT.
+        requested = [to_assignment(p) for p in data.locks]
+        # Validate against the ORIGINAL task: every requested lock, not only the ones the solver satisfied.
+        # A geometrically valid alternative that breaks a lock is returned as ``invalid`` with LOCK_* issues,
+        # i.e. a proposal for the manager, never a validated solution of the requested task.
         report = validate_plan(full, rows, unavailable_remnant_ids=unavailable,
-                               locks=[a for a in rows if a.lock_kind != "none"])
+                               locks=requested + [a for a in rows if a.lock_kind != "none"])
         metrics, free = compute_metrics(full, report, outcome.new_reasons)
         status = "validated" if report.valid else "invalid"
         evidence = dict(meta)
@@ -134,9 +141,10 @@ class CuttingEngine:
         return CutPlan(
             dataset_id=data.dataset_id, plan_id="unsaved", revision=0, status=status,
             placements=[to_placement(a) for a in rows], metrics=metrics, free_original_remnant_ids=free,
-            search_status=outcome.search_status if report.valid else "infeasible", stop_reason=outcome.stop_reason,
+            # A heuristic that missed a lock is not a proof of infeasibility: keep the real search status.
+            search_status=outcome.search_status, stop_reason=outcome.stop_reason,
             config=config, issues=[to_plan_issue(i) for i in report.issues] + lock_issues, evidence=evidence,
-            parent_plan_id=data.base_plan_id, parent_revision=data.base_revision)
+            parent_plan_id=data.base_plan_id, parent_revision=data.base_revision, requested_locks=list(data.locks))
 
     def validate(self, snapshot: SolveInput, plan: CutPlan) -> ValidationResult:
         full = snapshot_from_input(snapshot)

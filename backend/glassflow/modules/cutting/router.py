@@ -29,6 +29,7 @@ from glassflow.contracts.cutting import (
     DraftRequest,
     DraftResult,
     FindRequest,
+    FreeRemnantsCheck,
     ImpactReport,
     ImpactRequest,
     InventoryChange,
@@ -255,6 +256,13 @@ def plan_layout(request: Request, plan_id: str, dataset_id: str, revision: Annot
 @router.get("/plans/{plan_id}/export", response_model=SolutionExport)
 def plan_export(request: Request, plan_id: str, dataset_id: str, revision: Annotated[int | None, Query(ge=0)] = None):
     return _run(request, lambda s: s.export(dataset_id, plan_id, revision), write=False)
+
+
+@router.get("/plans/{plan_id}/free-remnants", response_model=FreeRemnantsCheck)
+def plan_free_remnants(request: Request, plan_id: str, dataset_id: str,
+                       revision: Annotated[int | None, Query(ge=0)] = None):
+    """Live re-check of fully free original pieces (sale cards must call it right before create/confirm)."""
+    return _run(request, lambda s: s.free_remnants(dataset_id, plan_id, revision), write=False)
 
 
 @router.post("/plans/{plan_id}/draft", response_model=DraftResult)

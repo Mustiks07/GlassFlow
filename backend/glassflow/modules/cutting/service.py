@@ -41,6 +41,8 @@ from glassflow.contracts.cutting import (
     DraftResult,
     ExportRow,
     FindRequest,
+    FreeRemnant,
+    FreeRemnantsCheck,
     ImpactReport,
     ImpactRequest,
     InventoryChange,
@@ -659,10 +661,25 @@ class CuttingService:
         return Snapshot(snapshot.dataset_id, snapshot.materials, remnants, snapshot.parts, snapshot.part_order,
                         snapshot.remnant_order)
 
+    @staticmethod
+    def _locks_of(row: CutPlanRow | None) -> list[Assignment]:
+        if row is None:
+            return []
+        return [Assignment(d["part_id"], d["remnant_id"], d.get("x_mm"), d.get("y_mm"), d.get("rot"), d["lock_kind"])
+                for d in json.loads(row.locks_json or "[]")]
+
+    @staticmethod
+    def _locks_json(locks: list[Assignment]) -> str:
+        return json.dumps([{"part_id": a.part_id, "remnant_id": a.remnant_id, "x_mm": a.x_mm, "y_mm": a.y_mm,
+                            "rot": a.rot, "lock_kind": a.lock_kind} for a in locks if a.lock_kind != "none"],
+                          ensure_ascii=False)
+
     def _validate(self, dataset_id: str, plan_row: CutPlanRow | None, assignments: list[Assignment],
-                  snapshot: Snapshot) -> ValidationReport:
+                  snapshot: Snapshot, requested_locks: list[Assignment] | None = None) -> ValidationReport:
+        """Validate against the current stock AND every requested lock of the revision (C2-F1)."""
         unavailable = self._unavailable_for(dataset_id, plan_row, snapshot)
-        locks = [a for a in assignments if a.lock_kind != "none"]
+        requested = self._locks_of(plan_row) if requested_locks is None else requested_locks
+        locks = requested + [a for a in assignments if a.lock_kind != "none"]
         return validate_plan(self._validation_snapshot(snapshot), assignments, unavailable_remnant_ids=unavailable,
                              locks=locks)
 
@@ -683,17 +700,22 @@ class CuttingService:
                        search_status=row.search_status, parent_plan_id=row.parent_plan_id,
                        parent_revision=row.parent_revision, stop_reason=row.stop_reason,
                        config=SolverConfig.model_validate(json.loads(row.config_json)) if row.config_json != "{}" else None,
-                       issues=issues, evidence=evidence, created_at=row.created_at, source=row.source)
+                       issues=issues, evidence=evidence, created_at=row.created_at, source=row.source,
+                       requested_locks=[to_placement(a) for a in self._locks_of(row)],
+                       inventory_version=row.inventory_token,
+                       inventory_current=row.inventory_token == self.inventory_token(row.dataset_id))
 
     def _store_revision(self, dataset_id: str, plan_id: str, assignments: list[Assignment], *, source: str,
                         status_if_valid: str, search_status: str, stop_reason: str, config: SolverConfig | None,
-                        parent: CutPlanRow | None, evidence: dict, new_reasons: dict[str, str] | None = None
+                        parent: CutPlanRow | None, evidence: dict, new_reasons: dict[str, str] | None = None,
+                        requested_locks: list[Assignment] | None = None, extra_issues: list[PlanIssue] | None = None
                         ) -> tuple[CutPlanRow, ValidationReport]:
         snapshot = self.load_snapshot(dataset_id)
         by_part = {a.part_id: a for a in assignments}
         if len(by_part) != len(assignments):
             raise CuttingError(422, "DUPLICATE_PART", "В плане есть повторяющиеся part_id.")
-        report = self._validate(dataset_id, parent, assignments, snapshot)
+        requested = self._locks_of(parent) if requested_locks is None else requested_locks
+        report = self._validate(dataset_id, parent, assignments, snapshot, requested)
         if new_reasons is None:
             new_reasons = {pid: "NOT_PLACED_BY_EDIT" for pid in report.new_part_ids}
         metrics, free = compute_metrics(snapshot, report, new_reasons)
@@ -708,7 +730,9 @@ class CuttingService:
             stop_reason=stop_reason, source=source,
             config_json=config.model_dump_json() if config else "{}", metrics_json=metrics.model_dump_json(),
             evidence_json=json.dumps({**evidence, "free_original_remnant_ids": ",".join(free)}, ensure_ascii=False),
-            issues_json=json.dumps([to_plan_issue(i).model_dump() for i in report.issues], ensure_ascii=False),
+            issues_json=json.dumps([to_plan_issue(i).model_dump() for i in report.issues]
+                                   + [i.model_dump() for i in (extra_issues or [])], ensure_ascii=False),
+            locks_json=self._locks_json(requested),
             inventory_token=self.inventory_token(dataset_id), created_at=now())
         self.session.add(row)
         self.session.flush()
@@ -736,11 +760,16 @@ class CuttingService:
             parent = self._plan_row(dataset_id, base_plan_id)
             plan_id = parent.plan_id
         assignments = [Assignment(p.part_id, p.remnant_id, p.x_mm, p.y_mm, p.rot, p.lock_kind) for p in plan.placements]
+        # The worker's own status is never trusted: the task's requested locks are re-applied here (C2-F1).
+        requested = [Assignment(p.part_id, p.remnant_id, p.x_mm, p.y_mm, p.rot, p.lock_kind)
+                     for p in plan.requested_locks]
+        solver_conflicts = [i for i in plan.issues if i.code == "LOCK_CONFLICT"]
         row, report = self._store_revision(
             dataset_id, plan_id, assignments, source="solver", status_if_valid="validated",
             search_status=plan.search_status, stop_reason=plan.stop_reason, config=plan.config, parent=parent,
-            evidence=dict(plan.evidence), new_reasons=dict(plan.metrics.new_reasons))
-        return self._plan_dto(row, assignments, report)
+            evidence=dict(plan.evidence), new_reasons=dict(plan.metrics.new_reasons), requested_locks=requested,
+            extra_issues=solver_conflicts)
+        return self._plan_dto(row, assignments)
 
     def import_plan(self, dataset_id: str, rows: list[dict[str, str]]) -> CutPlan:
         """Store an uploaded solution.csv as an editable draft after strict parsing (never trusted)."""
@@ -763,7 +792,8 @@ class CuttingService:
                 tempered_fixed.append(a)
         row, report = self._store_revision(dataset_id, f"plan-{uuid.uuid4().hex[:12]}", tempered_fixed,
                                            source="import", status_if_valid="draft", search_status="feasible",
-                                           stop_reason="completed", config=None, parent=None, evidence={})
+                                           stop_reason="completed", config=None, parent=None, evidence={},
+                                           requested_locks=[])
         return self._plan_dto(row, tempered_fixed, report)
 
     def get_plan(self, dataset_id: str, plan_id: str, revision: int | None = None) -> CutPlan:
@@ -797,17 +827,20 @@ class CuttingService:
                                conflict_objects=[f"{plan_id}@{latest.revision}"])
         snapshot = self.load_snapshot(request.dataset_id)
         assignments = {a.part_id: a for a in self._assignments(base)}
+        requested = {a.part_id: a for a in self._locks_of(base)}
         for edit in request.edits:
             current = assignments.get(edit.part_id)
             if current is None:
                 raise CuttingError(422, "UNKNOWN_PART", f"Детали {edit.part_id} нет в плане.")
+            lock = requested.get(edit.part_id)
+            kind = lock.lock_kind if lock else current.lock_kind
             if edit.action == "unplace":
-                if current.lock_kind != "none":
+                if kind != "none":
                     raise CuttingError(409, "PART_LOCKED", f"Деталь {edit.part_id} закреплена; снимите закрепление.")
                 assignments[edit.part_id] = Assignment(edit.part_id, NEW)
             elif edit.action == "move":
-                if current.lock_kind == "placement" or (
-                    current.lock_kind == "assignment" and edit.remnant_id not in (None, current.remnant_id)):
+                locked_remnant = lock.remnant_id if lock else current.remnant_id
+                if kind == "placement" or (kind == "assignment" and edit.remnant_id not in (None, locked_remnant)):
                     raise CuttingError(409, "PART_LOCKED", f"Деталь {edit.part_id} закреплена; снимите закрепление.")
                 target = edit.remnant_id or current.remnant_id
                 if target == NEW:
@@ -825,18 +858,22 @@ class CuttingService:
             elif edit.action == "lock":
                 if current.remnant_id == NEW:
                     raise CuttingError(422, "LOCK_ON_NEW", "Нельзя закрепить деталь без остатка (NEW).")
-                kind = edit.lock_kind or "placement"
+                new_kind = edit.lock_kind or "placement"
                 assignments[edit.part_id] = Assignment(current.part_id, current.remnant_id, current.x_mm,
-                                                       current.y_mm, current.rot, kind)
+                                                       current.y_mm, current.rot, new_kind)
+                requested[edit.part_id] = assignments[edit.part_id]
             elif edit.action == "unlock":
+                # Explicit removal of the constraint: the only way a requested lock stops being enforced.
                 assignments[edit.part_id] = Assignment(current.part_id, current.remnant_id, current.x_mm,
                                                        current.y_mm, current.rot, "none")
+                requested.pop(edit.part_id, None)
         ordered = [assignments[pid] for pid in snapshot.part_order if pid in assignments]
         row, report = self._store_revision(
             request.dataset_id, plan_id, ordered, source="edit", status_if_valid="draft",
             search_status=base.search_status if base.source == "solver" else "feasible", stop_reason=base.stop_reason,
             config=SolverConfig.model_validate(json.loads(base.config_json)) if base.config_json != "{}" else None,
-            parent=base, evidence={"edited_from_revision": base.revision, "edits": len(request.edits)})
+            parent=base, evidence={"edited_from_revision": base.revision, "edits": len(request.edits)},
+            requested_locks=list(requested.values()))
         return DraftResult(plan=self._plan_dto(row, ordered, report), validation=self._validation_dto(report, row))
 
     def _validation_dto(self, report: ValidationReport, row: CutPlanRow | None = None) -> ValidationResult:
@@ -1096,20 +1133,56 @@ class CuttingService:
                 rack=rack, cell=cell, parts=parts, used_area_mm2=sum(x.w_mm * x.h_mm for x in parts)))
         return PlanLayout(plan_id=row.plan_id, revision=row.revision, remnants=remnants, new_part_ids=new_ids)
 
+    def _live_free(self, row: CutPlanRow, snapshot: Snapshot, report: ValidationReport):
+        """Metrics and fully free ORIGINAL pieces of this revision against the stock read in ``snapshot``."""
+        stored = CutMetrics.model_validate(json.loads(row.metrics_json))
+        metrics, free = compute_metrics(snapshot, report, stored.new_reasons)
+        config = SolverConfig.model_validate(json.loads(row.config_json)) if row.config_json != "{}" else None
+        minimum = config.minimum_free_remnants if config else 5
+        minimum = min(minimum, sum(1 for r in snapshot.remnants.values() if r.original))
+        historical = [x for x in json.loads(row.evidence_json).get("free_original_remnant_ids", "").split(",") if x]
+        live = set(free)
+        gone = [rid for rid in historical if rid not in live]
+        return metrics, free, minimum, historical, gone
+
     def export(self, dataset_id: str, plan_id: str, revision: int | None = None) -> SolutionExport:
+        """LIVE export (C2-F2): validation, metrics and free pieces come from ONE read of the current stock."""
         row = self._plan_row(dataset_id, plan_id, revision)
         snapshot = self.load_snapshot(dataset_id)
+        token = self.inventory_token(dataset_id)
+        as_of = now()
         assignments = self._assignments(row)
         report = self._validate(dataset_id, row, assignments, snapshot)
-        if not report.valid:
-            raise CuttingError(409, "PLAN_INVALID", "Строгий экспорт заблокирован: план недопустим.",
+        if row.status in {"invalid", "superseded"} or not report.valid:
+            codes = sorted({i.code for i in report.issues}) or [row.status.upper()]
+            raise CuttingError(409, "PLAN_INVALID", "Строгий экспорт заблокирован: " + ", ".join(codes),
                                conflict_objects=[i.as_text() for i in report.issues[:20]])
         rows = solution_rows(snapshot, {a.part_id: a for a in assignments})
-        metrics = CutMetrics.model_validate(json.loads(row.metrics_json))
-        free = [x for x in json.loads(row.evidence_json).get("free_original_remnant_ids", "").split(",") if x]
+        metrics, free, minimum, historical, gone = self._live_free(row, snapshot, report)
         return SolutionExport(dataset_id=dataset_id, plan_id=row.plan_id, revision=row.revision,
                               header=SOLUTION_HEADER, rows=[ExportRow(**r) for r in rows], metrics=metrics,
-                              free_original_remnant_ids=free, validation=self._validation_dto(report, row))
+                              free_original_remnant_ids=free, validation=self._validation_dto(report, row),
+                              as_of=as_of, inventory_version=token, plan_inventory_version=row.inventory_token,
+                              inventory_changed_since_plan=token != row.inventory_token,
+                              plan_free_original_remnant_ids=historical, no_longer_free_remnant_ids=gone,
+                              minimum_free_remnants=minimum, minimum_free_remnants_met=len(free) >= minimum)
+
+    def free_remnants(self, dataset_id: str, plan_id: str, revision: int | None = None) -> FreeRemnantsCheck:
+        """Final re-check before a sale card / confirmation: fully free original pieces of the plan, now."""
+        row = self._plan_row(dataset_id, plan_id, revision)
+        snapshot = self.load_snapshot(dataset_id)
+        token = self.inventory_token(dataset_id)
+        report = self._validate(dataset_id, row, self._assignments(row), snapshot)
+        _, free, minimum, historical, gone = self._live_free(row, snapshot, report)
+        items = [FreeRemnant(remnant_id=r.remnant_id, version=r.version, material_id=r.material_id,
+                             dimensions=Dimensions(length_mm=r.length_mm, width_mm=r.width_mm), defect=r.defect,
+                             location_raw=r.location_raw) for r in (snapshot.remnants[x] for x in free)]
+        valid_now = report.valid and row.status not in {"invalid", "superseded"}
+        return FreeRemnantsCheck(dataset_id=dataset_id, plan_id=row.plan_id, revision=row.revision,
+                                 plan_status=row.status if valid_now else "invalid", as_of=now(),
+                                 inventory_version=token, free_original=items, count=len(items),
+                                 minimum_free_remnants=minimum, minimum_free_remnants_met=len(items) >= minimum,
+                                 plan_free_original_remnant_ids=historical, no_longer_free_remnant_ids=gone)
 
     # ================================================================== fast candidate search
     def find_candidates(self, request: FindRequest) -> Candidates:

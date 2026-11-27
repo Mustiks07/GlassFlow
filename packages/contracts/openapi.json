@@ -2786,6 +2786,105 @@
         }
       }
     },
+    "/api/v1/plans/{plan_id}/free-remnants": {
+      "get": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Plan Free Remnants",
+        "description": "Live re-check of fully free original pieces (sale cards must call it right before create/confirm).",
+        "operationId": "plan_free_remnants_api_v1_plans__plan_id__free_remnants_get",
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plan Id"
+            }
+          },
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Revision"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FreeRemnantsCheck"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
     "/api/v1/plans/{plan_id}/draft": {
       "post": {
         "tags": [
@@ -4699,6 +4798,29 @@
             ],
             "title": "Source",
             "default": "solver"
+          },
+          "requested_locks": {
+            "items": {
+              "$ref": "#/components/schemas/Placement"
+            },
+            "type": "array",
+            "title": "Requested Locks"
+          },
+          "inventory_version": {
+            "type": "string",
+            "title": "Inventory Version",
+            "default": ""
+          },
+          "inventory_current": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inventory Current"
           }
         },
         "additionalProperties": false,
@@ -5179,6 +5301,127 @@
           "dimensions"
         ],
         "title": "FindRequest"
+      },
+      "FreeRemnant": {
+        "properties": {
+          "remnant_id": {
+            "type": "string",
+            "title": "Remnant Id"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Version"
+          },
+          "material_id": {
+            "type": "string",
+            "title": "Material Id"
+          },
+          "dimensions": {
+            "$ref": "#/components/schemas/Dimensions"
+          },
+          "defect": {
+            "type": "boolean",
+            "title": "Defect"
+          },
+          "location_raw": {
+            "type": "string",
+            "title": "Location Raw"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "remnant_id",
+          "version",
+          "material_id",
+          "dimensions",
+          "defect",
+          "location_raw"
+        ],
+        "title": "FreeRemnant"
+      },
+      "FreeRemnantsCheck": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "plan_id": {
+            "type": "string",
+            "title": "Plan Id"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Revision"
+          },
+          "plan_status": {
+            "type": "string",
+            "title": "Plan Status"
+          },
+          "as_of": {
+            "type": "string",
+            "title": "As Of"
+          },
+          "inventory_version": {
+            "type": "string",
+            "title": "Inventory Version"
+          },
+          "free_original": {
+            "items": {
+              "$ref": "#/components/schemas/FreeRemnant"
+            },
+            "type": "array",
+            "title": "Free Original"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Count"
+          },
+          "minimum_free_remnants": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Minimum Free Remnants"
+          },
+          "minimum_free_remnants_met": {
+            "type": "boolean",
+            "title": "Minimum Free Remnants Met"
+          },
+          "plan_free_original_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Plan Free Original Remnant Ids"
+          },
+          "no_longer_free_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "No Longer Free Remnant Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "plan_id",
+          "revision",
+          "plan_status",
+          "as_of",
+          "inventory_version",
+          "free_original",
+          "count",
+          "minimum_free_remnants",
+          "minimum_free_remnants_met",
+          "plan_free_original_remnant_ids",
+          "no_longer_free_remnant_ids"
+        ],
+        "title": "FreeRemnantsCheck",
+        "description": "Final re-check before a sale card / confirmation: fully free ORIGINAL pieces of a plan, now."
       },
       "HTTPValidationError": {
         "properties": {
@@ -7461,6 +7704,51 @@
           },
           "validation": {
             "$ref": "#/components/schemas/ValidationResult"
+          },
+          "as_of": {
+            "type": "string",
+            "title": "As Of",
+            "default": ""
+          },
+          "inventory_version": {
+            "type": "string",
+            "title": "Inventory Version",
+            "default": ""
+          },
+          "plan_inventory_version": {
+            "type": "string",
+            "title": "Plan Inventory Version",
+            "default": ""
+          },
+          "inventory_changed_since_plan": {
+            "type": "boolean",
+            "title": "Inventory Changed Since Plan",
+            "default": false
+          },
+          "plan_free_original_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Plan Free Original Remnant Ids"
+          },
+          "no_longer_free_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "No Longer Free Remnant Ids"
+          },
+          "minimum_free_remnants": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Minimum Free Remnants",
+            "default": 5
+          },
+          "minimum_free_remnants_met": {
+            "type": "boolean",
+            "title": "Minimum Free Remnants Met",
+            "default": true
           }
         },
         "additionalProperties": false,
@@ -7476,7 +7764,7 @@
           "validation"
         ],
         "title": "SolutionExport",
-        "description": "Rows for solution.csv in input order plus metadata; Pro serialises and re-runs validators."
+        "description": "Rows for solution.csv in input order plus metadata; Pro serialises and re-runs validators.\n\nSemantics: LIVE. Validation, ``metrics`` and ``free_original_remnant_ids`` are computed in one read of the\ncurrent stock at ``as_of`` / ``inventory_version``. The historical list stored with the revision is\nseparate (``plan_free_original_remnant_ids``) and must not be used for sale cards."
       },
       "SolveInput": {
         "properties": {

@@ -202,6 +202,13 @@ class CutPlan(DatasetRequest):
     evidence: dict[str, str | int | float | bool | None] = Field(default_factory=dict)
     created_at: str | None = None
     source: Literal["solver", "edit", "import"] = "solver"
+    requested_locks: list[Placement] = Field(default_factory=list)
+    """Lock constraints of the task. Persisted with every revision and enforced by validate/commit/export
+    until removed by an explicit edit. A plan violating one of them is ``invalid`` even if its geometry is ok."""
+    inventory_version: str = ""
+    """Inventory token when this revision was stored; ``metrics``/``free_original_remnant_ids`` are as of then."""
+    inventory_current: bool | None = None
+    """False when the stock changed since the revision was stored: re-check via export or free-remnants."""
 
 
 class PlanSummary(DTO):
@@ -440,7 +447,12 @@ class ExportRow(DTO):
 
 
 class SolutionExport(DTO):
-    """Rows for solution.csv in input order plus metadata; Pro serialises and re-runs validators."""
+    """Rows for solution.csv in input order plus metadata; Pro serialises and re-runs validators.
+
+    Semantics: LIVE. Validation, ``metrics`` and ``free_original_remnant_ids`` are computed in one read of the
+    current stock at ``as_of`` / ``inventory_version``. The historical list stored with the revision is
+    separate (``plan_free_original_remnant_ids``) and must not be used for sale cards.
+    """
 
     dataset_id: str
     plan_id: str
@@ -450,6 +462,40 @@ class SolutionExport(DTO):
     metrics: CutMetrics
     free_original_remnant_ids: list[str]
     validation: ValidationResult
+    as_of: str = ""
+    inventory_version: str = ""
+    plan_inventory_version: str = ""
+    inventory_changed_since_plan: bool = False
+    plan_free_original_remnant_ids: list[str] = Field(default_factory=list)
+    no_longer_free_remnant_ids: list[str] = Field(default_factory=list)
+    minimum_free_remnants: NonnegativeInt = 5
+    minimum_free_remnants_met: bool = True
+
+
+class FreeRemnant(DTO):
+    remnant_id: str
+    version: NonnegativeInt
+    material_id: str
+    dimensions: Dimensions
+    defect: bool
+    location_raw: str
+
+
+class FreeRemnantsCheck(DTO):
+    """Final re-check before a sale card / confirmation: fully free ORIGINAL pieces of a plan, now."""
+
+    dataset_id: str
+    plan_id: str
+    revision: NonnegativeInt
+    plan_status: str
+    as_of: str
+    inventory_version: str
+    free_original: list[FreeRemnant]
+    count: NonnegativeInt
+    minimum_free_remnants: NonnegativeInt
+    minimum_free_remnants_met: bool
+    plan_free_original_remnant_ids: list[str]
+    no_longer_free_remnant_ids: list[str]
 
 
 class AuditEvent(DTO):

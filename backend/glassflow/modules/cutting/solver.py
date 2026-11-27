@@ -53,6 +53,10 @@ class SolverSettings:
     """Deterministic regression mode: work counters only, single thread, deterministic CP-SAT time."""
     max_pool_patterns: int = 80_000
     first_plan_seconds: float = 5.0
+    pricing_seconds: float | None = None
+    """CP-SAT budget per exact pricing call (deterministic time units when ``fixed_work``); None = profile default."""
+    lns_seconds: float | None = None
+    """CP-SAT budget per LNS repair; None = profile default."""
 
 
 class SolverCallbacks(Protocol):
@@ -589,6 +593,9 @@ class CuttingSolver:
         time_left = max(1.0, self.settings.time_limit_seconds - self.elapsed())
         options = {"time_limit": min(time_left, 120.0 if self.settings.fixed_work else 60.0), "mip_rel_gap": 0.0,
                    "presolve": True}
+        if self.settings.fixed_work:
+            # Deterministic work cap instead of relying on the wall clock (status 1 is reported if reached).
+            options["node_limit"] = 100_000
         if secondary_floor is None:
             result = milp(-area, integrality=np.ones(n), bounds=Bounds(0, 1), constraints=constraints, options=options)
         else:
@@ -838,6 +845,16 @@ class CuttingSolver:
         self.stats["lns_moves"] += 1
         return added
 
+    def _pricing_budget(self) -> float:
+        if self.settings.pricing_seconds is not None:
+            return self.settings.pricing_seconds
+        return 1.0 if self.settings.profile == "extended" else 0.5
+
+    def _lns_budget(self) -> float:
+        if self.settings.lns_seconds is not None:
+            return self.settings.lns_seconds
+        return 2.0 if self.settings.profile == "extended" else 1.0
+
     # -- main ---------------------------------------------------------------------------------
     def run(self) -> SolveOutcome:
         self.started = self.clock()
@@ -867,12 +884,12 @@ class CuttingSolver:
                 if duals is not None and not self.should_stop(reserve=2.0):
                     added += self.price_heuristic(duals, 6)
                     if self.profile["cpsat"] and (added == 0 or round_ % 3 == 0) and not self.should_stop(reserve=5):
-                        added += self.price_cpsat(duals, 6, 1.0 if self.settings.profile == "extended" else 0.5)
+                        added += self.price_cpsat(duals, 6, self._pricing_budget())
                 if self.profile["lns"] and round_ < self.profile["lns"]:
                     for _ in range(3):
                         if self.should_stop(reserve=5):
                             break
-                        added += self.lns(2.0 if self.settings.profile == "extended" else 1.0)
+                        added += self.lns(self._lns_budget())
                 self.stats["columns_added"] += added
                 stagnant = 0 if (improved or added) else stagnant + 1
                 if stagnant >= self.profile["patience"] or self.pool.full:

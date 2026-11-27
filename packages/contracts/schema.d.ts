@@ -554,6 +554,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/plans/{plan_id}/free-remnants": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Plan Free Remnants
+         * @description Live re-check of fully free original pieces (sale cards must call it right before create/confirm).
+         */
+        get: operations["plan_free_remnants_api_v1_plans__plan_id__free_remnants_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/plans/{plan_id}/draft": {
         parameters: {
             query?: never;
@@ -1155,6 +1175,15 @@ export interface components {
              * @enum {string}
              */
             source: "solver" | "edit" | "import";
+            /** Requested Locks */
+            requested_locks?: components["schemas"]["Placement"][];
+            /**
+             * Inventory Version
+             * @default
+             */
+            inventory_version: string;
+            /** Inventory Current */
+            inventory_current?: boolean | null;
         };
         /** Dataset */
         Dataset: {
@@ -1310,6 +1339,50 @@ export interface components {
              * @default 1
              */
             quantity: number;
+        };
+        /** FreeRemnant */
+        FreeRemnant: {
+            /** Remnant Id */
+            remnant_id: string;
+            /** Version */
+            version: number;
+            /** Material Id */
+            material_id: string;
+            dimensions: components["schemas"]["Dimensions"];
+            /** Defect */
+            defect: boolean;
+            /** Location Raw */
+            location_raw: string;
+        };
+        /**
+         * FreeRemnantsCheck
+         * @description Final re-check before a sale card / confirmation: fully free ORIGINAL pieces of a plan, now.
+         */
+        FreeRemnantsCheck: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Plan Id */
+            plan_id: string;
+            /** Revision */
+            revision: number;
+            /** Plan Status */
+            plan_status: string;
+            /** As Of */
+            as_of: string;
+            /** Inventory Version */
+            inventory_version: string;
+            /** Free Original */
+            free_original: components["schemas"]["FreeRemnant"][];
+            /** Count */
+            count: number;
+            /** Minimum Free Remnants */
+            minimum_free_remnants: number;
+            /** Minimum Free Remnants Met */
+            minimum_free_remnants_met: boolean;
+            /** Plan Free Original Remnant Ids */
+            plan_free_original_remnant_ids: string[];
+            /** No Longer Free Remnant Ids */
+            no_longer_free_remnant_ids: string[];
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -2048,6 +2121,10 @@ export interface components {
         /**
          * SolutionExport
          * @description Rows for solution.csv in input order plus metadata; Pro serialises and re-runs validators.
+         *
+         *     Semantics: LIVE. Validation, ``metrics`` and ``free_original_remnant_ids`` are computed in one read of the
+         *     current stock at ``as_of`` / ``inventory_version``. The historical list stored with the revision is
+         *     separate (``plan_free_original_remnant_ids``) and must not be used for sale cards.
          */
         SolutionExport: {
             /** Dataset Id */
@@ -2064,6 +2141,40 @@ export interface components {
             /** Free Original Remnant Ids */
             free_original_remnant_ids: string[];
             validation: components["schemas"]["ValidationResult"];
+            /**
+             * As Of
+             * @default
+             */
+            as_of: string;
+            /**
+             * Inventory Version
+             * @default
+             */
+            inventory_version: string;
+            /**
+             * Plan Inventory Version
+             * @default
+             */
+            plan_inventory_version: string;
+            /**
+             * Inventory Changed Since Plan
+             * @default false
+             */
+            inventory_changed_since_plan: boolean;
+            /** Plan Free Original Remnant Ids */
+            plan_free_original_remnant_ids?: string[];
+            /** No Longer Free Remnant Ids */
+            no_longer_free_remnant_ids?: string[];
+            /**
+             * Minimum Free Remnants
+             * @default 5
+             */
+            minimum_free_remnants: number;
+            /**
+             * Minimum Free Remnants Met
+             * @default true
+             */
+            minimum_free_remnants_met: boolean;
         };
         /** SolveInput */
         SolveInput: {
@@ -4046,6 +4157,67 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SolutionExport"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    plan_free_remnants_api_v1_plans__plan_id__free_remnants_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                revision?: number | null;
+            };
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FreeRemnantsCheck"];
                 };
             };
             /** @description Not Found */

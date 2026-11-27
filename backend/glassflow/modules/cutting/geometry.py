@@ -242,10 +242,16 @@ def validate_plan(
                     fail(code, message, a.part_id, remnant_id, other_part_id=b.part_id, coordinates=coordinates)
                     fail(code, message, b.part_id, remnant_id, other_part_id=a.part_id, coordinates=coordinates)
 
+    seen_locks: set[str] = set()
     for lock in locks:
         row = by_part.get(lock.part_id)
-        if lock.lock_kind == "none":
-            continue
+        if lock.lock_kind == "none" or lock.part_id in seen_locks:
+            continue  # first lock of a part wins (requested constraints are passed first)
+        seen_locks.add(lock.part_id)
+        part = snapshot.parts.get(lock.part_id)
+        if part is not None and lock.lock_kind == "placement" and snapshot.is_tempered(part.material_id):
+            # A whole tempered piece has a single possible position: the placement lock is the assignment.
+            lock = Assignment(lock.part_id, lock.remnant_id, lock_kind="assignment")
         if row is None or row.remnant_id != lock.remnant_id:
             fail(
                 "LOCK_VIOLATED",
