@@ -1,5 +1,59 @@
 # Платформа GlassFlow: handoff интегратору
 
+## U04/U06: текущая передача после0daac98
+
+28 ноября2026. План v1.1 и общие контракты прочитаны из main24049e1, без merge.
+Независимый платформенный объем U04/U06 реализован; новая domain/UI интеграция остается отдельной приемкой.
+Основной exact contract: [U04_U06_CONTRACTS.md](../architecture/U04_U06_CONTRACTS.md), опубликован `e88b7fc`.
+U04 базовая реализация `af3a0a9`; окончательная U06/hardening SHA фиксируется в status после проверок.
+
+U04: workspace Basket с raw message и стабильными строками canonical C3 QuoteRequest, unknown/clarification,
+version/revision, immutable audit snapshots. Один customer для всех quotes (F1 invariant), exact saved request hashes,
+один jointly validated C2 selection/input hash на все glass строки. Partial/unknown/fittings uncertainty -> needs_review,
+total=null, known_subtotal отдельно. Количество/кромка не считаются Pro повторно. Confirm только всей корзины;
+reserve/release атомарны в одном UoW. При конфликте/ценовом изменении после tentative reserve — rollback всего.
+Worker `basket.parse` идет через общую network queue со snapshot KB/AI settings, без CRM и persisted secrets;
+apply-parse явный, scoped по dataset/basket/version/hash. Старый/чужой результат не перезаписывает manager edits.
+
+U06: POST material-use preview/confirm + list/summary/by-id. Именной OrderSheet или Basket должен быть handed_over
+с active material reservation. Клиент отправляет execution_ref/version, operator и reason, не actual деньги/геометрию.
+C2 read-only assess -> exact canonical receipt compare-and-consume в той же transaction. Неизменяемый ledger,
+unique subject/reservation/source event. Повтор нового request key того же execution возвращает первую запись
+без C2; другое execution409. Reason обязателен при plan/actual расхождении. Completed subject с usage_id и consumed
+reference, audit+ledger+idempotency+inventory атомарны. Reserve/cancel/handover сами по себе дают0 actual ledger.
+Summary planned/actual отдельно; это оценка использованного материала, не продажа/прибыль. U07 ее не прибавляет к net.
+
+Schema head `0003_material_use` после0002: table/index/unique/check/immutable SQL triggers. Upgrade backup сохраняет
+старую историю; backup validation принимает0001/0002 и current head, проверяет наличие ledger для нового head.
+U01 lifecycle=completed/material_use_id добавлены совместимо; после использования формы скрываются, история остается.
+DTO на границах портов detached deep copies: источник не может изменить pinned snapshot и скрыть mismatch.
+Две специально добавленные alias regressions до hardening дали200 вместо409, после него45 targeted tests PASS.
+
+### Точные зависимости и порядок подключения
+
+1. C3: registered Handler `basket.parse` lane network, BasketParseResult по опубликованному envelope. Возвращать
+   unknown fragments строками с clarification. Quote API/worker создает canonical quotes для line requests,
+   сохраняет исходный QuoteRequest/owner; source_request_hash=`canonical_hash(request.model_dump(mode='json'))`.
+   C3 вычисляет price/quantity/processing/fittings compatibility, Pro читает их, не подменяет своей арифметикой.
+2. C2+интегратор: `Services.basket_source: BasketSourcePort`. capture читает все canonical quotes и один joint C2
+   selection (проверяет quantity/shared-piece capacity), saved input hash из `baskets.input_hash`. reserve/reservation/
+   release на переданном Session без commit/второго DB. Только версии own reservation могут измениться при reserve,
+   цены/input/quote owner/selection неизменны; все линии или rollback. Heavy solver выполняется ДО bind через C2 jobs.
+3. C2: `Services.material_use: MaterialUsePort`: assess проверяет actual execution и canonical reservation owner;
+   confirm атомарно compare-and-consume, сохраняет durable confirmation_id/source_event_ref, возвращает строго тот же
+   assessment и post versions. Guard event/reservation действует и в других C2 API, не только в Pro workflow.
+   Пропущенные/чужие IDs, reused event, неверная квитанция, DB conflict -> rollback C2 вместе с Pro. Никаких nested commits.
+4. C1: таблица строк с количеством/selected sides и уточнениями, total=null/known subtotal, whole-basket actions,
+   stale/history и отсутствие material reservation у catalog-only. Actual-use preview показывает plan/actual,
+   explicit human confirm/reason, после успеха первую immutable receipt; не удваивать summary при повторе.
+5. Интегратор: доменные migrations идут следующим общим revision после0003; regenerated OpenAPI/TS после объединения.
+   Пройти реальный raw message->C3 parse/quotes->C2 joint selection->reserve->handover->execution->consume,
+   два менеджера/один кусок, неизвестная ставка/fittings, stale, replay/restart/crash/rollback. Fixtures не считать E2E.
+
+Корзины/расход не меняют исходные CSV/исторические CRM sales/конкурсные пять файлов, не отправляют сообщения.
+Test fixtures сознательно synthetic; реальные C2 geometry/prices/physical execution/C1 screens здесь не проверены.
+Старые sections ниже относятся к предыдущим checkpoints; новый frozen/CI результат — в status/evidence.
+
 ## PRO-U01-F1 после review main25e433f
 
 На исходном `9c59c8a` дефект независимо воспроизведен с **настоящим DTO C3 6cc73b9**,

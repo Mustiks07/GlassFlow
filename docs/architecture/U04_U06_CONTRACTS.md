@@ -40,16 +40,20 @@ HTTP `/api/v1/baskets`: create/list/get/history, POST /{id}/lines, /bind, /confi
    откатывает первую; нет тихого partial success. Резерв/отмена не создают material usage.
 
 Heavy parsing выполняется через общую очередь `basket.parse`, Handler lane=network, без SQLite в child.
+Неразобранный фрагмент должен остаться unresolved строкой с clarification, а не исчезнуть из результата C3.
 POST /{id}/parse возвращает Job202, если C3 handler зарегистрирован; иначе503. Payload:
 dataset_id,basket_id,basket_version,input_hash,customer_ref,request_text,KB bytes JSON+version,AI settings;
 credentials только private_context. Result — BasketParseResult. POST /{id}/apply-parse с job_id применяет
 весь результат явно после проверки scope/version/hash; старый/чужой результат не перезаписывает правки.
 Ошибки/cancel/retry/restart — существующие durable jobs. Quote/selection тяжелые расчеты создаются обычными
 C3/C2 domain jobs до /bind; capture только читает артефакты. Без порта503, production fallback нет.
+При вызове портов Pro передает и принимает detached deep snapshots: мутация DTO адаптером не меняет
+оригинал, с которым сравнивается возвращенный результат/квитанция. Сами canonical artifacts по-прежнему в C2/C3.
 
 ## U06: подтвержденный расход
 
 HTTP POST `/api/v1/material-use`, GET list/summary/by-id. Body MaterialUseRequest: subject_type order/basket,
+POST /preview возвращает read-only assessment до человеческого подтверждения, не вызывает confirm/consume.
 subject_id, expected_version, execution_ref/version, operator,note,discrepancy_reason. Это refs canonical C2
 **фактического исполнения**, не денежные суммы/геометрия из браузера. Требуется handed_over и active reservation.
 Ни reserve, ни cancel, ни сам handover не создают usage; до явного подтверждения summary.actual=0.
@@ -61,6 +65,7 @@ subject_id, expected_version, execution_ref/version, operator,note,discrepancy_r
   independently validated planned/actual area/value, validation_ref/material_price_version. Не echo входа как proof.
 - confirm(session,assessment,confirmation_id,operator,note) -> MaterialUseReceipt: compare-and-consume атомарно,
   с durable token confirmation_id и уникальным source_event_ref. Вернуть точно assessment, consumed и post versions.
+  Post version каждого затронутого куска строго больше версии в reservation scope; чужие/пропущенные IDs запрещены.
   Все пути C2 обязаны защищать event/reservation от повторного списания, в том числе вне Pro UI.
 
 Pro проверяет receipt scope и assessment до записи ledger. Расхождение planned/actual area/value требует причины.
@@ -70,6 +75,9 @@ Ledger immutable на уровне SQLite; уникальны subject, reservati
 Успех переводит subject в completed и сохраняет usage_id; ledger+subject+audit+idempotency в одной transaction.
 Редактирование/удаление ledger и переучет completed subject не разрешены. Исправление физического события
 потребует отдельного future correction contract C2, не переписывания истории SQL.
+Schema head `0003_material_use` следует за0002; pre-migration backup обязателен и проверен тестом.
+U01 OrderSheet получает lifecycle=completed/material_use_id; после usage текущие offer/warehouse forms скрыты,
+исторические подтвержденные документы сохранены. Catalog-only без material reservation не создает расхода материала.
 
 Summary planned/actual area/value показывает раздельно, с usage IDs/source events. Это оценка использованного
 материала, не прибыль/выручка/продажа. U07 получает ее как отдельную evidence-ссылку; planned+actual и gross+delta

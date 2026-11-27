@@ -4,6 +4,7 @@ import platform
 
 from sqlalchemy import select
 
+from glassflow.core.db import SCHEMA_HEAD
 from glassflow.core.errors import AppError
 from glassflow.core.jobs import enqueue, job_dto
 from glassflow.core.models import JobRow, ObjectRow, now, uid
@@ -93,7 +94,7 @@ def create_run(session, request, services, correlation):
         "source_dataset_id": source.id,
         "source_hashes": snapshot.source_hashes,
         "input_hash": canonical_hash(snapshot.source_hashes),
-        "schema_version": "0002_immutable_history",
+        "schema_version": SCHEMA_HEAD,
         "build": "0.1.0",
         "build_info": build_info(),
         "config_version": request.config_version,

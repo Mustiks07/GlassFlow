@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from glassflow.contracts.common import ApiError, Health, Readiness
 from glassflow.core.crm_port import PlatformCrmPort
-from glassflow.core.db import create_database, default_data_dir, session_is_ready
+from glassflow.core.db import SCHEMA_HEAD, create_database, default_data_dir, session_is_ready
 from glassflow.core.errors import install_error_handlers
 from glassflow.core.jobs import Coordinator, Handler
 from glassflow.core.registry import Services
@@ -18,6 +18,7 @@ from glassflow.modules.cutting.router import router as cutting_router
 from glassflow.modules.intelligence.router import router as intelligence_router
 from glassflow.modules.platform.basket_router import router as basket_router
 from glassflow.modules.platform.economics_router import router as economics_router
+from glassflow.modules.platform.material_use_router import router as material_use_router
 from glassflow.modules.platform.order_router import router as order_router
 from glassflow.modules.platform.router import router as platform_router
 from glassflow.modules.platform.runs import crm_job, schedule_cards
@@ -92,7 +93,7 @@ def create_app(
         with app.state.session_factory() as session:
             schema = (
                 session.execute(text("SELECT version_num FROM alembic_version")).scalar()
-                == "0002_immutable_history"
+                == SCHEMA_HEAD
             )
         worker = app.state.coordinator.healthy and app.state.coordinator.thread.is_alive()
         probes = {"crm": lambda: True, **app.state.services.readiness}
@@ -111,7 +112,7 @@ def create_app(
             ai="unchecked" if app.state.secrets else "unavailable",
         )
 
-    for router in [platform_router, cutting_router, intelligence_router, crm_router, sales_router, order_router, economics_router, basket_router]:
+    for router in [platform_router, cutting_router, intelligence_router, crm_router, sales_router, order_router, economics_router, basket_router, material_use_router]:
         app.include_router(router, prefix="/api/v1")
     from glassflow.core.resources import resource_root
 

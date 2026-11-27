@@ -264,3 +264,23 @@ def test_parser_uses_durable_queue_and_only_pinned_kb_no_crm(client, imported, s
     assert view["state"] == "completed", view
     result = command(client, basket, "apply-parse", job_id=job_id)
     assert result.status_code == 200 and result.json()["state"] == "needs_review"
+
+
+def test_adapter_cannot_mutate_pinned_basket_to_hide_changed_quote(client, imported, services):
+    class AliasingSource(SyntheticBasketSource):
+        def reserve(self, session, basket):
+            ref = super().reserve(session, basket)
+            basket.facts.lines[0].quote.total_tg = "999999"
+            row = session.get(ObjectRow, (basket.dataset_id, "synthetic_basket", basket.basket_id))
+            facts = BasketFacts.model_validate(row.data)
+            facts.lines[0].quote.total_tg = "999999"
+            row.data = facts.model_dump(mode="json")
+            return ref
+
+    basket = command(client, prepared(client, imported, services), "confirm").json()
+    services.basket_source = AliasingSource()
+    response = command(client, basket, "reserve")
+    assert response.status_code == 409 and response.json()["code"] == "BASKET_RESERVATION_FACTS"
+    with client.app.state.session_factory() as session:
+        assert session.get(ObjectRow, (basket["dataset_id"], "basket", basket["basket_id"])).data == basket
+        assert session.get(ObjectRow, (basket["dataset_id"], "synthetic_basket", "shared-piece")).data["owner"] is None

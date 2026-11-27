@@ -76,6 +76,20 @@ def upgrade_checks(client, dataset_id):
         "quote_id": "unregistered", "quote_revision": 0, "remnant_id": "unregistered", "remnant_version": 0,
     }, headers={"Idempotency-Key": "u01-smoke-no-source"})
     assert missing.status_code == 503 and missing.json()["code"] == "ORDER_SOURCE_UNAVAILABLE"
+    basket = client.post("/api/v1/baskets", json={"dataset_id": workspace, "customer_ref": "SYNTHETIC",
+        "request_text": "Synthetic basket requiring clarification",
+        "lines": [{"line_id": "unresolved", "text": "Synthetic unknown item"}]},
+        headers={"Idempotency-Key": "u04-smoke-draft"})
+    assert basket.status_code == 200, basket.text
+    basket = basket.json()
+    assert basket["state"] == "needs_review" and basket["total_tg"] is None
+    unavailable = client.post(f"/api/v1/baskets/{basket['basket_id']}/bind", json={
+        "dataset_id": workspace, "expected_version": 0, "operator": "synthetic-smoke",
+        "lines": [{"line_id": "unresolved"}]}, headers={"Idempotency-Key": "u04-smoke-no-source"})
+    assert unavailable.status_code == 503 and unavailable.json()["code"] == "BASKET_SOURCE_UNAVAILABLE"
+    usage = client.get("/api/v1/material-use/summary", params={"dataset_id": workspace})
+    assert usage.status_code == 200 and usage.json()["confirmation_count"] == 0
+    assert usage.json()["actual_material_value_tg"] == "0"
     inputs = {
         "measurement_status": "synthetic", "final_material_value_tg": "100000", "baseline_material_value_tg": "90000",
         "baseline_validation_ref": "synthetic-format-only", "final_validation_ref": "synthetic-format-only",
@@ -102,9 +116,11 @@ def upgrade_checks(client, dataset_id):
                      params={"dataset_id": workspace, "version": 0})
     assert pdf.status_code == 200 and pdf.content.startswith(b"%PDF"), pdf.text[:300]
     assert pdf.headers["X-GlassFlow-Result-Hash"] == scenario["result_hash"]
-    return workspace, order, scenario, {
+    return workspace, order, scenario, basket, {
         "u01": "draft+missing source503+restart; actual C2/C3 reservation not_run",
         "u07": "synthetic scenario+native PDF+same hash+restart; human labor not_run",
+        "u04": "draft+unknown total null+missing source503+restart; actual domain basket not_run",
+        "u06": "schema3+empty actual ledger; actual C2 consumption not_run",
         "pdf_sha256": hashlib.sha256(pdf.content).hexdigest(), "result_hash": scenario["result_hash"],
     }
 
@@ -260,7 +276,7 @@ def smoke(exe):
             assert settings.status_code == 200
             report["import_counts"] = imported.json()["row_counts"]
             report["crm_rows"] = len(progress["result"]["rows"])
-            upgrade_dataset, order_sheet, scenario, upgrade_report = upgrade_checks(client, dataset_id)
+            upgrade_dataset, order_sheet, scenario, basket, upgrade_report = upgrade_checks(client, dataset_id)
             report["upgrade_checks"] = upgrade_report
             backup = client.post("/api/v1/system/backup", headers={"X-GlassFlow-Session": token})
             assert backup.status_code == 200
@@ -275,6 +291,8 @@ def smoke(exe):
             report["persistence"] = "passed"
             assert client.get(f"/api/v1/order-sheets/{order_sheet['order_id']}",
                                params={"dataset_id": upgrade_dataset}).json() == order_sheet
+            assert client.get(f"/api/v1/baskets/{basket['basket_id']}",
+                               params={"dataset_id": upgrade_dataset}).json() == basket
             assert client.get(f"/api/v1/economics/scenarios/{scenario['scenario_id']}",
                                params={"dataset_id": upgrade_dataset, "version": 0}).json() == scenario
             baseline_count = len(client.get("/api/v1/datasets").json())

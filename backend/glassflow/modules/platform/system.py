@@ -10,7 +10,7 @@ from pathlib import Path
 from uuid import UUID
 
 from glassflow.contracts.platform import AISettings
-from glassflow.core.db import backup_database
+from glassflow.core.db import SCHEMA_HEAD, backup_database
 from glassflow.core.errors import AppError
 from glassflow.core.models import SettingsRow, now, uid
 
@@ -94,12 +94,17 @@ def validate_backup(path):
         with closing(sqlite3.connect(f"file:{Path(path).as_posix()}?mode=ro", uri=True)) as connection:
             if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                 raise ValueError()
-            if connection.execute("SELECT version_num FROM alembic_version").fetchone() not in {
+            backup_version = connection.execute("SELECT version_num FROM alembic_version").fetchone()
+            if backup_version not in {
                 ("0001_platform",),
                 ("0002_immutable_history",),
+                (SCHEMA_HEAD,),
             }:
                 raise ValueError()
             tables = {r[0] for r in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+            if (backup_version not in {("0001_platform",), ("0002_immutable_history",)}
+                    and "material_usage" not in tables):
+                raise ValueError()
             if (
                 not {"datasets", "source_files", "source_records", "platform_objects", "jobs", "settings"}
                 <= tables

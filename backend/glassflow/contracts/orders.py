@@ -79,13 +79,14 @@ class OrderSheet(OrderCreate):
     order_id: str
     version: NonnegativeInt = 0
     revision: NonnegativeInt = 0
-    lifecycle: Literal["open", "handed_over", "cancelled"] = "open"
+    lifecycle: Literal["open", "handed_over", "completed", "cancelled"] = "open"
     quote_state: Literal["missing", "draft", "confirmed", "stale"] = "missing"
     warehouse_state: Literal["unchecked", "checked", "handed_over", "stale"] = "unchecked"
     facts: OrderFacts | None = None
     facts_hash: str | None = None
     reservation: OrderReservation | None = None
     reminder_ids: list[str] = Field(default_factory=list)
+    material_use_id: str | None = None
     stale_reason: str | None = None
     stale_code: str | None = None
     stale_conflicts: list[str] = Field(default_factory=list)

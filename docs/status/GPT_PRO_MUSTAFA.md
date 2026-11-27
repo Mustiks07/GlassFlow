@@ -1,5 +1,21 @@
 # Статус GPT_PRO_MUSTAFA
 
+## U06 implementation checkpoint
+
+Реализован immutable material_usage ledger, schema head0003_material_use (после0002), pre-migration backup,
+три DB unique guards: dataset+subject, dataset+reservation, dataset+canonical event. SQLite UPDATE/DELETE triggers.
+POST /material-use/preview и confirm работают через MaterialUsePort в caller transaction; request содержит refs
+execution/version и human operator/reason, а не суммы/геометрию из браузера. Plan/actual values раздельны.
+Требуются handed_over/active reservation, разные значения требуют reason. После receipt validation subject completed,
+ledger+subject+audit+idempotency и C2 mutation коммитятся атомарно. Повтор другого ключа того же execution
+возвращает исходную запись без C2; другое execution для учтенного subject409. Reserve/cancel/handover usage не создают.
+Component tests: material_use14, baskets13, orders18 PASS после дополнительного hardening.
+Две aliasing regressions до hardening FAIL200: адаптер изменял переданный basket/assessment и скрывал mismatch.
+Теперь Pro передает detached deep snapshots, проверяет against сохраненные факты, конфликт откатывает все.
+Ранее полный suite98 PASS + Ruff/foundation14/frontend typecheck/test2/build PASS; заключительный полный suite:
+100 PASS, Ruff PASS, foundation14 PASS. Standard OpenAPI/TS regenerated. Новая frozen/CI evidence выполняется далее.
+Actual C1/C2/C3 E2E остается not_run; production adapters не подменены fixtures.
+
 ## U04 implementation checkpoint
 
 Контракты опубликованы `e88b7fc`. Реализован `/baskets`: typed multi-line draft, уточнения,

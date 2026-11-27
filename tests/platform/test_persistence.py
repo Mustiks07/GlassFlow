@@ -45,3 +45,39 @@ def test_concurrent_optimistic_mutations_only_one_commits(client, imported):
 
     with ThreadPoolExecutor(max_workers=2) as pool:
         assert sorted(pool.map(confirm, range(2))) == [200, 409]
+
+
+def test_upgrade_from_0002_backs_up_and_preserves_history(tmp_path):
+    import sqlite3
+    from contextlib import closing
+    from pathlib import Path
+
+    from alembic import command
+    from alembic.config import Config
+    from alembic.script import ScriptDirectory
+    from sqlalchemy import create_engine
+
+    from glassflow.core import db
+
+    config = Config()
+    config.set_main_option("script_location", str(Path(db.__file__).parent / "migrations"))
+    original = create_engine(f"sqlite:///{(tmp_path / 'glassflow.db').as_posix()}")
+    with original.begin() as connection:
+        config.attributes["connection"] = connection
+        command.upgrade(config, "0002_immutable_history")
+        connection.execute(text("INSERT INTO app_metadata(key,value) VALUES ('synthetic_marker','preserved')"))
+    original.dispose()
+    engine, factory = db.create_database(tmp_path)
+    try:
+        with factory() as session:
+            assert session.execute(text("SELECT value FROM app_metadata WHERE key='synthetic_marker'")).scalar() == "preserved"
+            assert session.execute(text("SELECT version_num FROM alembic_version")).scalar() == db.SCHEMA_HEAD
+            assert len(session.execute(text("SELECT name FROM sqlite_master WHERE type='trigger' AND tbl_name='material_usage'")).all()) == 2
+        backups = list(tmp_path.glob("pre-migration-*.db"))
+        assert len(backups) == 1
+        with closing(sqlite3.connect(backups[0])) as backup:
+            assert backup.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0002_immutable_history"
+            assert backup.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
+        assert ScriptDirectory.from_config(config).get_heads() == [db.SCHEMA_HEAD]
+    finally:
+        engine.dispose()

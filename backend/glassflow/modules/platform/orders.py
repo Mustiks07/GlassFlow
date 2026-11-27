@@ -45,7 +45,7 @@ def source(services):
 def project(sheet):
     sheet.offer, sheet.warehouse_task = None, None
     if (sheet.facts and not quote_customer_error(sheet.facts, sheet.customer_ref)
-            and sheet.quote_state not in {"missing", "stale"} and sheet.lifecycle != "cancelled"):
+            and sheet.quote_state not in {"missing", "stale"} and sheet.lifecycle in {"open", "handed_over"}):
         facts = sheet.facts
         sheet.offer = OrderOffer(order_id=sheet.order_id, revision=sheet.revision,
                                  facts_hash=sheet.facts_hash, quote=facts.quote,
@@ -94,7 +94,7 @@ def capture(session, sheet, services, quote_id=None, remnant_id=None):
     remnant_id = remnant_id or sheet.facts.remnant.remnant_id
     facts = OrderFacts.model_validate(source(services).capture(
         session, sheet.dataset_id, quote_id, remnant_id, sheet.order_id,
-    ))
+    )).model_copy(deep=True)
     if (facts.dataset_id != sheet.dataset_id or facts.quote.dataset_id != sheet.dataset_id
             or facts.remnant.dataset_id != sheet.dataset_id
             or facts.quote.quote_id != quote_id or facts.remnant.remnant_id != remnant_id):
@@ -181,7 +181,7 @@ def apply(session, order_id, body, action, services, correlation):
         sheet.stale_conflicts = []
     elif action in {"release", "cancel"}:
         if active_reservation(sheet):
-            released = source(services).release(session, sheet.reservation)
+            released = source(services).release(session, sheet.reservation.model_copy(deep=True))
             if (released.state != "released" or released.reservation_id != sheet.reservation.reservation_id
                     or released.order_id != sheet.order_id or released.dataset_id != sheet.dataset_id):
                 raise AppError(409, "RESERVATION_RELEASE_FAILED", "Источник не подтвердил снятие резерва.")
@@ -205,7 +205,7 @@ def apply(session, order_id, body, action, services, correlation):
             if sheet.quote_state != "confirmed":
                 raise AppError(409, "CONFIRM_REQUIRED", "Сначала подтвердите расчет.")
             if not active_reservation(sheet):
-                ref = source(services).reserve(session, sheet.facts, sheet.order_id, sheet.revision)
+                ref = source(services).reserve(session, sheet.facts.model_copy(deep=True), sheet.order_id, sheet.revision)
                 if (ref.dataset_id != sheet.dataset_id or ref.order_id != sheet.order_id
                         or ref.order_revision != sheet.revision or ref.state != "active"
                         or ref.remnant_id != sheet.facts.remnant.remnant_id):

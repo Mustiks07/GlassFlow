@@ -3,7 +3,7 @@
 from datetime import UTC, datetime
 from uuid import uuid4
 
-from sqlalchemy import JSON, ForeignKey, LargeBinary, String, UniqueConstraint
+from sqlalchemy import JSON, CheckConstraint, ForeignKey, LargeBinary, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from glassflow.core.db import Base
@@ -122,3 +122,28 @@ class SettingsRow(Base):
     id: Mapped[str] = mapped_column(String, primary_key=True)
     version: Mapped[int] = mapped_column(default=0)
     data: Mapped[dict] = mapped_column(JSON)
+
+
+class MaterialUseRow(Base):
+    """Immutable U06 ledger; inventory remains owned by C2."""
+    __tablename__ = "material_usage"
+    __table_args__ = (
+        UniqueConstraint("dataset_id", "subject_type", "subject_id", name="uq_usage_subject"),
+        UniqueConstraint("dataset_id", "reservation_id", name="uq_usage_reservation"),
+        UniqueConstraint("dataset_id", "source_event_ref", name="uq_usage_source_event"),
+        CheckConstraint("subject_type IN ('order','basket')", name="ck_usage_subject_type"),
+        CheckConstraint("subject_revision >= 0 AND execution_version >= 0", name="ck_usage_versions"),
+    )
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    dataset_id: Mapped[str] = mapped_column(ForeignKey("datasets.id"), index=True)
+    subject_type: Mapped[str]
+    subject_id: Mapped[str]
+    subject_revision: Mapped[int]
+    reservation_id: Mapped[str]
+    source_event_ref: Mapped[str]
+    execution_ref: Mapped[str]
+    execution_version: Mapped[int]
+    intent_hash: Mapped[str]
+    receipt_hash: Mapped[str]
+    data: Mapped[dict] = mapped_column(JSON)
+    created_at: Mapped[str] = mapped_column(default=now)

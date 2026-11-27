@@ -93,7 +93,8 @@ def replace_lines(session, basket, lines, correlation, operator, note, warnings=
 
 
 def capture(session, basket, binding, services, *, initial=False):
-    facts = BasketFacts.model_validate(source(services).capture(session, basket, binding))
+    facts = BasketFacts.model_validate(source(services).capture(
+        session, basket.model_copy(deep=True), binding.model_copy(deep=True))).model_copy(deep=True)
     ids = [line.line_id for line in basket.lines]
     refs = {line.line_id: line for line in binding.lines}
     current = {line.line_id: line for line in facts.lines}
@@ -162,7 +163,7 @@ def recheck(session, basket, services, correlation):
         if canonical_hash(current.model_dump(mode="json")) != basket.facts_hash:
             code, reason = "BASKET_STALE", "Изменились расчет, прайс, совместный план или склад."
         if active(basket):
-            ref = BasketReservation.model_validate(source(services).reservation(session, basket.dataset_id, basket.reservation.reservation_id))
+            ref = BasketReservation.model_validate(source(services).reservation(session, basket.dataset_id, basket.reservation.reservation_id)).model_copy(deep=True)
             if ref != basket.reservation or ref.state != "active":
                 code, reason = "BASKET_RESERVATION_STALE", "Совместный резерв изменился."
     except AppError as exc:
@@ -192,10 +193,10 @@ def apply(session, basket_id, body, action, services, correlation):
         basket.revision += 1
     elif action in {"release", "cancel"}:
         if active(basket):
-            current = BasketReservation.model_validate(source(services).reservation(session, basket.dataset_id, basket.reservation.reservation_id))
+            current = BasketReservation.model_validate(source(services).reservation(session, basket.dataset_id, basket.reservation.reservation_id)).model_copy(deep=True)
             if current != basket.reservation:
                 raise AppError(409, "BASKET_RESERVATION_STALE", "Нельзя снять измененный или чужой резерв.")
-            released = BasketReservation.model_validate(source(services).release(session, current))
+            released = BasketReservation.model_validate(source(services).release(session, current.model_copy(deep=True))).model_copy(deep=True)
             before, after = current.model_dump(), released.model_dump()
             for value in (before, after):
                 value.pop("state")
@@ -221,7 +222,7 @@ def apply(session, basket_id, body, action, services, correlation):
             if basket.state != "confirmed":
                 raise AppError(409, "BASKET_CONFIRM_REQUIRED", "Сначала подтвердите всю корзину.")
             if basket.facts.stock:
-                ref = BasketReservation.model_validate(source(services).reserve(session, basket))
+                ref = BasketReservation.model_validate(source(services).reserve(session, basket.model_copy(deep=True))).model_copy(deep=True)
                 stock = basket.facts.stock
                 if (ref.dataset_id != basket.dataset_id or ref.basket_id != basket.basket_id
                         or ref.basket_revision != basket.revision or ref.state != "active"
