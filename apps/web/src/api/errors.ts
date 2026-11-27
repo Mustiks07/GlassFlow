@@ -109,13 +109,20 @@ const DEFAULT_MESSAGE: Record<ErrorKind, string> = {
 };
 
 export function errorFromResponse(status: number, body: unknown, headers: Record<string, string>): ApiError {
-  const kind = KIND_BY_STATUS[status] ?? 'server';
   const envelope = (body && typeof body === 'object' ? body : {}) as Record<string, unknown>;
+  // A route that does not exist yet (generic HTTP_404/405 from the framework) is an undelivered operation,
+  // not a missing domain object: show it as "not connected" instead of "not found".
+  const missingRoute = (status === 404 || status === 405) && (envelope.code === 'HTTP_404' || envelope.code === 'HTTP_405' || envelope.detail === 'Not Found');
+  const kind = missingRoute ? 'not_implemented' : KIND_BY_STATUS[status] ?? 'server';
   const fieldErrors = Array.isArray(envelope.field_errors)
     ? (envelope.field_errors as Record<string, string>[]).map(translateFieldError)
     : [];
   const conflicts = Array.isArray(envelope.conflict_objects) ? (envelope.conflict_objects as unknown[]).map(String) : [];
-  const message = typeof envelope.message_ru === 'string' && envelope.message_ru ? envelope.message_ru : DEFAULT_MESSAGE[kind];
+  const message = missingRoute
+    ? 'Операция еще не опубликована на сервере этой сборки.'
+    : typeof envelope.message_ru === 'string' && envelope.message_ru
+      ? envelope.message_ru
+      : DEFAULT_MESSAGE[kind];
   const correlation =
     (typeof envelope.correlation_id === 'string' ? envelope.correlation_id : null) ?? headers['x-correlation-id'] ?? null;
   const retryAfterRaw = headers['retry-after'];

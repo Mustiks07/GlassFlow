@@ -5,7 +5,7 @@ import { newIdempotencyKey } from '../../api/client';
 import { useApi } from '../../api/context';
 import type { BackupInfo } from '../../api/types';
 import { formatDateTime, formatInt } from '../../lib/format';
-import { Button, ConfirmDialog, EmptyState, ErrorState, Field, LoadingState, Panel, StatusBadge, TableWrap } from '../../ui/kit';
+import { Button, ConfirmDialog, EmptyState, ErrorState, LoadingState, Panel, StatusBadge, TableWrap } from '../../ui/kit';
 
 export function SystemSection() {
   return (
@@ -23,14 +23,12 @@ function BackupPanel() {
   const { api } = useApi();
   const queryClient = useQueryClient();
   const backups = useQuery({ queryKey: ['backups'], queryFn: ({ signal }) => api.listBackups(signal) });
-  const [reason, setReason] = useState('');
   const [backupKey, setBackupKey] = useState(newIdempotencyKey);
   const [restoreTarget, setRestoreTarget] = useState<BackupInfo | null>(null);
   const [restoreKey, setRestoreKey] = useState(newIdempotencyKey);
   const backup = useMutation({
-    mutationFn: () => api.backup(reason.trim(), backupKey),
+    mutationFn: () => api.backup(backupKey),
     onSuccess: () => {
-      setReason('');
       setBackupKey(newIdempotencyKey());
       queryClient.invalidateQueries({ queryKey: ['backups'] });
     },
@@ -45,24 +43,21 @@ function BackupPanel() {
   });
   return (
     <Panel title="Резервные копии" subtitle="Штатный SQLite backup при работающем приложении. Восстановление сначала проверяет целостность и сохраняет текущую базу.">
-      <form
-        className="row align-end"
-        onSubmit={event => {
-          event.preventDefault();
-          backup.mutate();
-        }}
-      >
-        <Field label="Причина копии" required>
-          {props => <input {...props} value={reason} onChange={event => setReason(event.target.value)} placeholder="например: перед конкурсным прогоном" />}
-        </Field>
-        <Button type="submit" variant="primary" icon={<DatabaseBackup size={14} aria-hidden="true" />} disabled={!reason.trim()} busy={backup.isPending}>
-          Создать копию
+      <div className="row">
+        <Button variant="primary" icon={<DatabaseBackup size={14} aria-hidden="true" />} busy={backup.isPending} onClick={() => backup.mutate()}>
+          Создать резервную копию сейчас
         </Button>
-      </form>
-      {backup.isSuccess && <StatusBadge tone="ok">Копия создана: {backup.data.backup_id}</StatusBadge>}
+      </div>
+      {backup.isSuccess && (
+        <StatusBadge tone="ok">
+          Копия создана: {backup.data.backup_id}
+          {backup.data.integrity ? ` · целостность ${backup.data.integrity}` : ''}
+        </StatusBadge>
+      )}
+      {backup.isSuccess && backup.data.sha256 && <p className="small mono">SHA-256 {backup.data.sha256}</p>}
       {backup.error && <ErrorState error={backup.error} onRetry={() => backup.mutate()} context="Резервная копия" />}
       {backups.isLoading && <LoadingState />}
-      {backups.isError && <ErrorState error={backups.error} onRetry={() => backups.refetch()} context="Список копий" />}
+      {backups.isError && <ErrorState error={backups.error} onRetry={() => backups.refetch()} context="Список копий (операция списка копий не опубликована Pro)" />}
       {backups.data && backups.data.length === 0 && <EmptyState title="Копий пока нет" />}
       {backups.data && backups.data.length > 0 && (
         <TableWrap label="Резервные копии" maxHeight={260}>
@@ -121,8 +116,7 @@ function BackupPanel() {
 function ShutdownPanel() {
   const { api } = useApi();
   const [open, setOpen] = useState(false);
-  const [reason, setReason] = useState('');
-  const shutdown = useMutation({ mutationFn: () => api.shutdown(reason.trim() || 'Завершение из интерфейса') });
+  const shutdown = useMutation({ mutationFn: () => api.shutdown() });
   return (
     <Panel title="Завершение приложения" subtitle="Корректно останавливает worker, завершает записи и закрывает базу.">
       {shutdown.isSuccess ? (
@@ -152,11 +146,7 @@ function ShutdownPanel() {
         onConfirm={() => shutdown.mutate()}
         busy={shutdown.isPending}
         error={shutdown.error}
-      >
-        <Field label="Причина (для журнала)">
-          {props => <input {...props} value={reason} onChange={event => setReason(event.target.value)} />}
-        </Field>
-      </ConfirmDialog>
+      />
     </Panel>
   );
 }

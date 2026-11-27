@@ -3,7 +3,7 @@ import { Download, FileCheck2, Play, ShieldAlert } from 'lucide-react';
 import { useState } from 'react';
 import { newIdempotencyKey } from '../../api/client';
 import { useApi } from '../../api/context';
-import type { Dataset, ExportResult, ProposedRun, RunModule } from '../../api/types';
+import type { Dataset, ExportResult, Job, RunModule, RunView } from '../../api/types';
 import { formatInt, shortHash } from '../../lib/format';
 import { href } from '../../state/router';
 import { useAppStore } from '../../state/store';
@@ -35,13 +35,11 @@ const MODULES: { id: RunModule; label: string; output: string; keyless: string }
   { id: 'cards', label: 'Карточки остатков', output: 'sale_cards.csv', keyless: 'зависят от финального раскроя и реестра' },
 ];
 
-const RUN_STATUS: Record<ProposedRun['status'], { label: string; tone: Tone }> = {
-  queued: { label: 'В очереди', tone: 'pending' },
+const RUN_STATUS: Record<RunView['status'], { label: string; tone: Tone }> = {
   running: { label: 'Выполняется', tone: 'pending' },
-  ready: { label: 'Все пять выходов готовы', tone: 'ok' },
-  partial: { label: 'Частично готово', tone: 'warn' },
-  blocked: { label: 'Заблокировано', tone: 'error' },
-  failed: { label: 'Ошибка', tone: 'error' },
+  completed: { label: 'Все запрошенные модули завершены', tone: 'ok' },
+  partial: { label: 'Частично готово: часть модулей не завершена', tone: 'warn' },
+  blocked: { label: 'Заблокировано: ни один модуль не завершен', tone: 'error' },
 };
 
 const MODULE_STATE: Record<string, { label: string; tone: Tone }> = {
@@ -63,11 +61,16 @@ function Runs({ dataset }: { dataset: Dataset }) {
   const [jobId, setJobId] = useState<string | null>(null);
   const [confirm, setConfirm] = useState(false);
   const [runKey, setRunKey] = useState(newIdempotencyKey);
+  const [aiProfile, setAiProfile] = useState<'direct' | 'judge_gateway' | 'local_limited'>('direct');
   const present = new Set(Object.keys(dataset.source_hashes));
   const missingInputs = REQUIRED_INPUTS.filter(input => !present.has(input.kind));
 
   const start = useMutation({
-    mutationFn: () => api.createRun({ dataset_id: dataset.dataset_id, modules, config_version: 'contest-v1' }, runKey),
+    mutationFn: () =>
+      api.createRun(
+        { dataset_id: dataset.dataset_id, modules, config_version: 'contest-v1', solver_config: { profile: 'extended', seed: 42, time_limit_seconds: 600, workers: 1, minimum_free_remnants: 5 }, ai_profile: aiProfile },
+        runKey,
+      ),
     onSuccess: job => {
       setJobId(job.job_id);
       if (job.run_id) setLastRun(dataset.dataset_id, job.run_id);
@@ -81,7 +84,7 @@ function Runs({ dataset }: { dataset: Dataset }) {
     queryKey: ['run', runId],
     enabled: Boolean(runId),
     queryFn: ({ signal }) => api.getRun(runId as string, signal),
-    refetchInterval: query => (query.state.data && ['ready', 'partial', 'blocked', 'failed'].includes(query.state.data.status) ? false : 2_000),
+    refetchInterval: query => (query.state.data && query.state.data.status !== 'running' ? false : 2_000),
   });
 
   return (
@@ -98,7 +101,7 @@ function Runs({ dataset }: { dataset: Dataset }) {
         <li className={missingInputs.length ? 'warn' : 'done'}>1. Входы</li>
         <li className={jobId || runId ? 'done' : ''}>2. Запуск модулей</li>
         <li className={run.data ? 'done' : ''}>3. Готовность и проверка</li>
-        <li className={run.data?.status === 'ready' || run.data?.status === 'partial' ? 'current' : ''}>4. Скачивание</li>
+        <li className={run.data?.status === 'completed' || run.data?.status === 'partial' ? 'current' : ''}>4. Скачивание</li>
       </ol>
 
       <Panel title="1. Входные данные" subtitle={`Набор: ${dataset.name} · ${MODE_LABEL[dataset.mode]}`}>
@@ -159,6 +162,14 @@ function Runs({ dataset }: { dataset: Dataset }) {
             ))}
           </div>
         </fieldset>
+        <label className="inline-field">
+          AI-профиль прогона
+          <select value={aiProfile} onChange={event => setAiProfile(event.target.value as typeof aiProfile)}>
+            <option value="direct">Прямой проверенный ключ команды</option>
+            <option value="judge_gateway">Шлюз judge_gateway</option>
+            <option value="local_limited">Только локальный режим (ассистент может быть неполным)</option>
+          </select>
+        </label>
         <div className="row">
           <Button variant="primary" icon={<Play size={14} aria-hidden="true" />} disabled={!modules.length || missingInputs.length > 0} onClick={() => setConfirm(true)}>
             Запустить прогон
@@ -175,7 +186,7 @@ function Runs({ dataset }: { dataset: Dataset }) {
         {run.data && <RunStatus run={run.data} />}
       </Panel>
 
-      {run.data && (TERMINAL.includes(job.data?.state ?? 'completed') || !jobId) && <ExportPanel run={run.data} />}
+      {run.data && runId && (TERMINAL.includes(job.data?.state ?? 'completed') || !jobId) && <ExportPanel run={run.data} runId={runId} />}
 
       <ConfirmDialog
         open={confirm}
@@ -188,7 +199,8 @@ function Runs({ dataset }: { dataset: Dataset }) {
         affected={[
           { label: 'Набор', value: `${dataset.name} (${MODE_LABEL[dataset.mode]})` },
           { label: 'Модули', value: modules.map(id => MODULES.find(module => module.id === id)?.label).join(', ') },
-          { label: 'Конфигурация', value: 'contest-v1' },
+          { label: 'Конфигурация', value: 'contest-v1 · раскрой extended 600 с, seed 42, 1 поток' },
+          { label: 'AI-профиль', value: aiProfile },
         ]}
         confirmLabel="Запустить"
         onConfirm={() => start.mutate()}
@@ -199,70 +211,64 @@ function Runs({ dataset }: { dataset: Dataset }) {
   );
 }
 
-function RunStatus({ run }: { run: ProposedRun }) {
+function RunStatus({ run }: { run: RunView }) {
   const status = RUN_STATUS[run.status];
+  const requested = (run.manifest.modules as RunModule[] | undefined) ?? MODULES.map(module => module.id);
+  const jobOf = (module: RunModule): Job | undefined => run.jobs.find(job => job.kind === module);
   return (
     <div className="stack">
       <div className="row wrap">
         <StatusBadge tone={status.tone}>{status.label}</StatusBadge>
-        {!run.official_scores_available && <StatusBadge tone="neutral">Официальные баллы ассистента, CRM и диалогов недоступны без KEY</StatusBadge>}
+        <StatusBadge tone="neutral">Официальные баллы ассистента, CRM и диалогов неизвестны без KEY</StatusBadge>
       </div>
+      {run.missing_modules.length > 0 && run.status !== 'running' && (
+        <p className="small text-warn">Не завершены: {run.missing_modules.join(', ')}. Готовые части доступны с частичным статусом; чужие ответы не подставляются.</p>
+      )}
       <TableWrap label="Модули прогона">
         <table className="table">
           <thead>
             <tr>
               <th scope="col">Модуль</th>
               <th scope="col">Состояние</th>
+              <th scope="col">Этап</th>
               <th scope="col">Файл</th>
-              <th scope="col" className="num">
-                Строк
-              </th>
-              <th scope="col">Собственная проверка</th>
-              <th scope="col">Ошибки</th>
+              <th scope="col">Проверка без KEY</th>
+              <th scope="col">Ошибка</th>
             </tr>
           </thead>
           <tbody>
-            {MODULES.map(module => {
-              const entry = run.modules.find(item => item.module === module.id);
-              const state = MODULE_STATE[entry?.state ?? 'not_started'] ?? MODULE_STATE.not_started;
+            {MODULES.filter(module => requested.includes(module.id)).map(module => {
+              const job = jobOf(module.id);
+              const state = MODULE_STATE[job?.state ?? 'not_started'] ?? MODULE_STATE.not_started;
               return (
                 <tr key={module.id}>
                   <td>{module.label}</td>
                   <td>
                     <StatusBadge tone={state.tone}>{state.label}</StatusBadge>
                   </td>
-                  <td className="mono">{entry?.output_file ?? module.output}</td>
-                  <td className="num">{entry?.row_count ?? '—'}</td>
-                  <td className="small">{entry?.self_check ?? module.keyless}</td>
-                  <td className="small">{entry?.errors.length ? entry.errors.join('; ') : '—'}</td>
+                  <td className="small">{job?.stage ?? '—'}</td>
+                  <td className="mono">{module.output}</td>
+                  <td className="small">{module.keyless}</td>
+                  <td className="small">{job?.error_code ?? '—'}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </TableWrap>
-      <Details summary="Паспорт воспроизводимости (RunManifest), хеши и validator">
-        {run.files.length > 0 && (
-          <ul className="plain small mono">
-            {run.files.map(file => (
-              <li key={file.name}>
-                {file.name}: {file.sha256 ?? 'нет хеша'} · {file.validator ?? 'validator не запускался'}
-              </li>
-            ))}
-          </ul>
-        )}
-        {run.manifest ? <pre className="pre small">{JSON.stringify(run.manifest, null, 2)}</pre> : <p className="small muted">Manifest еще не сформирован.</p>}
+      <Details summary="Паспорт воспроизводимости (RunManifest)">
+        <pre className="pre small">{JSON.stringify(run.manifest, null, 2)}</pre>
       </Details>
     </div>
   );
 }
 
-function ExportPanel({ run }: { run: ProposedRun }) {
+function ExportPanel({ run, runId }: { run: RunView; runId: string }) {
   const { api } = useApi();
   const [key, setKey] = useState(newIdempotencyKey);
   const [open, setOpen] = useState(false);
   const exportRun = useMutation({
-    mutationFn: () => api.exportRun(run.run_id, key),
+    mutationFn: () => api.exportRun(runId, key),
     onSuccess: () => {
       setOpen(false);
       setKey(newIdempotencyKey());
@@ -273,7 +279,7 @@ function ExportPanel({ run }: { run: ProposedRun }) {
   return (
     <Panel title="4. Скачать результаты" subtitle="Все файлы относятся к одному run. buyers_top50.csv лежит в корне сдачи, не в closed_run.">
       <div className="row">
-        <Button variant="primary" icon={<FileCheck2 size={14} aria-hidden="true" />} onClick={() => setOpen(true)} disabled={run.status === 'queued' || run.status === 'running'}>
+        <Button variant="primary" icon={<FileCheck2 size={14} aria-hidden="true" />} onClick={() => setOpen(true)} disabled={run.status === 'running'}>
           Проверить и подготовить файлы
         </Button>
       </div>
@@ -281,7 +287,7 @@ function ExportPanel({ run }: { run: ProposedRun }) {
       {result && (
         <div className="stack">
           <StatusBadge tone={result.status === 'ready' ? 'ok' : result.status === 'partial' ? 'warn' : 'error'}>
-            {result.status === 'ready' ? 'Пакет готов: пять выходов одного run' : result.status === 'partial' ? 'Частичный пакет — не выдавайте за полный' : 'Экспорт заблокирован'}
+            {result.status === 'ready' ? 'Пакет готов: выходы одного run прошли проверки' : result.status === 'partial' ? 'Частичный пакет — не выдавайте за полный' : 'Экспорт заблокирован'}
           </StatusBadge>
           {result.errors.length > 0 && (
             <ul className="plain small text-error">
@@ -295,7 +301,7 @@ function ExportPanel({ run }: { run: ProposedRun }) {
               <li key={name}>
                 <span className="mono">{name}</span>
                 {downloadable(target) ? (
-                  <a className="btn btn-secondary" href={target.startsWith('/') && !target.startsWith('/api/') ? `/api/v1${target}` : target} download>
+                  <a className="btn btn-secondary" href={target.startsWith('/') && !target.startsWith('/api/') ? `/api/v1${target}` : target} download={name}>
                     <Download size={14} aria-hidden="true" /> <span>Скачать</span>
                   </a>
                 ) : (
@@ -315,7 +321,7 @@ function ExportPanel({ run }: { run: ProposedRun }) {
         title="Подготовить файлы прогона"
         action="Сервер запишет файлы во временные пути, перечитает их, проверит заголовки/ID/числа, запустит официальные validate.py и selfcheck.py и только затем заменит готовые артефакты."
         affected={[
-          { label: 'run_id', value: <span className="mono">{run.run_id}</span> },
+          { label: 'run_id', value: <span className="mono">{runId}</span> },
           { label: 'Статус прогона', value: RUN_STATUS[run.status].label },
         ]}
         confirmLabel="Проверить и подготовить"

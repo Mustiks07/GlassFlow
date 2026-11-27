@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useApi } from '../../api/context';
 import type { AISettings } from '../../api/types';
 import { asApiError } from '../../api/errors';
+import { formatDateTime } from '../../lib/format';
 import { Button, ErrorState, Field, KeyValue, LoadingState, Panel, StatusBadge } from '../../ui/kit';
 
 const PROFILE_LABEL: Record<AISettings['profile'], string> = {
@@ -199,11 +200,19 @@ export function AiSection() {
             <KeyRound size={18} aria-hidden="true" />
             <div>
               <strong>{check.data.available ? 'Провайдер доступен' : 'Провайдер недоступен'}</strong>
-              <p>{check.data.message_ru}</p>
+              {check.data.message_ru && <p>{check.data.message_ru}</p>}
               <p className="small">
-                {check.data.provider ?? '—'} · {check.data.model_id ?? '—'} · {check.data.mode ?? '—'}
+                {check.data.provider ?? '—'} · {check.data.model_id ?? '—'}
+                {check.data.checked_at && <> · проверено {formatDateTime(check.data.checked_at)}</>}
               </p>
-              {check.data.quota && <pre className="small mono pre">{JSON.stringify(check.data.quota, null, 2)}</pre>}
+              {check.data.capabilities && (
+                <p className="small">
+                  Возможности:{' '}
+                  {Object.entries(check.data.capabilities)
+                    .map(([name, value]) => `${name}: ${value ? 'да' : 'нет'}`)
+                    .join(', ') || 'не сообщены'}
+                </p>
+              )}
             </div>
           </div>
         )}

@@ -98,7 +98,7 @@ function Clients({ dataset }: { dataset: Dataset }) {
               ) : groups.length === 0 ? (
                 <EmptyState title="Очередь пуста" />
               ) : (
-                <ul className="client-picks" aria-label="Клиенты очереди">
+                <ul className="client-picks scroll" aria-label="Клиенты очереди">
                   {groups.map(group => (
                     <li key={group.client_id}>
                       <label className={`candidate${selected?.client_id === group.client_id ? ' selected' : ''}`}>
@@ -120,7 +120,7 @@ function Clients({ dataset }: { dataset: Dataset }) {
                 </ul>
               )}
             </Panel>
-            <div className="stack">
+            <div className="stack sticky-col">
               {selected ? (
                 <>
                   <ClientHistory dataset={dataset} clientId={selected.client_id} />

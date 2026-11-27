@@ -107,10 +107,21 @@ function VerdictCard({ checked }: { checked: Checked }) {
       {verdict.verdict === 'ERROR' && (
         <p>
           Правильная цена: <strong>{verdict.correct ? formatMoney(verdict.correct) : 'сервер не вернул исправление'}</strong>
-          {verdict.extracted_value_tg && <span className="muted"> (в ответе: {formatMoney(verdict.extracted_value_tg)})</span>}
         </p>
       )}
-      {verdict.explanation && <p className="small">{verdict.explanation}</p>}
+      {verdict.reference_tg && (
+        <p className="small">
+          Эталон: {formatMoney(verdict.reference_tg)}
+          {verdict.reference_meaning ? ` (${verdict.reference_meaning})` : ''}
+        </p>
+      )}
+      {verdict.mentions && verdict.mentions.length > 0 && (
+        <p className="small">
+          Цены в ответе: {verdict.mentions.map(item => `${item.raw} → ${formatMoney(item.amount_tg)} (${item.meaning})`).join('; ')}
+        </p>
+      )}
+      {verdict.explanation_ru && <p className="small">{verdict.explanation_ru}</p>}
+      {verdict.reason_code && <p className="small muted mono">{verdict.reason_code}</p>}
       <div>
         <strong className="small">Основание</strong>
         <EvidenceList evidence={verdict.evidence} />

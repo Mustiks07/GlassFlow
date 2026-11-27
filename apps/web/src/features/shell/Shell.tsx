@@ -113,7 +113,8 @@ function ReadinessFooter() {
       {ready.data && (
         <small>
           БД: {ready.data.database ? 'подключена' : 'не готова'}
-          {ready.data.ai_available !== undefined && ` · AI: ${ready.data.ai_available ? 'доступен' : 'ограничен'}`}
+          {ready.data.worker !== undefined && ` · worker: ${ready.data.worker ? 'работает' : 'нет'}`}
+          {ready.data.ai !== undefined && ` · AI: ${ready.data.ai === 'available' ? 'доступен' : ready.data.ai === 'unchecked' ? 'не проверен' : 'ограничен'}`}
         </small>
       )}
       {ready.isError && (

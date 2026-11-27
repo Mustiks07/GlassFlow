@@ -13,7 +13,7 @@ import {
   X,
   XCircle,
 } from 'lucide-react';
-import { useId, type ButtonHTMLAttributes, type ReactNode } from 'react';
+import { useEffect, useId, useRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { ERROR_TITLES, asApiError, type ApiError } from '../api/errors';
 
 // ---------------------------------------------------------------- Buttons
@@ -296,6 +296,20 @@ export function TableWrap({ children, label, maxHeight }: { children: ReactNode;
 }
 
 // ---------------------------------------------------------------- Dialogs
+/** Controlled Radix dialogs have no Trigger, so remember and restore the opener's focus ourselves. */
+function useReturnFocus(open: boolean) {
+  const opener = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (open && document.activeElement instanceof HTMLElement && document.activeElement !== document.body) opener.current = document.activeElement;
+  }, [open]);
+  return (event: Event) => {
+    if (opener.current && document.contains(opener.current)) {
+      event.preventDefault();
+      opener.current.focus();
+    }
+  };
+}
+
 /**
  * Confirmation dialog: names the concrete action and the affected objects (spec §21).
  * Radix provides focus trap, Escape to close and focus return.
@@ -325,11 +339,12 @@ export function ConfirmDialog({
   danger?: boolean;
   error?: unknown;
 }) {
+  const restoreFocus = useReturnFocus(open);
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="dialog-overlay" />
-        <Dialog.Content className="dialog" aria-describedby={undefined}>
+        <Dialog.Content className="dialog" aria-describedby={undefined} onCloseAutoFocus={restoreFocus}>
           <header className="dialog-head">
             <Dialog.Title>{title}</Dialog.Title>
             <Dialog.Close asChild>
@@ -378,11 +393,12 @@ export function SideDialog({
   children: ReactNode;
   wide?: boolean;
 }) {
+  const restoreFocus = useReturnFocus(open);
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="dialog-overlay" />
-        <Dialog.Content className={`dialog dialog-side${wide ? ' dialog-wide' : ''}`} aria-describedby={undefined}>
+        <Dialog.Content className={`dialog dialog-side${wide ? ' dialog-wide' : ''}`} aria-describedby={undefined} onCloseAutoFocus={restoreFocus}>
           <header className="dialog-head">
             <Dialog.Title>{title}</Dialog.Title>
             <Dialog.Close asChild>

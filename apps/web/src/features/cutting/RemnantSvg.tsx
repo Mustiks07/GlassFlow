@@ -60,10 +60,15 @@ export function RemnantSvg({
   const L = remnant.length_mm;
   const W = remnant.width_mm;
   const pad = Math.max(L, W) * 0.09;
-  const font = Math.max(L, W) / 38;
-  const scaleBar = niceScale(L);
-  const viewBox = `${-pad} ${-pad} ${L + pad * 1.6} ${W + pad * 2}`;
   const heightPx = Math.min(maxHeight, 520) * zoom;
+  // Text size is set in screen pixels (≈11–12 px) and converted to millimetres, so labels stay
+  // readable on small previews and do not explode on large remnants.
+  const viewW = L + pad * 1.6;
+  const viewH = W + pad * 2;
+  const mmPerPx = Math.max(viewH / heightPx, viewW / Math.max(heightPx * (viewW / viewH), 1));
+  const font = Math.max(11 * mmPerPx, Math.max(L, W) / 60);
+  const scaleBar = niceScale(L);
+  const viewBox = `${-pad} ${-pad} ${viewW} ${viewH}`;
   return (
     <svg
       ref={svgRef}

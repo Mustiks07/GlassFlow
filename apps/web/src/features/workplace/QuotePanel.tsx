@@ -22,6 +22,7 @@ const PRICE_TYPE: Record<string, string> = {
 
 const MAPPING_LABEL: Record<Quote['material_mapping_status'], string> = {
   confirmed: 'Складской материал подтвержден',
+  proposed: 'Соответствие предложено, но не подтверждено менеджером',
   unmapped: 'Нет подтвержденного соответствия складу (это не «нет в наличии» и не NEW)',
   ambiguous: 'Соответствие неоднозначно — нужен выбор менеджера',
 };
@@ -31,6 +32,8 @@ const STATUS_LABEL: Record<Quote['status'], string> = {
   needs_review: 'Нужна проверка менеджера',
   ready: 'Готово к подтверждению',
   confirmed: 'Подтверждено',
+  superseded: 'Заменено новой ревизией',
+  cancelled: 'Отменено',
 };
 
 interface FormState {
@@ -77,6 +80,7 @@ export function buildRequest(draft: QuoteDraft, datasetId: string, kbVersion: st
       processing,
       kb_version: kbVersion,
       customer_id: draft.customerId.trim() || null,
+      inventory_mode: 'free_whole_remnants',
     },
     errors,
     notes,
@@ -138,7 +142,7 @@ export function QuotePanel({
   const form = useMemo(() => buildRequest(draft, dataset.dataset_id, kbVersion), [draft, dataset.dataset_id, kbVersion]);
   const stale =
     Boolean(quote && ((basis !== null && basis !== JSON.stringify(form.request)) || !sameInputs(quote, form.request))) ||
-    Boolean(quote?.stale_reason);
+    Boolean(quote?.stale);
   useEffect(() => onStaleChange(stale), [stale, onStaleChange]);
 
   const calculate = useMutation({
@@ -150,11 +154,12 @@ export function QuotePanel({
           {
             dataset_id: dataset.dataset_id,
             expected_revision: quote.revision,
-            changed_fields: {
+            changes: {
               catalog_product_id: request.catalog_product_id,
               dimensions: request.dimensions,
               quantity: request.quantity,
               processing: request.processing,
+              customer_id: request.customer_id,
               kb_version: request.kb_version,
             },
           },
@@ -335,11 +340,13 @@ export function QuoteResult({ quote, stale }: { quote: Quote; stale: boolean }) 
           <strong className={stale ? 'strike' : ''}>{quote.total_tg === null ? 'не определен' : formatMoney(quote.total_tg, { fixed2: true })}</strong>
         </div>
       </div>
-      {quote.dimensions && (
+      {(quote.product_name || quote.dimensions) && (
         <p className="small">
-          Размер: {formatDims(quote.dimensions)} · количество: {quote.quantity ?? '—'}
+          {quote.product_name && <b>{quote.product_name}</b>}
+          {quote.dimensions && <> · {formatDims(quote.dimensions)}</>} · количество: {quote.quantity ?? 'не указано'}
         </p>
       )}
+      {quote.stale && <StaleNotice>Сервер пометил расчет устаревшим (изменилась версия прайса или склада). Создайте новую ревизию.</StaleNotice>}
       {quote.clarification && <p className="clarification">Нужно уточнение: {quote.clarification}</p>}
       {quote.components.length > 0 && (
         <TableWrap label="Позиции расчета">
@@ -355,7 +362,10 @@ export function QuoteResult({ quote, stale }: { quote: Quote; stale: boolean }) 
             <tbody>
               {quote.components.map((line, index) => (
                 <tr key={index}>
-                  <td>{line.label}</td>
+                  <td>
+                    {line.label}
+                    {line.formula && <div className="small muted mono">{line.formula}</div>}
+                  </td>
                   <td className="num">{formatMoney(line.amount_tg, { fixed2: true })}</td>
                 </tr>
               ))}
@@ -369,11 +379,63 @@ export function QuoteResult({ quote, stale }: { quote: Quote; stale: boolean }) 
           <span className="mono"> material_id: {quote.material_id}</span>
         )}
       </p>
-      {quote.unknown_fields && quote.unknown_fields.length > 0 && <p className="small">Неизвестно: {quote.unknown_fields.join(', ')}</p>}
+      {quote.unknown_components && quote.unknown_components.length > 0 && (
+        <div className="state state-warn">
+          <div>
+            <strong>Неизвестные позиции — числа не выдумываются</strong>
+            <ul className="plain small">
+              {quote.unknown_components.map(item => (
+                <li key={item.component}>{item.message_ru}</li>
+              ))}
+            </ul>
+            {quote.known_subtotal_tg && <p className="small">Известная часть: {formatMoney(quote.known_subtotal_tg, { fixed2: true })} (не итог)</p>}
+          </div>
+        </div>
+      )}
+      {quote.diff && <QuoteDiffView diff={quote.diff} />}
       <Details summary="Источники расчета и политика округления">
         <EvidenceList evidence={[...(quote.evidence ?? []), ...quote.components.flatMap(line => line.evidence)]} />
         {quote.rounding_policy && <p className="small">Округление: {quote.rounding_policy}</p>}
       </Details>
     </div>
+  );
+}
+
+function QuoteDiffView({ diff }: { diff: NonNullable<Quote['diff']> }) {
+  return (
+    <Details summary={`Изменения: ревизия ${diff.from_revision} → ${diff.to_revision}`} open>
+      <p className="small">Изменено: {diff.changed_fields.join(', ') || '—'}</p>
+      <TableWrap label="Разница ревизий">
+        <table className="table compact">
+          <thead>
+            <tr>
+              <th scope="col">Позиция</th>
+              <th scope="col" className="num">
+                Было
+              </th>
+              <th scope="col" className="num">
+                Стало
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {diff.lines.map(line => (
+              <tr key={line.component}>
+                <td>{line.component}</td>
+                <td className="num">{formatMoney(line.before_tg, { fixed2: true })}</td>
+                <td className="num">{formatMoney(line.after_tg, { fixed2: true })}</td>
+              </tr>
+            ))}
+            <tr>
+              <th scope="row">Итого</th>
+              <td className="num">{formatMoney(diff.total_before_tg, { fixed2: true })}</td>
+              <td className="num">
+                <b>{formatMoney(diff.total_after_tg, { fixed2: true })}</b>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </TableWrap>
+    </Details>
   );
 }

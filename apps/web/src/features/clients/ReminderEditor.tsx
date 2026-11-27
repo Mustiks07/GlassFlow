@@ -51,7 +51,6 @@ export function ReminderEditor({
   const queryClient = useQueryClient();
   const draft = useReminderDraft(dataset.dataset_id);
   const update = useAppStore(state => state.updateReminderDraft);
-  const reset = useAppStore(state => state.resetReminderDraft);
   const [createKey, setCreateKey] = useState(newIdempotencyKey);
   const [touched, setTouched] = useState(false);
   const patch = (value: Partial<ReminderDraft>) => update(dataset.dataset_id, value);
@@ -90,7 +89,8 @@ export function ReminderEditor({
       queryClient.invalidateQueries({ queryKey: ['reminders', dataset.dataset_id] });
       setCreateKey(newIdempotencyKey());
       setTouched(false);
-      reset(dataset.dataset_id);
+      // Keep the chosen recipient and basis so the manager sees the result in context; clear only the subject.
+      patch({ subjectRef: '', subjectVersion: '', text: '' });
       onCreated?.(reminder);
     },
   });

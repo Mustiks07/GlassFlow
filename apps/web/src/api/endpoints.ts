@@ -26,17 +26,18 @@ export function createEndpoints(api: ApiClient) {
       api.post<T.Dataset>(`/imports/${enc(importId)}/commit`, body, { idempotencyKey }),
 
     getJob: (jobId: string, signal?: AbortSignal) => api.get<T.Job>(`/jobs/${enc(jobId)}`, { signal }),
-    cancelJob: (jobId: string) => api.post<T.Job>(`/jobs/${enc(jobId)}/cancel`),
+    cancelJob: (jobId: string, datasetId?: string | null) =>
+      api.post<T.Job>(`/jobs/${enc(jobId)}/cancel`, undefined, { query: { dataset_id: datasetId ?? undefined } }),
 
     createRun: (body: T.RunRequest, idempotencyKey: string) => api.post<T.Job>('/runs', body, { idempotencyKey }),
-    getRun: (runId: string, signal?: AbortSignal) => api.get<T.ProposedRun>(`/runs/${enc(runId)}`, { signal }),
+    getRun: (runId: string, signal?: AbortSignal) => api.get<T.RunView>(`/runs/${enc(runId)}`, { signal }),
     exportRun: (runId: string, idempotencyKey: string) =>
       api.post<T.ExportResult>(`/runs/${enc(runId)}/export`, undefined, { idempotencyKey, timeoutMs: 120_000 }),
 
     getSettings: (signal?: AbortSignal) => api.get<T.AISettings>('/settings', { signal }),
     updateSettings: (body: T.SettingsUpdate) => api.patch<T.AISettings>('/settings', body),
     checkAi: () => api.post<T.AICheckResult>('/settings/ai/check', {}, { timeoutMs: 60_000 }),
-    backup: (reason: string, idempotencyKey: string) => api.post<T.BackupInfo>('/system/backup', { reason }, { idempotencyKey }),
+    backup: (idempotencyKey: string) => api.post<T.BackupInfo>('/system/backup', undefined, { idempotencyKey }),
     listBackups: (signal?: AbortSignal) => api.get<T.BackupInfo[]>('/system/backups', { signal }),
     restore: (backupId: string, idempotencyKey: string) =>
       api.post<{ restored: boolean; previous_backup_id?: string }>(
@@ -44,7 +45,7 @@ export function createEndpoints(api: ApiClient) {
         { backup_id: backupId, confirm_replace: true },
         { idempotencyKey },
       ),
-    shutdown: (reason: string) => api.post<{ stopping: boolean }>('/system/shutdown', { reason }),
+    shutdown: () => api.post<{ status: string; restart_required?: boolean }>('/system/shutdown'),
     journal: (signal?: AbortSignal) => api.get<T.JournalEntry[]>('/system/journal', { signal }),
 
     // ----- cutting (Claude 2) -----
@@ -55,6 +56,8 @@ export function createEndpoints(api: ApiClient) {
       api.patch<T.Remnant>(`/remnants/${enc(remnantId)}/measurement`, body, { idempotencyKey }),
     consumeRemnant: (remnantId: string, body: T.ProposedConsume, idempotencyKey: string) =>
       api.post<T.Remnant>(`/remnants/${enc(remnantId)}/consume`, body, { idempotencyKey }),
+    reserveRemnant: (remnantId: string, body: T.ProposedReserve, idempotencyKey: string) =>
+      api.post<T.Remnant>(`/remnants/${enc(remnantId)}/reserve`, body, { idempotencyKey }),
     releaseRemnant: (remnantId: string, body: T.ProposedConsume, idempotencyKey: string) =>
       api.post<T.Remnant>(`/remnants/${enc(remnantId)}/release`, body, { idempotencyKey }),
     listParts: (datasetId: string, signal?: AbortSignal) =>
@@ -81,14 +84,14 @@ export function createEndpoints(api: ApiClient) {
     calculateQuote: (body: T.QuoteRequest) => api.post<T.Quote>('/quotes', body),
     getQuote: (quoteId: string, datasetId: string, signal?: AbortSignal) =>
       api.get<T.Quote>(`/quotes/${enc(quoteId)}`, { signal, query: { dataset_id: datasetId } }),
-    reviseQuote: (quoteId: string, body: T.ProposedQuoteRevise, idempotencyKey: string) =>
+    reviseQuote: (quoteId: string, body: T.QuoteReviseRequest, idempotencyKey: string) =>
       api.post<T.Quote>(`/quotes/${enc(quoteId)}/revise`, body, { idempotencyKey }),
-    confirmQuote: (quoteId: string, body: T.ProposedQuoteConfirm, idempotencyKey: string) =>
+    confirmQuote: (quoteId: string, body: T.QuoteConfirmRequest, idempotencyKey: string) =>
       api.post<T.Quote>(`/quotes/${enc(quoteId)}/confirm`, body, { idempotencyKey }),
     assistantTurn: (body: T.AssistantTurn, signal?: AbortSignal) =>
       api.post<T.AssistantReply>('/assistant/turns', body, { signal, timeoutMs: 45_000 }),
     getConversation: (conversationId: string, datasetId: string, signal?: AbortSignal) =>
-      api.get<T.ProposedConversation>(`/assistant/conversations/${enc(conversationId)}`, { signal, query: { dataset_id: datasetId } }),
+      api.get<T.Conversation>(`/assistant/conversations/${enc(conversationId)}`, { signal, query: { dataset_id: datasetId } }),
     checkDialog: (body: T.DialogRequest) => api.post<T.DialogVerdict>('/quality/check', body, { timeoutMs: 45_000 }),
 
     // ----- CRM & analytics (GPT Pro) -----
@@ -114,13 +117,31 @@ export function createEndpoints(api: ApiClient) {
     ) => api.get<T.ManagerMetrics[]>('/analytics/managers', { signal, query: { dataset_id: datasetId, ...filters } }),
 
     // ----- sales (GPT Pro) -----
-    listBuyers: (signal?: AbortSignal) => api.get<T.Buyer[]>('/buyers', { signal }),
+    listBuyerRegistries: (datasetId: string, signal?: AbortSignal) =>
+      api.get<T.BuyerRegistry[]>('/buyers/registries', { signal, query: { dataset_id: datasetId } }),
+    listBuyers: async (datasetId: string, version: string, signal?: AbortSignal) => {
+      const all: T.Buyer[] = [];
+      for (let offset = 0; offset < 2000; offset += 200) {
+        const page = await api.get<T.Buyer[]>('/buyers', { signal, query: { dataset_id: datasetId, version, offset, limit: 200 } });
+        all.push(...page);
+        if (page.length < 200) break;
+      }
+      return all;
+    },
+    importBuyers: (datasetId: string, csv: File, evidence: File, idempotencyKey: string) => {
+      const form = new FormData();
+      form.append('file', csv, csv.name);
+      form.append('evidence', evidence, evidence.name);
+      return api.request<Record<string, unknown>>('POST', '/buyers/import', { form, idempotencyKey, query: { dataset_id: datasetId } }).then(r => r.data);
+    },
     createSaleCards: (body: T.CardsRequest, idempotencyKey: string) =>
       api.post<T.SaleCard[]>('/sale-cards', body, { idempotencyKey }),
     listSaleCards: (datasetId: string, signal?: AbortSignal) =>
       api.get<T.SaleCard[]>('/sale-cards', { signal, query: { dataset_id: datasetId } }),
     recheckSaleCard: (cardId: string, datasetId: string) =>
-      api.post<T.SaleCard>(`/sale-cards/${enc(cardId)}/recheck`, { dataset_id: datasetId }),
+      api.post<T.SaleCard>(`/sale-cards/${enc(cardId)}/recheck`, undefined, { query: { dataset_id: datasetId } }),
+    updateSaleCard: (cardId: string, body: T.CardUpdate, idempotencyKey: string) =>
+      api.patch<T.SaleCard>(`/sale-cards/${enc(cardId)}`, body, { idempotencyKey }),
   };
 }
 

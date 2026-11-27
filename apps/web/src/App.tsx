@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ApiProvider, type ApiContextValue } from './api/context';
 import { asApiError } from './api/errors';
 import { CuttingPage } from './features/cutting/CuttingPage';
@@ -31,10 +31,13 @@ export function createQueryClient() {
 
 function Page() {
   const route = useRoute();
+  const firstRender = useRef(true);
   useEffect(() => {
     const label = SECTIONS.find(section => section.id === route.section)?.label ?? 'GlassFlow';
     document.title = `${label} · GlassFlow`;
-    document.getElementById('main-content')?.focus({ preventScroll: true });
+    // Move focus to the content on navigation (not on first load, so the skip link stays the first Tab stop).
+    if (firstRender.current) firstRender.current = false;
+    else document.getElementById('main-content')?.focus({ preventScroll: true });
   }, [route.section]);
   switch (route.section) {
     case 'cutting':

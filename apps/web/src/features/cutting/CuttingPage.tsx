@@ -83,7 +83,7 @@ function Cutting({ dataset }: { dataset: Dataset }) {
           actions={
             <label className="inline-field">
               План
-              <select value={planSummary.plan_id} onChange={event => setActivePlan(dataset.dataset_id, event.target.value)}>
+              <select aria-label="Версия плана" value={planSummary.plan_id} onChange={event => setActivePlan(dataset.dataset_id, event.target.value)}>
                 {plans.data.map(item => (
                   <option key={item.plan_id} value={item.plan_id}>
                     {item.plan_id} · рев. {item.revision} · {PLAN_STATUS_LABEL[item.status]}
@@ -584,6 +584,17 @@ function EditorPanel({ dataset, plan, remnants, parts, materials }: { dataset: D
               </Button>
             )}
           </div>
+        </div>
+      )}
+      {!changed && !savedDraft && plan.status === 'validated' && mutable && (
+        <div className="draft-bar" role="status">
+          <div>
+            <strong>Ревизия {plan.revision} проверена сервером, но еще не действующая.</strong>
+            <div className="small">Действующий план меняется только после подтверждения с проверкой версий кусков.</div>
+          </div>
+          <Button variant="primary" icon={<CheckCircle2 size={14} aria-hidden="true" />} onClick={() => setCommitOpen(true)}>
+            Подтвердить ревизию {plan.revision}
+          </Button>
         </div>
       )}
       {save.error && <ErrorState error={save.error} onRetry={() => save.mutate()} context="Сохранение черновика" />}

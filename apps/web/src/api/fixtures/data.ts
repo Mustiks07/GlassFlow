@@ -178,11 +178,11 @@ export function makeApplications(): ApplicationRow[] {
 }
 
 export const buyers: Buyer[] = [
-  { name: 'ТЕСТ: Мебельная фабрика «Пример»', city: 'Астана', category: 'мебельная фабрика', url: 'https://example.org/furniture', why: 'Фикстура: стеклянные фасады и полки.', source_url: 'https://example.org/furniture', score: 80, registry_version: 'fixture-1' },
-  { name: 'ТЕСТ: Дизайн-студия «Образец»', city: 'Астана', category: 'дизайн-студия', url: 'https://example.org/design', why: 'Фикстура: зеркальные панели в интерьере.', source_url: 'https://example.org/design', score: 70, registry_version: 'fixture-1' },
-  { name: 'ТЕСТ: Окна и двери «Шаблон»', city: 'Астана', category: 'окна и двери', url: 'https://example.org/windows', why: 'Фикстура: стеклянные вставки дверей.', source_url: 'https://example.org/windows', score: 75, registry_version: 'fixture-1' },
-  { name: 'ТЕСТ: Кафе «Модель»', city: 'Алматы', category: 'кафе или ресторан', url: 'https://example.org/cafe', why: 'Фикстура: стекло для столешниц.', source_url: 'https://example.org/cafe', score: 55, registry_version: 'fixture-1' },
-  { name: 'ТЕСТ: Строительная компания «Макет»', city: 'Астана', category: 'строительная компания', url: 'https://example.org/build', why: 'Фикстура: перегородки в офисах.', source_url: 'https://example.org/build', score: 65, registry_version: 'fixture-1' },
+  { buyer_id: 'B-FX-1', name: 'ТЕСТ: Мебельная фабрика «Пример»', city: 'Астана', category: 'мебельная фабрика', url: 'https://example.org/furniture', why: 'Фикстура: стеклянные фасады и полки.', source_url: 'https://example.org/furniture', score: 80 },
+  { buyer_id: 'B-FX-2', name: 'ТЕСТ: Дизайн-студия «Образец»', city: 'Астана', category: 'дизайн-студия', url: 'https://example.org/design', why: 'Фикстура: зеркальные панели в интерьере.', source_url: 'https://example.org/design', score: 70 },
+  { buyer_id: 'B-FX-3', name: 'ТЕСТ: Окна и двери «Шаблон»', city: 'Астана', category: 'окна и двери', url: 'https://example.org/windows', why: 'Фикстура: стеклянные вставки дверей.', source_url: 'https://example.org/windows', score: 75 },
+  { buyer_id: 'B-FX-4', name: 'ТЕСТ: Кафе «Модель»', city: 'Алматы', category: 'кафе или ресторан', url: 'https://example.org/cafe', why: 'Фикстура: стекло для столешниц.', source_url: 'https://example.org/cafe', score: 55 },
+  { buyer_id: 'B-FX-5', name: 'ТЕСТ: Строительная компания «Макет»', city: 'Астана', category: 'строительная компания', url: 'https://example.org/build', why: 'Фикстура: перегородки в офисах.', source_url: 'https://example.org/build', score: 65 },
 ];
 
 export function makeDatasets(): Dataset[] {

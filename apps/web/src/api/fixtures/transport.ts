@@ -8,6 +8,7 @@
  *   failNext(pathPrefix, status, code?) — next matching request fails with the envelope;
  *   setAiOffline(true|false)            — assistant replies in local_limited mode;
  *   bumpRemnant(id)                     — simulate a concurrent change → 409 on confirm;
+ *   takeRemnant(id)                     — another user reserved the remnant (status + version);
  *   setOffline(true|false)              — every request fails at network level;
  *   reset()
  */
@@ -23,7 +24,7 @@ import type {
   Job,
   ManagerMetrics,
   MetricEvidence,
-  ProposedRun,
+  RunView,
   Quote,
   Reminder,
   Remnant,
@@ -40,7 +41,7 @@ interface State {
   reminders: Record<string, Reminder[]>;
   cards: Record<string, SaleCard[]>;
   jobs: Record<string, Job & { polls: number; kind: string; target?: number }>;
-  runs: Record<string, ProposedRun>;
+  runs: Record<string, RunView & { run_id: string; dataset_id: string }>;
   settings: AISettings;
   backups: BackupInfo[];
   imports: Record<string, ImportPreview>;
@@ -120,6 +121,14 @@ export function createFixtureTransport(): Transport {
       state.bumped.add(id);
       for (const list of Object.values(state.remnants)) for (const r of list) if (r.remnant_id === id) r.version = (r.version ?? 0) + 1;
     },
+    takeRemnant: (id: string) => {
+      for (const list of Object.values(state.remnants))
+        for (const r of list)
+          if (r.remnant_id === id) {
+            r.status = 'reserved';
+            r.version = (r.version ?? 0) + 1;
+          }
+    },
     reset: () => (state = initial()),
   };
   if (typeof window !== 'undefined') (window as unknown as { __glassflowFixture: typeof controls }).__glassflowFixture = controls;
@@ -133,7 +142,8 @@ export function createFixtureTransport(): Transport {
 
     // ---------- platform ----------
     if (path === '/health') return ok({ status: 'ok', app: 'GlassFlow', version: '0.1.0-fixture' });
-    if (path === '/ready') return ok({ status: 'degraded', database: true, business_modules_ready: false, ai_available: !state.aiOffline && state.settings.secret_present });
+    if (path === '/ready')
+      return ok({ status: 'degraded', database: true, business_modules_ready: false, schema: true, worker: true, ai: state.aiOffline ? 'unavailable' : 'unchecked', modules: { platform: true, cutting: false, intelligence: true, crm: true, sales: true } });
     if (path === '/session') return ok({ session_token: 'fixture-session-token' });
     if (path === '/datasets' && method === 'GET') return ok(state.datasets);
     if (seg[0] === 'datasets' && seg.length === 2) {
@@ -203,34 +213,58 @@ export function createFixtureTransport(): Transport {
       const dataset = datasetOf(body.dataset_id);
       if (!dataset) return fail(404, 'DATASET_NOT_FOUND', 'Набор не найден.');
       const runId = nextId('run');
-      const modules = (body.modules as string[]) ?? [];
+      const modules = ((body.modules as string[]) ?? []) as RunView['missing_modules'];
+      const jobs = modules.map(module => {
+        const job = createJob(module, { run_id: runId, dataset_id: dataset.dataset_id });
+        return job;
+      });
       state.runs[runId] = {
         run_id: runId,
         dataset_id: dataset.dataset_id,
+        manifest: { run_id: runId, dataset_id: dataset.dataset_id, modules, config_version: String(body.config_version), note: 'FIXTURE — не настоящий RunManifest' },
         status: 'running',
-        created_at: new Date().toISOString(),
-        modules: modules.map(module => ({ module: module as ProposedRun['modules'][number]['module'], state: 'queued', job_id: null, output_file: null, row_count: null, self_check: null, errors: [] })),
-        manifest: null,
-        files: [],
-        official_scores_available: false,
+        jobs,
+        missing_modules: modules,
       };
-      return ok(createJob('run', { run_id: runId, dataset_id: dataset.dataset_id }));
+      return ok(createJob('run', { run_id: runId, dataset_id: dataset.dataset_id }), 202);
     }
     if (seg[0] === 'runs' && seg.length === 2) {
       const run = state.runs[seg[1]];
-      return run ? ok(run) : fail(404, 'RUN_NOT_FOUND', 'Прогон не найден.');
+      if (!run) return fail(404, 'RUN_NOT_FOUND', 'Прогон не найден.');
+      // Advance one module per poll so the UI shows real intermediate states.
+      const next = run.jobs.find(job => job.state === 'queued' || job.state === 'running');
+      if (next) {
+        const failed = (next.kind === 'assistant' && state.aiOffline) || (next.kind === 'cards' && run.jobs.find(job => job.kind === 'cutting')?.state === 'failed');
+        next.state = failed ? 'failed' : 'completed';
+        next.stage = failed ? 'Ошибка модуля' : 'Готово';
+        next.error_code = failed ? (next.kind === 'assistant' ? 'AI_UNAVAILABLE' : 'CUTTING_NOT_COMPLETED') : null;
+      }
+      const done = run.jobs.filter(job => job.state === 'completed').map(job => job.kind as RunView['missing_modules'][number]);
+      const waiting = run.jobs.some(job => job.state === 'queued' || job.state === 'running');
+      run.status = waiting ? 'running' : done.length === run.jobs.length ? 'completed' : done.length ? 'partial' : 'blocked';
+      run.missing_modules = (run.manifest.modules ?? []).filter(module => !done.includes(module));
+      const { run_id: _r, dataset_id: _d, ...view } = run;
+      void _r;
+      void _d;
+      return ok(view);
     }
     if (seg[0] === 'runs' && seg[2] === 'export') {
       const run = state.runs[seg[1]];
       if (!run) return fail(404, 'RUN_NOT_FOUND', 'Прогон не найден.');
-      const failed = run.modules.filter(module => module.state !== 'completed');
+      const headers: Record<string, [string, string]> = {
+        cutting: ['solution.csv', 'part_id,remnant_id,x_mm,y_mm,rot'],
+        assistant: ['answers.csv', 'id,answer'],
+        crm: ['picks.csv', 'app_id'],
+        quality: ['verdicts.csv', 'id,verdict,correct'],
+        cards: ['sale_cards.csv', 'remnant_id,title,price_tg,description,target_buyer,top3_buyers'],
+      };
       const files: Record<string, string> = {};
-      for (const module of run.modules.filter(item => item.state === 'completed')) {
-        const header = { cutting: 'part_id,remnant_id,x_mm,y_mm,rot', assistant: 'id,answer', crm: 'app_id', quality: 'id,verdict,correct', cards: 'remnant_id,title,price_tg,description,target_buyer,top3_buyers' }[module.module];
-        const name = module.output_file ?? `${module.module}.csv`;
+      for (const job of run.jobs.filter(item => item.state === 'completed')) {
+        const [name, header] = headers[job.kind as string];
         files[name] = URL.createObjectURL(new Blob([`${header}\n`], { type: 'text/csv' }));
       }
-      return ok({ run_id: run.run_id, status: failed.length ? 'partial' : 'ready', files, errors: failed.map(module => `${module.module}: ${module.errors.join('; ') || module.state}`) });
+      const missing = run.jobs.filter(item => item.state !== 'completed');
+      return ok({ run_id: run.run_id, status: missing.length === 0 && run.jobs.length === 5 ? 'ready' : Object.keys(files).length ? 'partial' : 'blocked', files, errors: missing.map(job => `${job.kind}: ${job.error_code ?? job.state}`) });
     }
 
     // ---------- settings & system ----------
@@ -242,20 +276,16 @@ export function createFixtureTransport(): Transport {
       state.settings = { ...state.settings, ...(rest as Partial<AISettings>), version: state.settings.version + 1, secret_present: state.settings.secret_present || Boolean(api_key) };
       return ok(state.settings);
     }
-    if (path === '/settings/ai/check') return ok({ available: false, provider: state.settings.provider, model_id: state.settings.model_id || null, mode: state.settings.mode, message_ru: 'Фикстура: реальный провайдер не вызывается. Live-проверка выполняется только с настоящим backend и ключом.' });
-    if (path === '/system/backups') return ok(state.backups);
+    // Mirrors Pro 6512eae: the AI checker is not wired → 503; list/journal routes do not exist yet → HTTP_404.
+    if (path === '/settings/ai/check') return fail(503, 'AI_ADAPTER_UNAVAILABLE', 'Проверка AI-провайдера пока не подключена; локальное ядро доступно.', { retryable: true });
+    if (path === '/system/backups' || path === '/system/journal') return fail(404, 'HTTP_404', 'Запрос не выполнен.');
     if (path === '/system/backup') {
-      const info = { backup_id: nextId('backup'), created_at: new Date().toISOString(), size_bytes: 530000, integrity: 'ok' };
+      const info = { backup_id: nextId('backup'), created_at: new Date().toISOString(), sha256: 'fx'.repeat(32), integrity: 'ok' };
       state.backups.unshift(info);
       return ok(info);
     }
     if (path === '/system/restore') return ok({ restored: true, previous_backup_id: nextId('backup-before-restore') });
-    if (path === '/system/shutdown') return ok({ stopping: true });
-    if (path === '/system/journal')
-      return ok([
-        { at: '2026-11-27T05:00:00Z', level: 'info', event: 'startup', detail: 'Фикстура: запуск интерфейса', correlation_id: null },
-        { at: '2026-11-27T05:01:00Z', level: 'info', event: 'migrations', detail: 'Фикстура: схема актуальна', correlation_id: null },
-      ]);
+    if (path === '/system/shutdown') return ok({ status: 'worker_stopped', restart_required: true });
 
     // ---------- domain: dataset scope required ----------
     if (!datasetId || !datasetOf(datasetId)) {
@@ -283,6 +313,17 @@ export function createFixtureTransport(): Transport {
       };
       state.remnants[datasetId!].push(created);
       return ok(created);
+    }
+    if (seg[0] === 'remnants' && seg[2] === 'reserve') {
+      const blocked = mutableOnly();
+      if (blocked) return blocked;
+      const target = state.remnants[datasetId!].find(item => item.remnant_id === seg[1]);
+      if (!target) return fail(404, 'REMNANT_NOT_FOUND', 'Остаток не найден в этом наборе.');
+      if (body.expected_version !== target.version || target.status !== 'available')
+        return fail(409, 'REMNANT_CONFLICT', 'Остаток уже изменен или занят. Показано актуальное состояние.', { conflict_objects: [target.remnant_id] });
+      target.status = 'reserved';
+      target.version = (target.version ?? 0) + 1;
+      return ok(target);
     }
     if (seg[0] === 'remnants' && seg.length === 3) {
       const blocked = mutableOnly();
@@ -380,22 +421,28 @@ export function createFixtureTransport(): Transport {
       const quote = state.quotes[seg[1]];
       if (!quote) return fail(404, 'QUOTE_NOT_FOUND', 'Расчет не найден.');
       if (body.expected_revision !== quote.revision) return fail(409, 'REVISION_CONFLICT', 'Расчет уже изменен.', { conflict_objects: [quote.quote_id] });
-      const changed = body.changed_fields as Body;
-      return ok(cannedQuote(quote.quote_id, quote.revision + 1, { ...changed, customer_id: quote.customer_id, dataset_id: datasetId }));
+      const changed = body.changes as Body;
+      const merged = { catalog_product_id: quote.catalog_product_id, dimensions: quote.dimensions, quantity: quote.quantity, processing: quote.processing, customer_id: quote.customer_id, ...changed, dataset_id: datasetId, inventory_mode: 'free_whole_remnants' };
+      const next = cannedQuote(quote.quote_id, quote.revision + 1, merged);
+      next.diff = {
+        from_revision: quote.revision,
+        to_revision: next.revision,
+        changed_fields: Object.keys(changed).filter(field => JSON.stringify(changed[field]) !== JSON.stringify((quote as Record<string, unknown>)[field])),
+        lines: next.components.map((line, index) => ({ component: line.component ?? line.label, before_tg: quote.components[index]?.amount_tg ?? null, after_tg: line.amount_tg })),
+        total_before_tg: quote.total_tg,
+        total_after_tg: next.total_tg,
+      };
+      return ok(next);
     }
     if (seg[0] === 'quotes' && seg[2] === 'confirm') {
       const blocked = mutableOnly();
       if (blocked) return blocked;
       const quote = state.quotes[seg[1]];
       if (!quote) return fail(404, 'QUOTE_NOT_FOUND', 'Расчет не найден.');
-      if (body.remnant_id) {
-        const r = state.remnants[datasetId!].find(item => item.remnant_id === body.remnant_id);
-        if (!r || r.version !== body.expected_remnant_version || r.status !== 'available')
-          return fail(409, 'REMNANT_CONFLICT', 'Остаток уже изменен или занят. Показано актуальное состояние.', { conflict_objects: [String(body.remnant_id)] });
-        r.status = 'reserved';
-        r.version = (r.version ?? 0) + 1;
-      }
+      if (body.expected_revision !== quote.revision) return fail(409, 'REVISION_CONFLICT', 'Расчет изменен; подтвердите актуальную ревизию.', { conflict_objects: [quote.quote_id] });
       quote.status = 'confirmed';
+      quote.confirmed_by = String(body.confirmed_by);
+      quote.confirmed_at = new Date().toISOString();
       return ok(quote);
     }
     if (path === '/assistant/turns') {
@@ -413,9 +460,22 @@ export function createFixtureTransport(): Transport {
         mode: state.aiOffline ? 'local_limited' : 'online',
         provider: state.aiOffline ? null : 'fixture',
         model_id: state.aiOffline ? null : 'fixture-model',
-        confirmed_parameters: dims ? { catalog_product_id: 'steklo-6-prozrachnoe', length_mm: dims[1], width_mm: dims[2] } : {},
-        assumptions: dims ? ['количество 1 шт — не подтверждено клиентом'] : [],
-        tool_calls: [{ tool: 'search_catalog', status: 'ok' }],
+        status: dims ? 'answered' : 'clarification',
+        answer_path: state.aiOffline ? 'fallback' : 'deterministic',
+        ai_unavailable_reason: state.aiOffline ? 'Фикстура: AI-провайдер отключен' : null,
+        card: {
+          intent: 'quote',
+          catalog_product_id: dims ? 'steklo-6-prozrachnoe' : null,
+          product_name: dims ? 'Стекло 6 мм прозрачное' : null,
+          confirmed_parameters: dims ? { catalog_product_id: 'steklo-6-prozrachnoe', length_mm: dims[1], width_mm: dims[2] } : {},
+          assumptions: dims ? ['количество 1 шт — не подтверждено клиентом'] : [],
+          missing_parameters: dims ? ['обработка кромки'] : ['материал', 'толщина', 'размеры'],
+          normalized_dimensions: dims ? `${dims[1]}×${dims[2]} мм` : null,
+          facts: dims ? [{ fact_id: 'f1', kind: 'цена за м²', value: '8000', unit: '₸/м²', source_ref: 'kb:steklo-6-prozrachnoe', status: 'supported' }] : [],
+          alternatives: [],
+          needs_manager: false,
+        },
+        tool_calls: [{ tool: 'search_catalog', status: 'ok', summary: 'фикстура' }],
       };
       return ok(reply);
     }
@@ -423,9 +483,9 @@ export function createFixtureTransport(): Transport {
     if (path === '/quality/check') {
       const manager = String(body.manager);
       let verdict: DialogVerdict;
-      if (/10\s?050/.test(manager)) verdict = { id: String(body.id), verdict: 'ERROR', correct: '10000', evidence: [{ source: 'kb', source_version: 'sha256:fixture-kb', record_id: 'steklo-seroe', field: 'цена_за_м2_тг' }], explanation: 'Фикстура: в ответе 10 050 ₸, в KB 10 000 ₸/м².', extracted_value_tg: '10050' };
+      if (/10\s?050/.test(manager)) verdict = { id: String(body.id), verdict: 'ERROR', correct: '10000', evidence: [{ source: 'kb', source_version: 'sha256:fixture-kb', record_id: 'steklo-seroe', field: 'цена_за_м2_тг' }], explanation_ru: 'Фикстура: в ответе 10 050 ₸, в KB 10 000 ₸/м².', reference_tg: '10000', reference_meaning: 'per_m2', mentions: [{ raw: '10 050 тг', amount_tg: '10050', meaning: 'per_m2' }] };
       else if (/10\s?000/.test(manager)) verdict = { id: String(body.id), verdict: 'OK', correct: null, evidence: [{ source: 'kb', source_version: 'sha256:fixture-kb', record_id: 'steklo-seroe', field: 'цена_за_м2_тг' }] };
-      else verdict = { id: String(body.id), verdict: 'NEEDS_REVIEW', correct: null, evidence: [], explanation: 'Фикстура: заготовленного ответа нет — нужна проверка менеджера.' };
+      else verdict = { id: String(body.id), verdict: 'NEEDS_REVIEW', correct: null, evidence: [], explanation_ru: 'Фикстура: заготовленного ответа нет — нужна проверка менеджера.', reason_code: 'NO_PRICE_CONTEXT' };
       return ok(verdict);
     }
 
@@ -488,36 +548,55 @@ export function createFixtureTransport(): Transport {
     if (path === '/analytics/managers') return ok(fixtureMetrics(q));
 
     // ---------- sales ----------
-    if (path === '/buyers') return ok(data.buyers);
+    if (path === '/buyers/registries') return ok([{ version: 'fixture-registry-1', count: data.buyers.length, note: 'ТЕСТОВЫЙ реестр' }]);
+    if (path === '/buyers') {
+      if (q.version !== 'fixture-registry-1') return fail(404, 'REGISTRY_NOT_FOUND', 'Реестр не найден.');
+      return ok(data.buyers);
+    }
+    if (path === '/buyers/import') return ok({ version: 'fixture-registry-1', count: data.buyers.length });
     if (path === '/sale-cards' && method === 'GET') return ok(state.cards[datasetId!] ?? []);
     if (path === '/sale-cards' && method === 'POST') {
       const plan = state.plans[datasetId!].find(item => item.plan_id === body.plan_id);
       if (!plan) return fail(404, 'PLAN_NOT_FOUND', 'План не найден.');
       const free = plan.free_original_remnant_ids.slice(0, 5);
       if (free.length < 5) return fail(409, 'NOT_ENOUGH_FREE_REMNANTS', 'Меньше пяти свободных исходных кусков в выбранном плане.');
+      const factor = String(body.factor ?? '0.50');
       const cards: SaleCard[] = free.map((id, index) => {
         const r = state.remnants[datasetId!].find(item => item.remnant_id === id)!;
+        const top = [0, 1, 2].map(offset => data.buyers[(index + offset) % data.buyers.length]);
         return {
           card_id: nextId('CARD'),
+          dataset_id: datasetId!,
           remnant_id: id,
           title: `ТЕСТ: ${r.material_id} ${r.dimensions.length_mm}×${r.dimensions.width_mm} мм`,
-          price_tg: ['1234.50', '987.00', '456.75', '2100.00', '3999.99'][index],
-          description: `Фикстура: целый исходный кусок, место ${r.location_raw}.`,
-          target_buyer: data.buyers[index % data.buyers.length].category,
-          top3_buyers: [0, 1, 2].map(offset => data.buyers[(index + offset) % data.buyers.length].name),
+          price_tg: fixturePrice(r, factor),
+          description: `Фикстура: целый исходный кусок, ${r.dimensions.length_mm}×${r.dimensions.width_mm} мм, место ${r.location_raw}.`,
+          target_buyer: top[0].name,
+          top3_buyers: top.map(buyer => buyer.name),
+          top3_buyer_ids: top.map(buyer => buyer.buyer_id as string),
           status: 'ready',
-          material_id: r.material_id,
-          dimensions: r.dimensions,
-          location_raw: r.location_raw,
-          discount_factor: '0.50',
-          material_valuation_tg: ['2469.00', '1974.00', '913.50', '4200.00', '7999.98'][index],
+          factor,
           plan_id: plan.plan_id,
           plan_revision: plan.revision,
+          remnant_version: r.version ?? 0,
+          buyer_registry_version: 'fixture-registry-1',
           version: 0,
+          assumptions: 'Коэффициент - проектное допущение, не рыночная оценка и не факт продажи',
         };
       });
       state.cards[datasetId!] = cards;
       return ok(cards);
+    }
+    if (seg[0] === 'sale-cards' && seg.length === 2 && method === 'PATCH') {
+      const card = (state.cards[datasetId!] ?? []).find(item => item.card_id === seg[1]);
+      if (!card) return fail(404, 'CARD_NOT_FOUND', 'Карточка не найдена.');
+      if (body.expected_version !== card.version) return fail(409, 'VERSION_CONFLICT', 'Карточка изменена.', { conflict_objects: [String(card.card_id)] });
+      if (card.status === 'stale') return fail(409, 'STALE_CARD', 'Карточка устарела; создайте новую после пересчета.');
+      const r = state.remnants[datasetId!].find(item => item.remnant_id === card.remnant_id)!;
+      card.factor = String(body.factor);
+      card.price_tg = fixturePrice(r, card.factor);
+      card.version = (card.version ?? 0) + 1;
+      return ok(card);
     }
     if (seg[0] === 'sale-cards' && seg[2] === 'recheck') {
       const card = (state.cards[datasetId!] ?? []).find(item => item.card_id === seg[1]);
@@ -554,9 +633,28 @@ export function createFixtureTransport(): Transport {
     const key = dims ? `${dims.length_mm}x${dims.width_mm}x${qty}` : '';
     if (product === 'steklo-6-prozrachnoe' && processing === 'euro_edge' && table[key]) {
       const [glass, edge, total] = table[key];
-      quote = { ...base, status: 'calculated', components: [{ label: 'Стекло 6 мм прозрачное', amount_tg: glass, evidence }, { label: 'Евро-кромка 6 мм, 4 стороны', amount_tg: edge, evidence }], total_tg: total, clarification: null, material_mapping_status: 'confirmed', material_id: 'clear-6', rounding_policy: 'ROUND_HALF_UP до 0,01 по позициям' };
+      const r = state.remnants[String(body.dataset_id)]?.find(item => item.remnant_id === 'R006');
+      const fits = dims!.length_mm <= 450 && dims!.width_mm <= 370 && qty === 1 && r?.status === 'available';
+      quote = {
+        ...base,
+        status: 'calculated',
+        components: [
+          { label: 'Стекло 6 мм прозрачное', amount_tg: glass, evidence, component: 'glass', formula: `${dims!.length_mm}×${dims!.width_mm}/1 000 000 м² × 8 000 ₸ × ${qty}` },
+          { label: 'Евро-кромка 6 мм, 4 стороны', amount_tg: edge, evidence, component: 'edge', formula: `2×(${dims!.length_mm}+${dims!.width_mm})/1000 м × 400 ₸ × ${qty}` },
+        ],
+        total_tg: total,
+        clarification: null,
+        material_mapping_status: 'confirmed',
+        material_id: 'clear-6',
+        product_name: 'Стекло 6 мм прозрачное',
+        processing: body.processing as Quote['processing'],
+        rounding_policy: 'ROUND_HALF_UP до 0,01 по позициям; итог = сумма позиций',
+        inventory_status: body.inventory_mode && body.inventory_mode !== 'none' ? 'checked' : 'not_requested',
+        candidate_refs: fits && r ? [{ remnant_id: 'R006', remnant_version: r.version ?? 0, x_mm: 5, y_mm: 5, rot: 0, location_raw: r.location_raw }] : [],
+        inventory_reason_codes: fits ? [] : [r?.status !== 'available' ? 'occupied_by_reservation' : 'no_free_whole_remnant'],
+      };
     } else if (product === 'steklo-riflenoe-8') {
-      quote = { ...base, status: 'needs_review', components: [], total_tg: null, clarification: 'Известна только цена листа 170 000 ₸; ставки за м² нет. Расчет детали дает менеджер.', material_mapping_status: 'unmapped', material_id: null, unknown_fields: ['цена_за_м2_тг'] };
+      quote = { ...base, status: 'needs_review', components: [], total_tg: null, clarification: 'Известна только цена листа 170 000 ₸; ставки за м² нет. Расчет детали дает менеджер.', material_mapping_status: 'unmapped', material_id: null, inventory_status: 'mapping_required', unknown_components: [{ component: 'glass', reason_code: 'PER_M2_PRICE_UNKNOWN', message_ru: 'Ставка за м² отсутствует в KB; известна только цена листа 170 000 ₸.' }] };
     } else {
       quote = { ...base, status: 'needs_review', components: [], total_tg: null, clarification: 'Фикстура: для этих параметров нет заготовленного ответа.', material_mapping_status: 'ambiguous', material_id: null };
     }
@@ -596,28 +694,17 @@ export function createFixtureTransport(): Transport {
     }
     if (job.kind === 'run') {
       const run = state.runs[job.run_id!];
-      job.state = 'running';
-      const index = job.polls - 1;
-      if (run && index < run.modules.length) {
-        const module = run.modules[index];
-        module.state = module.module === 'assistant' && state.aiOffline ? 'failed' : 'completed';
-        module.errors = module.state === 'failed' ? ['AI недоступен: ответы не сформированы'] : [];
-        module.output_file = { cutting: 'solution.csv', assistant: 'answers.csv', crm: 'picks.csv', quality: 'verdicts.csv', cards: 'sale_cards.csv' }[module.module];
-        module.row_count = module.state === 'completed' ? { cutting: 12, assistant: 18, crm: 25, quality: 8, cards: 5 }[module.module] : null;
-        module.self_check = module.state === 'completed' ? 'фикстура: схема и число строк' : null;
-        job.completed = index + 1;
-        job.stage = `Модуль ${module.module}`;
-      }
-      if (run && index >= run.modules.length - 1) {
-        job.state = 'completed';
-        run.status = run.modules.every(module => module.state === 'completed') ? 'ready' : 'partial';
-        run.manifest = { run_id: run.run_id, dataset_id: run.dataset_id, config_version: 'contest-v1', note: 'FIXTURE — не настоящий RunManifest' };
-        run.files = run.modules.filter(module => module.state === 'completed').map(module => ({ name: module.output_file!, sha256: null, rows: module.row_count, validator: 'не запускался (фикстура)', download_url: null }));
-      }
+      const pending = run?.jobs.filter(item => item.state === 'queued' || item.state === 'running') ?? [];
+      job.state = pending.length ? 'running' : 'completed';
+      job.total = run?.jobs.length ?? null;
+      job.completed = (run?.jobs.length ?? 0) - pending.length;
+      job.stage = pending.length ? `Модули: ${job.completed} из ${job.total}` : 'Все модули завершены (успешно или с ошибкой)';
+      return;
     }
+    // module jobs advance via GET /runs/{id}
   }
 
-  return {
+  const inner: Transport = {
     kind: 'fixture',
     async request(req) {
       await new Promise(resolve => setTimeout(resolve, 60));
@@ -639,6 +726,14 @@ export function createFixtureTransport(): Transport {
         return response;
       }
       return route(req);
+    },
+  };
+  // Like a real network, never hand out references to the fixture's internal state.
+  return {
+    kind: 'fixture',
+    async request(req) {
+      const response = await inner.request(req);
+      return { ...response, body: response.body instanceof Blob ? response.body : structuredClone(response.body) };
     },
   };
 }
@@ -693,4 +788,16 @@ function fixtureMetrics(q: TransportRequest['query'] = {}): ManagerMetrics[] {
       source_manager_values: [manager],
     };
   });
+}
+
+/** Fixture-only price: integer arithmetic in tiyn so test numbers are exact (not product logic). */
+function fixturePrice(remnant: Remnant, factor: string): string {
+  const rate = BigInt(data.materials.find(item => item.material_id === remnant.material_id)?.unit_price_tg ?? '0');
+  const [whole, frac = ''] = factor.split('.');
+  const factorHundredths = BigInt(whole) * 100n + BigInt((frac + '00').slice(0, 2));
+  const area = BigInt(remnant.dimensions.length_mm * remnant.dimensions.width_mm);
+  // tiyn = area/1e6 × rate × factor/100 × 100 → area × rate × factor / 1e6, half-up
+  const numerator = area * rate * factorHundredths;
+  const tiyn = (numerator + 500_000n) / 1_000_000n;
+  return `${tiyn / 100n}.${String(tiyn % 100n).padStart(2, '0')}`;
 }

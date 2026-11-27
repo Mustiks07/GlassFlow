@@ -16,6 +16,12 @@ interface Turn {
   reply?: AssistantReply;
 }
 
+const REPLY_STATUS: Record<string, string> = {
+  clarification: 'Нужно уточнение',
+  manager_handoff: 'Передача менеджеру',
+  limited: 'Ограниченный режим',
+};
+
 const PARAM_LABEL: Record<string, string> = {
   catalog_product_id: 'Товар',
   length_mm: 'Длина, мм',
@@ -43,7 +49,12 @@ export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote
   });
   useEffect(() => {
     if (restored.data && turns.length === 0) {
-      setTurns(restored.data.turns.map(turn => ({ role: turn.role, text: turn.text })));
+      setTurns(
+        restored.data.turns.flatMap(turn => [
+          { role: 'user' as const, text: turn.user_text },
+          { role: 'assistant' as const, text: turn.reply.answer, reply: turn.reply },
+        ]),
+      );
     }
   }, [restored.data, turns.length]);
 
@@ -55,6 +66,7 @@ export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote
         conversation_id: draft.conversationId,
         customer_id: draft.customerId || null,
         kb_version: kbVersion ?? '',
+        inventory_mode: 'free_whole_remnants',
       }),
     onSuccess: (reply, text) => {
       setTurns(current => [...current, { role: 'user', text }, { role: 'assistant', text: reply.answer, reply }]);
@@ -64,10 +76,10 @@ export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote
   });
 
   const lastReply = [...turns].reverse().find(turn => turn.reply)?.reply;
-  const offline = lastReply?.mode === 'local_limited' || (send.error && ['unavailable', 'offline', 'timeout', 'rate_limited'].includes(asApiError(send.error).kind));
+  const offline = lastReply?.mode === 'local_limited' || Boolean(lastReply?.ai_unavailable_reason) || (send.error && ['unavailable', 'offline', 'timeout', 'rate_limited'].includes(asApiError(send.error).kind));
 
   const applyParameters = (reply: AssistantReply) => {
-    const params = reply.confirmed_parameters ?? {};
+    const params = reply.card?.confirmed_parameters ?? reply.quote?.confirmed_parameters ?? {};
     updateDraft(dataset.dataset_id, {
       catalogProductId: params.catalog_product_id ?? draft.catalogProductId,
       length: params.length_mm ?? draft.length,
@@ -110,7 +122,7 @@ export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote
           ))}
         </ol>
       )}
-      {offline && <OfflineAiNotice detail={send.error ? asApiError(send.error).message : 'ответ сформирован локальными правилами'} />}
+      {offline && <OfflineAiNotice detail={send.error ? asApiError(send.error).message : lastReply?.ai_unavailable_reason ?? 'ответ сформирован локальными правилами'} />}
       {!kbVersion && <StatusBadge tone="warn">Версия базы знаний не определена для этого набора — расчет недоступен</StatusBadge>}
       <form
         className="stack"
@@ -165,7 +177,9 @@ export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote
 }
 
 function ReplyDetails({ reply, onApply }: { reply: AssistantReply; onApply: () => void }) {
-  const params = Object.entries(reply.confirmed_parameters ?? {});
+  const card = reply.card;
+  const params = Object.entries(card?.confirmed_parameters ?? reply.quote?.confirmed_parameters ?? {});
+  const assumptions = card?.assumptions ?? reply.quote?.assumptions ?? [];
   return (
     <div className="reply-details">
       {reply.clarification && (
@@ -175,6 +189,9 @@ function ReplyDetails({ reply, onApply }: { reply: AssistantReply; onApply: () =
       )}
       <div className="row wrap small">
         <StatusBadge tone={reply.mode === 'online' ? 'info' : 'warn'}>{reply.mode === 'online' ? 'AI-ответ' : 'Локальный режим'}</StatusBadge>
+        {reply.status && reply.status !== 'answered' && <StatusBadge tone="warn">{REPLY_STATUS[reply.status]}</StatusBadge>}
+        {reply.verifier_status === 'unsupported_replaced' && <StatusBadge tone="warn">Непроверенное утверждение заменено</StatusBadge>}
+        {card?.needs_manager && <StatusBadge tone="warn">Нужен менеджер</StatusBadge>}
         {reply.provider && (
           <span className="muted">
             {reply.provider} · {reply.model_id}
@@ -196,23 +213,41 @@ function ReplyDetails({ reply, onApply }: { reply: AssistantReply; onApply: () =
           </Button>
         </div>
       )}
-      {reply.assumptions && reply.assumptions.length > 0 && (
+      {assumptions.length > 0 && (
         <div className="assumptions small">
-          <strong>Предположения (не подтверждены):</strong> {reply.assumptions.join('; ')}
+          <strong>Предположения (не подтверждены):</strong> {assumptions.join('; ')}
         </div>
       )}
-      {(reply.evidence.length > 0 || reply.tool_calls?.length) && (
-        <Details summary="Источники и вызовы инструментов">
+      {card && card.missing_parameters.length > 0 && (
+        <div className="small">
+          <strong>Не хватает:</strong> {card.missing_parameters.join(', ')}
+        </div>
+      )}
+      {card?.normalized_dimensions && <div className="small">Размеры после нормализации: {card.normalized_dimensions}</div>}
+      {(reply.evidence.length > 0 || Boolean(reply.tool_calls?.length) || Boolean(card?.facts.length)) && (
+        <Details summary="Источники, проверенные факты и вызовы инструментов">
           <EvidenceList evidence={reply.evidence} />
-          {reply.tool_calls && (
-            <ul className="plain small mono">
-              {reply.tool_calls.map((call, index) => (
-                <li key={index}>
-                  {call.tool}: {call.status}
+          {card && card.facts.length > 0 && (
+            <ul className="plain small">
+              {card.facts.map(fact => (
+                <li key={fact.fact_id}>
+                  {fact.kind}: <b>{fact.value}</b>
+                  {fact.unit ? ` ${fact.unit}` : ''} · <span className="mono">{fact.source_ref}</span> · {fact.status === 'supported' ? 'подтверждено' : fact.status === 'unknown' ? 'неизвестно' : 'не подтверждено'}
                 </li>
               ))}
             </ul>
           )}
+          {reply.tool_calls && reply.tool_calls.length > 0 && (
+            <ul className="plain small mono">
+              {reply.tool_calls.map((call, index) => (
+                <li key={index}>
+                  {call.tool}: {call.status}
+                  {call.summary ? ` — ${call.summary}` : ''}
+                </li>
+              ))}
+            </ul>
+          )}
+          {reply.answer_path && <p className="small muted">Путь ответа: {reply.answer_path}{reply.latency_ms ? ` · ${reply.latency_ms} мс` : ''}</p>}
         </Details>
       )}
     </div>
