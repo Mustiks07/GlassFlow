@@ -1,14 +1,14 @@
 {
-  "measured_at": "2026-11-27T18:16:03.873648+00:00",
+  "measured_at": "2026-11-27T19:34:50.153710+00:00",
   "os": "Windows-10-10.0.19045-SP0",
-  "exe_sha256": "3ec10783695279698d1ebfb8ce437e8fb19d94fba6971cfa7188901cbc31b759",
+  "exe_sha256": "6f36ba02c19b21b8b9f56ae1af08a07b09d9ed16e857a5456cc2f6178da5a526",
   "native_worker": {
     "scipy_x": 2,
     "ortools_x": 2,
     "ortools_optimal": true,
     "frozen_worker": true,
     "worker_executable": "GlassFlow.exe",
-    "pid": 16356
+    "pid": 5712
   },
   "pe_subsystem": {
     "main": 2,
@@ -16,15 +16,15 @@
   },
   "clean_windows": "not_run",
   "ui_flow": "not_run; C1 integration required",
-  "build_commit": "070d0c83815699348bd685910cc016346734b7d4",
-  "runtime_source_digest": "d68d44160b9e54048be8031e625b0359009a94e6ec68c605d98c575e84e433f0",
+  "build_commit": "2b69469a52e0584bd3af9fd288bed0192659802c",
+  "runtime_source_digest": "da8a1b336342858e866816723922af01b66472d43ab70e287b9d6011a965a5f6",
   "official_validator_cli": {
     "fixture": "synthetic all-NEW; format only, not solver acceptance",
     "exit_code": 0,
     "stdout": "деталей всего: 298; из остатков: 0; ошибок: 0; не указано в решении: 0\nплощадь деталей: 187.87 м²; закрыто остатками: 0.00 м²; ДОЛЯ = 0.00 %\nне пришлось резать нового стекла на 0 тг\nRESULT coverage=0.000000 invalid=0 money=0\n",
     "stderr": ""
   },
-  "first_start_ms": 1625.0,
+  "first_start_ms": 1875.0,
   "singleton": "passed",
   "downloaded_picks_sha256": "b01cd1035793666d1c7d25db66e087d77c7b59a4c752606148bec311dcd02482",
   "official_crm_open_evaluation": {
@@ -47,12 +47,14 @@
   "upgrade_checks": {
     "u01": "draft+missing source503+restart; actual C2/C3 reservation not_run",
     "u07": "synthetic scenario+native PDF+same hash+restart; human labor not_run",
-    "pdf_sha256": "e6ba2b1d8991ab69f7d102ec60dc89165f3dacde4e3a2c7541d9219de2ab3203",
+    "u04": "draft+unknown total null+missing source503+restart; actual domain basket not_run",
+    "u06": "schema3+empty actual ledger; actual C2 consumption not_run",
+    "pdf_sha256": "0352f0a46946b29b0bbcc2650658341e9cc4ac77c25d4f82475b563927beef2f",
     "result_hash": "991c40c2e0bfd2dfca824c641c08ffbb390b6df12e377e39fac23eff0fb100b1"
   },
-  "restart_ms": 1640.0000000139698,
+  "restart_ms": 1656.0000000754371,
   "persistence": "passed",
   "backup_restore": "passed",
-  "restore_restart_ms": 1562.999999965541,
+  "restore_restart_ms": 1672.000000020489,
   "status": "passed_on_build_machine"
 }

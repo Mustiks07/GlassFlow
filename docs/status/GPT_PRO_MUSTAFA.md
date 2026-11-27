@@ -1,5 +1,29 @@
 # Статус GPT_PRO_MUSTAFA
 
+## Итоговый runtime U04/U06:2b69469
+
+Контракт `e88b7fc`, U04 `af3a0a9`, U06/migration `c653bc8`, заключительные transitions/validation `2b69469a52e0584bd3af9fd288bed0192659802c`.
+На последнем SHA полный `uv run pytest`:104 PASS, Ruff PASS, foundation14 PASS, pnpm typecheck PASS;
+frontend test2/build PASS ранее на том же неизмененном UI, Linux CI повторяет все проверки.
+Независимый платформенный объем U04/U06 реализован и проверен. Data/price/geometry/physical execution остаются
+canonical C2/C3, не подменены runtime fixtures. Actual end-to-end с C1/C2/C3 not_run до подключения опубликованных ports.
+
+Новая local Windows onedir сборка `2b69469`: PyInstaller PASS, expanded `smoke_frozen.py` PASS и scanner PASS.
+GUI EXE SHA256 `6f36ba02c19b21b8b9f56ae1af08a07b09d9ed16e857a5456cc2f6178da5a526`;
+source digest `da8a1b336342858e866816723922af01b66472d43ab70e287b9d6011a965a5f6`.
+Старт1875ms, restart1656ms, restore restart1672ms на build machine. Не clean Windows.
+Smoke проверил schema3, native workers, singleton/import/CRM/download/restart/backup restore, U04 draft/unknown total null/
+missing source503/persistence и U06 empty ledger. Actual consume в smoke not_run (нет real C2 service).
+[CI46057405417](https://github.com/Mustiks07/GlassFlow/actions/runs/46057405417): **SUCCESS Linux verify и Windows-platform**,
+включая104 tests, frozen build/smoke/scanner/artifact и чистую стандартную regeneration contracts.
+Независимая платформенная очередь U04/U06 закрыта в пределах владения: contracts/storage/states/coordination/history/
+idempotency/duplicate consumption guards реализованы. Все новые commits от Mustiks07; main/файлы Клаудов не менялись.
+Source после2b69469 не меняется; последующий commit только evidence/status/handoff.
+Следующий точный шаг интегратора: зарегистрировать BasketSourcePort/MaterialUsePort и C3 basket.parse,
+сформировать canonical line quotes/joint selection/actual execution, подключить C1 и пройти реальный маршрут,
+включая конкуренцию/partial failure/crash/retry. Это not_run, не подменено test adapters. Human labor/final PDF,
+live gateway/clean Windows остаются прежними внешними приемками. Далее — история этапов.
+
 ## Заключительные переходы U04/U06
 
 U06 core опубликован `c653bc8`. Дополнительные регрессии воспроизвели: released reservation не очищался при новом bind;
@@ -69,8 +93,8 @@ Fix commit `e247927bfb01b4e796786ac13048421ac085017a`, author/committer Mustiks0
 включая72 tests, build, native EXE smoke/scanner/artifact. После fix меняется только документационная evidence.
 Новая CI сборка относится к F1; локальный старый frozen-smoke.json070d0c8 остается историческим, не выдается за F1.
 Следующий шаг интегратора: повторить F1 на actual C3 quote repository/C2 reservation service.
-Вся моя расширенная очередь НЕ закрыта: U04 (платформенная корзина/координация) и U06 (подтвержденное использование)
-еще не реализованы; human labor/final same-run reports, live gateway/clean Windows и общая приемка остаются открытыми.
+На момент F1 U04/U06 еще не были реализованы; текущий результат этих задач описан выше.
+Human labor/final same-run reports, live gateway/clean Windows и общая приемка остаются открытыми.
 Текущий запрос PRO-U01-F1 завершен на уровне платформы; исходная матрица67 не помечена целиком PASS.
 
 ## Актуальный checkpoint v1.1

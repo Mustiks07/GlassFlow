@@ -6,6 +6,13 @@
 Независимый платформенный объем U04/U06 реализован; новая domain/UI интеграция остается отдельной приемкой.
 Основной exact contract: [U04_U06_CONTRACTS.md](../architecture/U04_U06_CONTRACTS.md), опубликован `e88b7fc`.
 U04 базовая реализация `af3a0a9`; окончательная U06/hardening SHA фиксируется в status после проверок.
+U06 core `c653bc8`, итоговый проверенный runtime `2b69469a52e0584bd3af9fd288bed0192659802c`:
+104 pytest PASS, Ruff/foundation14/typecheck PASS; новые Basket16/Material15/Orders18. Windows local build/smoke/scanner PASS
+на этом exact SHA, source digest/GUI EXE hash в status и frozen-smoke.json. Это build-machine API/native smoke,
+не real C2 consumption или UI E2E. [CI46057405417](https://github.com/Mustiks07/GlassFlow/actions/runs/46057405417):
+**SUCCESS Linux verify и Windows-platform**, включая104 tests, native EXE build/smoke/scanner/artifact.
+Платформенные contracts/storage/states/history/atomic coordination/idempotency/duplicate-use guards готовы к интеграции.
+После checked runtime2b69469 меняются только evidence/status/handoff; последующий SHA — документационный checkpoint.
 
 U04: workspace Basket с raw message и стабильными строками canonical C3 QuoteRequest, unknown/clarification,
 version/revision, immutable audit snapshots. Один customer для всех quotes (F1 invariant), exact saved request hashes,
@@ -78,7 +85,8 @@ Actual C2/C3 integration повторить после объединения; �
 Fix `e247927bfb01b4e796786ac13048421ac085017a` отправлен от Mustiks07.
 [CI46050467129](https://github.com/Mustiks07/GlassFlow/actions/runs/46050467129): SUCCESS Linux и Windows,
 включая72 tests и новую EXE build/smoke/scanner/artifact. Последующие изменения — только документационная evidence.
-Остаток собственной очереди Pro: U04/U06 еще не реализованы; «F1 исправлен» не означает полную миссию или общий product PASS.
+На момент F1 U04/U06 оставались следующими задачами; текущая реализация описана в начале этого handoff.
+«F1 исправлен» не означает полную миссию или общий product PASS.
 
 ## Дополнения v1.1 после checkpoint052255d
 

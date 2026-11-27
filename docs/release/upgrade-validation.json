@@ -1,19 +1,19 @@
 {
-  "scope": "Pro platform additions v1.1; not whole-product acceptance",
+  "scope": "Pro independent platform volume through U04/U06; not whole-product acceptance",
   "base_sha": "052255d17d2b18994d790a1df47065f01a40220a",
-  "review_main_sha": "25e433f28ce97b48fc3402c8e67f46147eed9b40",
-  "checked_sha": "e247927bfb01b4e796786ac13048421ac085017a",
-  "local_frozen_runtime_sha": "070d0c83815699348bd685910cc016346734b7d4",
-  "local_frozen_report_scope": "Historical pre-F1 report; current F1 Windows build/smoke is in CI artifact",
+  "review_main_sha": "24049e1f8884fac279ef4861ac53eb742818ed9e",
+  "checked_sha": "2b69469a52e0584bd3af9fd288bed0192659802c",
+  "local_frozen_runtime_sha": "2b69469a52e0584bd3af9fd288bed0192659802c",
+  "local_frozen_report_scope": "Passed on build machine; U04 draft/503/persistence and U06 schema3/empty ledger; no real domain consumption",
   "checks": {
-    "pytest": "72 passed;18 U01 cases",
+    "pytest": "104 passed;16 basket,15 material-use,18 order tests plus migration/other foundation checks",
     "ruff": "pass",
     "immutable_foundation": "14 inputs pass; does not certify67 acceptance scenarios",
-    "frontend": "typecheck,2 tests,build pass; U01/U03/U07 UI integration not_run",
-    "frozen_smoke": "pass in Windows CI on e247927; local report070d0c8 is historical",
+    "frontend": "typecheck,2 tests,build pass; actual U04/U06 C1 UI integration not_run",
+    "frozen_smoke": "passed on build machine, exact checked_sha; backup/restore/schema3/native workers",
     "release_scanner": "pass",
-    "ci": "https://github.com/Mustiks07/GlassFlow/actions/runs/46050467129",
-    "ci_status": "Linux and Windows success"
+    "ci": "https://github.com/Mustiks07/GlassFlow/actions/runs/46057405417",
+    "ci_status": "SUCCESS; Linux verify and Windows-platform, including104 pytest, EXE build/smoke/scanner/artifact"
   },
   "PRO-R1_A04": {
     "status": "pass",
@@ -56,7 +56,28 @@
     "final_competition_pdf": "blocked until actual evidence and ready same-run",
     "sha": "38c0705"
   },
-  "U04_U06": "not_run; next-level basket and confirmed-consumption coordination remain separate",
+  "U04_U06": {
+    "independent_platform_status": "implemented_and_component_verified",
+    "full_domain_ui_acceptance": "not_run; adapters are absent, APIs fail explicitly; fixtures never used in production",
+    "effects": "reserve/cancel/handover do not count actual use; summary planned/actual separate; no automatic profit/revenue"
+  },
   "clean_windows": "not_run",
-  "live_gateway": "blocked; hosting,keys,quota and full real interface acceptance required"
+  "live_gateway": "blocked; hosting,keys,quota and full real interface acceptance required",
+  "u04_u06_base_sha": "0daac987126135e01322bfd99d3fd42062cb07d4",
+  "U04": {
+    "platform": "pass; aggregate states/history/idempotency; all-line binding, atomic reserve, warnings requiring human review, durable parser queue",
+    "tests": "16 synthetic transactional seam scenarios; not real C2/C3 E2E",
+    "contracts_sha": "e88b7fc",
+    "implementation_sha": "af3a0a9",
+    "final_runtime_sha": "2b69469a52e0584bd3af9fd288bed0192659802c",
+    "dependencies": "C3 parser/quote repository plus C2 jointly validated selection and reservation adapter, C1 screens"
+  },
+  "U06": {
+    "platform": "pass; immutable ledger with semantic dedupe, canonical actual execution assessment/receipt, one transaction with C2",
+    "tests": "15 synthetic transactional seam scenarios and0002->0003 migration test",
+    "schema_head": "0003_material_use",
+    "implementation_sha": "c653bc8",
+    "final_runtime_sha": "2b69469a52e0584bd3af9fd288bed0192659802c",
+    "dependencies": "C2 final validated execution/consume port with canonical event and durable confirmation token; C1 actual-use confirmation UI"
+  }
 }
