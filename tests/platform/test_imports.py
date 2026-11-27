@@ -25,6 +25,8 @@ def test_original_counts_bytes_and_idempotent_snapshot(client, imported, uploads
     )
     again = import_dataset(client, uploads, "new-preview")
     assert again["dataset_id"] == imported["dataset_id"]
+    demo = client.post("/api/v1/datasets/demo", headers={"Idempotency-Key": "demo"})
+    assert demo.status_code == 200 and demo.json()["dataset_id"] == imported["dataset_id"]
     with client.app.state.session_factory() as session:
         sources = list(session.scalars(select(SourceRow)))
         assert {s.filename: s.content for s in sources} == dict(uploads)

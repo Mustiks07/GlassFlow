@@ -46,6 +46,8 @@ def install_local_security(app, *, testing=False):
         response.headers["X-Correlation-ID"] = request.state.correlation_id
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["Referrer-Policy"] = "no-referrer"
+        if request.url.path.startswith("/api/"):
+            response.headers["Cache-Control"] = "no-store"
         if request.method == "GET" and request.headers.get("sec-fetch-site") != "cross-site":
             response.set_cookie("glassflow_session", token, httponly=True, samesite="strict")
         return response

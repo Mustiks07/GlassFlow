@@ -41,5 +41,7 @@ a = Analysis([str(root / "packaging/entrypoint.py")], pathex=[str(root / "backen
              excludes=["tkinter", "matplotlib", "pytest", "IPython", "notebook"], noarchive=False)
 pyz = PYZ(a.pure)
 exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name="GlassFlow", debug=False,
+          bootloader_ignore_signals=False, strip=False, upx=False, console=False)
+diagnostics = EXE(pyz, a.scripts, [], exclude_binaries=True, name="GlassFlowDiagnostics", debug=False,
           bootloader_ignore_signals=False, strip=False, upx=False, console=True)
-coll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name="GlassFlow")
+coll = COLLECT(exe, diagnostics, a.binaries, a.datas, strip=False, upx=False, name="GlassFlow")

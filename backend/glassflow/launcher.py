@@ -71,6 +71,7 @@ def native_worker(sender):
                 "ortools_x": solver.value(x),
                 "ortools_optimal": status == cp_model.OPTIMAL,
                 "frozen_worker": bool(getattr(sys, "frozen", False)),
+                "worker_executable": Path(sys.executable).name,
                 "pid": os.getpid(),
             }
         )
@@ -167,6 +168,10 @@ def serve(data_dir, no_browser=False, port=0):
 
 def main():
     mp.freeze_support()
+    if os.name == "nt" and getattr(sys, "frozen", False):
+        gui_executable = Path(sys.executable).with_name("GlassFlow.exe")
+        if gui_executable.is_file():
+            mp.set_executable(str(gui_executable))
     if sys.stdout is not None:
         sys.stdout.reconfigure(encoding="utf8", errors="replace")
         sys.stderr.reconfigure(encoding="utf8", errors="replace")

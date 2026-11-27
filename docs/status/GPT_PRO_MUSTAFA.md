@@ -114,3 +114,11 @@ normal restart и backup/restore через actual EXE. Ожидает закл�
 
 Точный следующий шаг: закончить actual frozen smoke с singleton/validator/backup restore, записать SHA и CI,
 опубликовать evidence/status от Mustiks07. Runtime код готовится к интеграции; main не трогать.
+
+## Оконный launcher: последний runtime checkpoint
+
+- Исходники: 47 pytest PASS, ruff PASS, source integrity14 PASS, Node typecheck/test/build PASS.
+- Исправлен Windows byte-lock singleton; добавлены GUI GlassFlow.exe и отдельный console Diagnostics EXE.
+- Multiprocessing и native workers используют GUI executable, official validator CLI запускается скрыто.
+- Добавлен POST /datasets/demo (original source bytes, без KEY/готовых ответов), session/run view типизированы, API no-store.
+- Расширенный actual frozen smoke (GUI PE/header, singleton, native worker, official validator, real open CRM selfcheck, restart/backup/restore) выполняется следующим шагом. Предыдущий basic smoke не выдается за эту расширенную проверку.

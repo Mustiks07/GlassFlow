@@ -7,6 +7,7 @@ import json
 import os
 import platform
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -62,17 +63,33 @@ def stop(process, client):
 
 
 def smoke(exe):
+    diagnostics = exe.with_name("GlassFlowDiagnostics.exe")
+    assert diagnostics.is_file(), "Missing diagnostics executable in onedir bundle"
+
+    def subsystem(path):
+        data = path.read_bytes()
+        pe_offset = struct.unpack_from("<I", data, 0x3C)[0]
+        return struct.unpack_from("<H", data, pe_offset + 24 + 68)[0]
+
+    assert subsystem(exe) == 2 and subsystem(diagnostics) == 3
     native = subprocess.run(
-        [str(exe), "--smoke-native-worker"], capture_output=True, text=True, encoding="utf8", timeout=90
+        [str(diagnostics), "--smoke-native-worker"],
+        capture_output=True,
+        text=True,
+        encoding="utf8",
+        timeout=90,
+        creationflags=0x08000000 if os.name == "nt" else 0,
     )
     assert native.returncode == 0, native.stderr
     result = json.loads(native.stdout.strip())
     assert result["frozen_worker"] is True and result["scipy_x"] == result["ortools_x"] == 2
+    assert result["worker_executable"] == "GlassFlow.exe"
     report = {
         "measured_at": datetime.now(UTC).isoformat(),
         "os": platform.platform(),
         "exe_sha256": hashlib.sha256(exe.read_bytes()).hexdigest(),
         "native_worker": result,
+        "pe_subsystem": {"main": subsystem(exe), "diagnostics": subsystem(diagnostics)},
         "clean_windows": "not_run",
         "ui_flow": "not_run; C1 integration required",
     }
@@ -100,11 +117,12 @@ def smoke(exe):
                 for p in parts
             )
         checked = subprocess.run(
-            [str(exe), "--official-validator", str(directory)],
+            [str(diagnostics), "--official-validator", str(directory)],
             capture_output=True,
             text=True,
             encoding="utf8",
             timeout=30,
+            creationflags=0x08000000 if os.name == "nt" else 0,
         )
         assert checked.returncode == 0 and "invalid=0" in checked.stdout, checked.stderr
         report["official_validator_cli"] = {
@@ -129,7 +147,8 @@ def smoke(exe):
                 encoding="utf8",
                 timeout=15,
             )
-            assert second.returncode == 0 and "Второй экземпляр" in second.stdout
+            assert second.returncode == 0
+            assert json.loads((directory / "launch.json").read_text(encoding="utf8"))["pid"] == process.pid
             report["singleton"] = "passed"
             uploads = [
                 ("files", (Path(f).name, (ROOT / "inputs/PACK_for_teams" / f).read_bytes())) for f in FILES

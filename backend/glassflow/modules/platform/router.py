@@ -12,8 +12,10 @@ from glassflow.contracts.platform import (
     ImportPreview,
     Job,
     KbHead,
+    LocalSession,
     RestoreRequest,
     RunRequest,
+    RunView,
     SettingsUpdate,
     WorkingCopy,
 )
@@ -34,7 +36,7 @@ router = APIRouter(
 )
 
 
-@router.get("/session")
+@router.get("/session", response_model=LocalSession)
 def local_session(request: Request):
     return {"session_token": request.app.state.local_token}
 
@@ -200,7 +202,7 @@ def create_run(body: RunRequest, request: Request, idempotency_key: str | None =
         )
 
 
-@router.get("/runs/{run_id}")
+@router.get("/runs/{run_id}", response_model=RunView)
 def get_run(run_id: str, request: Request):
     from glassflow.modules.platform.runs import run_view
 
@@ -406,6 +408,40 @@ def restore(body: RestoreRequest, request: Request):
         raise
     request.app.state.maintenance = True
     return result
+
+
+@router.post("/datasets/demo", response_model=Dataset)
+def import_demo(request: Request, idempotency_key: str | None = Header(None)):
+    from pathlib import Path
+
+    from glassflow.core.resources import resource_root
+
+    names = [
+        "1_ostatki/materials.csv",
+        "1_ostatki/stock_open.csv",
+        "1_ostatki/orders_open.csv",
+        "2_assistant_crm/ksm_knowledge_base.json",
+        "2_assistant_crm/applications_open.csv",
+        "2_assistant_crm/questions_open.csv",
+        "2_assistant_crm/dialogs_open.csv",
+    ]
+    files = [
+        (Path(name).name, (resource_root() / "inputs/PACK_for_teams" / name).read_bytes()) for name in names
+    ]
+    with write_transaction(request.app.state.session_factory) as session:
+
+        def action():
+            report = preview(session, files)
+            session.flush()
+            return commit(
+                session,
+                report["import_id"],
+                ImportCommit(name="Открытый учебный демонабор"),
+                request.app.state.services,
+                request.state.correlation_id,
+            )
+
+        return idempotent(session, "builtin:open-pack", "dataset.demo", idempotency_key, {}, action)
 
 
 @router.post("/system/shutdown")

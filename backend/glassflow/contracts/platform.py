@@ -111,3 +111,14 @@ class KbHead(DatasetRequest):
     kb_version: str
     sha256: str
     version: int
+
+
+class LocalSession(DTO):
+    session_token: str
+
+
+class RunView(DTO):
+    manifest: dict
+    status: Literal["running", "completed", "partial", "blocked"]
+    jobs: list[Job]
+    missing_modules: list[str]

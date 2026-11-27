@@ -8,5 +8,5 @@ pnpm build
 if ($LASTEXITCODE) { throw 'web build failed' }
 uv run pyinstaller --noconfirm packaging/GlassFlow.spec
 if ($LASTEXITCODE) { throw 'PyInstaller failed' }
-& ./dist/GlassFlow/GlassFlow.exe --smoke-native-worker
+& ./dist/GlassFlow/GlassFlowDiagnostics.exe --smoke-native-worker
 if ($LASTEXITCODE) { throw 'Frozen native worker failed' }

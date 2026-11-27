@@ -9,6 +9,7 @@ import re
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 from sqlalchemy import select
 
@@ -128,10 +129,21 @@ def official_cutting(staging, source_files, solution):
     ]
     if getattr(sys, "frozen", False):
         # Frozen exe is not a general Python interpreter; its protected CLI executes only this bundled script.
-        command = [sys.executable, "--official-validator", str(staging)]
+        diagnostics = Path(sys.executable).with_name("GlassFlowDiagnostics.exe")
+        if not diagnostics.is_file():
+            raise AppError(
+                503, "DIAGNOSTICS_BINARY_MISSING", "Неполный комплект: нет GlassFlowDiagnostics.exe."
+            )
+        command = [str(diagnostics), "--official-validator", str(staging)]
     environment = {**os.environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"}
     result = subprocess.run(
-        command, capture_output=True, encoding="utf8", errors="replace", env=environment, timeout=60
+        command,
+        capture_output=True,
+        encoding="utf8",
+        errors="replace",
+        env=environment,
+        timeout=60,
+        creationflags=0x08000000 if os.name == "nt" else 0,
     )
     output = result.stdout
     passed = result.returncode == 0 and bool(re.search(r"RESULT .*invalid=0\b", output))

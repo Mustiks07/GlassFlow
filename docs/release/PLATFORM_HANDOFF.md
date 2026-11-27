@@ -194,3 +194,8 @@ C2/C3 объявили module READY FOR INTEGRATION; real buyers/evidence в C1 
 SQLAlchemy factory в spawned child. Worker должен вызывать те же чистые C3 domain functions над snapshot и возвращать
 DTO/usage; запись QualityCheckRow/mapping-related events выполняет parent result_hook. Не запускать второй SQLite
 и не подменять C3 сервис fixture. HTTP IntelligenceService остается с общей platform session factory.
+
+Оконная поставка: GlassFlow.exe имеет PE subsystem GUI; GlassFlowDiagnostics.exe сохраняет stdout для CLI/official validator.
+Multiprocessing запускает GUI EXE, поэтому worker не открывает консоль; exporter запускает diagnostics скрыто.
+Первый демо-import доступен POST /datasets/demo, использует семь исходных файлов, сохраняет SHA/bytes и dedupe.
+Существующие final PDF защищены от перезаписи: новый выпуск — новый output directory.
