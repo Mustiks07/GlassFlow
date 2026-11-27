@@ -27,6 +27,45 @@ ROUNDING_POLICY = "ROUND_HALF_UP to 0.01 per line; total equals the sum of displ
 SIDE_NAMES_RU = {"top": "верх", "bottom": "низ", "left": "левая", "right": "правая"}
 
 
+def resolve_sides(selected: tuple[str, ...], length_mm: int | None, width_mm: int | None) -> tuple[str, ...]:
+    """Map «длинные/короткие стороны» to the real sides; top/bottom run along length_mm."""
+    if selected in {("long",), ("short",)} and length_mm is not None and width_mm is not None:
+        length_is_long = length_mm >= width_mm
+        want_long = selected == ("long",)
+        return ("top", "bottom") if length_is_long == want_long else ("left", "right")
+    return tuple(side for side in selected if side in {"top", "bottom", "left", "right"})
+
+
+def pricing_input_for(
+    product,
+    *,
+    length_mm: int | None,
+    width_mm: int | None,
+    quantity: int | None,
+    processing: str = "none",
+    edge_sides: str | None = None,
+    selected_sides: tuple[str, ...] = (),
+    price_basis: str = "per_m2",
+    thickness_mm: int | None = None,
+) -> tuple["PricingInput", bool]:
+    """The ONE normalization of request parameters into PricingInput (assistant, tools, dialog checks).
+
+    Returns ``(input, edge_sides_unknown)``. Edge sides must be stated explicitly: «все стороны» →
+    all; «длинные/короткие» are resolved against the real sizes; named sides as given. When edge
+    processing is requested without identifiable sides, the input carries ``selected`` with no sides
+    so Pricing reports ``edge_sides_unknown`` instead of assuming all four.
+    """
+    sides = resolve_sides(tuple(selected_sides), length_mm, width_mm)
+    unknown = processing == "euro_edge" and (edge_sides is None or (edge_sides == "selected" and not sides))
+    mode = "all" if processing == "euro_edge" and edge_sides == "all" else "selected"
+    if processing != "euro_edge":
+        mode, sides = "all", ()
+    return (
+        PricingInput(product, length_mm, width_mm, quantity, processing, mode, sides if mode == "selected" else (), price_basis, thickness_mm),
+        unknown,
+    )
+
+
 def money(value: Decimal) -> Decimal:
     return value.quantize(CENT, rounding=ROUND_HALF_UP)
 

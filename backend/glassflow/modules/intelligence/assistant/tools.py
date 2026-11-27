@@ -24,9 +24,9 @@ from ..catalog.kb import KnowledgeBase, Product
 from ..catalog.mapping import MappingDecision
 from ..catalog.matching import match_products
 from ..ports_consumed import CrmPort, InventoryPort, ScenarioPort, ServiceUnavailable
-from ..pricing import PricingInput, PricingInputError, calculate, money_str
+from ..pricing import PricingInputError, calculate, money_str, pricing_input_for
 from .facts import FactSet
-from .local import _resolve_sides, recommend_accessories
+from .local import recommend_accessories
 from .verifier import verify_answer
 
 MAX_RESULT_CHARS = 6000
@@ -183,21 +183,20 @@ def _quote(ctx: ToolContext, args: CalculateQuoteArgs) -> dict[str, Any]:
     product = _product_or_error(ctx, args.catalog_product_id)
     if (args.length_mm is None) != (args.width_mm is None):
         raise ToolRejected("dimensions_incomplete", "Нужны обе стороны детали.")
-    sides_mode = "all" if args.edge_sides == "all" else "selected"
-    selected: tuple[str, ...] = ()
-    if args.edge_sides in {"long", "short"}:
-        selected = _resolve_sides((args.edge_sides,), args.length_mm, args.width_mm)
+    edge_sides, selected = None, ()
+    if args.edge_sides == "all":
+        edge_sides = "all"
+    elif args.edge_sides in {"long", "short"}:
+        edge_sides, selected = "selected", (args.edge_sides,)
     elif args.edge_sides in {"top", "bottom", "left", "right"}:
-        selected = (args.edge_sides,)
-    processing = args.processing
-    if processing == "euro_edge" and args.edge_sides == "unknown":
-        sides_mode, selected = "selected", ()
+        edge_sides, selected = "selected", (args.edge_sides,)
     quantity = args.quantity if args.quantity is not None else (1 if args.length_mm else None)
+    request, _ = pricing_input_for(
+        product, length_mm=args.length_mm, width_mm=args.width_mm, quantity=quantity, processing=args.processing,
+        edge_sides=edge_sides, selected_sides=selected, price_basis=args.price_basis,
+    )
     try:
-        result = calculate(
-            ctx.kb,
-            PricingInput(product, args.length_mm, args.width_mm, quantity, processing, sides_mode, selected, args.price_basis),
-        )
+        result = calculate(ctx.kb, request)
     except PricingInputError as exc:
         raise ToolRejected(f"invalid_{exc.field_name}", exc.message_ru) from None
     _remember_prices(ctx, product)

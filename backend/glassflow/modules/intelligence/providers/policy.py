@@ -233,17 +233,23 @@ class ResilientClient:
     sleep: Callable[[float], object] = asyncio.sleep
     clock: Callable[[], float] = time.monotonic
     spent_usd: Decimal = Decimal("0")
+    cooldown_s: float = 60.0  # circuit breaker: an overloaded model is skipped for this long
 
     def __post_init__(self) -> None:
         self.limiter = RateLimiter(self.profile.rpm, self.profile.tpm, self.profile.rpd, self.profile.max_concurrency, self.clock)
+        self.unhealthy_until: dict[str, float] = {}
 
     def chain(self) -> list[str]:
+        """Verified models in profile order; models in breaker cooldown go last (still usable)."""
         if self.profile.primary is None:
             return []
         refs = [self.profile.primary, *self.profile.fallbacks]
         if self.profile.mode == "free_only":
             refs = [ref for ref in refs if model_is_free(ref)]
-        return [ref.label for ref in refs if ref.label in self.providers]
+        labels = [ref.label for ref in refs if ref.label in self.providers]
+        now = self.clock()
+        healthy = [label for label in labels if self.unhealthy_until.get(label, 0) <= now]
+        return healthy + [label for label in labels if label not in healthy]
 
     async def call(self, request: ProviderRequest, *, deadline: float, correlation_id: str | None = None) -> CallOutcome:
         errors = validate_profile(self.profile)
@@ -257,10 +263,15 @@ class ResilientClient:
         attempts = 0
         for index, label in enumerate(chain):
             provider = self.providers[label]
+            # Fair share of the remaining time so a failing primary cannot starve verified fallbacks.
+            models_left = len(chain) - index
+            model_deadline = self.clock() + (deadline - self.clock()) / models_left
             for attempt in range(self.profile.max_retries + 1):
                 remaining = deadline - self.clock()
                 if remaining < MIN_ATTEMPT_SECONDS:
                     raise last_error or ProviderError("timeout", "Истек общий срок ответа AI.")
+                if attempt > 0 and self.clock() >= model_deadline and models_left > 1:
+                    break
                 if self.profile.mode == "paid_enabled" and self.spent_usd >= self.profile.budget_usd and not self._is_free(label):
                     raise ProviderError("budget", "Исчерпан денежный бюджет платного профиля.")
                 estimated = estimate_tokens(request)
@@ -288,7 +299,8 @@ class ResilientClient:
                     if response.usage.cost_usd is not None:
                         self.spent_usd += response.usage.cost_usd
                     self._log(request, label, attempt, "ok", None, response, int(queue_s * 1000), latency, correlation_id)
-                    return CallOutcome(response, attempts, index > 0, label)
+                    self.unhealthy_until.pop(label, None)
+                    return CallOutcome(response, attempts, label != self.chain_order()[0], label)
                 latency = int((self.clock() - started) * 1000)
                 self._log(request, label, attempt, "error", error.kind, None, int(queue_s * 1000), latency, correlation_id, str(error)[:200])
                 last_error = error
@@ -301,9 +313,17 @@ class ResilientClient:
                     if self.clock() + delay >= deadline:
                         break
                     await self.sleep(delay)
+            if last_error and last_error.retryable:
+                cooldown = max(self.cooldown_s, last_error.retry_after_s or 0)
+                self.unhealthy_until[label] = self.clock() + cooldown
             if last_error and last_error.kind == "auth" and index == len(chain) - 1:
                 raise last_error
         raise last_error or ProviderError("unavailable", "AI недоступен.")
+
+    def chain_order(self) -> list[str]:
+        """Profile order without breaker reordering (to report whether a fallback answered)."""
+        refs = [r for r in [self.profile.primary, *self.profile.fallbacks] if r is not None]
+        return [ref.label for ref in refs if ref.label in self.providers] or [""]
 
     def _is_free(self, label: str) -> bool:
         refs = [r for r in [self.profile.primary, *self.profile.fallbacks] if r and r.label == label]

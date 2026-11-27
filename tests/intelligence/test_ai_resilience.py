@@ -260,3 +260,37 @@ class _Secrets:
 
     def get(self, name):
         return self.data.get(name)
+
+
+def test_circuit_breaker_skips_overloaded_primary_on_next_calls():
+    primary = ScriptedProvider([ProviderError("server", "503 high demand")] * 3)
+    fallback = ScriptedProvider([reply(text="a"), reply(text="b")])
+    clock = [1000.0]
+    client = ResilientClient(
+        profile=profile(), providers={"gemini:gemini-3.8-flash": primary, "openrouter:google/gemma-4-31b-it:free": fallback},
+        ledger=MemoryLedger(), prompt_version="t", sleep=lambda s: asyncio.sleep(0), clock=lambda: clock[0],
+    )
+    first = run(client.call(_req(), deadline=clock[0] + 60))
+    assert first.fallback_used and len(primary.requests) == 3
+    second = run(client.call(_req(), deadline=clock[0] + 60))  # primary in cooldown: not called again
+    assert second.response.text == "b" and len(primary.requests) == 3
+    assert client.chain()[0] == "openrouter:google/gemma-4-31b-it:free"
+    clock[0] += 61
+    assert client.chain()[0] == "gemini:gemini-3.8-flash"  # cooldown over
+
+
+def test_failing_primary_cannot_starve_fallback():
+    class SlowFailing(ScriptedProvider):
+        async def generate(self, request):
+            self.requests.append(request)
+            await asyncio.sleep(1.5)
+            raise ProviderError("server", "504 deadline expired")
+
+    slow = SlowFailing([])
+    fallback = ScriptedProvider([reply(text="ok")])
+    prof = profile(max_retries=2, request_timeout_s=5)
+    client = ResilientClient(profile=prof, providers={"gemini:gemini-3.8-flash": slow, "openrouter:google/gemma-4-31b-it:free": fallback},
+                             ledger=MemoryLedger(), prompt_version="t", sleep=lambda s: asyncio.sleep(0))
+    outcome = run(client.call(_req(), deadline=time.monotonic() + 5.2))
+    assert outcome.response.text == "ok"
+    assert len(slow.requests) < 3  # stopped retrying the primary within its share of the deadline

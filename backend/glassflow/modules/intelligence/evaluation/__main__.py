@@ -23,7 +23,7 @@ CRITICAL = ["E026", "E027", "E028", "E031", "E038", "E053", "E054", "E065", "E06
 
 def main() -> None:
     parser = argparse.ArgumentParser(prog="glassflow-intelligence-eval")
-    parser.add_argument("command", choices=["open", "extended", "holdout", "perf", "live"])
+    parser.add_argument("command", choices=["open", "extended", "holdout", "perf", "live", "live-open"])
     parser.add_argument("--pack", type=Path, default=ROOT / "inputs" / "PACK_for_teams")
     parser.add_argument("--out", type=Path, default=ROOT / "docs" / "ai" / "evidence")
     parser.add_argument("--allow-ai", action="store_true", help="use the configured network AI profile (counts quota)")
@@ -45,6 +45,15 @@ def main() -> None:
             cases_path=Path(__file__).with_name("cases_holdout.json"), name="holdout",
         )
         summary = {k: report[k] for k in ("cases", "passed", "accuracy", "unconfirmed_commercial_claims", "groups")}
+    elif args.command == "live-open":
+        from .live import evaluate_open_live
+
+        extra = ["E026", "E031", "E041", "E047", "E053", "E061", "E065", "E069", "E074", "E038", "H005", "H016"]
+        report = evaluate_open_live(args.pack, args.out / "live", model=args.model or "gemini:gemini-3.5-flash-lite",
+                                    fallbacks=[f for f in args.fallbacks.split(",") if f], rpm=args.rpm, extra_ids=extra)
+        summary = {"selfcheck": report["selfcheck_assistant"]["stdout"], "paths": report["paths"],
+                   "latency_series_ms": report["latency_series_ms"], "provider_errors": report["provider_errors"],
+                   "models_answered": report["models_answered"], "model_calls": report["model_calls"]}
     elif args.command == "perf":
         report = measure_performance(args.pack, args.out / "perf")
         summary = {k: report[k] for k in ("quote_calculate_ms", "deterministic_turn_ms", "ai_turn_p95")}

@@ -1,0 +1,6 @@
+{"case": "gemini_invalid_key", "kind": "bad_request", "status": 400, "retryable": false, "ms": 699, "secret_leak": false}
+{"case": "openrouter_invalid_key", "kind": "auth", "status": 401, "retryable": false, "ms": 624, "secret_leak": false}
+{"case": "gemini_unknown_model", "kind": "bad_request", "status": 404, "retryable": false, "ms": 431, "secret_leak": false}
+{"case": "openrouter_unknown_model", "kind": "bad_request", "status": 400, "retryable": false, "ms": 469, "secret_leak": false}
+{"case": "gemini_timeout_0.05s", "kind": "timeout", "status": null, "retryable": true, "ms": 105, "secret_leak": false}
+{"case": "free_only_paid_model", "kind": "policy", "network_calls": 0}

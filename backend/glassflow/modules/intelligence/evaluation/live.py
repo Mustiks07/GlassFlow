@@ -64,6 +64,12 @@ def _check(case: dict, answer: str, status: str, facts, user_text: str) -> tuple
     return not reasons and not claims, reasons, claims
 
 
+def _series(values: list[float]) -> dict[str, float | int | None]:
+    if not values:
+        return {"n": 0, "p50": None, "p95": None}
+    return {"n": len(values), "p50": round(statistics.median(values), 1), "p95": round(_p95(values), 1)}
+
+
 def evaluate_live(
     pack: Path,
     out: Path,
@@ -99,6 +105,9 @@ def evaluate_live(
     engine.cache = type(engine.cache)(capacity=0)  # no answer cache in measurements
     runs = []
     turn_latencies = []
+    label = name or model.replace(":", "_").replace("/", "_")
+    progress = out / f"live_{label}.jsonl"  # incremental: an interrupted run keeps finished cases
+    progress.write_text("", encoding="utf-8")
     for case in _cases(case_ids or CRITICAL):
         for repeat in range(repeats):
             context = TurnContext()
@@ -122,6 +131,8 @@ def evaluate_live(
                 "seconds": round(time.monotonic() - started, 2),
                 "model_attempts": len(entries), "provider_errors": [e.error_kind for e in entries if e.status != "ok"],
                 "provider_error_messages": [e.error_message for e in entries if e.status != "ok"],
+                "queue_ms": sum(e.queue_ms for e in entries),
+                "provider_ms": sum(e.latency_ms or 0 for e in entries),
                 "input_tokens": sum(e.input_tokens or 0 for e in entries), "output_tokens": sum(e.output_tokens or 0 for e in entries),
                 "thought_tokens": sum(e.thought_tokens or 0 for e in entries),
                 "tools": [(x.name, x.status) for x in (llm.executions if llm else [])],
@@ -130,6 +141,8 @@ def evaluate_live(
                 "llm_unsupported": llm.verification.unsupported if llm and llm.verification else [],
                 "fallback_model_used": bool(llm and llm.fallback_used),
             })
+            with progress.open("a", encoding="utf-8") as handle:
+                handle.write(json.dumps(runs[-1], ensure_ascii=False) + "\n")
             print(f"{case['id']} r{repeat} ok={ok} path={result.answer_path} model={result.model_id} "
                   f"{runs[-1]['seconds']}s attempts={len(entries)} {reasons or ''}{claims or ''}", flush=True)
     total = len(runs)
@@ -164,10 +177,67 @@ def evaluate_live(
         "calls_with_unknown_cost": sum(1 for e in ledger.entries if e.cost_usd is None),
         "turn_latency_ms": {"n": len(turn_latencies), "p50": round(statistics.median(turn_latencies), 1) if turn_latencies else None,
                             "p95": round(_p95(turn_latencies), 1) if turn_latencies else None},
+        "turn_latency_without_queue_ms": _series([r["seconds"] * 1000 - r["queue_ms"] for r in runs]),
+        "queue_ms_total": sum(r["queue_ms"] for r in runs),
         "model_call_latency_ms": {"n": len(call_latency), "p50": statistics.median(call_latency) if call_latency else None,
                                   "p95": _p95(call_latency) if call_latency else None},
         "results": runs,
     }
-    label = name or model.replace(":", "_").replace("/", "_")
     (out / f"live_{label}.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    return report
+
+
+def evaluate_open_live(
+    pack: Path, out: Path, *, model: str, fallbacks: list[str] | None = None, rpm: int = 15, extra_ids: list[str] | None = None
+) -> dict[str, object]:
+    """The 18 open questions answered by the ONLINE path (ai_first), scored by the unmodified
+    selfcheck.py; plus optional extra single-turn cases to complete a 30-request latency series."""
+    from .runner import read_rows, run_selfcheck, write_csv
+
+    out.mkdir(parents=True, exist_ok=True)
+    env = build_environment(pack, allow_ai=False)
+    profile = AIProfile(name="live-open", primary=_ref(model), fallbacks=[_ref(f) for f in (fallbacks or [])],
+                        rpm=rpm, rpd=1000, turn_deadline_s=60, request_timeout_s=15)
+    ledger = MemoryLedger()
+    runtime = build_runtime(profile, EnvSecrets(), prompt_version=PROMPT_VERSION, ledger=ledger)
+    if not runtime.available:
+        raise SystemExit(f"AI runtime unavailable: {runtime.status} {runtime.reason_ru}")
+    engine = env.service._engine(env.service.catalog_for(DATASET))
+    engine.runtime = runtime
+    engine.cache = type(engine.cache)(capacity=0)
+    questions = read_rows(pack / "2_assistant_crm" / "questions_open.csv")
+    texts = [(q["id"], q["question"]) for q in questions] + [(c["id"], c["turns"][0]) for c in _cases(extra_ids or [])]
+    rows, series = [], []
+    for qid, text in texts:
+        first = len(ledger.entries)
+        started = time.monotonic()
+        result = asyncio.run(engine.turn(text, TurnContext(), strategy="ai_first"))
+        entries = ledger.entries[first:]
+        elapsed = (time.monotonic() - started) * 1000
+        series.append({"id": qid, "ms": round(elapsed), "queue_ms": sum(e.queue_ms for e in entries),
+                       "path": result.answer_path, "model": result.model_id, "attempts": len(entries),
+                       "errors": [e.error_kind for e in entries if e.status != "ok"]})
+        rows.append((qid, result.answer, result.answer_path, result.verifier_status))
+        print(f"{qid} {result.answer_path} {round(elapsed)}ms {result.model_id}", flush=True)
+    open_rows = rows[: len(questions)]
+    answers_csv = out / "answers_live.csv"
+    write_csv(answers_csv, ["id", "answer"], [[qid, answer] for qid, answer, _, _ in open_rows])
+    check = run_selfcheck(pack / "2_assistant_crm" / "selfcheck.py", "assistant", answers_csv, pack / "2_assistant_crm" / "questions_open_KEY.csv")
+    total = [s["ms"] for s in series]
+    report = {
+        "generated_at": datetime.now(UTC).isoformat(),
+        "kind": "live_open_questions_ai_first",
+        "profile": {"primary": model, "fallbacks": fallbacks or [], "rpm": rpm, "request_timeout_s": 15, "turn_deadline_s": 60},
+        "prompt_version": PROMPT_VERSION,
+        "selfcheck_assistant": check,
+        "paths": {p: sum(1 for _, _, path, _ in rows if path == p) for p in {r[2] for r in rows}},
+        "latency_series_ms": {**_series(total), "without_queue": _series([s["ms"] - s["queue_ms"] for s in series])},
+        "model_calls": len(ledger.entries),
+        "provider_errors": {k: sum(1 for e in ledger.entries if e.error_kind == k) for k in {e.error_kind for e in ledger.entries if e.error_kind}},
+        "models_answered": sorted({e.model_id for e in ledger.entries if e.status == "ok"}),
+        "tokens": {"input": sum(e.input_tokens or 0 for e in ledger.entries), "output": sum(e.output_tokens or 0 for e in ledger.entries)},
+        "series": series,
+        "answers": [{"id": qid, "answer": answer, "path": path, "verifier": verifier} for qid, answer, path, verifier in rows],
+    }
+    (out / f"open_live_{model.replace(':', '_').replace('/', '_')}.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     return report

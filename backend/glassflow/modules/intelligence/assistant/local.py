@@ -21,7 +21,7 @@ from ..catalog.matching import COLOR_LEXICON, MatchResult, match_products, query
 from ..catalog.text import format_decimal, format_money, normalize, stem, stems_match, words
 from ..nlu.extract import WORD_NUMBERS, Extraction, extract
 from ..ports_consumed import InventoryPort, ServiceUnavailable
-from ..pricing import PricingInput, PricingResult, calculate
+from ..pricing import PricingInput, PricingResult, calculate, pricing_input_for, resolve_sides
 from .facts import FactSet
 
 MAX_SENTENCES = 4
@@ -55,13 +55,7 @@ SIDES_RU = {
 }
 
 
-def _resolve_sides(selected: tuple[str, ...], length_mm: int | None, width_mm: int | None) -> tuple[str, ...]:
-    """Map «длинные/короткие стороны» to the real sides; top/bottom run along length_mm."""
-    if selected in {("long",), ("short",)} and length_mm is not None and width_mm is not None:
-        length_is_long = length_mm >= width_mm
-        want_long = selected == ("long",)
-        return ("top", "bottom") if length_is_long == want_long else ("left", "right")
-    return tuple(side for side in selected if side in {"top", "bottom", "left", "right"})
+_resolve_sides = resolve_sides  # kept for imports; the single implementation lives in pricing
 
 
 @dataclass
@@ -731,19 +725,20 @@ class LocalEngine:
         if context.quantity is None:
             context.quantity, context.quantity_assumed = 1, True
             out.assumptions.append("Количество не указано — расчет за 1 деталь.")
-        sides = _resolve_sides(context.selected_sides, context.length_mm, context.width_mm)
-        sides_unknown = context.processing == "euro_edge" and context.edge_sides is None
-        selected_unknown = context.processing == "euro_edge" and context.edge_sides == "selected" and not context.selected_sides
-        request = PricingInput(
+        request, edge_unknown = pricing_input_for(
             product,
-            context.length_mm,
-            context.width_mm,
-            context.quantity,
-            context.processing if not (sides_unknown or selected_unknown) else "none",
-            "selected" if context.edge_sides == "selected" else "all",
-            sides,
-            "per_m2",
+            length_mm=context.length_mm,
+            width_mm=context.width_mm,
+            quantity=context.quantity,
+            processing=context.processing,
+            edge_sides=context.edge_sides,
+            selected_sides=context.selected_sides,
+            price_basis="per_m2",
         )
+        sides_unknown = edge_unknown and context.edge_sides is None
+        selected_unknown = edge_unknown and not sides_unknown
+        if edge_unknown:  # glass now; the all-sides variant is shown as a conditional, not assumed
+            request = replace(request, processing_kind="none", sides="all", selected_sides=())
         result = self._price(request, out)
         out.pricing = result
         out.facts.add("dimension", context.length_mm, "мм", "context")
