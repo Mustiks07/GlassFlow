@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import Field, field_validator
 
-from .common import DTO, DatasetRequest, Identifier, MoneyString
+from .common import DTO, DatasetRequest, Dimensions, Identifier, MoneyString
 
 
 class RankRequest(DatasetRequest):
@@ -116,6 +116,38 @@ class CardsRequest(DatasetRequest):
     factor: MoneyString = "0.50"
 
 
+class BuyerApplicationEvidence(DTO):
+    """C1-reviewed public activity plus explicit application/size assumptions."""
+    application: Literal["furniture_insert", "mirror_interior", "display_insert", "partition_panel", "finished_panel"]
+    material_ids: list[Identifier] = Field(min_length=1)
+    min_dimensions: Dimensions
+    max_dimensions: Dimensions | None = None
+    requires_cutting: bool
+    dimensions_basis: str = Field(min_length=1, max_length=1000)
+    activity: str = Field(min_length=1, max_length=2000)
+    source_url: str = Field(min_length=1)
+    checked_at: str
+
+
+class BuyerMatch(DTO):
+    buyer_id: str
+    name: str
+    registry_version: str
+    remnant_id: str
+    remnant_version: int
+    material_id: str
+    dimensions: Dimensions
+    application: str
+    activity: str
+    source_url: str
+    checked_at: str
+    dimensions_basis: str
+    constraints: list[str]
+    explanation: str
+    interest_confirmed: Literal[False] = False
+    policy_version: Literal["evidence-v1"] = "evidence-v1"
+
+
 class SaleCard(DTO):
     remnant_id: str
     title: str
@@ -134,6 +166,9 @@ class SaleCard(DTO):
     factor: MoneyString = "0.50"
     top3_buyer_ids: list[str] = Field(default_factory=list)
     assumptions: str = "Коэффициент - проектное допущение, не рыночная оценка и не факт продажи"
+    buyer_matches: list[BuyerMatch] = Field(default_factory=list)
+    matching_policy: str = "legacy-unexplained"
+    match_snapshot_hash: str | None = None
 
 
 class CardUpdate(DatasetRequest):

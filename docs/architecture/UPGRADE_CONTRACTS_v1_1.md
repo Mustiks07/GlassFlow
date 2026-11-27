@@ -45,4 +45,28 @@ Mutation body OrderAction (dataset_id,expected_version,operator,note), bind до
 Reminder link принимает только существующее актуальное quote_example этого customer/quote/revision.
 C1 использует offer/warehouse_task, показывает состояния и stale, не вычисляет денежные поля в браузере.
 
-U03 и U07 контракты будут дописаны перед соответствующей реализацией. U02 остается владением C3.
+## U03: объяснимый подбор
+
+C1 передает дополнительный `applications: BuyerApplicationEvidence[]` в каждой evidence.records организации.
+Исходный buyers CSV не меняется. Поля: application (furniture_insert/mirror_interior/display_insert/
+partition_panel/finished_panel), material_ids (явные canonical ID из materials), min_dimensions,
+max_dimensions (optional), requires_cutting, dimensions_basis, activity, source_url, checked_at.
+activity — публично подтвержденная деятельность; dimensions_basis — явное основание/допущение размера,
+а не выдуманная потребность. Source URL/date проверяются импортером по reviewer evidence.
+Имена/даты/профиль без applications по-прежнему импортируются, но сами по себе не объясняют пригодность.
+
+`GET /buyers/matches?dataset_id=&version=&remnant_id=` берет **current** C2 Remnant и current material.
+Возвращает BuyerMatch[] с ID/точным именем/registry/remnant versions, материалом/размером,
+публичной деятельностью, source URL/date, применением/ограничениями и interest_confirmed=false.
+Подбор детерминированный, без ML/LLM, учитывает обе ориентации size bounds и дефект.
+Для tempered запрещен requires_cutting=true; готовый исходный размер указывается явно.
+Defect не скрывается. Ни score, ни совпадение слов в why/category не заменяют material/size evidence.
+
+Новые SaleCard содержат три buyer_matches, matching_policy=evidence-v1 и match_snapshot_hash.
+Generate использует только целые актуальные свободные originals выбранного C2 plan; если нет пяти кусков
+с тремя пригодными покупателями, явный409 вместо произвольных имен. Edit top3 допускает только текущие matches.
+Recheck/export повторно проверяют match snapshot, C2 status/version и registry; старые unexplained cards требуют regenerate.
+C3 может формулировать только из этих BuyerMatch; source факт покупки/согласия не содержит.
+Смена материала означает новый current remnant/version и новый подбор; старые explanations не переносятся.
+
+U07 контракт будет дописан перед соответствующей реализацией. U02 остается владением C3.
