@@ -192,6 +192,178 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/datasets/{dataset_id}/remnants": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Remnants Page */
+        get: operations["list_remnants_page_api_v1_datasets__dataset_id__remnants_get"];
+        put?: never;
+        /** Add Remnant Scoped */
+        post: operations["add_remnant_scoped_api_v1_datasets__dataset_id__remnants_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/remnants/{remnant_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Remnant */
+        get: operations["get_remnant_api_v1_remnants__remnant_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Remnant */
+        patch: operations["update_remnant_api_v1_remnants__remnant_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/remnants/{remnant_id}/measurement": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Measurement */
+        patch: operations["update_measurement_api_v1_remnants__remnant_id__measurement_patch"];
+        trace?: never;
+    };
+    "/api/v1/remnants/{remnant_id}/withdraw": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Withdraw Remnant */
+        post: operations["withdraw_remnant_api_v1_remnants__remnant_id__withdraw_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/remnants/{remnant_id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restore Remnant */
+        post: operations["restore_remnant_api_v1_remnants__remnant_id__restore_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/remnants/{remnant_id}/consume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Consume Remnant */
+        post: operations["consume_remnant_api_v1_remnants__remnant_id__consume_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/remnants/{remnant_id}/release": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Release Remnant */
+        post: operations["release_remnant_api_v1_remnants__remnant_id__release_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/reservations/{reservation_id}/release": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Release Reservation */
+        post: operations["release_reservation_api_v1_reservations__reservation_id__release_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/remnants/{remnant_id}/children": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Children */
+        post: operations["add_children_api_v1_remnants__remnant_id__children_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/cutting/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Cutting Events */
+        get: operations["cutting_events_api_v1_cutting_events_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/cutting/candidates": {
         parameters: {
             query?: never;
@@ -203,6 +375,26 @@ export interface paths {
         put?: never;
         /** Find Candidates */
         post: operations["find_candidates_api_v1_cutting_candidates_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/cutting/solve-input": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Solve Input
+         * @description The exact serialisable snapshot a solve job would receive (for the platform worker and audits).
+         */
+        post: operations["solve_input_api_v1_cutting_solve_input_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -226,6 +418,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/cutting/impact": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Impact */
+        post: operations["impact_api_v1_cutting_impact_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Plans */
+        get: operations["list_plans_api_v1_plans_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/plans/active": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Active Plan */
+        get: operations["active_plan_api_v1_plans_active_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/plans/compare": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Compare Plans */
+        post: operations["compare_plans_api_v1_plans_compare_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/plans/{plan_id}": {
         parameters: {
             query?: never;
@@ -237,6 +497,57 @@ export interface paths {
         get: operations["get_plan_api_v1_plans__plan_id__get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/plans/{plan_id}/layout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Plan Layout */
+        get: operations["plan_layout_api_v1_plans__plan_id__layout_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/plans/{plan_id}/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Plan Export */
+        get: operations["plan_export_api_v1_plans__plan_id__export_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/plans/{plan_id}/draft": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Draft Plan */
+        post: operations["draft_plan_api_v1_plans__plan_id__draft_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -506,6 +817,33 @@ export interface components {
             /** Kb Version */
             kb_version: string;
         };
+        /** AuditEvent */
+        AuditEvent: {
+            /** Event Id */
+            event_id: string;
+            /** Dataset Id */
+            dataset_id: string;
+            /** Action */
+            action: string;
+            /** Object Type */
+            object_type: string;
+            /** Object Id */
+            object_id: string;
+            /** Before Version */
+            before_version: number | null;
+            /** After Version */
+            after_version: number | null;
+            /** Actor */
+            actor: string;
+            /** Correlation Id */
+            correlation_id: string;
+            /** Created At */
+            created_at: string;
+            /** Details */
+            details?: {
+                [key: string]: string | number | boolean | string[] | null;
+            };
+        };
         /** Body_preview_import_api_v1_imports_preview_post */
         Body_preview_import_api_v1_imports_preview_post: {
             /** File */
@@ -545,6 +883,24 @@ export interface components {
             rot: 0 | 1;
             /** Location Raw */
             location_raw: string;
+            /**
+             * Copy Index
+             * @default 0
+             */
+            copy_index: number;
+            remnant_dimensions?: components["schemas"]["Dimensions"] | null;
+            /**
+             * Waste Area Mm2
+             * @default 0
+             */
+            waste_area_mm2: number;
+            /** Age Days */
+            age_days?: number | null;
+            /**
+             * Shares Remnant With Plan
+             * @default false
+             */
+            shares_remnant_with_plan: boolean;
         };
         /** Candidates */
         Candidates: {
@@ -554,6 +910,23 @@ export interface components {
             reason_codes: string[];
             /** Scope */
             scope: string;
+            /**
+             * Covered Quantity
+             * @default 0
+             */
+            covered_quantity: number;
+            /**
+             * Requested Quantity
+             * @default 1
+             */
+            requested_quantity: number;
+            /** Reasons Ru */
+            reasons_ru?: string[];
+            /**
+             * Inventory Version
+             * @default
+             */
+            inventory_version: string;
         };
         /** CardsRequest */
         CardsRequest: {
@@ -591,6 +964,23 @@ export interface components {
             /** Evidence */
             evidence: components["schemas"]["Evidence"][];
         };
+        /** ChildRemnant */
+        ChildRemnant: {
+            dimensions: components["schemas"]["Dimensions"];
+            /** Location Raw */
+            location_raw: string;
+            /** Remnant Id */
+            remnant_id?: string | null;
+        };
+        /** ChildRemnantsRequest */
+        ChildRemnantsRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Children */
+            children: components["schemas"]["ChildRemnant"][];
+        };
         /** CommitPlan */
         CommitPlan: {
             /** Dataset Id */
@@ -601,6 +991,42 @@ export interface components {
             expected_remnant_versions: {
                 [key: string]: number;
             };
+            /**
+             * Owner Context
+             * @default
+             */
+            owner_context: string;
+        };
+        /** CommitResult */
+        CommitResult: {
+            plan: components["schemas"]["CutPlan"];
+            /** Reservations */
+            reservations: components["schemas"]["Reservation"][];
+            /** Released Reservation Ids */
+            released_reservation_ids?: string[];
+            /** Superseded Plan */
+            superseded_plan?: string | null;
+        };
+        /** CompareRequest */
+        CompareRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            base: components["schemas"]["PlanRef"];
+            candidate: components["schemas"]["PlanRef"];
+        };
+        /** ConsumeRequest */
+        ConsumeRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Reservation Id */
+            reservation_id: string;
+            /**
+             * Reason
+             * @default
+             */
+            reason: string;
         };
         /** CutMetrics */
         CutMetrics: {
@@ -618,6 +1044,52 @@ export interface components {
             missing: number;
             /** Fully Covered Orders */
             fully_covered_orders: number;
+            /**
+             * Total Orders
+             * @default 0
+             */
+            total_orders: number;
+            /**
+             * Covered Parts
+             * @default 0
+             */
+            covered_parts: number;
+            /**
+             * Total Parts
+             * @default 0
+             */
+            total_parts: number;
+            /**
+             * Used Original Remnants
+             * @default 0
+             */
+            used_original_remnants: number;
+            /**
+             * Free Original Remnants
+             * @default 0
+             */
+            free_original_remnants: number;
+            /**
+             * Used Remnants
+             * @default 0
+             */
+            used_remnants: number;
+            /**
+             * Score
+             * @default 0
+             */
+            score: number;
+            /**
+             * Coverage Percent
+             * @default 0
+             */
+            coverage_percent: string;
+            /** Value By Material */
+            value_by_material?: components["schemas"]["MaterialValue"][];
+            /** New Reasons */
+            new_reasons?: {
+                [key: string]: string;
+            };
         };
         /** CutPlan */
         CutPlan: {
@@ -642,6 +1114,30 @@ export interface components {
              * @enum {string}
              */
             search_status: "feasible" | "optimal_in_pool" | "proven_optimal" | "limited" | "infeasible";
+            /** Parent Plan Id */
+            parent_plan_id?: string | null;
+            /** Parent Revision */
+            parent_revision?: number | null;
+            /**
+             * Stop Reason
+             * @default completed
+             */
+            stop_reason: string;
+            config?: components["schemas"]["SolverConfig"] | null;
+            /** Issues */
+            issues?: components["schemas"]["PlanIssue"][];
+            /** Evidence */
+            evidence?: {
+                [key: string]: string | number | boolean | null;
+            };
+            /** Created At */
+            created_at?: string | null;
+            /**
+             * Source
+             * @default solver
+             * @enum {string}
+             */
+            source: "solver" | "edit" | "import";
         };
         /** Dataset */
         Dataset: {
@@ -697,6 +1193,41 @@ export interface components {
             /** Width Mm */
             width_mm: number;
         };
+        /** DraftEdit */
+        DraftEdit: {
+            /** Part Id */
+            part_id: string;
+            /**
+             * Action
+             * @default move
+             * @enum {string}
+             */
+            action: "move" | "unplace" | "lock" | "unlock";
+            /** Remnant Id */
+            remnant_id?: string | null;
+            /** X Mm */
+            x_mm?: number | null;
+            /** Y Mm */
+            y_mm?: number | null;
+            /** Rot */
+            rot?: (0 | 1) | null;
+            /** Lock Kind */
+            lock_kind?: ("none" | "assignment" | "placement") | null;
+        };
+        /** DraftRequest */
+        DraftRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Base Revision */
+            base_revision: number;
+            /** Edits */
+            edits: components["schemas"]["DraftEdit"][];
+        };
+        /** DraftResult */
+        DraftResult: {
+            plan: components["schemas"]["CutPlan"];
+            validation: components["schemas"]["ValidationResult"];
+        };
         /** Evidence */
         Evidence: {
             /** Source */
@@ -724,6 +1255,19 @@ export interface components {
             /** Errors */
             errors: string[];
         };
+        /** ExportRow */
+        ExportRow: {
+            /** Part Id */
+            part_id: string;
+            /** Remnant Id */
+            remnant_id: string;
+            /** X Mm */
+            x_mm: string;
+            /** Y Mm */
+            y_mm: string;
+            /** Rot */
+            rot: string;
+        };
         /** FindRequest */
         FindRequest: {
             /** Dataset Id */
@@ -744,6 +1288,11 @@ export interface components {
             inventory_mode: "free_whole_remnants" | "replan";
             /** Base Plan Id */
             base_plan_id?: string | null;
+            /**
+             * Quantity
+             * @default 1
+             */
+            quantity: number;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -769,6 +1318,56 @@ export interface components {
              */
             version: string;
         };
+        /** ImpactReport */
+        ImpactReport: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Remnant Id */
+            remnant_id: string;
+            /** Remnant Version */
+            remnant_version: number;
+            /** Plan Id */
+            plan_id: string | null;
+            /** Plan Revision */
+            plan_revision: number | null;
+            /** Affected Part Ids */
+            affected_part_ids: string[];
+            /** New Part Ids */
+            new_part_ids: string[];
+            /** Delta Covered Area Mm2 */
+            delta_covered_area_mm2: number;
+            /** Delta Value Tg */
+            delta_value_tg: string;
+            /** Affected Reservation Ids */
+            affected_reservation_ids: string[];
+            /** Affected Order Ids */
+            affected_order_ids: string[];
+            /**
+             * Requires Commit
+             * @default true
+             */
+            requires_commit: boolean;
+            /**
+             * Note Ru
+             * @default
+             */
+            note_ru: string;
+        };
+        /** ImpactRequest */
+        ImpactRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Remnant Id */
+            remnant_id: string;
+            /**
+             * Change
+             * @enum {string}
+             */
+            change: "exclude" | "measurement";
+            dimensions?: components["schemas"]["Dimensions"] | null;
+            /** Plan Id */
+            plan_id?: string | null;
+        };
         /** ImportPreview */
         ImportPreview: {
             /** Import Id */
@@ -783,6 +1382,18 @@ export interface components {
             }[];
             /** Warnings */
             warnings: string[];
+        };
+        /**
+         * InventoryChange
+         * @description Result of reserve/consume/release/withdraw: the new state and the audit event id.
+         */
+        InventoryChange: {
+            remnant: components["schemas"]["Remnant"];
+            reservation?: components["schemas"]["Reservation"] | null;
+            /** Audit Event Id */
+            audit_event_id: string;
+            /** Children */
+            children?: components["schemas"]["Remnant"][];
         };
         /** Job */
         Job: {
@@ -802,6 +1413,37 @@ export interface components {
             /** Error Code */
             error_code?: string | null;
         };
+        /** LayoutPart */
+        LayoutPart: {
+            /** Part Id */
+            part_id: string;
+            /** Order Id */
+            order_id: string;
+            /** X Mm */
+            x_mm: number;
+            /** Y Mm */
+            y_mm: number;
+            /** W Mm */
+            w_mm: number;
+            /** H Mm */
+            h_mm: number;
+            /**
+             * Rot
+             * @enum {integer}
+             */
+            rot: 0 | 1;
+            /**
+             * Lock Kind
+             * @default none
+             * @enum {string}
+             */
+            lock_kind: "none" | "assignment" | "placement";
+            /**
+             * Premium
+             * @default false
+             */
+            premium: boolean;
+        };
         /** ManagerMetrics */
         ManagerMetrics: {
             /** Manager */
@@ -819,6 +1461,44 @@ export interface components {
             complaints: components["schemas"]["Ratio"];
             discounts: components["schemas"]["Ratio"];
         };
+        /** Material */
+        Material: {
+            /** Material Id */
+            material_id: string;
+            /** Name */
+            name: string;
+            /** Thickness Mm */
+            thickness_mm: number;
+            /** Unit Price Tg */
+            unit_price_tg: string;
+            /** Tempered */
+            tempered: boolean;
+        };
+        /** MaterialValue */
+        MaterialValue: {
+            /** Material Id */
+            material_id: string;
+            /** Covered Area Mm2 */
+            covered_area_mm2: number;
+            /** Unit Price Tg */
+            unit_price_tg: string;
+            /** Value Tg */
+            value_tg: string;
+        };
+        /** MeasurementUpdate */
+        MeasurementUpdate: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            dimensions: components["schemas"]["Dimensions"];
+            previous_dimensions?: components["schemas"]["Dimensions"] | null;
+            /**
+             * Reason
+             * @default
+             */
+            reason: string;
+        };
         /** NewRemnant */
         NewRemnant: {
             /** Dataset Id */
@@ -832,6 +1512,25 @@ export interface components {
             location_raw: string;
             /** Age Days */
             age_days?: number | null;
+            /** Remnant Id */
+            remnant_id?: string | null;
+        };
+        /** Part */
+        Part: {
+            /** Part Id */
+            part_id: string;
+            /** Order Id */
+            order_id: string;
+            /** Material Id */
+            material_id: string;
+            dimensions: components["schemas"]["Dimensions"];
+            /** Premium */
+            premium: boolean;
+            /**
+             * Product Type
+             * @default
+             */
+            product_type: string;
         };
         /** Placement */
         Placement: {
@@ -851,6 +1550,97 @@ export interface components {
              * @enum {string}
              */
             lock_kind: "none" | "assignment" | "placement";
+        };
+        /** PlacementChange */
+        PlacementChange: {
+            /** Part Id */
+            part_id: string;
+            before: components["schemas"]["Placement"] | null;
+            after: components["schemas"]["Placement"] | null;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "added" | "removed" | "moved" | "reassigned" | "unchanged";
+        };
+        /** PlanComparison */
+        PlanComparison: {
+            /** Dataset Id */
+            dataset_id: string;
+            base: components["schemas"]["PlanRef"];
+            candidate: components["schemas"]["PlanRef"];
+            /** Delta Covered Area Mm2 */
+            delta_covered_area_mm2: number;
+            /** Delta Coverage */
+            delta_coverage: number;
+            /** Delta Value Tg */
+            delta_value_tg: string;
+            /** Delta Fully Covered Orders */
+            delta_fully_covered_orders: number;
+            /** Delta Free Original Remnants */
+            delta_free_original_remnants: number;
+            /** Newly New Part Ids */
+            newly_new_part_ids: string[];
+            /** Newly Covered Part Ids */
+            newly_covered_part_ids: string[];
+            /** Changes */
+            changes: components["schemas"]["PlacementChange"][];
+            /** Affected Reserved Remnant Ids */
+            affected_reserved_remnant_ids: string[];
+        };
+        /** PlanIssue */
+        PlanIssue: {
+            /** Code */
+            code: string;
+            /** Message Ru */
+            message_ru: string;
+            /** Part Id */
+            part_id?: string | null;
+            /** Remnant Id */
+            remnant_id?: string | null;
+            /** Other Part Id */
+            other_part_id?: string | null;
+            /** Coordinates */
+            coordinates?: {
+                [key: string]: number;
+            };
+        };
+        /** PlanLayout */
+        PlanLayout: {
+            /** Plan Id */
+            plan_id: string;
+            /** Revision */
+            revision: number;
+            /** Remnants */
+            remnants: components["schemas"]["RemnantLayout"][];
+            /** New Part Ids */
+            new_part_ids: string[];
+        };
+        /** PlanRef */
+        PlanRef: {
+            /** Plan Id */
+            plan_id: string;
+            /** Revision */
+            revision?: number | null;
+        };
+        /** PlanSummary */
+        PlanSummary: {
+            /** Plan Id */
+            plan_id: string;
+            /** Revision */
+            revision: number;
+            /** Status */
+            status: string;
+            /** Search Status */
+            search_status: string;
+            /** Coverage */
+            coverage: number;
+            /** Covered Area Mm2 */
+            covered_area_mm2: number;
+            /** Created At */
+            created_at?: string | null;
+            /** Source */
+            source: string;
         };
         /** Processing */
         Processing: {
@@ -982,6 +1772,18 @@ export interface components {
             /** Business Modules Ready */
             business_modules_ready: boolean;
         };
+        /** ReleaseRequest */
+        ReleaseRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /**
+             * Reason
+             * @default
+             */
+            reason: string;
+        };
         /** Reminder */
         Reminder: {
             /** Dataset Id */
@@ -1059,6 +1861,122 @@ export interface components {
              * @default 0
              */
             version: number;
+            /** Internal Id */
+            internal_id?: string | null;
+            /**
+             * Origin
+             * @default source
+             * @enum {string}
+             */
+            origin: "source" | "working" | "child";
+            /**
+             * Original
+             * @default true
+             */
+            original: boolean;
+            /** Rack */
+            rack?: string | null;
+            /** Cell */
+            cell?: string | null;
+            /** Parent Remnant Id */
+            parent_remnant_id?: string | null;
+            /** Active Reservation Id */
+            active_reservation_id?: string | null;
+            /** Status Reason */
+            status_reason?: string | null;
+        };
+        /** RemnantLayout */
+        RemnantLayout: {
+            /** Remnant Id */
+            remnant_id: string;
+            /** Material Id */
+            material_id: string;
+            /** Length Mm */
+            length_mm: number;
+            /** Width Mm */
+            width_mm: number;
+            /** Trim Mm */
+            trim_mm: number;
+            /** Gap Mm */
+            gap_mm: number;
+            /** Tempered */
+            tempered: boolean;
+            /**
+             * Tempered Tolerance Mm
+             * @default 2
+             */
+            tempered_tolerance_mm: number;
+            /** Defect */
+            defect: boolean;
+            /** Location Raw */
+            location_raw: string;
+            /** Rack */
+            rack?: string | null;
+            /** Cell */
+            cell?: string | null;
+            /** Parts */
+            parts: components["schemas"]["LayoutPart"][];
+            /** Used Area Mm2 */
+            used_area_mm2: number;
+        };
+        /** RemnantPage */
+        RemnantPage: {
+            /** Items */
+            items: components["schemas"]["Remnant"][];
+            /** Total */
+            total: number;
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
+        };
+        /** RemnantUpdate */
+        RemnantUpdate: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Location Raw */
+            location_raw?: string | null;
+            /** Defect */
+            defect?: boolean | null;
+            /** Age Days */
+            age_days?: number | null;
+            /**
+             * Reason
+             * @default
+             */
+            reason: string;
+        };
+        /** Reservation */
+        Reservation: {
+            /** Reservation Id */
+            reservation_id: string;
+            /** Dataset Id */
+            dataset_id: string;
+            /** Remnant Id */
+            remnant_id: string;
+            /** Plan Id */
+            plan_id: string;
+            /** Plan Revision */
+            plan_revision: number;
+            /** Owner Context */
+            owner_context: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "active" | "released" | "consumed";
+            /** Version */
+            version: number;
+            /** Created At */
+            created_at: string;
+            /** Released At */
+            released_at?: string | null;
+            /** Consumed At */
+            consumed_at?: string | null;
+            /** Part Ids */
+            part_ids?: string[];
         };
         /** RunRequest */
         RunRequest: {
@@ -1084,6 +2002,50 @@ export interface components {
             /** Top3 Buyers */
             top3_buyers: string[];
         };
+        /**
+         * SolutionExport
+         * @description Rows for solution.csv in input order plus metadata; Pro serialises and re-runs validators.
+         */
+        SolutionExport: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Plan Id */
+            plan_id: string;
+            /** Revision */
+            revision: number;
+            /** Header */
+            header: string[];
+            /** Rows */
+            rows: components["schemas"]["ExportRow"][];
+            metrics: components["schemas"]["CutMetrics"];
+            /** Free Original Remnant Ids */
+            free_original_remnant_ids: string[];
+            validation: components["schemas"]["ValidationResult"];
+        };
+        /** SolveInput */
+        SolveInput: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Materials */
+            materials: components["schemas"]["Material"][];
+            /** Remnants */
+            remnants: components["schemas"]["Remnant"][];
+            /** Parts */
+            parts: components["schemas"]["Part"][];
+            /** Locks */
+            locks?: components["schemas"]["Placement"][];
+            config?: components["schemas"]["SolverConfig"];
+            /** Unavailable Remnant Ids */
+            unavailable_remnant_ids?: string[];
+            /** Occupied Remnant Ids */
+            occupied_remnant_ids?: string[];
+            /** Previous Placements */
+            previous_placements?: components["schemas"]["Placement"][];
+            /** Base Plan Id */
+            base_plan_id?: string | null;
+            /** Base Revision */
+            base_revision?: number | null;
+        };
         /** SolveRequest */
         SolveRequest: {
             /** Dataset Id */
@@ -1093,6 +2055,14 @@ export interface components {
             /** Locks */
             locks?: components["schemas"]["Placement"][];
             config?: components["schemas"]["SolverConfig"];
+            /** Excluded Remnant Ids */
+            excluded_remnant_ids?: string[];
+            /**
+             * Mode
+             * @default replan
+             * @enum {string}
+             */
+            mode: "replan" | "keep_committed";
         };
         /** SolverConfig */
         SolverConfig: {
@@ -1122,6 +2092,16 @@ export interface components {
              * @default 5
              */
             minimum_free_remnants: number;
+            /**
+             * Fixed Work
+             * @default false
+             */
+            fixed_work: boolean;
+            /**
+             * Max Pool Patterns
+             * @default 80000
+             */
+            max_pool_patterns: number;
         };
         /** ValidationError */
         ValidationError: {
@@ -1146,6 +2126,19 @@ export interface components {
             invalid_part_ids: string[];
             /** Missing Part Ids */
             missing_part_ids: string[];
+            /** Issues */
+            issues?: components["schemas"]["PlanIssue"][];
+            /** Plan Revision */
+            plan_revision?: number | null;
+        };
+        /** WithdrawRequest */
+        WithdrawRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Reason */
+            reason: string;
         };
     };
     responses: never;
@@ -1513,6 +2506,10 @@ export interface operations {
         parameters: {
             query: {
                 dataset_id: string;
+                material_id?: string | null;
+                status?: string | null;
+                limit?: number;
+                offset?: number;
             };
             header?: never;
             path?: never;
@@ -1529,17 +2526,35 @@ export interface operations {
                     "application/json": components["schemas"]["Remnant"][];
                 };
             };
-            /** @description Validation Error */
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1571,17 +2586,790 @@ export interface operations {
                     "application/json": components["schemas"]["Remnant"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_remnants_page_api_v1_datasets__dataset_id__remnants_get: {
+        parameters: {
+            query?: {
+                material_id?: string | null;
+                status?: ("available" | "reserved" | "consumed" | "withdrawn") | null;
+                defect?: boolean | null;
+                original?: boolean | null;
+                min_length_mm?: number | null;
+                min_width_mm?: number | null;
+                search?: string | null;
+                sort?: "remnant_id" | "area" | "age_days" | "material_id" | "status" | "source_order";
+                descending?: boolean;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path: {
+                dataset_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RemnantPage"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    add_remnant_scoped_api_v1_datasets__dataset_id__remnants_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                dataset_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NewRemnant"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Remnant"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    get_remnant_api_v1_remnants__remnant_id__get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path: {
+                remnant_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Remnant"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    update_remnant_api_v1_remnants__remnant_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                remnant_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RemnantUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Remnant"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    update_measurement_api_v1_remnants__remnant_id__measurement_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                remnant_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MeasurementUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImpactReport"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    withdraw_remnant_api_v1_remnants__remnant_id__withdraw_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                remnant_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WithdrawRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InventoryChange"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    restore_remnant_api_v1_remnants__remnant_id__restore_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                remnant_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReleaseRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InventoryChange"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    consume_remnant_api_v1_remnants__remnant_id__consume_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "Idempotency-Key"?: string | null;
+            };
+            path: {
+                remnant_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConsumeRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InventoryChange"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    release_remnant_api_v1_remnants__remnant_id__release_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "Idempotency-Key"?: string | null;
+            };
+            path: {
+                remnant_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReleaseRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InventoryChange"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    release_reservation_api_v1_reservations__reservation_id__release_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "Idempotency-Key"?: string | null;
+            };
+            path: {
+                reservation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReleaseRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InventoryChange"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    add_children_api_v1_remnants__remnant_id__children_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                remnant_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChildRemnantsRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InventoryChange"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    cutting_events_api_v1_cutting_events_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                object_id?: string | null;
+                after_seq?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuditEvent"][];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1613,17 +3401,95 @@ export interface operations {
                     "application/json": components["schemas"]["Candidates"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    solve_input_api_v1_cutting_solve_input_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SolveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SolveInput"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1647,7 +3513,7 @@ export interface operations {
         };
         responses: {
             /** @description Successful Response */
-            200: {
+            202: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1655,17 +3521,272 @@ export interface operations {
                     "application/json": components["schemas"]["Job"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    impact_api_v1_cutting_impact_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImpactRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImpactReport"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_plans_api_v1_plans_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanSummary"][];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    active_plan_api_v1_plans_active_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CutPlan"] | null;
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    compare_plans_api_v1_plans_compare_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CompareRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanComparison"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1679,6 +3800,7 @@ export interface operations {
         parameters: {
             query: {
                 dataset_id: string;
+                revision?: number | null;
             };
             header?: never;
             path: {
@@ -1697,17 +3819,219 @@ export interface operations {
                     "application/json": components["schemas"]["CutPlan"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    plan_layout_api_v1_plans__plan_id__layout_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                revision?: number | null;
+            };
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanLayout"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    plan_export_api_v1_plans__plan_id__export_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                revision?: number | null;
+            };
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SolutionExport"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    draft_plan_api_v1_plans__plan_id__draft_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DraftRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DraftResult"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1721,6 +4045,7 @@ export interface operations {
         parameters: {
             query: {
                 dataset_id: string;
+                revision?: number | null;
             };
             header?: never;
             path: {
@@ -1739,17 +4064,35 @@ export interface operations {
                     "application/json": components["schemas"]["ValidationResult"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1762,7 +4105,9 @@ export interface operations {
     commit_plan_api_v1_plans__plan_id__commit_post: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "Idempotency-Key"?: string | null;
+            };
             path: {
                 plan_id: string;
             };
@@ -1780,20 +4125,38 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["CutPlan"];
+                    "application/json": components["schemas"]["CommitResult"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Not Implemented */
-            501: {
+            /** @description Service Unavailable */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };
