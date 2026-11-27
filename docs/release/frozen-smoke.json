@@ -1,18 +1,38 @@
 {
-  "measured_at": "2026-11-27T16:29:24.951277+00:00",
+  "measured_at": "2026-11-27T17:39:36.938745+00:00",
   "os": "Windows-10-10.0.19045-SP0",
-  "exe_sha256": "5ef98d81c47224797e144740db94eb35af8a3cce1ccb98b9bf03588b4bc676a4",
+  "exe_sha256": "74152115b87f6ceebb528b14fb496551efc895a21aace4e9781821f4872d1d95",
   "native_worker": {
     "scipy_x": 2,
     "ortools_x": 2,
     "ortools_optimal": true,
     "frozen_worker": true,
-    "pid": 3796
+    "worker_executable": "GlassFlow.exe",
+    "pid": 17892
+  },
+  "pe_subsystem": {
+    "main": 2,
+    "diagnostics": 3
   },
   "clean_windows": "not_run",
   "ui_flow": "not_run; C1 integration required",
-  "first_start_ms": 3265.00000001397,
+  "build_commit": "0457954921370fd1f43afbe56726e076cd6ab015",
+  "runtime_source_digest": "3a738f3507d9c946a02525b7c815bbac7ce2a93aa4c6dc82fee34c67b6c6a7a2",
+  "official_validator_cli": {
+    "fixture": "synthetic all-NEW; format only, not solver acceptance",
+    "exit_code": 0,
+    "stdout": "деталей всего: 298; из остатков: 0; ошибок: 0; не указано в решении: 0\nплощадь деталей: 187.87 м²; закрыто остатками: 0.00 м²; ДОЛЯ = 0.00 %\nне пришлось резать нового стекла на 0 тг\nRESULT coverage=0.000000 invalid=0 money=0\n",
+    "stderr": ""
+  },
+  "first_start_ms": 3109.000000054948,
+  "singleton": "passed",
   "downloaded_picks_sha256": "b01cd1035793666d1c7d25db66e087d77c7b59a4c752606148bec311dcd02482",
+  "official_crm_open_evaluation": {
+    "exit_code": 0,
+    "stdout": "точность (доля вернувшихся среди 25 выбранных) 0.80; случайный выбор 0.43; эталон 0.80; ИТОГО за CRM-модуль 10.0 из 10\n",
+    "stderr": "",
+    "closed_accuracy": null
+  },
   "import_counts": {
     "materials": 8,
     "stock": 200,
@@ -24,7 +44,9 @@
     "distinct_orders": 110
   },
   "crm_rows": 25,
-  "restart_ms": 2890.00000001397,
+  "restart_ms": 3140.999999945052,
   "persistence": "passed",
+  "backup_restore": "passed",
+  "restore_restart_ms": 3077.999999979511,
   "status": "passed_on_build_machine"
 }

@@ -107,13 +107,13 @@ normal restart и backup/restore через actual EXE. Ожидает закл�
 | P-07 | registry/cards/prices/source checks done; real C1 registry и actual selected C2 plan отсутствуют здесь |
 | P-08 | strict same-run CSV/download/atomic validation done; whole real five-module run после merge |
 | P-09 | local auth/secrets/session/backup/restore/immutable history done; совместные domain concurrency проверки после merge |
-| P-10 | onedir/native worker/launcher/CI/benchmarks done; финальный smoke обновляется; clean PC и C2/C3 timing NOT RUN |
+| P-10 | onedir/native worker/launcher/CI/benchmarks done; expanded frozen smoke PASS на build machine; clean PC и C2/C3 timing NOT RUN |
 | P-11 | settings/actual C3 deploy contract/Compose/probe done; hosting/key/daemon/quota/full judge flow BLOCKED |
 | P-12 | gated PDF/report/release builders, source licenses, README/calendar done; final PDFs требуют actual run, human timings, team/costs |
 | P-13 | platform tests/evidence/handoff done; общая приемка и T63-T67 не выданы за PASS |
 
-Точный следующий шаг: закончить actual frozen smoke с singleton/validator/backup restore, записать SHA и CI,
-опубликовать evidence/status от Mustiks07. Runtime код готовится к интеграции; main не трогать.
+Точный следующий шаг интегратора: объединить ветки, применить domain migration snippets новой общей ревизией,
+подключить actual handlers/result hooks/resolvers и повторить whole-run приемку. Main этой сессией не изменяется.
 
 ## Оконный launcher: последний runtime checkpoint
 
@@ -122,3 +122,16 @@ normal restart и backup/restore через actual EXE. Ожидает закл�
 - Multiprocessing и native workers используют GUI executable, official validator CLI запускается скрыто.
 - Добавлен POST /datasets/demo (original source bytes, без KEY/готовых ответов), session/run view типизированы, API no-store.
 - Расширенный actual frozen smoke (GUI PE/header, singleton, native worker, official validator, real open CRM selfcheck, restart/backup/restore) выполняется следующим шагом. Предыдущий basic smoke не выдается за эту расширенную проверку.
+
+## Заключительный проверенный frozen checkpoint
+
+- Build runtime commit `0457954921370fd1f43afbe56726e076cd6ab015`, source digest `3a738f3507d9c946a02525b7c815bbac7ce2a93aa4c6dc82fee34c67b6c6a7a2`.
+- `uv run pyinstaller --noconfirm packaging/GlassFlow.spec` PASS. GUI EXE SHA256 `74152115b87f6ceebb528b14fb496551efc895a21aace4e9781821f4872d1d95`.
+- `uv run python scripts/smoke_frozen.py` PASS 2026-11-27T17:39:36Z: main PE GUI2, diagnostics console3, spawned GUI worker, SciPy/OR-Tools optimum2, singleton, actual import/CRM/download, settings persistence, explicit backup/restore across three launches.
+- First start 3109 ms, restart3141 ms, restore restart3078 ms. Это текущая build machine Windows10, не clean-machine T54.
+- Actual downloaded picks SHA256 `b01cd1035793666d1c7d25db66e087d77c7b59a4c752606148bec311dcd02482`: unchanged organizer CRM script precision0.80 и10/10 на open. Closed неизвестен. Validator CLI прошел на **synthetic all-NEW format-only**; это не результат solver.
+- `uv run python scripts/scan_release.py dist/GlassFlow` PASS; `uv run ruff check backend tests scripts` PASS.
+- Benchmark JSON обновлен фактическими samples: import20 median52.58/p95 73.40ms; dashboard100 median61.70/p95 130.14ms; CRM100 median38.38/p95 96.71ms. Чужие domain timings не выдуманы.
+- CI runs `46042114442` и `46043042565`: Linux verify PASS; Windows build/tests/expanded smoke behavior пройдены, но последний print отчета упал из-за cp1252 и кириллицы. Commit `768c89c` исправляет console serialization ASCII escaping, UTF-8 evidence сохраняется; локальный smoke после исправления PASS. Новый remote CI проверяется отдельно.
+- Начиная с `9b93b5c`, author/committer Mustiks07; новые commits и push выполняются без дополнительных запросов. Старую историю не переписывали.
+- Полная миссия остается **PLATFORM IMPLEMENTED / INTEGRATION REQUIRED**: actual C1/C2/C3 run, live gateway/keys/hosting, human labor evidence/team/costs/final PDFs, clean PC и T63–67 остаются непроверенными/заблокированными согласно handoff.

@@ -199,3 +199,17 @@ DTO/usage; запись QualityCheckRow/mapping-related events выполняе�
 Multiprocessing запускает GUI EXE, поэтому worker не открывает консоль; exporter запускает diagnostics скрыто.
 Первый демо-import доступен POST /datasets/demo, использует семь исходных файлов, сохраняет SHA/bytes и dedupe.
 Существующие final PDF защищены от перезаписи: новый выпуск — новый output directory.
+
+## Финальная платформенная evidence
+
+Runtime build `0457954`: expanded frozen smoke PASS на Windows10 build machine, отчет `frozen-smoke.json`.
+Проверены GUI PE header, скрытый native worker, singleton, импорт реальных семи файлов, CRM CSV download,
+перезапуск, settings persistence, backup/restore. Первый запуск3109ms, повтор3141ms, после restore3078ms.
+Скачанный picks.csv проверен неизмененным organizer evaluator: precision0.80, open10/10; closed неизвестен.
+Official cutting CLI отдельно проверен synthetic all-NEW **только на формат**, не solver acceptance.
+Release scanner PASS. Benchmark samples/machine/inputs в `platform-benchmark.json`.
+
+CI Linux verify прошел на `0457954`; Windows tests/build/поведение smoke также прошли, но вывод финального
+отчета упал на cp1252. `768c89c` исправляет переносимый вывод; UTF-8 JSON evidence остается без потери кириллицы.
+Последующий статус remote runner фиксируется в status. Ни build-machine smoke, ни fixtures не заменяют
+clean Windows/UI/whole-product/live-provider приемку. Последующие commits выполнены от Mustiks07.
