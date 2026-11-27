@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, File, Header, Query, Request, UploadFile
+from fastapi import APIRouter, File, Form, Header, Query, Request, UploadFile
 from fastapi.responses import FileResponse
 from sqlalchemy import select
 
@@ -11,6 +11,7 @@ from glassflow.contracts.platform import (
     ImportCommit,
     ImportPreview,
     Job,
+    KbHead,
     RestoreRequest,
     RunRequest,
     SettingsUpdate,
@@ -135,6 +136,47 @@ def source_manifest(dataset_id: str, kind: str, request: Request):
             "schema_version": row.schema_version,
             "imported_at": row.imported_at,
         }
+
+
+@router.get("/datasets/{dataset_id}/kb", response_model=KbHead)
+def current_kb(dataset_id: str, request: Request):
+    from glassflow.modules.platform.kb import kb_head
+
+    with request.app.state.session_factory() as session:
+        return kb_head(session, dataset_id)
+
+
+@router.post("/datasets/{dataset_id}/kb", response_model=KbHead)
+async def update_kb(
+    dataset_id: str,
+    request: Request,
+    file: UploadFile = File(...),
+    expected_version: int = Form(..., ge=0),
+    idempotency_key: str | None = Header(None),
+):
+    import hashlib
+
+    from glassflow.modules.platform.imports import runtime_file_allowed
+    from glassflow.modules.platform.kb import revise_kb
+
+    filename = file.filename or ""
+    if not filename.lower().endswith(".json") or not runtime_file_allowed(filename):
+        raise AppError(422, "KB_INVALID", "Выберите runtime KB JSON.")
+    content = await file.read(5_000_001)
+    if len(content) > 5_000_000:
+        raise AppError(413, "KB_TOO_LARGE", "KB превышает лимит 5 МБ.")
+    body = {"sha256": hashlib.sha256(content).hexdigest(), "expected_version": expected_version}
+    with write_transaction(request.app.state.session_factory) as session:
+        return idempotent(
+            session,
+            dataset_id,
+            "kb.revise",
+            idempotency_key,
+            body,
+            lambda: revise_kb(
+                session, dataset_id, content, filename, expected_version, request.state.correlation_id
+            ),
+        )
 
 
 @router.post("/system/owner-check")

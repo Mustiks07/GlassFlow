@@ -150,6 +150,8 @@ def footer(canvas, doc):
 
 
 def build_economics(evidence, destination, font, *, preview=False):
+    if destination.exists() and not preview:
+        raise ValueError("Existing economics artifact is protected; choose a new output version")
     manifest = require_evidence(evidence, preview)
     data, style = evidence["economics"], styles(font)
     result = economic_scenario(data)
@@ -290,6 +292,8 @@ class CutDiagram(Flowable):
 
 
 def build_examples(evidence, destination, font, *, preview=False):
+    if destination.exists() and not preview:
+        raise ValueError("Existing examples artifact is protected; choose a new output version")
     manifest = require_evidence(evidence, preview)
     examples = evidence["examples"]
     for kind in ("cutting", "answers", "reminders", "quality"):

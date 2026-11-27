@@ -29,8 +29,7 @@ class InstanceLock:
 
     def __enter__(self):
         self.handle = self.path.open("a+b")
-        self.handle.seek(0)
-        if self.handle.read(1) == b"":
+        if self.path.stat().st_size == 0:
             self.handle.write(b"0")
             self.handle.flush()
         self.handle.seek(0)

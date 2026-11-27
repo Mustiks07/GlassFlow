@@ -72,3 +72,45 @@ C2/C3 domain services и C1 verified buyer evidence не объединялис�
 Основной отчет: `docs/release/PLATFORM_HANDOFF.md`. Календарь T63-T67: `SUBMISSION_CHECKLIST.md`.
 Оставшиеся внешние/совместные пункты: C1 UI и real buyer evidence; C2/C3 actual repositories/migration snippets/handlers/validators; live providers и HTTPS gateway; team name;10 real paired labor timings/cost assumptions; actual run economics/examples; clean Windows; guest downloads/submission/attendance/rights.
 Ни один из этих пунктов не считается PASS по платформенным fixtures. Статус: PLATFORM IMPLEMENTED / INTEGRATION REQUIRED; полная конкурсная миссия еще не принята.
+
+## Заключительное согласование интерфейсов соседей
+
+После fetch прочитаны C2 `0e2abce` и C3 `e83c211`: их engine/migration snippets опубликованы, здесь не объединялись.
+C1 `12c5a23`: buyer registry/evidence отсутствует, status начальный. Предыдущие записи об отсутствии относятся к foundation этой ветки.
+
+По их конкретным запросам реализованы app.state.job_submitter (cutting.solve -> durable queue),
+app.state.intelligence_sources (общие БД/исходные bytes/KB history), app.state.crm_port (тот же CRM HTTP service).
+Добавлен versioned workspace KB upload/head/revert; original source и contest не меняются. Короткий WAL read snapshot
+защищает согласованность KB history/head. C3 httpx dependency теперь явно в intelligence group/uv.lock.
+C2/C3 migration directories автоматически включаются в PyInstaller, когда появятся после merge; общая ревизия их применения
+намеренно не stamp-ится без самих доменов.
+
+Compose target под реальный C3 Dockerfile/healthz/readyz/v1/turn подготовлен; `docker compose config --no-interpolate --quiet` PASS.
+Docker CLI28.5.1 установлен, daemon pipe отсутствует; actual image build/deploy, TLS, ключ, квота BLOCKED.
+
+Расширение frozen smoke нашло реальный Windows singleton дефект: чтение заблокированного byte lock до try.
+Исправлено на stat размера без чтения locked byte. Новый smoke дополнительно проверяет second instance, защищенный
+официальный validator CLI (synthetic all-NEW только формат), unchanged CRM selfcheck на реальном скачанном open picks,
+normal restart и backup/restore через actual EXE. Ожидает заключительного прогона после этого commit, не считается PASS заранее.
+
+Проверки новой сборки исходников: 47 pytest PASS, ruff PASS, check_foundation14 PASS, pnpm typecheck PASS;
+до последних адаптеров также typecheck/test/build PASS. PDF builders теперь защищают существующие финальные файлы от перезаписи.
+
+| Пункт | Фактическая граница |
+|---|---|
+| P-01 | platform DB/Alembic/UoW/errors/idempotency/audit/DI done; domain migrations применяет интегратор после merge |
+| P-02 | importer/bytes/SHA/snapshot/working copies/KB history done; domain import hook activation требует объединенных моделей |
+| P-03 | durable queue/process/cancel/retry/run/export coordinator done; actual C2/C3 handlers/result hooks — интеграция |
+| P-04 | baseline + grouped queue + train-only logistic comparison/artifact done; baseline выбран, closed score unknown |
+| P-05 | reminders/UTC/uniqueness/version/stale done; actual C2/C3 subject resolver — интеграция |
+| P-06 | historical seven metrics + denominators/completeness/drilldown/filtering done; UI C1 приемка остается |
+| P-07 | registry/cards/prices/source checks done; real C1 registry и actual selected C2 plan отсутствуют здесь |
+| P-08 | strict same-run CSV/download/atomic validation done; whole real five-module run после merge |
+| P-09 | local auth/secrets/session/backup/restore/immutable history done; совместные domain concurrency проверки после merge |
+| P-10 | onedir/native worker/launcher/CI/benchmarks done; финальный smoke обновляется; clean PC и C2/C3 timing NOT RUN |
+| P-11 | settings/actual C3 deploy contract/Compose/probe done; hosting/key/daemon/quota/full judge flow BLOCKED |
+| P-12 | gated PDF/report/release builders, source licenses, README/calendar done; final PDFs требуют actual run, human timings, team/costs |
+| P-13 | platform tests/evidence/handoff done; общая приемка и T63-T67 не выданы за PASS |
+
+Точный следующий шаг: закончить actual frozen smoke с singleton/validator/backup restore, записать SHA и CI,
+опубликовать evidence/status от Mustiks07. Runtime код готовится к интеграции; main не трогать.

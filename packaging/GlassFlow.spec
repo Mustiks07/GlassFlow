@@ -25,6 +25,10 @@ stamp.write_text(json.dumps({"commit": subprocess.check_output(["git", "rev-pars
     "source_digest": hashlib.sha256(json.dumps(source_hashes, sort_keys=True).encode()).hexdigest(),
     "files": source_hashes, "frozen": True}, indent=2), encoding="utf8")
 datas.append((str(stamp), "glassflow"))
+for domain in ("cutting", "intelligence"):
+    migrations = root / f"backend/glassflow/modules/{domain}/migrations"
+    if migrations.is_dir():
+        datas.append((str(migrations), f"glassflow/modules/{domain}/migrations"))
 for relative in sources:
     datas.append((str(root / "inputs/PACK_for_teams" / relative), "inputs/PACK_for_teams/" + str(Path(relative).parent)))
 for package in ("sqlalchemy", "pydantic", "scikit-learn", "scipy", "ortools"):

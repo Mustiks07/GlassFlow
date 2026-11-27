@@ -14,7 +14,7 @@ from sqlalchemy import select
 
 from glassflow.contracts.platform import Dataset
 from glassflow.core.errors import AppError
-from glassflow.core.models import DatasetRow, RecordRow, SourceRow, StagingRow, uid
+from glassflow.core.models import DatasetRow, RecordRow, SettingsRow, SourceRow, StagingRow, uid
 from glassflow.core.uow import audit, canonical_hash
 
 SCHEMAS = {
@@ -430,7 +430,11 @@ def working_copy(session, source_id, name, services, correlation, mode="workspac
     )
     session.add(copy)
     session.flush()
-    for row in session.scalars(select(SourceRow).where(SourceRow.dataset_id == source_id)):
+    for row in session.scalars(
+        select(SourceRow)
+        .where(SourceRow.dataset_id == source_id)
+        .order_by(SourceRow.imported_at, SourceRow.id)
+    ):
         session.add(
             SourceRow(
                 dataset_id=copy.id,
@@ -439,6 +443,7 @@ def working_copy(session, source_id, name, services, correlation, mode="workspac
                 sha256=row.sha256,
                 content=row.content,
                 row_count=row.row_count,
+                imported_at=row.imported_at,
             )
         )
     grouped = {}
@@ -447,6 +452,11 @@ def working_copy(session, source_id, name, services, correlation, mode="workspac
         session.add(RecordRow(dataset_id=copy.id, kind=row.kind, **data))
         grouped.setdefault(row.kind, []).append(data)
     session.flush()
+    kb_pointer = session.get(SettingsRow, f"kb_head:{source_id}")
+    if kb_pointer:
+        session.add(
+            SettingsRow(id=f"kb_head:{copy.id}", version=kb_pointer.version, data=dict(kb_pointer.data))
+        )
     for hook in services.import_hooks:
         hook(session, copy.id, grouped)
     audit(session, copy.id, "dataset.working_copy", copy.id, correlation)

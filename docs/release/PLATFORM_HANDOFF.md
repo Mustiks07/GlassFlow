@@ -158,3 +158,39 @@ Frontend/lock этой веткой не редактировались. CI до
 
 Статус: **PLATFORM IMPLEMENTED / INTEGRATION REQUIRED**. Полная миссия с внешними приемочными условиями
 остается незавершенной до перечисленных фактов; это явный checkpoint, не заявление о готовой конкурсной версии.
+
+## Уточнение после заключительного fetch соседних веток
+
+Просмотрены (без merge): C2 `0e2abce`, C3 `e83c211`, C1 `12c5a23`.
+C2/C3 объявили module READY FOR INTEGRATION; real buyers/evidence в C1 branch по-прежнему нет,
+его status остается начальным. Старые формулировки «отсутствуют в foundation» описывают эту платформенную ветку,
+а не утверждение об отсутствии опубликованной работы соседей.
+
+По конкретным запросам добавлены реальные точки:
+
+- `app.state.job_submitter = DurableJobSubmitter`: C2 submit("cutting.solve",dataset_id,SolveInput-dict)
+  -> durable platform Job. Нормализуется в handler kind cutting, одинаковый envelope cutting_snapshot/config для run и UI.
+  Нет handler -> 503 до постановки; scope/CPU/time проверяются. Результат сохраняет result_hook C2 в parent transaction.
+- `app.state.intelligence_sources = PlatformIntelligenceSources`: C3 knowledge_base/kb_history/materials из общих
+  immutable SourceFile bytes, SHA и aliases kb-<sha16>. Короткий WAL read snapshot согласует history/head при concurrent edits.
+- `GET/POST /datasets/{id}/kb`: текущая версия/ревизия и upload новой KB только workspace. POST multipart file,
+  expected_version (версия KB head, не Dataset.version), Idempotency-Key. Original source не изменяется;
+  документы новых версий append-only в source_files, head pointer версионируется. Revert старых bytes явен,
+  история не теряется, immutable contest и материалы не меняются. Рабочая копия сохраняет историю/head.
+- `app.state.crm_port`: rank/draft_reminder вызывает тот же CRM service, что HTTP; canonical uniqueness защищает
+  повтор AI tool, recipient не становится quote customer. Для specific_remnant C3 tool/UI должны передать compatibility_ref/version.
+- C3 app.state.intelligence_service должен быть собран интегратором с этими sources/ports и общей session factory;
+  production не должен оставаться на PackDirectorySources/open-pack bootstrap.
+- C2 migrations/0001_cutting.sql и C3 migrations/intelligence_0001.py известны; их применение остается новой общей
+  Alembic ревизией после merge. Нельзя условно stamp отсутствующие домены как мигрированные. PyInstaller уже подхватывает
+  domain migration directories, когда они появятся после интеграции.
+- C3 requested httpx явно добавлен в intelligence group/lock. C3 gateway /healthz/readyz/v1/turn учтены в probe и Compose target.
+  Compose config прошел; actual Docker daemon/HTTPS/key/quota отсутствуют. Подробности infra/judge-integration/README.md.
+
+Не дублировать в runtime C3 valuation helper и Pro sale card price: финальная карточка/HTTP/export используют
+`sales.service.card_price`. Общие domain DTO по-прежнему брать из объединенных feature files, не копировать их в Pro.
+
+Для worker adapters: C3 check_dialogs/_check и effective_mappings используют persistence. Нельзя передавать
+SQLAlchemy factory в spawned child. Worker должен вызывать те же чистые C3 domain functions над snapshot и возвращать
+DTO/usage; запись QualityCheckRow/mapping-related events выполняет parent result_hook. Не запускать второй SQLite
+и не подменять C3 сервис fixture. HTTP IntelligenceService остается с общей platform session factory.

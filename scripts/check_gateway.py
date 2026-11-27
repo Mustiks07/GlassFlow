@@ -24,7 +24,7 @@ if __name__ == "__main__":
         raise SystemExit("Judge token environment variable is missing; value is never printed")
     started = time.perf_counter()
     with httpx.Client(timeout=20, follow_redirects=False) as client:
-        response = client.get(args.url.rstrip("/") + "/health", headers={"Authorization": f"Bearer {token}"})
+        response = client.get(args.url.rstrip("/") + "/healthz", headers={"Authorization": f"Bearer {token}"})
     report = {
         "origin": f"{parsed.scheme}://{parsed.netloc}",
         "checked_at": datetime.now(UTC).isoformat(),

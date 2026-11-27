@@ -105,3 +105,9 @@ class SettingsUpdate(AISettings):
 class RestoreRequest(DTO):
     backup_id: str
     confirm_replace: bool
+
+
+class KbHead(DatasetRequest):
+    kb_version: str
+    sha256: str
+    version: int

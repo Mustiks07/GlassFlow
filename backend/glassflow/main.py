@@ -5,11 +5,14 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from glassflow.contracts.common import ApiError, Health, Readiness
+from glassflow.core.crm_port import PlatformCrmPort
 from glassflow.core.db import create_database, default_data_dir, session_is_ready
 from glassflow.core.errors import install_error_handlers
 from glassflow.core.jobs import Coordinator, Handler
 from glassflow.core.registry import Services
 from glassflow.core.security import install_local_security
+from glassflow.core.sources import PlatformIntelligenceSources
+from glassflow.core.submission import DurableJobSubmitter
 from glassflow.modules.crm.router import router as crm_router
 from glassflow.modules.cutting.router import router as cutting_router
 from glassflow.modules.intelligence.router import router as intelligence_router
@@ -35,9 +38,12 @@ def create_app(
             app.state.engine = engine
             app.state.data_dir = Path(engine.url.database).parent
             app.state.services = services or Services()
+            app.state.intelligence_sources = PlatformIntelligenceSources(factory)
+            app.state.crm_port = PlatformCrmPort(factory, app.state.services)
             app.state.secrets = {}
             app.state.maintenance = False
             handlers = {"crm": Handler(crm_job), **app.state.services.job_handlers}
+            app.state.job_submitter = DurableJobSubmitter(factory, handlers)
 
             def private_network_context(snapshot):
                 if snapshot.get("ai_profile") == "local_limited":

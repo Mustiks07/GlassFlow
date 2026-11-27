@@ -54,7 +54,7 @@ CRM job, скачанный CSV, штатное завершение и сохр
 
 1. `POST /api/v1/imports/preview`: multipart `files` (семь файлов) или `file` (ZIP).
 2. Исправить построчные errors; `POST /imports/{id}/commit`, JSON name/mode, заголовок `Idempotency-Key`.
-3. Рабочая копия: `POST /datasets/{id}/working-copy`. Предметные операции явно передают dataset_id.
+3. Рабочая копия: `POST /datasets/{id}/working-copy`. KB history/head: `GET/POST /datasets/{id}/kb` (file + expected_version + Idempotency-Key). Исходник остается неизменным. Предметные операции явно передают dataset_id.
 4. `POST /crm/rank`, `GET /analytics/managers`, API локальных reminders доступны без сети.
 5. `POST /runs`: immutable исходник, config_version, modules. Ответ 202 содержит job_id и run_id.
 6. `GET /jobs/{id}`, cancel/retry; `GET /runs/{id}`; `POST /runs/{id}/export` с Idempotency-Key.
@@ -77,7 +77,7 @@ BOM распознается, оригинальные байты/SHA сохра
 
 [Оценка logistic candidate](docs/release/crm/evaluation.json) содержит 13 одинаковых для baseline/model splits
 (client-group, temporal purge 60 дней, random control) и train-only tuning. На одном temporal split модель хуже;
-она не promoted. JSON candidate имеет hash/список признаков; пользовательские pickle/joblib не загружаются.
+она не promoted. Неизвестная жалоба сохраняется NULL и при равенстве сортируется после известных. JSON candidate имеет hash/список признаков; пользовательские pickle/joblib не загружаются.
 
 Адресат reminder отличается от заказчика quote. Due_at — реальный UTC timestamp, не синтетический день_года.
 Specific-remnant и quote_example требуют актуальной проверки C2/C3 через порт; без него 503.
@@ -94,7 +94,7 @@ M1–M5/unknown показывают исходные строки, знамен
 RPM/TPM/RPD, retries, timeout, tool/output limits передаются адаптеру; доступность аккаунта проверяется отдельно.
 
 `judge_gateway` требует HTTPS и отзывной judge token; серверный provider key в Windows не поставляется.
-[Gateway integration](infra/judge-integration/README.md): engine/deployment/endpoint/токен C3 пока отсутствуют,
+[Gateway integration](infra/judge-integration/README.md): engine C3 опубликован отдельно; объединение и реальный hosting/endpoint/токен еще не выполнены,
 поэтому live-AI и маршрут жюри BLOCKED. Локальная CRM/аналитика/импорт от сети не зависят.
 
 Фактическая месячная стоимость полного продукта пока неизвестна: нужны AI usage/quota, hosting и support.

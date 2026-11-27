@@ -1,0 +1,35 @@
+# Run after integration has supplied C3's engine. TLS is terminated by the chosen hosting platform/proxy.
+services:
+  judge-gateway:
+    image: glassflow-judge-gateway:${GLASSFLOW_RELEASE_SHA:?Set the reviewed source commit}
+    build:
+      context: ../..
+      dockerfile: infra/ai-gateway/Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+    read_only: true
+    tmpfs:
+      - /tmp
+    volumes:
+      - type: bind
+        source: ${GLASSFLOW_GATEWAY_SECRET_DIR:?Set a protected host directory outside the repository}
+        target: /run/glassflow-secrets
+        read_only: true
+    environment:
+      UV_CACHE_DIR: /tmp/uv-cache
+      GEMINI_API_KEY: ${GEMINI_API_KEY:?Inject a provider key through the hosting secret store}
+      GATEWAY_PROVIDER: gemini
+      GATEWAY_MODELS: ${GATEWAY_MODELS:?Set exact model IDs verified in the account}
+      GATEWAY_MODE: free_only
+      GATEWAY_GLOBAL_SPEND_USD: "0"
+      GATEWAY_TOKENS_FILE: /run/glassflow-secrets/tokens.json
+      GATEWAY_GLOBAL_REQUESTS_PER_DAY: ${GATEWAY_GLOBAL_REQUESTS_PER_DAY:-100}
+      GATEWAY_PER_SESSION_RPM: ${GATEWAY_PER_SESSION_RPM:-1}
+      GATEWAY_PER_IP_RPM: ${GATEWAY_PER_IP_RPM:-5}
+      GATEWAY_MAX_CONCURRENCY: "2"
+      GATEWAY_TRUST_FORWARDED_FOR: "0"
+    healthcheck:
+      test: ["CMD", "/app/.venv/bin/python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
