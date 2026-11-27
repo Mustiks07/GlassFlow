@@ -155,13 +155,16 @@ def test_t15_extended_profile_reaches_research_reference(open_snapshot):
     assert Decimal(plan.metrics.coverage_percent) >= TARGET_PERCENT - Decimal("0.000001")
 
 
-def test_t15_committed_evidence_is_consistent():
-    """The committed evidence must show the official validator run on the committed solution file."""
-    evidence = json.loads((EVIDENCE / "open_extended_evidence.json").read_text(encoding="utf-8"))
+@pytest.mark.parametrize("evidence_path", sorted(EVIDENCE.glob("open_extended*_evidence.json")),
+                         ids=lambda p: p.name)
+def test_t15_committed_evidence_is_consistent(evidence_path):
+    """Every committed evidence must show the official validator run on its own committed solution file."""
+    import hashlib
+
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
     assert evidence["validator"]["exit_code"] == 0 and evidence["validator"]["invalid"] == "0"
     assert evidence["metrics"]["missing"] == 0 and evidence["metrics"]["invalid"] == 0
     assert Decimal(evidence["metrics"]["coverage_percent"]) >= TARGET_PERCENT - Decimal("0.000001")
-    import hashlib
-
-    solution = EVIDENCE / "open_extended_solution.csv"
+    solution = Path(evidence["solution"]["path"])
+    solution = solution if solution.is_absolute() else Path(__file__).resolve().parents[2] / solution
     assert hashlib.sha256(solution.read_bytes()).hexdigest() == evidence["solution"]["sha256"]

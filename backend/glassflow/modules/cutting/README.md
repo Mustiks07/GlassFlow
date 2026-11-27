@@ -91,10 +91,18 @@ cut_reservations, cut_audit_events, cut_idempotency`; частичные уни�
 children_recorded`, `plan.solver/edit/import/committed`, с before/after версиями и `seq`. Карточки и
 напоминания перечитывают `GET /remnants/{id}` (status, version) при создании/открытии/подтверждении.
 
-**Экспорт.** `GET /plans/{id}/export` → `SolutionExport` (точные строки в порядке входа, header, метрики,
-свободные исходные куски, результат валидатора); недопустимый план → 409. Pro сериализует CSV и повторно
-запускает неизмененный `validate.py`. Пять карточек — только из `free_original_remnant_ids` выбранной
-ревизии.
+**Закрепления (C2-F1).** Исходные закрепления задачи (`SolveInput.locks`) сохраняются с ревизией
+(`CutPlan.requested_locks`, колонка `cut_plans.locks_json`) и проверяются при store/validate/commit/export.
+Нарушение любого из них делает ревизию `invalid` (альтернативная раскладка видна, но не подтверждается).
+Снять закрепление можно только явной правкой `unlock`, которая создает новую ревизию.
+
+**Экспорт (C2-F2), семантика live.** `GET /plans/{id}/export` → `SolutionExport`: точные строки в порядке
+входа, header, результат валидатора, а также метрики и `free_original_remnant_ids`, вычисленные в одном
+чтении текущего склада (`as_of`, `inventory_version`). Исторический список ревизии подписан отдельно:
+`plan_free_original_remnant_ids`, `plan_inventory_version`, `inventory_changed_since_plan`,
+`no_longer_free_remnant_ids`. Флаг `minimum_free_remnants_met` показывает, сохранился ли минимум свободных
+кусков. Недопустимый план → 409. Pro сериализует CSV и повторно запускает неизмененный `validate.py`.
+Перед созданием и подтверждением карточки — `GET /plans/{id}/free-remnants` (живой список с версиями кусков).
 
 ## Интеграция для C1 (UI)
 

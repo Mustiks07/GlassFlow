@@ -2,10 +2,18 @@
 
 - Ветка: codex/claude-2-myrzabek-cutting
 - Foundation commit: 16d63c6
-- Последний проверенный commit: см. «Итоговый handoff» (обновляется последним коммитом ветки)
+- Последний проверенный backend commit: c8299de (исправления C2-F1/C2-F2); статус фиксируется следующим коммитом ветки
 - Последнее обновление: 2026-11-27
-- Общий статус: **READY FOR INTEGRATION** для модуля cutting/inventory. Полная продуктовая приемка не выполнена: требует Pro (jobs, импорт, UoW, экспорт), C1 (UI, E2E) и интеграционной сессии.
+- Общий статус: **READY FOR INTEGRATION** для модуля cutting/inventory; замечания ревью C2-F1 и C2-F2 исправлены. Полная продуктовая приемка не выполнена: требует Pro (jobs, импорт, UoW, экспорт), C1 (UI, E2E) и интеграционной сессии.
 - Миссия: ../agents/CLAUDE_2_MYRZABEK.md · Технический договор модуля: ../../backend/glassflow/modules/cutting/README.md
+
+## Исправления по ревью 2026-11-27 (docs/reviews/CLAUDE_2_REVIEW_2026-11-27.md в main)
+
+| Замечание | Причина | Исправление | Регрессии |
+|---|---|---|---|
+| C2-F1 (P1): конфликт закрепления терялся при сохранении, план с нарушенным lock подтверждался | engine проверял только выполненные закрепления; `store_solver_plan` перепроверял по `lock_kind` размещений, исходные locks не сохранялись | Исходные закрепления задачи сохраняются с каждой ревизией (`cut_plans.locks_json`, поле `CutPlan.requested_locks`) и применяются в store/validate/commit/export. План, нарушающий закрепление, получает статус `invalid` (геометрически допустимая альтернатива видна, но не validated и не подтверждается). Engine проверяет по исходному вводу, совпадает с `engine.validate`, не публикует невалидные incumbents и больше не ставит ложный `infeasible`. Закрепление снимается только явным `unlock` новой ревизией; история старых ревизий неизменна. Placement-lock калёного куска проверяется как назначение (у целого куска одно положение) | `tests/cutting/test_review_fixes.py`: случай ревью (невозможное назначение) через solve → store → reload → commit/export/validate; явное снятие закрепления; сохранение lock при правках и запрет переноса; конфликт координат двух locks; lock за границей и на исключенном куске; несовместимые locks на калёном; допустимый placement-lock калёного; отсутствие невалидных incumbents |
+| C2-F2 (P1): экспорт отдавал уже зарезервированный «свободный» кусок | `export` проверял размещения по живому складу, а список свободных и метрики брал из сохраненной ревизии | Выбрана явная семантика **live**: проверка, метрики и `free_original_remnant_ids` вычисляются в одном чтении текущего склада, с `as_of` и `inventory_version`. Исторический список отделен и подписан (`plan_free_original_remnant_ids`, `plan_inventory_version`, `inventory_changed_since_plan`, `no_longer_free_remnant_ids`). Минимум свободных кусков переоценивается (`minimum_free_remnants`, `minimum_free_remnants_met`). Сохраненная ревизия остается историей, `GET /plans/{id}` отдает `inventory_current=false` после изменения склада. Новый `GET /plans/{id}/free-remnants` — финальная повторная проверка с версиями кусков перед карточкой или подтверждением | случай ревью (reserve после плана); 5 свободных → 4 и `minimum_free_remnants_met=false`; reserve/release/withdraw/consume; согласованность метрик, списка, версий и HTTP-эндпоинта; неизменность истории |
+| Длительный `test_fixed_work_profile_is_deterministic` (>10 мин у проверяющего) | Два прогона по ~140 с: CP-SAT по 0,5–1 детерминированной секунды на вызов и точные MILP на симметричном экземпляре | Бюджеты CP-SAT настраиваемы (`pricing_seconds`, `lns_seconds`); для fixed_work HiGHS ограничен детерминированным `node_limit`, а не часами; тест использует меньший экземпляр и требует, чтобы оба прогона завершились по объему работы (`completed`) с идентичным планом | тест ≈35 с здесь; полный pytest с ним ≈86 с |
 
 ## План и результат
 
@@ -28,7 +36,7 @@
 | ID / команда | Вход / среда | Фактический результат | Статус | Evidence |
 |---|---|---|---|---|
 | `uv run ruff check backend tests scripts` | ветка | All checks passed | PASS | — |
-| `uv run pytest` | ветка | все тесты проходят (cutting + foundation), 1 skipped = длинный T15 | PASS | — |
+| `uv run pytest` (полный, с тестом детерминизма) | c8299de + тест evidence | 76 passed, 1 skipped (длинный T15 по флагу), ≈86 с | PASS | — |
 | `uv run python scripts/check_foundation.py` | ветка | 14 immutable inputs, 66/67 матрица, PDF | PASS | — |
 | `pnpm typecheck`, `pnpm test` | после регенерации схемы | tsc OK, 2 web-теста | PASS | — |
 | T08 край 5 мм / 4 мм | синтетика | 5 принят, 4 и правый/нижний +1 отклонены, официальный check() согласен | PASS | test_geometry |
@@ -38,7 +46,7 @@
 | T12 дубли/пропуски | синтетика | DUPLICATE_PART/MISSING_PART блокируют; официальный скрипт пропуск не ловит — наш ловит | PASS | test_geometry, export → 409 |
 | T13 случайные задачи | Hypothesis 600 планов + 60 решений solver | валидность совпадает с validate.py, решения solver всегда чисты | PASS | test_random_validator |
 | T14 лимит и отмена | open pack | cancelled/time_limit → `limited`, последний валидный incumbent, нет ложного OPTIMAL/INFEASIBLE | PASS | test_solver |
-| T15 расширенный профиль | open pack, extended 600 с, 7 потоков, seed 42 | см. блок «Качество раскроя» | PASS (открытый набор) | evidence JSON/CSV |
+| T15 расширенный профиль | open pack, extended, лимит 600 с, 7 потоков, seed 42, clean c8299de | 59,0831595%, официальный invalid=0 | PASS (открытый набор) | evidence/open_extended_c8299de_* |
 | T16 locks и исключение | синтетика + HTTP | закрепления соблюдены, конфликт явный, impact/compare корректны, активный план не меняется до commit | PASS | test_solver, test_inventory_api |
 | T17 (support) пять свободных | синтетика | ограничение соблюдено, точная потеря площади в evidence | PASS (часть C2) | test_solver; карточки — Pro |
 | T18 конкурентный резерв | реальная SQLite, 2 потока, барьер | ровно 200+409, одна активная резервация на кусок, один committed план; 5/5 повторов | PASS | test_inventory_api |
@@ -54,25 +62,26 @@
 
 Открытый набор, продуктовый движок (не research-скрипты, research CSV не читаются):
 
-| Показатель | Финальный evidence-прогон (код 1ac9816) |
+| Показатель | Текущий evidence-прогон: clean backend commit **c8299de** |
 |---|---|
-| Профиль | extended, seed 42, 7 потоков, лимит 600 с, minimum_free_remnants=5 |
-| Время / остановка | 145,4 с; `optimal_in_pool` / `completed` (терпение 12 раундов без улучшения) |
-| Покрытие | **59,0488271%** (110 934 500 мм² из 187 869 100 мм²) — не хуже 58,9523237% |
-| Детали / куски | 198 из 298 деталей; 146 использованных кусков; 54 полностью свободных исходных |
+| Файлы | `tests/cutting/evidence/open_extended_c8299de_evidence.json`, `open_extended_c8299de_solution.csv` |
+| Профиль | extended, seed 42, 7 потоков, лимит 600 с, minimum_free_remnants=5, fixed_work=false |
+| Среда | Windows 11 AMD64, 8 логических CPU, Python 3.12.16 (ноутбук агента, не эталонная машина) |
+| Время / остановка | 489,2 с; `optimal_in_pool` / `completed` (оптимум только внутри пула шаблонов, не глобальный) |
+| Покрытие | **59,0831595%** (110 999 000 мм² из 187 869 100 мм²) — не хуже 58,9523237% |
+| Детали / куски | 200 из 298 деталей; 146 использованных кусков; 54 полностью свободных исходных |
 | Полностью покрытые заказы | 43 из 110 |
-| Оценка материала по прайсу | 1 019 072,95 ₸ (не прибыль) |
-| Формула балла (открытый набор) | 12,065 из 20 (не официальный результат жюри) |
+| Оценка материала по прайсу | 1 019 398,20 ₸ (не прибыль) |
+| Формула балла (открытый набор) | 12,111 из 20 (не официальный результат жюри) |
 | Внутренний валидатор | invalid=0, missing=0 |
-| Неизмененный validate.py (`python -X utf8`) | `RESULT coverage=0.590488 invalid=0 money=1019073`, exit 0 |
-| Причины NEW | LIMITED_SEARCH 73, TEMPERED_SIZE_MISMATCH 22, SIZE_TOO_LARGE 4, PREMIUM_ON_DEFECT 1 |
-| Хеши | stock 4e24ce0a…; orders 9ac22256…; materials 1391e1fa…; validate.py 0d276077…; solution ddfc9aba… |
+| Неизмененный validate.py (`python -X utf8`) | `RESULT coverage=0.590832 invalid=0 money=1019398`, exit 0 |
+| Причины NEW | LIMITED_SEARCH 71, TEMPERED_SIZE_MISMATCH 22, SIZE_TOO_LARGE 4, PREMIUM_ON_DEFECT 1 |
+| Пять свободных | лучший найденный план без условия имеет ту же площадь, `five_free_area_loss_mm2 = 0` |
+| Хеши | stock 4e24ce0a…; orders 9ac22256…; materials 1391e1fa…; validate.py 0d276077…; solution b130dc4d5fc56a1d3d4a3a66c1e28ff5bc443e0b9865e20f5abc66f50d9cd355 |
 
-`git_commit` в evidence помечен `+dirty` только из-за неотслеживаемого тогда `modules/cutting/README.md` (документ); код совпадает с 1ac9816.
+Предыдущий evidence не переписан и сохранен как история: `open_extended_evidence.json` / `open_extended_solution.csv` — код 1ac9816 (+dirty из-за неотслеживаемого тогда README), 59,0488271%, официальный invalid=0, 145,4 с; ревьюер подтвердил его независимо. Многопоточный поиск с остановкой по часам не обещает идентичный план (ТЗ 12): наблюдались 59,0488271%, 59,0794335%, 59,0831595% — все ≥ ориентира, все с официальным invalid=0. Тест `test_t15_committed_evidence_is_consistent` проверяет каждый сохраненный evidence против его CSV.
 
-Другие прогоны того же профиля (многопоточный wall-clock поиск не обещает идентичный план, ТЗ 12): 59,0794335% (164 с), 59,0831595% (600 с, лимит). Все ≥ ориентира, все с официальным invalid=0.
-
-Ориентир ТЗ: 58,9523237%. Сравнение с условием пяти свободных кусков: лучший найденный план без этого условия имеет ту же площадь (`five_free_area_loss_mm2 = 0` в evidence). `search_status=limited` означает остановку по бюджету 600 с; это не глобальный оптимум и не доказанная невозможность. Верхняя граница не публикуется продуктом (research-граница 61,4086% относится только к исследовательской модели открытого набора).
+Ориентир ТЗ: 58,9523237%. Сравнение с условием пяти свободных кусков: лучший найденный план без этого условия имеет ту же площадь (`five_free_area_loss_mm2 = 0` в evidence). `search_status=limited` (если встречается) означает остановку по бюджету; это не глобальный оптимум и не доказанная невозможность. Верхняя граница не публикуется продуктом (research-граница 61,4086% относится только к исследовательской модели открытого набора).
 
 Воспроизвести:
 
@@ -84,10 +93,10 @@ uv run python -m glassflow.modules.cutting.cli solve --pack inputs/PACK_for_team
 
 Подробный договор: `backend/glassflow/modules/cutting/README.md`. Кратко:
 
-- Маршруты (все `/api/v1`): `GET /remnants` (foundation, list + `X-Total-Count`), `GET /datasets/{d}/remnants` (RemnantPage), `GET/PATCH /remnants/{id}`, `POST /remnants`, `POST /datasets/{d}/remnants`, `PATCH /remnants/{id}/measurement`, `POST /remnants/{id}/withdraw|restore|reserve|consume|release|children`, `POST /reservations/{id}/release`, `GET /cutting/events`, `POST /cutting/candidates|solve|solve-input|impact`, `GET /plans`, `GET /plans/active`, `GET /plans/{id}`, `GET /plans/{id}/layout|export`, `POST /plans/{id}/draft|validate|commit`, `POST /plans/compare`.
+- Маршруты (все `/api/v1`): `GET /remnants` (foundation, list + `X-Total-Count`), `GET /datasets/{d}/remnants` (RemnantPage), `GET/PATCH /remnants/{id}`, `POST /remnants`, `POST /datasets/{d}/remnants`, `PATCH /remnants/{id}/measurement`, `POST /remnants/{id}/withdraw|restore|reserve|consume|release|children`, `POST /reservations/{id}/release`, `GET /cutting/events`, `POST /cutting/candidates|solve|solve-input|impact`, `GET /plans`, `GET /plans/active`, `GET /plans/{id}`, `GET /plans/{id}/layout|export|free-remnants`, `POST /plans/{id}/draft|validate|commit`, `POST /plans/compare`.
 - DTO: все новые поля аддитивны со значениями по умолчанию; foundation-поля сохранены. `packages/contracts/openapi.json` и `schema.d.ts` регенерированы штатными командами.
 - Fixture-only: только `InlineJobSubmitter` в `tests/cutting/conftest.py` (тестовая замена очереди). В релизе без платформенного submitter `/cutting/solve` честно отвечает 503.
-- Миграции: `backend/glassflow/modules/cutting/migrations/0001_cutting.sql` (9 таблиц, 2 частичных уникальных индекса). Shared Alembic revision не создавался.
+- Миграции: `backend/glassflow/modules/cutting/migrations/0001_cutting.sql` (9 таблиц, 2 частичных уникальных индекса; с c8299de в `cut_plans` есть колонка `locks_json`). Shared Alembic revision не создавался.
 
 ### Запросы к Pro (не применены, предложение)
 
@@ -96,7 +105,8 @@ uv run python -m glassflow.modules.cutting.cli solve --pack inputs/PACK_for_team
 3. **Idempotency**: при появлении платформенного сервиса заменить `CuttingService.idempotent` и таблицу `cut_idempotency` (scope dataset+operation+key, hash тела, replay результата).
 4. **Импорт**: в commit импорта вызывать `rows_to_snapshot` + `register_dataset`; построчные `RowError` показать в предпросмотре.
 5. **Единый формат ошибок**: router уже возвращает `ApiError`; при глобальном обработчике 422 Pro может убрать локальную обертку.
-6. **Run/экспорт**: брать `GET /plans/{id}/export` (или `CuttingService.export`) и `free_original_remnant_ids`; при недопустимом плане экспорт блокируется 409.
+6. **Run/экспорт**: брать `GET /plans/{id}/export` (или `CuttingService.export`). Семантика live: `free_original_remnant_ids` и metrics — на `as_of`/`inventory_version`; исторический список — `plan_free_original_remnant_ids`. Если `minimum_free_remnants_met=false`, пакет карточек не готов. При недопустимом плане (включая нарушенный lock) экспорт блокируется 409.
+7. **Карточки**: непосредственно перед созданием и подтверждением вызывать `GET /plans/{id}/free-remnants` и сверять версии кусков.
 
 ## Артефакты и источники
 
@@ -121,14 +131,14 @@ uv run python -m glassflow.modules.cutting.cli solve --pack inputs/PACK_for_team
 
 ## Итоговый handoff
 
-Коммиты ветки поверх foundation 16d63c6: a25ba0c (валидатор, solver, сервис), 4a2c8ee (HTTP, SQLite-интеграция, контракты), 1ac9816 (резерв под предложение, миграции, сценарии), затем коммит этого статуса и README модуля.
+Коммиты ветки поверх foundation 16d63c6: a25ba0c (валидатор, solver, сервис), 4a2c8ee (HTTP, SQLite-интеграция, контракты), 1ac9816 (резерв под предложение, миграции, сценарии), 0e2abce (evidence, README, status), **c8299de (исправления C2-F1/C2-F2, fixed-work)**, затем коммит нового evidence и этого статуса.
 
 **Готово и проверено в ветке:** C2-01…C2-09 в объеме модуля; T08–T16, T18–T20, T22 (сервер) — PASS по автоматическим тестам; T15 — PASS на открытом наборе по evidence.
 
 **Ожидает интеграционной проверки:** T17/T48 (карточки Pro по `free_original_remnant_ids`), T23 (AI C3 + резерв), T50/T51 (новый набор через импорт и экспорт Pro, неизмененные скрипты на Windows), T55 (frozen worker вызывает `CuttingEngine`), T62 (эталонная машина), T22/T57 (UI C1).
 
 **Порядок проверки после объединения:**
-1. `uv run pytest tests/cutting -q` и `GLASSFLOW_RUN_EXTENDED=1 uv run pytest tests/cutting/test_scenarios.py -k t15` (≈10 мин).
+1. `uv run pytest tests/cutting -q` (полный, вместе с тестом детерминизма) и `GLASSFLOW_RUN_EXTENDED=1 uv run pytest tests/cutting/test_scenarios.py -k t15` (≈10 мин).
 2. Импорт открытого пакета → `register_dataset` → `POST /cutting/solve` (через реальную очередь) → `GET /jobs/{id}` → план `validated`.
 3. `POST /plans/{id}/commit` с версиями и Idempotency-Key; повтор; конкурентный commit из двух вкладок → 200/409.
 4. `GET /plans/{id}/export` → Pro пишет solution.csv → `python -X utf8 validate.py ...` → invalid=0.
