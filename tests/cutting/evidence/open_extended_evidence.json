@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-11-27T16:27:19.017809+00:00",
+  "generated_at": "2026-11-27T16:57:48.091979+00:00",
   "kind": "product engine run (not research output)",
-  "git_commit": "16d63c665a9f78730f66ade2dfb6b12591d544c6+dirty",
+  "git_commit": "1ac9816e41fc5e251f8908f4038ce4940e2d7f38+dirty",
   "config": {
     "profile": "extended",
     "seed": 42,
@@ -20,37 +20,37 @@
     "path": "inputs\\PACK_for_teams\\1_ostatki\\validate.py",
     "sha256": "0d2760772d128ce0724f0a7090eff474667fc5e376a1fc753f03ddb8b73dac4a",
     "exit_code": 0,
-    "stdout": "деталей всего: 298; из остатков: 200; ошибок: 0; не указано в решении: 0\nплощадь деталей: 187.87 м²; закрыто остатками: 111.00 м²; ДОЛЯ = 59.08 %\nне пришлось резать нового стекла на 1 019 398 тг\nRESULT coverage=0.590832 invalid=0 money=1019398\n",
+    "stdout": "деталей всего: 298; из остатков: 198; ошибок: 0; не указано в решении: 0\nплощадь деталей: 187.87 м²; закрыто остатками: 110.93 м²; ДОЛЯ = 59.05 %\nне пришлось резать нового стекла на 1 019 073 тг\nRESULT coverage=0.590488 invalid=0 money=1019073\n",
     "stderr": "",
-    "result_line": "RESULT coverage=0.590832 invalid=0 money=1019398",
-    "coverage": "0.590832",
+    "result_line": "RESULT coverage=0.590488 invalid=0 money=1019073",
+    "coverage": "0.590488",
     "invalid": "0",
-    "money": "1019398"
+    "money": "1019073"
   },
   "solution": {
     "path": "tests\\cutting\\evidence\\open_extended_solution.csv",
-    "sha256": "ccca0aaa237639c07e3d20500af118f37f014b3f84f2657fb164b8eacb3dba9a"
+    "sha256": "ddfc9aba8ebbf107903637f0b8b4c0c2d0470cf7a1b113f79571917f7f4e216d"
   },
-  "wall_seconds": 600.21,
+  "wall_seconds": 145.426,
   "plan_status": "validated",
-  "search_status": "limited",
-  "stop_reason": "time_limit",
+  "search_status": "optimal_in_pool",
+  "stop_reason": "completed",
   "metrics": {
-    "covered_area_mm2": 110999000,
+    "covered_area_mm2": 110934500,
     "total_area_mm2": 187869100,
-    "coverage": 0.5908315949775669,
-    "replacement_value_tg": "1019398.20",
+    "coverage": 0.59048827082261,
+    "replacement_value_tg": "1019072.95",
     "invalid": 0,
     "missing": 0,
-    "fully_covered_orders": 42,
+    "fully_covered_orders": 43,
     "total_orders": 110,
-    "covered_parts": 200,
+    "covered_parts": 198,
     "total_parts": 298,
-    "used_original_remnants": 143,
-    "free_original_remnants": 57,
-    "used_remnants": 143,
-    "score": 12.110879,
-    "coverage_percent": "59.0831595",
+    "used_original_remnants": 146,
+    "free_original_remnants": 54,
+    "used_remnants": 146,
+    "score": 12.065103,
+    "coverage_percent": "59.0488271",
     "value_by_material": [
       {
         "material_id": "bronze-8",
@@ -60,9 +60,9 @@
       },
       {
         "material_id": "clear-4",
-        "covered_area_mm2": 29660400,
+        "covered_area_mm2": 29602900,
         "unit_price_tg": "4500",
-        "value_tg": "133471.80"
+        "value_tg": "133213.05"
       },
       {
         "material_id": "clear-6",
@@ -84,9 +84,9 @@
       },
       {
         "material_id": "mirror-4",
-        "covered_area_mm2": 24896000,
+        "covered_area_mm2": 24889000,
         "unit_price_tg": "9500",
-        "value_tg": "236512.00"
+        "value_tg": "236445.50"
       },
       {
         "material_id": "temp-4",
@@ -103,7 +103,7 @@
     ]
   },
   "new_reason_counts": {
-    "LIMITED_SEARCH": 71,
+    "LIMITED_SEARCH": 73,
     "PREMIUM_ON_DEFECT": 1,
     "SIZE_TOO_LARGE": 4,
     "TEMPERED_SIZE_MISMATCH": 22
@@ -111,7 +111,6 @@
   "free_original_remnant_ids": [
     "R006",
     "R010",
-    "R011",
     "R015",
     "R020",
     "R022",
@@ -122,6 +121,7 @@
     "R040",
     "R041",
     "R042",
+    "R043",
     "R046",
     "R050",
     "R051",
@@ -129,6 +129,7 @@
     "R058",
     "R062",
     "R069",
+    "R079",
     "R085",
     "R089",
     "R091",
@@ -141,14 +142,12 @@
     "R114",
     "R115",
     "R117",
-    "R120",
     "R121",
     "R124",
     "R127",
-    "R130",
+    "R136",
     "R138",
     "R140",
-    "R145",
     "R146",
     "R148",
     "R153",
@@ -157,15 +156,13 @@
     "R164",
     "R166",
     "R167",
-    "R179",
     "R180",
     "R183",
     "R184",
     "R187",
     "R194",
     "R196",
-    "R197",
-    "R200"
+    "R197"
   ],
   "internal_issues": [],
   "engine_evidence": {
@@ -178,18 +175,18 @@
     "occupied_remnants": 0,
     "base_plan_id": null,
     "base_revision": null,
-    "incumbents": 15,
+    "incumbents": 7,
     "greedy_runs": 800,
     "pool_after_fills": 8096,
-    "milp_rounds": 90,
-    "lp_bound_pool_mm2": 111145801.5822785,
-    "cpsat_calls": 659,
-    "cpsat_optimal": 562,
-    "lns_moves": 267,
-    "columns_added": 37,
-    "pool_patterns": 8133,
+    "milp_rounds": 27,
+    "lp_bound_pool_mm2": 111053085.0,
+    "cpsat_calls": 192,
+    "cpsat_optimal": 173,
+    "lns_moves": 81,
+    "columns_added": 10,
+    "pool_patterns": 8106,
     "pool_full": false,
-    "elapsed_seconds": 600.12,
+    "elapsed_seconds": 145.144,
     "profile": "extended",
     "seed": 42,
     "workers": 7,
@@ -197,101 +194,59 @@
     "time_limit_seconds": 600.0,
     "minimum_free_remnants": 5,
     "interim": false,
-    "unconstrained_best_area_mm2": 110999000,
-    "unconstrained_best_free_original": 58,
+    "unconstrained_best_area_mm2": 110934500,
+    "unconstrained_best_free_original": 61,
     "five_free_area_loss_mm2": 0,
-    "wall_seconds": 600.202,
-    "stage": "milp"
+    "wall_seconds": 145.418,
+    "stage": "lexicographic"
   },
   "incumbents": [
     {
-      "t": 1.621,
+      "t": 1.701,
       "coverage_percent": "55.8080067",
       "stage": "greedy",
       "valid": true
     },
     {
-      "t": 11.004,
+      "t": 11.25,
       "coverage_percent": "59.0272695",
       "stage": "milp",
       "valid": true
     },
     {
-      "t": 16.319,
+      "t": 17.125,
       "coverage_percent": "59.0272695",
       "stage": "milp",
       "valid": true
     },
     {
-      "t": 21.735,
-      "coverage_percent": "59.0272695",
+      "t": 41.866,
+      "coverage_percent": "59.0281212",
       "stage": "milp",
       "valid": true
     },
     {
-      "t": 40.265,
-      "coverage_percent": "59.0272695",
+      "t": 59.694,
+      "coverage_percent": "59.0362119",
       "stage": "milp",
       "valid": true
     },
     {
-      "t": 50.451,
+      "t": 64.418,
+      "coverage_percent": "59.0362119",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 71.442,
       "coverage_percent": "59.0488271",
       "stage": "milp",
       "valid": true
     },
     {
-      "t": 55.577,
+      "t": 139.648,
       "coverage_percent": "59.0488271",
-      "stage": "milp",
-      "valid": true
-    },
-    {
-      "t": 104.015,
-      "coverage_percent": "59.0488271",
-      "stage": "milp",
-      "valid": true
-    },
-    {
-      "t": 134.439,
-      "coverage_percent": "59.0488271",
-      "stage": "milp",
-      "valid": true
-    },
-    {
-      "t": 152.982,
-      "coverage_percent": "59.0794335",
-      "stage": "milp",
-      "valid": true
-    },
-    {
-      "t": 180.126,
-      "coverage_percent": "59.0794335",
-      "stage": "milp",
-      "valid": true
-    },
-    {
-      "t": 196.408,
-      "coverage_percent": "59.0831595",
-      "stage": "milp",
-      "valid": true
-    },
-    {
-      "t": 203.264,
-      "coverage_percent": "59.0831595",
-      "stage": "milp",
-      "valid": true
-    },
-    {
-      "t": 253.161,
-      "coverage_percent": "59.0831595",
-      "stage": "milp",
-      "valid": true
-    },
-    {
-      "t": 386.66,
-      "coverage_percent": "59.0831595",
-      "stage": "milp",
+      "stage": "lexicographic",
       "valid": true
     }
   ]
