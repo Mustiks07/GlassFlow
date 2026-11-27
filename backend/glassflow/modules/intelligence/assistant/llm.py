@@ -18,6 +18,8 @@ from .prompts import PROMPT_VERSION, SYSTEM_PROMPT, USER_TEMPLATE
 from .tools import ASSISTANT_TOOLSET, TOOLS, ToolContext, ToolExecution, execute_tool
 from .verifier import VerificationResult, verify_answer
 
+MAX_USER_CHARS = 4000  # context minimization: the model never receives more than this per turn
+
 
 @dataclass
 class LlmOutcome:
@@ -43,7 +45,8 @@ def build_user_message(text: str, context: dict[str, str]) -> str:
     safe_context = {k: v for k, v in context.items() if k in {
         "product_id", "length_mm", "width_mm", "quantity", "processing", "edge_sides", "price_basis"
     }}
-    return USER_TEMPLATE.format(context=json.dumps(safe_context, ensure_ascii=False), text=text.replace(">>>", "> > >"))
+    bounded = text[:MAX_USER_CHARS].replace(">>>", "> > >")
+    return USER_TEMPLATE.format(context=json.dumps(safe_context, ensure_ascii=False), text=bounded)
 
 
 async def run_llm_turn(
