@@ -1,0 +1,298 @@
+{
+  "generated_at": "2026-11-27T16:27:19.017809+00:00",
+  "kind": "product engine run (not research output)",
+  "git_commit": "16d63c665a9f78730f66ade2dfb6b12591d544c6+dirty",
+  "config": {
+    "profile": "extended",
+    "seed": 42,
+    "time_limit_seconds": 600,
+    "workers": 7,
+    "minimum_free_remnants": 5,
+    "fixed_work": false,
+    "max_pool_patterns": 80000
+  },
+  "inputs": {
+    "stock_open.csv": "4e24ce0a917e506c803bcc1378da5504becaa5f733f05b1900ca2f8f0b8db547",
+    "orders_open.csv": "9ac222565c2eb05e28137b312f412f3a05544dde0ffa051a694d00338bbcbb00",
+    "materials.csv": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1"
+  },
+  "validator": {
+    "path": "inputs\\PACK_for_teams\\1_ostatki\\validate.py",
+    "sha256": "0d2760772d128ce0724f0a7090eff474667fc5e376a1fc753f03ddb8b73dac4a",
+    "exit_code": 0,
+    "stdout": "деталей всего: 298; из остатков: 200; ошибок: 0; не указано в решении: 0\nплощадь деталей: 187.87 м²; закрыто остатками: 111.00 м²; ДОЛЯ = 59.08 %\nне пришлось резать нового стекла на 1 019 398 тг\nRESULT coverage=0.590832 invalid=0 money=1019398\n",
+    "stderr": "",
+    "result_line": "RESULT coverage=0.590832 invalid=0 money=1019398",
+    "coverage": "0.590832",
+    "invalid": "0",
+    "money": "1019398"
+  },
+  "solution": {
+    "path": "tests\\cutting\\evidence\\open_extended_solution.csv",
+    "sha256": "ccca0aaa237639c07e3d20500af118f37f014b3f84f2657fb164b8eacb3dba9a"
+  },
+  "wall_seconds": 600.21,
+  "plan_status": "validated",
+  "search_status": "limited",
+  "stop_reason": "time_limit",
+  "metrics": {
+    "covered_area_mm2": 110999000,
+    "total_area_mm2": 187869100,
+    "coverage": 0.5908315949775669,
+    "replacement_value_tg": "1019398.20",
+    "invalid": 0,
+    "missing": 0,
+    "fully_covered_orders": 42,
+    "total_orders": 110,
+    "covered_parts": 200,
+    "total_parts": 298,
+    "used_original_remnants": 143,
+    "free_original_remnants": 57,
+    "used_remnants": 143,
+    "score": 12.110879,
+    "coverage_percent": "59.0831595",
+    "value_by_material": [
+      {
+        "material_id": "bronze-8",
+        "covered_area_mm2": 6009600,
+        "unit_price_tg": "20000",
+        "value_tg": "120192.00"
+      },
+      {
+        "material_id": "clear-4",
+        "covered_area_mm2": 29660400,
+        "unit_price_tg": "4500",
+        "value_tg": "133471.80"
+      },
+      {
+        "material_id": "clear-6",
+        "covered_area_mm2": 26535400,
+        "unit_price_tg": "8000",
+        "value_tg": "212283.20"
+      },
+      {
+        "material_id": "clear-8",
+        "covered_area_mm2": 18839100,
+        "unit_price_tg": "12000",
+        "value_tg": "226069.20"
+      },
+      {
+        "material_id": "grey-8",
+        "covered_area_mm2": 3878500,
+        "unit_price_tg": "20000",
+        "value_tg": "77570.00"
+      },
+      {
+        "material_id": "mirror-4",
+        "covered_area_mm2": 24896000,
+        "unit_price_tg": "9500",
+        "value_tg": "236512.00"
+      },
+      {
+        "material_id": "temp-4",
+        "covered_area_mm2": 680000,
+        "unit_price_tg": "10000",
+        "value_tg": "6800.00"
+      },
+      {
+        "material_id": "temp-6",
+        "covered_area_mm2": 500000,
+        "unit_price_tg": "13000",
+        "value_tg": "6500.00"
+      }
+    ]
+  },
+  "new_reason_counts": {
+    "LIMITED_SEARCH": 71,
+    "PREMIUM_ON_DEFECT": 1,
+    "SIZE_TOO_LARGE": 4,
+    "TEMPERED_SIZE_MISMATCH": 22
+  },
+  "free_original_remnant_ids": [
+    "R006",
+    "R010",
+    "R011",
+    "R015",
+    "R020",
+    "R022",
+    "R025",
+    "R026",
+    "R037",
+    "R038",
+    "R040",
+    "R041",
+    "R042",
+    "R046",
+    "R050",
+    "R051",
+    "R052",
+    "R058",
+    "R062",
+    "R069",
+    "R085",
+    "R089",
+    "R091",
+    "R094",
+    "R096",
+    "R098",
+    "R107",
+    "R109",
+    "R112",
+    "R114",
+    "R115",
+    "R117",
+    "R120",
+    "R121",
+    "R124",
+    "R127",
+    "R130",
+    "R138",
+    "R140",
+    "R145",
+    "R146",
+    "R148",
+    "R153",
+    "R155",
+    "R157",
+    "R164",
+    "R166",
+    "R167",
+    "R179",
+    "R180",
+    "R183",
+    "R184",
+    "R187",
+    "R194",
+    "R196",
+    "R197",
+    "R200"
+  ],
+  "internal_issues": [],
+  "engine_evidence": {
+    "engine": "cutting-engine/1.0",
+    "input_sha256": "561e924d1a9c03d0f1c261bcec7d71f42cfb04cc4daca76ce8658017ef505570",
+    "python": "3.12.16",
+    "machine": "AMD64",
+    "cpu_count": 8,
+    "kept_parts": 0,
+    "occupied_remnants": 0,
+    "base_plan_id": null,
+    "base_revision": null,
+    "incumbents": 15,
+    "greedy_runs": 800,
+    "pool_after_fills": 8096,
+    "milp_rounds": 90,
+    "lp_bound_pool_mm2": 111145801.5822785,
+    "cpsat_calls": 659,
+    "cpsat_optimal": 562,
+    "lns_moves": 267,
+    "columns_added": 37,
+    "pool_patterns": 8133,
+    "pool_full": false,
+    "elapsed_seconds": 600.12,
+    "profile": "extended",
+    "seed": 42,
+    "workers": 7,
+    "fixed_work": false,
+    "time_limit_seconds": 600.0,
+    "minimum_free_remnants": 5,
+    "interim": false,
+    "unconstrained_best_area_mm2": 110999000,
+    "unconstrained_best_free_original": 58,
+    "five_free_area_loss_mm2": 0,
+    "wall_seconds": 600.202,
+    "stage": "milp"
+  },
+  "incumbents": [
+    {
+      "t": 1.621,
+      "coverage_percent": "55.8080067",
+      "stage": "greedy",
+      "valid": true
+    },
+    {
+      "t": 11.004,
+      "coverage_percent": "59.0272695",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 16.319,
+      "coverage_percent": "59.0272695",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 21.735,
+      "coverage_percent": "59.0272695",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 40.265,
+      "coverage_percent": "59.0272695",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 50.451,
+      "coverage_percent": "59.0488271",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 55.577,
+      "coverage_percent": "59.0488271",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 104.015,
+      "coverage_percent": "59.0488271",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 134.439,
+      "coverage_percent": "59.0488271",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 152.982,
+      "coverage_percent": "59.0794335",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 180.126,
+      "coverage_percent": "59.0794335",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 196.408,
+      "coverage_percent": "59.0831595",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 203.264,
+      "coverage_percent": "59.0831595",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 253.161,
+      "coverage_percent": "59.0831595",
+      "stage": "milp",
+      "valid": true
+    },
+    {
+      "t": 386.66,
+      "coverage_percent": "59.0831595",
+      "stage": "milp",
+      "valid": true
+    }
+  ]
+}
