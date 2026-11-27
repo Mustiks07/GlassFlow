@@ -18,7 +18,7 @@
     {"id": "H015", "group": "compute", "turns": ["закаленное бронзовое 1000х1000"], "expect": {"numbers": [15500]}},
     {"id": "H016", "group": "compute", "turns": ["стекло прозрачное 6 мм, 2 детали 300×200 мм, кромка по периметру"], "expect": {"numbers": [960, 800, 1760]}},
     {"id": "H017", "group": "compute", "turns": ["рифлёное прозрачное 5 мм 500 на 500"], "expect": {"numbers": [10000]}},
-    {"id": "H018", "group": "unknown_price", "turns": ["рифлёное серое 8 мм 500 на 500"], "expect": {"numbers": [200000], "contains_any": ["менеджер"], "status": ["manager_handoff"]}},
+    {"id": "H018", "group": "unknown_price", "turns": ["рифлёное серое 8 мм 500 на 500"], "expect": {"contains_any": ["менеджер"], "status": ["manager_handoff"], "no_price_claim": true}, "note": "expectation changed after the first run by a deliberate policy (unknown asked price -> no figures in client text; sheet price 200000 kept in the card); first-run expectation required 200000 in the text"},
     {"id": "H019", "group": "compute", "turns": ["лакобель белый 1200x600"], "expect": {"numbers": [14400]}},
     {"id": "H020", "group": "hardware", "turns": ["Подскажите про навесы для алюминиевых фасадов"], "expect": {"numbers": [500, 350]}},
     {"id": "H021", "group": "wrong_assumption", "turns": ["сколько стоят уголки для рамочного фасада?"], "expect": {"status": ["clarification"], "numbers": [450, 350]}},

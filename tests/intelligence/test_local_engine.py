@@ -35,7 +35,10 @@ def test_t28_demo_chain_and_quantity(engine):
 def test_t27_patterned_then_plain_clear8(engine):
     first = ask(engine, "Рифлёное стекло прозрачное 8 мм 500×500")
     assert first.status == "manager_handoff"
-    assert 170000.0 in numbers_in(first.answer)
+    # known sheet price is a verified fact in the card; the client text carries no figures
+    assert any(f.kind == "price" and f.value == "170000" for f in first.facts.facts)
+    assert any("170 000" in note for note in first.assumptions)
+    assert not re.search(r"\b\d{3,}\b", first.answer)
     assert first.pricing.total is None
     assert first.mapping.status == "unmapped"
     second = ask(engine, "а если обычное прозрачное 8 мм без рифления?", first.context)
@@ -174,3 +177,23 @@ def test_inventory_not_wired_is_honest(engine):
     out = engine.respond("Стекло прозрачное 6 мм 450×370", inventory_mode="free_whole_remnants")
     assert out.inventory_status == "service_unavailable"
     assert "R0" not in out.answer
+
+
+@pytest.mark.parametrize(
+    ("text", "numbers", "manager"),
+    [
+        ("Сколько стоит евро-кромка на стекло 6 мм?", {400.0}, False),
+        ("Почём кромка для зеркала 4 мм за метр?", {300.0}, False),
+        ("Сколько стоит обработка кромки?", {300.0, 400.0}, True),
+        ("Стекло 6 мм прозрачное с кромкой сколько стоит?", {8000.0, 400.0}, False),
+    ],
+)
+def test_edge_rate_questions_use_kb_rule(engine, text, numbers, manager):
+    out = ask(engine, text)
+    assert numbers <= numbers_in(out.answer), out.answer
+    assert ("менеджер" in out.answer) or not manager
+
+
+def test_edge_rate_unknown_thickness_has_no_invented_numbers(engine):
+    out = ask(engine, "Сколько стоит обработка кромки стекла 8 мм?")
+    assert "менеджер" in out.answer and not re.search(r"\b\d{3,}\b", out.answer)

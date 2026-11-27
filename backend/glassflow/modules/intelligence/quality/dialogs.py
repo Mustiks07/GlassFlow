@@ -50,12 +50,15 @@ def money_string(value: Decimal) -> str:
 
 
 def _strip_product_name(text: str, product: Product | None) -> str:
+    """Blank out the product name (tolerant to missing commas/brackets) and its sheet format."""
     if product is None:
         return text
-    name = normalize(product.name)
-    index = text.find(name)
-    if index >= 0:
-        return text[:index] + " " * len(name) + text[index + len(name) :]
+    tokens = re.findall(r"[a-zа-я0-9]+", normalize(product.name))
+    if tokens:
+        pattern = r"[\s,.:;()+\-x×]*".join(re.escape(token) for token in tokens)
+        text = re.sub(pattern, lambda m: " " * len(m.group(0)), text, count=1)
+    if "sheet_format_mm" in product.attributes:
+        text = re.sub(r"лист\w*\s*\d{3,5}\s*x\s*\d{3,5}", lambda m: " " * len(m.group(0)), text)
     return text
 
 

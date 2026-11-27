@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T16:42:29.702591+00:00",
+  "generated_at": "2026-11-27T16:58:38.756651+00:00",
   "kind": "extended_synthetic_evaluation",
   "provenance": "Synthetic evaluation cases written by Claude 3 (GlassFlow team) on 2026-11-27 from the open KB. NOT organisers' hidden data. Expected numbers were computed by hand from ksm_knowledge_base.json (area mm²/1e6 × rate × qty, edge m × rule r4 rate), independently of the engine.",
   "ai": {
@@ -79,8 +79,8 @@
     "passed": 12
   },
   "latency_ms": {
-    "p50": 14.7,
-    "p95": 33.6,
+    "p50": 13.9,
+    "p95": 27.9,
     "turns": 84
   },
   "failures": [],
@@ -799,7 +799,7 @@
           "ok": true,
           "reasons": [],
           "unsupported_claims": [],
-          "answer": "Рифлёное стекло прозрачное 8 мм: целый лист — 170 000 ₸; ставки за м² в базе нет, поэтому стоимость детали рассчитает менеджер.",
+          "answer": "Ставки за м² для «Рифлёное стекло прозрачное 8 мм» в базе нет — есть только цена целого листа; стоимость детали рассчитает менеджер. Уточните, пожалуйста, размеры и количество — передам запрос менеджеру.",
           "status": "manager_handoff",
           "path": "deterministic",
           "model_id": null

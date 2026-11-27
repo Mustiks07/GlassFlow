@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T16:42:31.043342+00:00",
+  "generated_at": "2026-11-27T16:58:40.074913+00:00",
   "kind": "extended_synthetic_evaluation",
   "provenance": "Holdout synthetic cases written by Claude 3 on 2026-11-27 AFTER the extended set was tuned and BEFORE this file was ever run; the first-run result is recorded unchanged in docs/ai/EVALUATION.md. NOT organisers' hidden data. Expected numbers computed by hand from the open KB.",
   "ai": {
@@ -67,8 +67,8 @@
     "passed": 6
   },
   "latency_ms": {
-    "p50": 14.1,
-    "p95": 30.0,
+    "p50": 14.8,
+    "p95": 27.1,
     "turns": 30
   },
   "failures": [],
@@ -407,7 +407,7 @@
           "ok": true,
           "reasons": [],
           "unsupported_claims": [],
-          "answer": "Для «Рифлёное стекло серое 8 мм» в базе есть только цена целого листа — 200 000 ₸; ставки за м² нет, поэтому стоимость детали 500×500 мм рассчитает менеджер.",
+          "answer": "Ставки за м² для «Рифлёное стекло серое 8 мм» в базе нет — есть только цена целого листа, поэтому стоимость детали рассчитает менеджер. Передам запрос менеджеру; уточните, пожалуйста, количество деталей.",
           "status": "manager_handoff",
           "path": "deterministic",
           "model_id": null

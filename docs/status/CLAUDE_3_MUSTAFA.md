@@ -27,7 +27,7 @@
 
 | ID / команда | Вход / среда | Фактический результат | Статус | Evidence |
 |---|---|---|---|---|
-| `uv run pytest` | Linux, Python 3.12.3 | 152 passed (foundation 7 + intelligence) | PASS | — |
+| `uv run pytest` | Linux, Python 3.12.3 | 248 passed, 3 skipped (foundation 7 + intelligence, включая параметризованный прогон по всем позициям KB) | PASS | — |
 | `uv run ruff check backend tests scripts infra/ai-gateway` | — | All checks passed | PASS | — |
 | `uv run python scripts/check_foundation.py` | — | 14 inputs, 66/67 coverage, PDF hash | PASS | — |
 | `pnpm typecheck && pnpm test && pnpm build` | Node 22.23.5 (lock требует 24 — предупреждение engine) | tsc ok, 2 tests, build ok | PASS (на Node 22) | — |
@@ -35,6 +35,7 @@
 | evaluation `open` (T24, T37) | KB sha256 f464c67f…, selfcheck sha256 dc3118a6… | ассистент 36/36, **15.0/15**, выдумок 0; диалоги **5.0/5**; exit 0 | PASS | evidence/open/report.json; answers.csv sha256 ab4e6122…, verdicts.csv db4fa089… |
 | evaluation `extended` (T32) | 96 синтетических | первый прогон 77/96 (18 ложных срабатываний оценщика + 2 дефекта); после исправлений 96/96, 0 неподтвержденных утверждений | PASS (детерминированный путь) | evidence/extended |
 | evaluation `holdout` (T32) | 36 синтетических, написаны до запуска | **первый прогон 33/36 (91,7%)**, 0 неподтвержденных; после 3 исправлений 36/36 | первый прогон ниже 95% — зафиксировано | evidence/holdout/holdout_report_FIRST_RUN.json |
+| шаблонный прогон по всем 47 позициям KB | test_template_sweep.py | все шаблоны вопросов и диалогов проходят (3 пропуска — нет цены за м²) | PASS | tests/intelligence |
 | evaluation `perf` | Linux-контейнер | расчет p95 6,19 мс (цель 300); детерминированный ход p95 24,7 мс | PASS локально; эталонный Windows — NOT RUN | evidence/perf/performance.json |
 | evaluation `live` | нет ключа | — | BLOCKED | evidence/live/live_status.json |
 | gateway local smoke | uvicorn 127.0.0.1, HTTP, без ключа | healthz 200 (212 мс), readyz 503, turn 503 PROVIDER_NOT_CONFIGURED | ожидаемый честный отказ; HTTPS — BLOCKED | evidence/gateway/local_process_smoke.json |

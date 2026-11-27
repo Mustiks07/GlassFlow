@@ -227,10 +227,26 @@ class LocalEngine:
                 )
             )
 
-        service_only = bool(ex.unknown_services) and not ex.dimensions and not (match and match.status == "exact" and ex.price_basis != "auto")
+        service_focus = bool(
+            re.search(
+                r"(?:сколько стоит|сколько стоят|цена|цену|почем|стоимость)\s+(?:\w+\s+){0,2}"
+                r"(?:фацет|пескостру|гравир|сверл|отверст|закал|фотопечат|печат|триплекс|покрас|шлифов|полиров|гнут|гибк)",
+                ex.text,
+            )
+        )
+        service_only = bool(ex.unknown_services) and (service_focus or not ex.dimensions) and not (
+            match and match.status == "exact" and ex.price_basis != "auto" and not service_focus
+        )
+        edge_only = (
+            ex.processing == "euro_edge" and not ex.dimensions and context.length_mm is None and not ex.unknown_services
+            and ex.price_basis == "auto"
+        )
         if ex.unknown_services and service_only:
             handled = True
             self._unknown_services(ex, out, match)
+        elif edge_only:
+            handled = True
+            self._edge_rate(ex, out, match)
         elif match is not None:
             handled = self._product_flow(ex, out, match, price_signal, inventory_mode) or handled
 
@@ -319,9 +335,59 @@ class LocalEngine:
         if "фацет" in ex.unknown_services and facet_rule:
             out.evidence.append(self._ev(facet_rule[0].rule_id, "правило"))
         out.facts.add("unknown", names, None, "policy:processing_price_not_in_kb")
-        out.sentences.append("Уточните, пожалуйста, вид стекла или зеркала, толщину и размеры детали — передам расчет менеджеру.")
+        if ex.dimensions:
+            out.sentences.append("Передам запрос с размерами детали менеджеру — он рассчитает стоимость обработки.")
+        else:
+            out.sentences.append("Уточните, пожалуйста, вид стекла или зеркала, толщину и размеры детали — передам расчет менеджеру.")
         out.clarification = out.sentences[-1]
         out.missing_parameters.append("processing_price")
+
+    def _edge_rate(self, ex: Extraction, out: LocalOutcome, match: MatchResult | None) -> None:
+        """«Сколько стоит кромка на стекло 6 мм?» — the KB edge rule, not a list of glass prices."""
+        out.intent = "edge_rate"
+        thickness = sorted(ex.thickness_mm)[0] if ex.thickness_mm else None
+        if thickness is None and match is not None and match.status == "exact" and match.product.thickness_mm:
+            thickness = match.product.thickness_mm
+        noun = "зеркала" if "зеркал" in ex.text else "стекла"
+        rule_id = self.kb.edge_rule_id
+        if rule_id:
+            out.evidence.append(self._ev(rule_id, "правило"))
+        if thickness is not None:
+            out.facts.add("measure", thickness, "мм", "input")
+            rate = self.kb.edge_rate(thickness)
+            product = match.product if match is not None and match.status == "exact" else None
+            if product is not None and not product.is_hardware:
+                out.product, out.mapping = product, self.mappings.get(product.product_id)
+                self._name_facts(out, product)
+                per_m2 = product.price("per_m2")
+                if per_m2 and per_m2.amount is not None:
+                    out.facts.add("price", per_m2.amount, "₸/м²", self._ref(product.product_id, per_m2.source_field))
+                    out.sentences.append(f"{product.name}: {_m(per_m2.amount)} ₸ за м².")
+            if rate is not None:
+                out.facts.add("price", rate.amount_per_m, "₸/м", self._ref(rate.rule_id, "правило"))
+                out.sentences.append(f"Обработка кромки (евро-кромка) для {noun} {thickness} мм — {_m(rate.amount_per_m)} ₸ за метр.")
+                out.sentences.append("Для расчета детали пришлите размеры в мм и стороны обработки.")
+                out.clarification = out.sentences[-1]
+                out.sentences.append(PRELIMINARY_RU)
+                return
+            out.sentences.append(f"Цену обработки кромки для {thickness} мм база не содержит — ее назовет менеджер.")
+            out.sentences.append("Уточните, пожалуйста, размеры детали — передам расчет менеджеру.")
+            out.status, out.needs_manager = "manager_handoff", True
+            out.facts.add("unknown", f"edge_{thickness}mm", None, "policy:edge_rate_not_in_kb")
+            return
+        if self.kb.edge_rates:
+            parts = []
+            for rate in self.kb.edge_rates:
+                parts.append(f"{rate.thickness_mm} мм — {_m(rate.amount_per_m)} ₸ за метр")
+                out.facts.add("price", rate.amount_per_m, "₸/м", self._ref(rate.rule_id, "правило"))
+                out.facts.add("measure", rate.thickness_mm, "мм", self._ref(rate.rule_id, "правило"))
+            out.sentences.append(f"Евро-кромка по прайсу: {', '.join(parts)}; для других толщин цену назовет менеджер.")
+        else:
+            out.sentences.append("Ставки обработки кромки в базе нет — ее назовет менеджер.")
+            out.needs_manager = True
+        out.sentences.append("Уточните, пожалуйста, толщину стекла и размеры детали.")
+        out.clarification = out.sentences[-1]
+        out.status = "clarification"
 
     def _rules(self, intents: set[str], out: LocalOutcome) -> None:
         used: set[str] = set()
@@ -638,6 +704,15 @@ class LocalEngine:
             if parts and per_m2 and per_m2.amount is not None:
                 out.sentences.append(f"{product.name}: {', '.join(parts)}.")
                 out.sentences.append(PRELIMINARY_RU)
+            elif parts and context.price_basis == "per_m2":
+                out.sentences.append(
+                    f"Ставки за м² для «{product.name}» в базе нет — есть только цена целого листа; стоимость детали "
+                    "рассчитает менеджер."
+                )
+                out.sentences.append("Уточните, пожалуйста, размеры и количество — передам запрос менеджеру.")
+                out.assumptions.append(f"Известная цена целого листа: {_m(sheet.amount)} ₸.")
+                out.needs_manager = True
+                out.status = "manager_handoff"
             elif parts:
                 out.sentences.append(
                     f"{product.name}: {parts[0]}; ставки за м² в базе нет, поэтому стоимость детали рассчитает менеджер."
@@ -681,11 +756,15 @@ class LocalEngine:
         if glass is None:
             reason = next((u for u in result.unknowns if u.component == "glass"), None)
             if sheet and sheet.amount is not None:
+                # The asked price is unknown: the client text carries no numbers (no invented or echoed
+                # figures); the known sheet price stays in the working card and the quote.
                 out.sentences.append(
-                    f"Для «{product.name}» в базе есть только цена целого листа — {_m(sheet.amount)} ₸; ставки за м² нет, "
-                    f"поэтому стоимость детали {dims_text} рассчитает менеджер."
+                    f"Ставки за м² для «{product.name}» в базе нет — есть только цена целого листа, поэтому стоимость "
+                    "детали рассчитает менеджер."
                 )
+                out.sentences.append("Передам запрос менеджеру; уточните, пожалуйста, количество деталей.")
                 out.facts.add("price", sheet.amount, "₸/лист", self._ref(product.product_id, sheet.source_field))
+                out.assumptions.append(f"Известная цена целого листа: {_m(sheet.amount)} ₸ (ставка за м² не выводится из листа).")
             else:
                 out.sentences.append(reason.message_ru if reason else f"Стоимость «{product.name}» рассчитает менеджер.")
             out.status = "manager_handoff"
