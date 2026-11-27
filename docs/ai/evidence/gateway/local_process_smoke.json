@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-11-27",
+  "kind": "local_process_smoke (uvicorn on 127.0.0.1, HTTP) — NOT an HTTPS check from a jury computer",
+  "command": "PYTHONPATH=infra/ai-gateway uv run python -m judge_gateway smoke --url http://127.0.0.1:8099 --token <issued locally>",
+  "result": {
+    "healthz": {"status": 200, "cold_start_ms": 212},
+    "readyz": {"status": 503, "provider_key_configured": false, "active_tokens": 1, "mode": "free_only",
+               "models": ["gemini-3.8-flash", "gemini-3.5-flash-lite"], "policy_errors": []},
+    "turn": {"status": 503, "code": "PROVIDER_NOT_CONFIGURED"},
+    "passed": false
+  },
+  "interpretation": "Process, token verification, readiness and honest failure without a provider key work. Live model call, HTTPS hosting, cold start of a real host and token expiry on a jury machine remain BLOCKED (no hosting account / provider key in this environment).",
+  "token_storage": "tokens file holds sha256 + expiry only; plaintext printed once to stderr at issue time"
+}
