@@ -492,6 +492,36 @@ export interface components {
             provider?: string | null;
             /** Model Id */
             model_id?: string | null;
+            /**
+             * Answer Path
+             * @default deterministic
+             * @enum {string}
+             */
+            answer_path: "deterministic" | "llm_tools" | "fallback";
+            /**
+             * Status
+             * @default answered
+             * @enum {string}
+             */
+            status: "answered" | "clarification" | "manager_handoff" | "limited";
+            card?: components["schemas"]["WorkingCard"] | null;
+            /** Tool Calls */
+            tool_calls?: components["schemas"]["ToolCallRecord"][];
+            /**
+             * Verifier Status
+             * @default supported
+             * @enum {string}
+             */
+            verifier_status: "supported" | "unsupported_replaced" | "not_applicable";
+            /** Ai Unavailable Reason */
+            ai_unavailable_reason?: string | null;
+            /**
+             * Turn Index
+             * @default 0
+             */
+            turn_index: number;
+            /** Latency Ms */
+            latency_ms?: number | null;
         };
         /** AssistantTurn */
         AssistantTurn: {
@@ -505,6 +535,17 @@ export interface components {
             customer_id?: string | null;
             /** Kb Version */
             kb_version: string;
+            /**
+             * Inventory Mode
+             * @default free_whole_remnants
+             * @enum {string}
+             */
+            inventory_mode: "none" | "free_whole_remnants" | "replan";
+            /**
+             * Allow Ai
+             * @default true
+             */
+            allow_ai: boolean;
         };
         /** Body_preview_import_api_v1_imports_preview_post */
         Body_preview_import_api_v1_imports_preview_post: {
@@ -577,6 +618,10 @@ export interface components {
             amount_tg: string | null;
             /** Minimum Quantity */
             minimum_quantity?: number | null;
+            /** Unit */
+            unit?: string | null;
+            /** Source Field */
+            source_field?: string | null;
         };
         /** CatalogProduct */
         CatalogProduct: {
@@ -590,6 +635,19 @@ export interface components {
             prices: components["schemas"]["CatalogPrice"][];
             /** Evidence */
             evidence: components["schemas"]["Evidence"][];
+            /** Kind */
+            kind?: string | null;
+            /** Attributes */
+            attributes?: {
+                [key: string]: string;
+            };
+            /** Unknown Fields */
+            unknown_fields?: {
+                [key: string]: string;
+            };
+            /** Kb Version */
+            kb_version?: string | null;
+            mapping?: components["schemas"]["MaterialMapping"] | null;
         };
         /** CommitPlan */
         CommitPlan: {
@@ -689,6 +747,20 @@ export interface components {
             correct?: string | null;
             /** Evidence */
             evidence: components["schemas"]["Evidence"][];
+            /** Catalog Product Id */
+            catalog_product_id?: string | null;
+            /** Reference Tg */
+            reference_tg?: string | null;
+            /** Reference Meaning */
+            reference_meaning?: string | null;
+            /** Mentions */
+            mentions?: components["schemas"]["PriceMention"][];
+            /** Reason Code */
+            reason_code?: string | null;
+            /** Explanation Ru */
+            explanation_ru?: string | null;
+            /** Input Sha256 */
+            input_sha256?: string | null;
         };
         /** Dimensions */
         Dimensions: {
@@ -819,6 +891,40 @@ export interface components {
             complaints: components["schemas"]["Ratio"];
             discounts: components["schemas"]["Ratio"];
         };
+        /**
+         * MaterialMapping
+         * @description Explicit catalog product → warehouse material relation. Never inferred silently.
+         */
+        MaterialMapping: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Catalog Product Id */
+            catalog_product_id: string;
+            /** Material Id */
+            material_id: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "confirmed" | "proposed" | "ambiguous" | "unmapped";
+            /** Basis */
+            basis: string;
+            /** Candidate Material Ids */
+            candidate_material_ids?: string[];
+            /** Confirmed By */
+            confirmed_by?: string | null;
+            /**
+             * Version
+             * @default 0
+             */
+            version: number;
+            /** Kb Version */
+            kb_version: string;
+            /** Materials Version */
+            materials_version?: string | null;
+            /** Evidence */
+            evidence?: components["schemas"]["Evidence"][];
+        };
         /** NewRemnant */
         NewRemnant: {
             /** Dataset Id */
@@ -852,6 +958,18 @@ export interface components {
              */
             lock_kind: "none" | "assignment" | "placement";
         };
+        /** PriceMention */
+        PriceMention: {
+            /** Raw */
+            raw: string;
+            /** Amount Tg */
+            amount_tg: string;
+            /**
+             * Meaning
+             * @enum {string}
+             */
+            meaning: "per_m2" | "per_sheet" | "retail_unit" | "bulk_unit" | "total" | "unspecified";
+        };
         /** Processing */
         Processing: {
             /**
@@ -881,7 +999,7 @@ export interface components {
              * Status
              * @enum {string}
              */
-            status: "calculated" | "needs_review" | "ready" | "confirmed";
+            status: "calculated" | "needs_review" | "ready" | "confirmed" | "superseded" | "cancelled";
             /** Components */
             components: components["schemas"]["QuoteLine"][];
             /** Total Tg */
@@ -897,9 +1015,81 @@ export interface components {
              * Material Mapping Status
              * @enum {string}
              */
-            material_mapping_status: "confirmed" | "unmapped" | "ambiguous";
+            material_mapping_status: "confirmed" | "proposed" | "ambiguous" | "unmapped";
             /** Material Id */
             material_id?: string | null;
+            /** Catalog Product Id */
+            catalog_product_id?: string | null;
+            /** Product Name */
+            product_name?: string | null;
+            /** Kb Version */
+            kb_version?: string | null;
+            /** Customer Id */
+            customer_id?: string | null;
+            dimensions?: components["schemas"]["Dimensions"] | null;
+            /** Quantity */
+            quantity?: number | null;
+            processing?: components["schemas"]["Processing"] | null;
+            /** Price Basis */
+            price_basis?: string | null;
+            /** Confirmed Parameters */
+            confirmed_parameters?: {
+                [key: string]: string;
+            };
+            /** Assumptions */
+            assumptions?: string[];
+            /** Unknown Components */
+            unknown_components?: components["schemas"]["UnknownComponent"][];
+            /** Known Subtotal Tg */
+            known_subtotal_tg?: string | null;
+            /**
+             * Rounding Policy
+             * @default ROUND_HALF_UP to 0.01 per line; total equals the sum of displayed lines
+             */
+            rounding_policy: string;
+            /** Source Versions */
+            source_versions?: {
+                [key: string]: string;
+            };
+            /**
+             * Inventory Status
+             * @default not_requested
+             * @enum {string}
+             */
+            inventory_status: "not_requested" | "checked" | "mapping_required" | "unavailable" | "service_unavailable";
+            /** Candidate Refs */
+            candidate_refs?: components["schemas"]["RemnantCandidateRef"][];
+            /** Inventory Reason Codes */
+            inventory_reason_codes?: string[];
+            /**
+             * Stale
+             * @default false
+             */
+            stale: boolean;
+            /** Created At */
+            created_at?: string | null;
+            /** Confirmed At */
+            confirmed_at?: string | null;
+            /** Confirmed By */
+            confirmed_by?: string | null;
+            diff?: components["schemas"]["QuoteDiff"] | null;
+            /** Evidence */
+            evidence?: components["schemas"]["Evidence"][];
+        };
+        /** QuoteDiff */
+        QuoteDiff: {
+            /** From Revision */
+            from_revision: number;
+            /** To Revision */
+            to_revision: number;
+            /** Changed Fields */
+            changed_fields: string[];
+            /** Lines */
+            lines: components["schemas"]["QuoteLineDiff"][];
+            /** Total Before Tg */
+            total_before_tg: string | null;
+            /** Total After Tg */
+            total_after_tg: string | null;
         };
         /** QuoteLine */
         QuoteLine: {
@@ -909,6 +1099,29 @@ export interface components {
             amount_tg: string;
             /** Evidence */
             evidence: components["schemas"]["Evidence"][];
+            /** Component */
+            component?: ("glass" | "sheet" | "edge" | "hardware") | null;
+            /** Quantity */
+            quantity?: number | null;
+            /** Unit Price Tg */
+            unit_price_tg?: string | null;
+            /** Unit */
+            unit?: string | null;
+            /** Measure Per Unit */
+            measure_per_unit?: string | null;
+            /** Exact Amount Tg */
+            exact_amount_tg?: string | null;
+            /** Formula */
+            formula?: string | null;
+        };
+        /** QuoteLineDiff */
+        QuoteLineDiff: {
+            /** Component */
+            component: string;
+            /** Before Tg */
+            before_tg: string | null;
+            /** After Tg */
+            after_tg: string | null;
         };
         /** QuoteRequest */
         QuoteRequest: {
@@ -921,12 +1134,31 @@ export interface components {
              * Quantity
              * @default 1
              */
-            quantity: number;
+            quantity: number | null;
             processing?: components["schemas"]["Processing"];
             /** Kb Version */
             kb_version: string;
             /** Customer Id */
             customer_id?: string | null;
+            /**
+             * Price Basis
+             * @default auto
+             * @enum {string}
+             */
+            price_basis: "auto" | "per_m2" | "per_sheet" | "unit";
+            /**
+             * Inventory Mode
+             * @default none
+             * @enum {string}
+             */
+            inventory_mode: "none" | "free_whole_remnants" | "replan";
+            /**
+             * Premium
+             * @default false
+             */
+            premium: boolean;
+            /** Assumptions */
+            assumptions?: string[];
         };
         /** RankRequest */
         RankRequest: {
@@ -1060,6 +1292,24 @@ export interface components {
              */
             version: number;
         };
+        /** RemnantCandidateRef */
+        RemnantCandidateRef: {
+            /** Remnant Id */
+            remnant_id: string;
+            /** Remnant Version */
+            remnant_version: number;
+            /** X Mm */
+            x_mm: number;
+            /** Y Mm */
+            y_mm: number;
+            /**
+             * Rot
+             * @enum {integer}
+             */
+            rot: 0 | 1;
+            /** Location Raw */
+            location_raw: string;
+        };
         /** RunRequest */
         RunRequest: {
             /** Dataset Id */
@@ -1123,6 +1373,38 @@ export interface components {
              */
             minimum_free_remnants: number;
         };
+        /** ToolCallRecord */
+        ToolCallRecord: {
+            /** Tool */
+            tool: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ok" | "rejected" | "error" | "unavailable";
+            /** Arguments */
+            arguments?: {
+                [key: string]: unknown;
+            };
+            /**
+             * Summary
+             * @default
+             */
+            summary: string;
+            /** Error Code */
+            error_code?: string | null;
+        };
+        /** UnknownComponent */
+        UnknownComponent: {
+            /** Component */
+            component: string;
+            /** Reason Code */
+            reason_code: string;
+            /** Message Ru */
+            message_ru: string;
+            /** Evidence */
+            evidence?: components["schemas"]["Evidence"][];
+        };
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -1146,6 +1428,53 @@ export interface components {
             invalid_part_ids: string[];
             /** Missing Part Ids */
             missing_part_ids: string[];
+        };
+        /** VerifiedFact */
+        VerifiedFact: {
+            /** Fact Id */
+            fact_id: string;
+            /** Kind */
+            kind: string;
+            /** Value */
+            value: string;
+            /** Unit */
+            unit?: string | null;
+            /** Source Ref */
+            source_ref: string;
+            /**
+             * Status
+             * @default supported
+             * @enum {string}
+             */
+            status: "supported" | "unsupported" | "unknown";
+        };
+        /** WorkingCard */
+        WorkingCard: {
+            /** Intent */
+            intent: string;
+            /** Catalog Product Id */
+            catalog_product_id?: string | null;
+            /** Product Name */
+            product_name?: string | null;
+            /** Confirmed Parameters */
+            confirmed_parameters?: {
+                [key: string]: string;
+            };
+            /** Assumptions */
+            assumptions?: string[];
+            /** Missing Parameters */
+            missing_parameters?: string[];
+            /** Normalized Dimensions */
+            normalized_dimensions?: string | null;
+            /** Facts */
+            facts?: components["schemas"]["VerifiedFact"][];
+            /** Alternatives */
+            alternatives?: string[];
+            /**
+             * Needs Manager
+             * @default false
+             */
+            needs_manager: boolean;
         };
     };
     responses: never;

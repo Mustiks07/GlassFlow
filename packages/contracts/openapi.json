@@ -1532,6 +1532,81 @@
               }
             ],
             "title": "Model Id"
+          },
+          "answer_path": {
+            "type": "string",
+            "enum": [
+              "deterministic",
+              "llm_tools",
+              "fallback"
+            ],
+            "title": "Answer Path",
+            "default": "deterministic"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "answered",
+              "clarification",
+              "manager_handoff",
+              "limited"
+            ],
+            "title": "Status",
+            "default": "answered"
+          },
+          "card": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WorkingCard"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tool_calls": {
+            "items": {
+              "$ref": "#/components/schemas/ToolCallRecord"
+            },
+            "type": "array",
+            "title": "Tool Calls"
+          },
+          "verifier_status": {
+            "type": "string",
+            "enum": [
+              "supported",
+              "unsupported_replaced",
+              "not_applicable"
+            ],
+            "title": "Verifier Status",
+            "default": "supported"
+          },
+          "ai_unavailable_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ai Unavailable Reason"
+          },
+          "turn_index": {
+            "type": "integer",
+            "title": "Turn Index",
+            "default": 0
+          },
+          "latency_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency Ms"
           }
         },
         "additionalProperties": false,
@@ -1583,6 +1658,21 @@
           "kb_version": {
             "type": "string",
             "title": "Kb Version"
+          },
+          "inventory_mode": {
+            "type": "string",
+            "enum": [
+              "none",
+              "free_whole_remnants",
+              "replan"
+            ],
+            "title": "Inventory Mode",
+            "default": "free_whole_remnants"
+          },
+          "allow_ai": {
+            "type": "boolean",
+            "title": "Allow Ai",
+            "default": true
           }
         },
         "additionalProperties": false,
@@ -1798,6 +1888,28 @@
               }
             ],
             "title": "Minimum Quantity"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "source_field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Field"
           }
         },
         "additionalProperties": false,
@@ -1837,6 +1949,52 @@
             },
             "type": "array",
             "title": "Evidence"
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kind"
+          },
+          "attributes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Attributes"
+          },
+          "unknown_fields": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Unknown Fields"
+          },
+          "kb_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kb Version"
+          },
+          "mapping": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MaterialMapping"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "additionalProperties": false,
@@ -2122,6 +2280,80 @@
             },
             "type": "array",
             "title": "Evidence"
+          },
+          "catalog_product_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Catalog Product Id"
+          },
+          "reference_tg": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d+(?:\\.\\d+)?$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference Tg"
+          },
+          "reference_meaning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference Meaning"
+          },
+          "mentions": {
+            "items": {
+              "$ref": "#/components/schemas/PriceMention"
+            },
+            "type": "array",
+            "title": "Mentions"
+          },
+          "reason_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason Code"
+          },
+          "explanation_ru": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Explanation Ru"
+          },
+          "input_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Sha256"
           }
         },
         "additionalProperties": false,
@@ -2502,6 +2734,104 @@
         ],
         "title": "ManagerMetrics"
       },
+      "MaterialMapping": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "catalog_product_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Catalog Product Id"
+          },
+          "material_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Material Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "proposed",
+              "ambiguous",
+              "unmapped"
+            ],
+            "title": "Status"
+          },
+          "basis": {
+            "type": "string",
+            "title": "Basis"
+          },
+          "candidate_material_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Candidate Material Ids"
+          },
+          "confirmed_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed By"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version",
+            "default": 0
+          },
+          "kb_version": {
+            "type": "string",
+            "title": "Kb Version"
+          },
+          "materials_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Materials Version"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Evidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "catalog_product_id",
+          "material_id",
+          "status",
+          "basis",
+          "kb_version"
+        ],
+        "title": "MaterialMapping",
+        "description": "Explicit catalog product → warehouse material relation. Never inferred silently."
+      },
       "NewRemnant": {
         "properties": {
           "dataset_id": {
@@ -2623,6 +2953,39 @@
         ],
         "title": "Placement"
       },
+      "PriceMention": {
+        "properties": {
+          "raw": {
+            "type": "string",
+            "title": "Raw"
+          },
+          "amount_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Amount Tg"
+          },
+          "meaning": {
+            "type": "string",
+            "enum": [
+              "per_m2",
+              "per_sheet",
+              "retail_unit",
+              "bulk_unit",
+              "total",
+              "unspecified"
+            ],
+            "title": "Meaning"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "raw",
+          "amount_tg",
+          "meaning"
+        ],
+        "title": "PriceMention"
+      },
       "Processing": {
         "properties": {
           "kind": {
@@ -2687,7 +3050,9 @@
               "calculated",
               "needs_review",
               "ready",
-              "confirmed"
+              "confirmed",
+              "superseded",
+              "cancelled"
             ],
             "title": "Status"
           },
@@ -2730,8 +3095,9 @@
             "type": "string",
             "enum": [
               "confirmed",
-              "unmapped",
-              "ambiguous"
+              "proposed",
+              "ambiguous",
+              "unmapped"
             ],
             "title": "Material Mapping Status"
           },
@@ -2745,6 +3111,218 @@
               }
             ],
             "title": "Material Id"
+          },
+          "catalog_product_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Catalog Product Id"
+          },
+          "product_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product Name"
+          },
+          "kb_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kb Version"
+          },
+          "customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Id"
+          },
+          "dimensions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Dimensions"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "processing": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Processing"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "price_basis": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Basis"
+          },
+          "confirmed_parameters": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Confirmed Parameters"
+          },
+          "assumptions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Assumptions"
+          },
+          "unknown_components": {
+            "items": {
+              "$ref": "#/components/schemas/UnknownComponent"
+            },
+            "type": "array",
+            "title": "Unknown Components"
+          },
+          "known_subtotal_tg": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d+(?:\\.\\d+)?$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Known Subtotal Tg"
+          },
+          "rounding_policy": {
+            "type": "string",
+            "title": "Rounding Policy",
+            "default": "ROUND_HALF_UP to 0.01 per line; total equals the sum of displayed lines"
+          },
+          "source_versions": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Source Versions"
+          },
+          "inventory_status": {
+            "type": "string",
+            "enum": [
+              "not_requested",
+              "checked",
+              "mapping_required",
+              "unavailable",
+              "service_unavailable"
+            ],
+            "title": "Inventory Status",
+            "default": "not_requested"
+          },
+          "candidate_refs": {
+            "items": {
+              "$ref": "#/components/schemas/RemnantCandidateRef"
+            },
+            "type": "array",
+            "title": "Candidate Refs"
+          },
+          "inventory_reason_codes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Inventory Reason Codes"
+          },
+          "stale": {
+            "type": "boolean",
+            "title": "Stale",
+            "default": false
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "confirmed_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed At"
+          },
+          "confirmed_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed By"
+          },
+          "diff": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QuoteDiff"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Evidence"
           }
         },
         "additionalProperties": false,
@@ -2759,6 +3337,67 @@
           "material_mapping_status"
         ],
         "title": "Quote"
+      },
+      "QuoteDiff": {
+        "properties": {
+          "from_revision": {
+            "type": "integer",
+            "title": "From Revision"
+          },
+          "to_revision": {
+            "type": "integer",
+            "title": "To Revision"
+          },
+          "changed_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Changed Fields"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/QuoteLineDiff"
+            },
+            "type": "array",
+            "title": "Lines"
+          },
+          "total_before_tg": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d+(?:\\.\\d+)?$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Before Tg"
+          },
+          "total_after_tg": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d+(?:\\.\\d+)?$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total After Tg"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "from_revision",
+          "to_revision",
+          "changed_fields",
+          "lines",
+          "total_before_tg",
+          "total_after_tg"
+        ],
+        "title": "QuoteDiff"
       },
       "QuoteLine": {
         "properties": {
@@ -2777,6 +3416,90 @@
             },
             "type": "array",
             "title": "Evidence"
+          },
+          "component": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "glass",
+                  "sheet",
+                  "edge",
+                  "hardware"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "unit_price_tg": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d+(?:\\.\\d+)?$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Price Tg"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "measure_per_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measure Per Unit"
+          },
+          "exact_amount_tg": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exact Amount Tg"
+          },
+          "formula": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Formula"
           }
         },
         "additionalProperties": false,
@@ -2787,6 +3510,46 @@
           "evidence"
         ],
         "title": "QuoteLine"
+      },
+      "QuoteLineDiff": {
+        "properties": {
+          "component": {
+            "type": "string",
+            "title": "Component"
+          },
+          "before_tg": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d+(?:\\.\\d+)?$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Before Tg"
+          },
+          "after_tg": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d+(?:\\.\\d+)?$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "After Tg"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "component",
+          "before_tg",
+          "after_tg"
+        ],
+        "title": "QuoteLineDiff"
       },
       "QuoteRequest": {
         "properties": {
@@ -2813,8 +3576,15 @@
             ]
           },
           "quantity": {
-            "type": "integer",
-            "exclusiveMinimum": 0.0,
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Quantity",
             "default": 1
           },
@@ -2835,6 +3605,40 @@
               }
             ],
             "title": "Customer Id"
+          },
+          "price_basis": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "per_m2",
+              "per_sheet",
+              "unit"
+            ],
+            "title": "Price Basis",
+            "default": "auto"
+          },
+          "inventory_mode": {
+            "type": "string",
+            "enum": [
+              "none",
+              "free_whole_remnants",
+              "replan"
+            ],
+            "title": "Inventory Mode",
+            "default": "none"
+          },
+          "premium": {
+            "type": "boolean",
+            "title": "Premium",
+            "default": false
+          },
+          "assumptions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Assumptions"
           }
         },
         "additionalProperties": false,
@@ -3244,6 +4048,49 @@
         ],
         "title": "Remnant"
       },
+      "RemnantCandidateRef": {
+        "properties": {
+          "remnant_id": {
+            "type": "string",
+            "title": "Remnant Id"
+          },
+          "remnant_version": {
+            "type": "integer",
+            "title": "Remnant Version"
+          },
+          "x_mm": {
+            "type": "integer",
+            "title": "X Mm"
+          },
+          "y_mm": {
+            "type": "integer",
+            "title": "Y Mm"
+          },
+          "rot": {
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ],
+            "title": "Rot"
+          },
+          "location_raw": {
+            "type": "string",
+            "title": "Location Raw"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "remnant_id",
+          "remnant_version",
+          "x_mm",
+          "y_mm",
+          "rot",
+          "location_raw"
+        ],
+        "title": "RemnantCandidateRef"
+      },
       "RunRequest": {
         "properties": {
           "dataset_id": {
@@ -3401,6 +4248,83 @@
         "type": "object",
         "title": "SolverConfig"
       },
+      "ToolCallRecord": {
+        "properties": {
+          "tool": {
+            "type": "string",
+            "title": "Tool"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "rejected",
+              "error",
+              "unavailable"
+            ],
+            "title": "Status"
+          },
+          "arguments": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Arguments"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary",
+            "default": ""
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "tool",
+          "status"
+        ],
+        "title": "ToolCallRecord"
+      },
+      "UnknownComponent": {
+        "properties": {
+          "component": {
+            "type": "string",
+            "title": "Component"
+          },
+          "reason_code": {
+            "type": "string",
+            "title": "Reason Code"
+          },
+          "message_ru": {
+            "type": "string",
+            "title": "Message Ru"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Evidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "component",
+          "reason_code",
+          "message_ru"
+        ],
+        "title": "UnknownComponent"
+      },
       "ValidationError": {
         "properties": {
           "loc": {
@@ -3478,6 +4402,143 @@
           "missing_part_ids"
         ],
         "title": "ValidationResult"
+      },
+      "VerifiedFact": {
+        "properties": {
+          "fact_id": {
+            "type": "string",
+            "title": "Fact Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "source_ref": {
+            "type": "string",
+            "title": "Source Ref"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "supported",
+              "unsupported",
+              "unknown"
+            ],
+            "title": "Status",
+            "default": "supported"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "fact_id",
+          "kind",
+          "value",
+          "source_ref"
+        ],
+        "title": "VerifiedFact"
+      },
+      "WorkingCard": {
+        "properties": {
+          "intent": {
+            "type": "string",
+            "title": "Intent"
+          },
+          "catalog_product_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Catalog Product Id"
+          },
+          "product_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product Name"
+          },
+          "confirmed_parameters": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Confirmed Parameters"
+          },
+          "assumptions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Assumptions"
+          },
+          "missing_parameters": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Parameters"
+          },
+          "normalized_dimensions": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Normalized Dimensions"
+          },
+          "facts": {
+            "items": {
+              "$ref": "#/components/schemas/VerifiedFact"
+            },
+            "type": "array",
+            "title": "Facts"
+          },
+          "alternatives": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Alternatives"
+          },
+          "needs_manager": {
+            "type": "boolean",
+            "title": "Needs Manager",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "intent"
+        ],
+        "title": "WorkingCard"
       }
     }
   }
