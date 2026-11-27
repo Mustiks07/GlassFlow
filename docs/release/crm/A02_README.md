@@ -12,3 +12,8 @@ Future label доступен только evaluator; runtime выбирает25
 
 Команда воспроизведения будет `uv run python scripts/compete_crm.py`.
 Actual U07 paired labor measurements не выводятся из CRM return labels или response_minutes.
+
+Протокол опубликован `f083b8e`. Результат `a02-comparison.json`:18 срезов evaluated, все кандидаты отклонены.
+Primary mean lift: reference-no-manager +0.015, logistic-manager -0.020, logistic-no-manager -0.005;
+worst temporal обеих logistic -0.44. Нового независимого контроля нет. Runtime reference-v1 сохранен.
+Manager holdout/renaming — проверка устойчивости ассоциации, не причинная оценка работы менеджеров.

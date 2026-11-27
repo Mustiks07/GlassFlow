@@ -36,7 +36,7 @@ def feature_matrix(rows):
     )
 
 
-def pipeline(c):
+def pipeline(c, include_manager=True):
     return Pipeline(
         [
             (
@@ -45,7 +45,7 @@ def pipeline(c):
                     [
                         ("numeric", Pipeline([("impute", SimpleImputer(strategy="median", add_indicator=True)),
                                                ("scale", StandardScaler())]), [0, 1, 2]),
-                        ("category", OneHotEncoder(handle_unknown="ignore"), [3, 4]),
+                        ("category", OneHotEncoder(handle_unknown="ignore"), [3, 4] if include_manager else [4]),
                     ]
                 ),
             ),
@@ -58,7 +58,7 @@ def precision(labels, indices):
     return float(np.mean(labels[indices])) if len(indices) else None
 
 
-def choose_c(x, y, groups):
+def choose_c(x, y, groups, include_manager=True):
     """All C selection and preprocessing use only outer training rows."""
     splits = min(3, len(set(groups)))
     if splits < 2:
@@ -69,7 +69,7 @@ def choose_c(x, y, groups):
         for train, test in GroupKFold(splits).split(x, y, groups):
             if len(set(y[train])) < 2:
                 continue
-            candidate = pipeline(c).fit(x[train], y[train])
+            candidate = pipeline(c, include_manager).fit(x[train], y[train])
             order = np.argsort(-candidate.predict_proba(x[test])[:, 1], kind="stable")[:25]
             scores.append(float(np.mean(y[test][order])))
         score = float(np.mean(scores)) if scores else float("-inf")

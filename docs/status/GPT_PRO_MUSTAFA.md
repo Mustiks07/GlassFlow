@@ -1,5 +1,20 @@
 # Статус GPT_PRO_MUSTAFA
 
+## A02: соревнование CRM-политик
+
+Протокол `f083b8e` опубликован **до** эксперимента:4 кандидата, whitelist признаков, одинаковые splits,
+mean lift>=0.04, ни одного temporal ухудшения, обязательный независимый ранее не использованный контроль.
+`uv run python scripts/compete_crm.py`: воспроизводимый `docs/release/crm/a02-comparison.json`,18 evaluated splits:
+5 client group,3 purge60 temporal,5 random diagnostics,5 leave-manager-out diagnostics.
+Дополнительно manager ID rotation без refit. Inner imputer/scaler/encoder/C tuning только train.
+Mean lift на8 primary folds: no-manager reference +0.015; logistic-manager -0.020; logistic-no-manager -0.005.
+Worst temporal lift обеих logistic -0.44. Ни один не прошел правило; runtime **reference-v1 retained**.
+Весь open dataset уже использовался; manager holdout не назван независимым контролем. Promotion=false
+даже если exploratory lift хорош: нового контроля нет. Отчет сохраняет SHA protocol/source/code, все selected app IDs,
+train/test IDs, client overlap, early temporal counts/classes и manager stress. Закрытый score неизвестен.
+`uv run pytest tests/crm/test_competition.py -q`:2 PASS: перестановка test labels не меняет fit/selection,
+no-manager invariant к ID rotation, scaler train-only, temporal horizon/group isolation, отсутствие promotion на reused data.
+
 ## U03: платформенный объяснимый подбор
 
 Контракт опубликован `8e7a09f`, U01 реализация `ea02dff`. U03 добавляет typed application evidence к reviewer records,
