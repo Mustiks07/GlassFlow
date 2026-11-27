@@ -16,6 +16,9 @@ Pro только складывает готовые Quote.total_tg, **не ум
 
 HTTP `/api/v1/baskets`: create/list/get/history, POST /{id}/lines, /bind, /confirm, /reserve,
 /warehouse-check, /handover, /release, /cancel. Mutations: expected_version/operator/note, Idempotency-Key.
+Parser warnings хранятся отдельно в review_warnings и не исчезают при bind готовых quotes. Они блокируют total/confirm,
+пока менеджер явно не проверит/уточнит строки через /lines (с оператором/заметкой). Все прежние warnings остаются в history.
+Новый bind после release очищает старый reservation reference; история старого резерва сохраняется.
 Изменение строк требует снятия активного резерва и сбрасывает факты; stale не подтверждается без explicit bind.
 Каталожная корзина без glass не заявляет резерв материала: stock/reservation=null.
 
@@ -63,6 +66,7 @@ subject_id, expected_version, execution_ref/version, operator,note,discrepancy_r
 - assess(session,MaterialUseScope,execution_ref,execution_version) -> MaterialUseAssessment: прочитать canonical
   actual execution, проверить dataset/subject/revision/reservation owner/expected inventory versions, вернуть
   independently validated planned/actual area/value, validation_ref/material_price_version. Не echo входа как proof.
+  Исполнение должно быть окончательным для всего material reservation; partial/in-progress не подходит для confirm.
 - confirm(session,assessment,confirmation_id,operator,note) -> MaterialUseReceipt: compare-and-consume атомарно,
   с durable token confirmation_id и уникальным source_event_ref. Вернуть точно assessment, consumed и post versions.
   Post version каждого затронутого куска строго больше версии в reservation scope; чужие/пропущенные IDs запрещены.
@@ -78,6 +82,7 @@ Ledger immutable на уровне SQLite; уникальны subject, reservati
 Schema head `0003_material_use` следует за0002; pre-migration backup обязателен и проверен тестом.
 U01 OrderSheet получает lifecycle=completed/material_use_id; после usage текущие offer/warehouse forms скрыты,
 исторические подтвержденные документы сохранены. Catalog-only без material reservation не создает расхода материала.
+completed здесь означает завершенный material workflow, не оплату или подтвержденную доставку клиенту.
 
 Summary planned/actual area/value показывает раздельно, с usage IDs/source events. Это оценка использованного
 материала, не прибыль/выручка/продажа. U07 получает ее как отдельную evidence-ссылку; planned+actual и gross+delta

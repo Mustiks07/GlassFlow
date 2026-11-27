@@ -11370,6 +11370,13 @@
             "type": "array",
             "title": "Issues"
           },
+          "review_warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Review Warnings"
+          },
           "stale_code": {
             "anyOf": [
               {

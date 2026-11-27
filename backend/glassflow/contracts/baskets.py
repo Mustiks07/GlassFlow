@@ -102,6 +102,7 @@ class Basket(BasketCreate):
     total_tg: MoneyString | None = None
     known_subtotal_tg: MoneyString | None = None
     issues: list[str] = Field(default_factory=list)
+    review_warnings: list[str] = Field(default_factory=list)
     stale_code: str | None = None
     reservation: BasketReservation | None = None
     material_use_id: str | None = None

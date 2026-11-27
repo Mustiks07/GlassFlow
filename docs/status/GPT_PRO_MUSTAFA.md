@@ -1,5 +1,15 @@
 # Статус GPT_PRO_MUSTAFA
 
+## Заключительные переходы U04/U06
+
+U06 core опубликован `c653bc8`. Дополнительные регрессии воспроизвели: released reservation не очищался при новом bind;
+parser warnings могли исчезнуть при bind готовых quotes. Исправлено: новый bind очищает старый reference,
+review_warnings переживают binding и legacy read, до явного /lines review с operator/note блокируют total/confirm.
+На границе actual-use typed instances повторно валидируются из JSON до C2 confirm; измененный объект с отрицательной
+площадью больше не проходит мимо Pydantic и не достигает списания. Все такие ошибки дают409/422 без частичных записей.
+Полный source suite104 PASS, Ruff/foundation14/typecheck PASS. Новые Basket16, Material15, Orders18 scenarios
+используют явные synthetic adapters. Windows сборка c653bc8 собрана, но новая итоговая сборка/CI будет на финальном SHA.
+
 ## U06 implementation checkpoint
 
 Реализован immutable material_usage ledger, schema head0003_material_use (после0002), pre-migration backup,

@@ -61,7 +61,12 @@ def save(session, basket, action, correlation, operator="system", note=""):
 
 
 def load(session, dataset_id, basket_id, expected_version=None):
-    return Basket.model_validate(get_object(session, dataset_id, "basket", basket_id, expected_version).data)
+    data = get_object(session, dataset_id, "basket", basket_id, expected_version).data
+    basket = Basket.model_validate(data)
+    if ("review_warnings" not in data and basket.state == "needs_review"
+            and basket.facts is None and basket.issues):
+        basket.review_warnings = list(basket.issues)  # Preserve pre-field parser warnings until explicit review.
+    return basket
 
 
 def create(session, body, correlation):
@@ -82,12 +87,15 @@ def active(basket):
 def replace_lines(session, basket, lines, correlation, operator, note, warnings=None):
     if basket.state in CLOSED or active(basket):
         raise AppError(409, "BASKET_EDIT_BLOCKED", "Сначала снимите резерв; переданная корзина не редактируется.")
+    if warnings is None and basket.review_warnings and not note.strip():
+        raise AppError(422, "BASKET_REVIEW_NOTE_REQUIRED", "Запишите результат явной проверки предупреждений разбора.")
     check_lines(basket, lines)
     basket.lines, basket.revision = lines, basket.revision + 1
     basket.input_hash = input_hash(basket)
     basket.binding = basket.facts = basket.facts_hash = basket.reservation = None
     basket.total_tg = basket.known_subtotal_tg = None
     basket.stale_code, basket.issues = None, warnings or []
+    basket.review_warnings = list(warnings or [])
     basket.state = "needs_review" if basket.issues or any(line.clarification or line.request is None for line in lines) else "draft"
     return save(session, basket, "lines", correlation, operator, note)
 
@@ -133,7 +141,7 @@ def capture(session, basket, binding, services, *, initial=False):
 
 
 def readiness(basket, facts):
-    issues, known = [], []
+    issues, known = list(basket.review_warnings), []
     current = {line.line_id: line for line in facts.lines}
     for draft in basket.lines:
         line = current[draft.line_id]
@@ -189,6 +197,7 @@ def apply(session, basket_id, body, action, services, correlation):
         basket.issues, basket.total_tg, basket.known_subtotal_tg = readiness(basket, facts)
         basket.state = "needs_review" if basket.issues else "ready"
         basket.binding, basket.facts = body, facts
+        basket.reservation = None
         basket.facts_hash, basket.stale_code = canonical_hash(facts.model_dump(mode="json")), None
         basket.revision += 1
     elif action in {"release", "cancel"}:

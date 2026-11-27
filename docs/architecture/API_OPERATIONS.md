@@ -29,3 +29,17 @@
 | Pro | POST /system/backup, /system/restore, /system/shutdown | local owner authorization, SQLite checkpoint, graceful worker lifecycle |
 
 Указанные дополнительные имена — координационный договор для реализации, не требование организаторов. Владелец уточняет DTO/additive routes в handoff; интегратор регенерирует общую схему и проверяет все потребители. HTTP consumers не должны предполагать, что отсутствующая здесь pagination уже реализована.
+
+## Дополнения v1.1 U04/U06
+
+Реализация Pro, отдельная от исходных67 acceptance scenarios. Контракт [U04_U06_CONTRACTS.md](U04_U06_CONTRACTS.md).
+
+| Owner | Маршруты | Договор |
+|---|---|---|
+| Pro | POST/GET /baskets; GET /baskets/{id}, /history | workspace aggregate, stable line IDs, version/revision, immutable history |
+| Pro | POST /baskets/{id}/lines, /bind, /confirm, /reserve, /warehouse-check, /handover, /release, /cancel | all-line readiness, unknown total=null, canonical C3 quotes/C2 joint selection, atomic bundle; expected_version/Idempotency-Key |
+| Pro + C3 worker | POST /baskets/{id}/parse, /apply-parse | durable queue, input/version/KB pinned, stale result409; absent handler503 |
+| Pro + C2 port | POST /material-use/preview; POST /material-use | handed_over/active reservation, validated execution ref, human confirmation/reason, one transaction and semantic dedupe |
+| Pro | GET /material-use, /summary, /{id} | immutable ledger, planned/actual separately, dataset scope; no implied sale/profit |
+
+Наличие платформенных routes не подтверждает actual C1/C2/C3 E2E: domain adapters/UI подключает интегратор.

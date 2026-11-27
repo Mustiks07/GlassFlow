@@ -1392,6 +1392,8 @@ export interface components {
             known_subtotal_tg?: string | null;
             /** Issues */
             issues?: string[];
+            /** Review Warnings */
+            review_warnings?: string[];
             /** Stale Code */
             stale_code?: string | null;
             reservation?: components["schemas"]["BasketReservation"] | null;

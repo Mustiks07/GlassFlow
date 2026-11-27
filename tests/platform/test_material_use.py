@@ -47,6 +47,8 @@ class SyntheticUseSource:
             assessment.scope = scope.model_copy(update={"subject_id": "another-subject"})
         elif self.fault == "plan":
             assessment.planned_area_mm2 += 1
+        elif self.fault == "malformed":
+            assessment.actual_area_mm2 = -1
         return assessment
 
     def confirm(self, session, assessment, confirmation_id, operator, note):
@@ -65,9 +67,10 @@ class SyntheticUseSource:
             row = session.get(ObjectRow, (scope.dataset_id, "synthetic", "facts"))
             row.data = {**row.data, "remnant": {**row.data["remnant"], "status": "consumed", "version": next(iter(post.values()))}}
         session.flush()
-        result = MaterialUseReceipt(assessment=assessment, confirmation_id=confirmation_id,
+        typed_receipt = MaterialUseReceipt(assessment=assessment, confirmation_id=confirmation_id,
             source_event_ref=self.event_override or "event-"+scope.subject_id, reservation_state="consumed",
-            post_remnant_versions=post, confirmed_at=now()).model_dump(mode="json")
+            post_remnant_versions=post, confirmed_at=now())
+        result = typed_receipt.model_dump(mode="json")
         if self.fault == "receipt_scope":
             result["assessment"]["actual_area_mm2"] += 1
         elif self.fault == "token":
@@ -76,7 +79,7 @@ class SyntheticUseSource:
             result["post_remnant_versions"] = scope.remnant_versions
         elif self.fault == "timestamp":
             result["confirmed_at"] = "2026-11-28T09:00:00"
-        return result
+        return typed_receipt if self.fault == "malformed" else result
 
 
 def handed_basket(client, imported, services):
@@ -151,13 +154,15 @@ def test_concurrent_confirmation_with_distinct_keys_consumes_once(client, import
     assert summary(client, basket["dataset_id"])["confirmation_count"] == 1
 
 
-@pytest.mark.parametrize("fault", ["scope", "plan", "receipt_scope", "token", "versions", "timestamp"])
+@pytest.mark.parametrize("fault", ["scope", "plan", "malformed", "receipt_scope", "token", "versions", "timestamp"])
 def test_invalid_assessment_or_receipt_rolls_back_c2_and_ledger(client, imported, services, fault):
     basket = handed_basket(client, imported, services)
     services.material_use = SyntheticUseSource()
     services.material_use.fault = fault
     response = post(client, body_for(basket))
     assert response.status_code == 409, response.text
+    if fault in {"scope", "plan", "malformed"}:
+        assert services.material_use.calls == 0
     with client.app.state.session_factory() as session:
         piece = session.get(ObjectRow, (basket["dataset_id"], "synthetic_basket", "shared-piece"))
         assert piece.version == basket["reservation"]["remnant_versions"]["shared-piece"]

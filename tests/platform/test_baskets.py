@@ -284,3 +284,42 @@ def test_adapter_cannot_mutate_pinned_basket_to_hide_changed_quote(client, impor
     with client.app.state.session_factory() as session:
         assert session.get(ObjectRow, (basket["dataset_id"], "basket", basket["basket_id"])).data == basket
         assert session.get(ObjectRow, (basket["dataset_id"], "synthetic_basket", "shared-piece")).data["owner"] is None
+
+
+def test_rebinding_after_release_discards_old_reservation_reference(client, imported, services):
+    basket = command(client, prepared(client, imported, services), "confirm").json()
+    basket = command(client, basket, "reserve").json()
+    released = command(client, basket, "release").json()
+    assert released["reservation"]["state"] == "released"
+    facts = BasketFacts.model_validate(released["facts"])
+    rebound = bind(client, released, facts)
+    assert rebound["state"] == "ready" and rebound["reservation"] is None
+    assert rebound["revision"] == released["revision"] + 1
+
+
+@pytest.mark.parametrize("legacy", [False, True])
+def test_parse_warning_survives_quote_binding_until_explicit_line_review(client, imported, services, legacy):
+    d = workspace(client, imported)
+    services.basket_source = SyntheticBasketSource()
+    basket = create_basket(client, d)
+    with write_transaction(client.app.state.session_factory) as session:
+        job = JobRow(dataset_id=d, kind="basket.parse", state="completed", input=dict(
+            dataset_id=d, basket_id=basket["basket_id"], basket_version=0, input_hash=basket["input_hash"]),
+            result=dict(dataset_id=d, basket_id=basket["basket_id"], basket_version=0, input_hash=basket["input_hash"],
+                        lines=basket["lines"], warnings=["Synthetic quantity needs human clarification"]))
+        session.add(job)
+        session.flush()
+        job_id = job.id
+    applied = command(client, basket, "apply-parse", job_id=job_id).json()
+    if legacy:
+        with write_transaction(client.app.state.session_factory) as session:
+            row = session.get(ObjectRow, (d, "basket", basket["basket_id"]))
+            row.data = {key: value for key, value in row.data.items() if key != "review_warnings"}
+    facts = seed_facts(client, applied)
+    bound = bind(client, applied, facts)
+    assert bound["state"] == "needs_review" and bound["total_tg"] is None
+    assert command(client, bound, "confirm").status_code == 409
+    assert command(client, bound, "lines", lines=bound["lines"], key="no-review-note").status_code == 422
+    reviewed = command(client, bound, "lines", lines=bound["lines"], note="Manager explicitly checked quantity").json()
+    ready = bind(client, reviewed, facts)
+    assert ready["state"] == "ready" and ready["total_tg"] == "6000"

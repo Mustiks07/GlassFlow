@@ -2,7 +2,7 @@
 
 from decimal import Decimal
 
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 from sqlalchemy import select
 
 from glassflow.contracts.material_use import (
@@ -17,6 +17,13 @@ from glassflow.core.models import MaterialUseRow, now, uid
 from glassflow.core.uow import audit, canonical_hash
 from glassflow.modules.platform import baskets, orders
 from glassflow.modules.platform.imports import dataset
+
+
+def validated(model, value):
+    # Pydantic accepts existing model instances without rechecking mutated fields.
+    # This boundary owns all nested types, so round-trip them before any C2 write.
+    data = value.model_dump(mode="json") if isinstance(value, BaseModel) else value
+    return model.model_validate(data).model_copy(deep=True)
 
 
 def previous(session, body):
@@ -56,8 +63,8 @@ def scope_for(session, body):
 def assess(session, body, services):
     subject, scope = scope_for(session, body)
     try:
-        value = MaterialUseAssessment.model_validate(source(services).assess(
-            session, scope.model_copy(deep=True), body.execution_ref, body.execution_version)).model_copy(deep=True)
+        value = validated(MaterialUseAssessment, source(services).assess(
+            session, scope.model_copy(deep=True), body.execution_ref, body.execution_version))
     except ValidationError:
         raise AppError(409, "MATERIAL_ASSESSMENT_INVALID", "C2 вернул неполные данные исполнения.") from None
     if (value.scope != scope or (value.execution_ref, value.execution_version) != (body.execution_ref, body.execution_version)):
@@ -88,8 +95,8 @@ def confirm(session, body, services, correlation):
         raise AppError(422, "MATERIAL_DISCREPANCY_REASON_REQUIRED", "Объясните отличие фактического использования от плана.")
     usage_id = uid()
     try:
-        receipt = MaterialUseReceipt.model_validate(source(services).confirm(
-            session, assessment.model_copy(deep=True), usage_id, body.operator, body.note)).model_copy(deep=True)
+        receipt = validated(MaterialUseReceipt, source(services).confirm(
+            session, assessment.model_copy(deep=True), usage_id, body.operator, body.note))
     except ValidationError:
         raise AppError(409, "MATERIAL_RECEIPT_INVALID", "C2 не подтвердил полное списание.") from None
     if (receipt.assessment != assessment or receipt.confirmation_id != usage_id
