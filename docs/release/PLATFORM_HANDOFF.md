@@ -1,5 +1,55 @@
 # Платформа GlassFlow: handoff интегратору
 
+## Дополнения v1.1 после checkpoint052255d
+
+Из актуального main прочитаны review/upgrade plan на `eaf81d6`, без merge. Все изменения только в платформенном
+владении, новые commits от Mustiks07. Главный контракт для C1/C2/C3:
+[`UPGRADE_CONTRACTS_v1_1.md`](../architecture/UPGRADE_CONTRACTS_v1_1.md).
+
+| Блок | Реализация / свидетельство | Граница приемки |
+|---|---|---|
+| PRO-R1/A04 | `cd832a3`: управляемый Event-test воспроизвел старые CSV+refs/новый provenance на052255d, после fix4 export tests PASS | bytes/refs/deep-copied provenance в одной transaction; validator без writer lock; следующий export выбирает новый job |
+| A04 accepted bundle | `070d0c8`: accepted_export_id/accepted_files обновляются только full-ready | failed retry/partial не заменяет ссылку на прежний ready, старые файлы доступны |
+| U01 | contract `c3a373e`, implementation `ea02dff`;4 transactional tests PASS | real C2/C3/UI acceptance NOT RUN, synthetic seam tests явно названы |
+| U03 | contract `8e7a09f`, implementation `869686a`;12 sales tests PASS | реальные public activity evidence дает C1; новое evidence не придумано Pro |
+| A02 | prereg `f083b8e`, experiment `9b326d2`;18 splits/4 candidates,2 leakage tests PASS | независимого контроля нет, baseline retained; closed score unknown |
+| U07 | contract `bc4e3f3`, implementation `38c0705`;4 economics/report tests PASS | scenario API/PDF, не final economics; human timings и ready same-run еще нужны |
+
+Полный source suite после U07:58 PASS; Ruff, immutable foundation14, frontend typecheck/test2/build PASS.
+Последующий A04 проверен отдельно4 export tests. Новая Windows evidence/CI фиксируются в status, не переносятся
+автоматически с прежнего runtime0457954. Старые разделы ниже — предыдущий checkpoint.
+
+### Что подключить агентам
+
+- C2/C3: `Services.order_source: OrderSourcePort`, typed OrderFacts/OrderReservation. capture читает CURRENT
+  Quote/KB/mapping+Remnant/compatibility, reserve/release/check работают в переданном Session без commit/network.
+  C2 гарантирует физическое уникальное владение и возвращает post-reservation version; C3 own reservation не должна
+  сама по себе делать цену устаревшей. C2 conflict содержит актуальный источник и альтернативы.
+- Pro не создает mutable inventory/quote. Лист заказа только workspace: create/bind/confirm/reserve/warehouse-check/
+  handover/release/cancel/reminder; exact versions+Idempotency-Key. warehouse-check требует человеческой заметки,
+  handover не является подтверждением расхода материала. Полные исторические sheets в immutable audit, новой
+  migration/head не нужно. Update source -> durable stale; offer/task скрыты, исторический confirmed документ доступен.
+- C1: обе формы брать из OrderSheet.offer/warehouse_task с единым facts_hash/revision. Не рисовать собственную цену,
+  показывать unknown location, conflict alternatives и distinct states. Новые routes/DTO есть в regenerated contracts.
+- C1 U03: дополнить evidence.records[].applications (schema BuyerApplicationEvidence). CSV остается прежним.
+  Публичная деятельность и размерное допущение раздельны. Без трех подходящих организаций на пять кусков cards409,
+  старый keyword fallback удален. GET buyers/matches читает current remnant; tempered+cutting исключается.
+  SaleCard.buyer_matches имеет3 точных registry IDs/names+versions/URL/date/ограничения; C3 формулирует только из них.
+  Legacy unexplained cards нужно regenerate. Reserved/deleted/changed source -> stale/export blocked.
+- C1 U07: scenarios POST/PUT/GET/PDF с version, decimal-string result backend. JS формулу не дублировать.
+  PDF получает ровно ту же historical version, input/result hash и economics-v2. Числоошибок/rework/active time
+  хранятся с operator/timezone intervals/result refs, минимум10 пар. PDF один page; synthetic/supplied evidence
+  явно подписано; negative net дает payback=null. Потенциальные продажи и actual revenue не превращаются в прибыль.
+
+Actual U01 two-manager inventory/E2E, C1 source audit/U03, U07 real labor и final PDF пока NOT RUN.
+U04/U06 из следующего уровня плана не объявлены реализованными этим расширением: нужны aggregate basket
+quote/stock contracts C3/C2 и подтвержденное потребление с reason; повтор reserve/cancel не должен создавать usage.
+До их интеграции handover листа — человеческая передача, а material_use_fraction — явное сценарное допущение.
+
+Команды: `uv run pytest`, `uv run ruff check backend tests scripts`, `uv run python scripts/check_foundation.py`,
+`uv run python scripts/compete_crm.py`, стандартные regeneration/typecheck/test/build, Windows build/smoke/scanner.
+В A02 повторно использованы все open rows: новый partition не назван новым независимым контролем.
+
 Ветка `codex/gpt-pro-mustafa-platform`, foundation `16d63c6`.
 Не объединялась с main или соседними агентскими ветками. Новые коммиты после настройки автора идут от Mustiks07.
 Точные SHA/последние проверки — в `docs/status/GPT_PRO_MUSTAFA.md` и `git log`.

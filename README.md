@@ -10,6 +10,14 @@
 Cutting, pricing/assistant/QA и UI принадлежат другим веткам. Их отсутствие дает явные 501/503/failed dependency,
 а не выдуманный результат. `/api/v1/ready` сообщает `degraded` до фактической регистрации и проверки всех сервисов.
 
+Платформенные дополнения v1.1: лист заказа с раздельными confirm/reserve/warehouse states и историей;
+объяснимый подбор покупателей по material/size/public activity evidence; versioned economics scenarios с тем же
+расчетом в API и PDF. [Контракты интеграции](docs/architecture/UPGRADE_CONTRACTS_v1_1.md) опубликованы для C1/C2/C3.
+Это backend additions: реальный UI и canonical domain adapters объединяет интегратор.
+Объяснимые карточки требуют нового application evidence C1, совпадение слов в категории больше не заменяет его.
+[CRM competition](docs/release/crm/A02_README.md) по заранее заданному протоколу оставило reference-v1;
+новый независимый контроль отсутствует. Сценарный PDF не является финальной конкурсной экономической запиской.
+
 ## Запуск из исходников
 
 Нужны Python **3.12**, Node **24**, uv и pnpm **11.25.0**; версии закреплены lock-файлами.

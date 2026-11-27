@@ -62,6 +62,53 @@ def stop(process, client):
     client.close()
 
 
+def upgrade_checks(client, dataset_id):
+    """Native packaging seams only. Explicit synthetic economics, no C2/C3 replacement."""
+    workspace = client.post(f"/api/v1/datasets/{dataset_id}/working-copy", json={},
+                            headers={"Idempotency-Key": "u01-smoke-workspace"}).json()["dataset_id"]
+    order = client.post("/api/v1/order-sheets", json={"dataset_id": workspace,
+                         "customer_ref": "SYNTHETIC", "request_text": "Synthetic frozen draft test"},
+                         headers={"Idempotency-Key": "u01-smoke-draft"})
+    assert order.status_code == 200, order.text
+    order = order.json()
+    missing = client.post(f"/api/v1/order-sheets/{order['order_id']}/bind", json={
+        "dataset_id": workspace, "expected_version": 0, "operator": "synthetic-smoke",
+        "quote_id": "unregistered", "quote_revision": 0, "remnant_id": "unregistered", "remnant_version": 0,
+    }, headers={"Idempotency-Key": "u01-smoke-no-source"})
+    assert missing.status_code == 503 and missing.json()["code"] == "ORDER_SOURCE_UNAVAILABLE"
+    inputs = {
+        "measurement_status": "synthetic", "final_material_value_tg": "100000", "baseline_material_value_tg": "90000",
+        "baseline_validation_ref": "synthetic-format-only", "final_validation_ref": "synthetic-format-only",
+        "baseline_description": "Synthetic smoke arithmetic, not a real plan", "monthly_dataset_multiplier": "1",
+        "monthly_operations": "100", "hourly_rate_tg": "3600", "hourly_rate_basis": "Synthetic assumption",
+        "monthly_volume_basis": "Synthetic assumption", "ai_monthly_tg": "0", "ai_cost_basis": "No provider calls",
+        "hosting_monthly_tg": "1000", "support_monthly_tg": "2000", "implementation_tg": "14000",
+        "implementation_basis": "Synthetic assumption", "labor_studies": [dict(
+            task_id=f"synthetic-{i}", protocol="Synthetic smoke protocol", observer="synthetic", operator="synthetic",
+            measured_at="2026-11-27", start_definition="Synthetic start", end_definition="Synthetic end",
+            task_input_ref=f"synthetic-input-{i}", manual_result_ref="synthetic-manual", app_result_ref="synthetic-app",
+            manual_started_at="2026-11-27T09:00:00Z", manual_finished_at="2026-11-27T09:02:00Z",
+            app_started_at="2026-11-27T10:00:00Z", app_finished_at="2026-11-27T10:01:00Z",
+            manual_active_seconds="60", app_active_seconds="30", manual_error_count=0, app_error_count=0,
+            manual_rework_seconds="0", app_rework_seconds="0",
+        ) for i in range(10)],
+    }
+    scenario = client.post("/api/v1/economics/scenarios", json={"dataset_id": workspace,
+                            "name": "Synthetic frozen U07 check", "inputs": inputs},
+                            headers={"Idempotency-Key": "u07-smoke-scenario"})
+    assert scenario.status_code == 200, scenario.text
+    scenario = scenario.json()
+    pdf = client.get(f"/api/v1/economics/scenarios/{scenario['scenario_id']}/pdf",
+                     params={"dataset_id": workspace, "version": 0})
+    assert pdf.status_code == 200 and pdf.content.startswith(b"%PDF"), pdf.text[:300]
+    assert pdf.headers["X-GlassFlow-Result-Hash"] == scenario["result_hash"]
+    return workspace, order, scenario, {
+        "u01": "draft+missing source503+restart; actual C2/C3 reservation not_run",
+        "u07": "synthetic scenario+native PDF+same hash+restart; human labor not_run",
+        "pdf_sha256": hashlib.sha256(pdf.content).hexdigest(), "result_hash": scenario["result_hash"],
+    }
+
+
 def smoke(exe):
     diagnostics = exe.with_name("GlassFlowDiagnostics.exe")
     assert diagnostics.is_file(), "Missing diagnostics executable in onedir bundle"
@@ -213,6 +260,8 @@ def smoke(exe):
             assert settings.status_code == 200
             report["import_counts"] = imported.json()["row_counts"]
             report["crm_rows"] = len(progress["result"]["rows"])
+            upgrade_dataset, order_sheet, scenario, upgrade_report = upgrade_checks(client, dataset_id)
+            report["upgrade_checks"] = upgrade_report
             backup = client.post("/api/v1/system/backup", headers={"X-GlassFlow-Session": token})
             assert backup.status_code == 200
             backup_id = backup.json()["backup_id"]
@@ -224,6 +273,10 @@ def smoke(exe):
             assert client.get(f"/api/v1/datasets/{dataset_id}").status_code == 200
             assert client.get("/api/v1/settings").json()["model_id"] == "smoke-no-provider"
             report["persistence"] = "passed"
+            assert client.get(f"/api/v1/order-sheets/{order_sheet['order_id']}",
+                               params={"dataset_id": upgrade_dataset}).json() == order_sheet
+            assert client.get(f"/api/v1/economics/scenarios/{scenario['scenario_id']}",
+                               params={"dataset_id": upgrade_dataset, "version": 0}).json() == scenario
             baseline_count = len(client.get("/api/v1/datasets").json())
             added = client.post(
                 f"/api/v1/datasets/{dataset_id}/working-copy",
