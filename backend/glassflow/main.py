@@ -16,6 +16,7 @@ from glassflow.core.submission import DurableJobSubmitter
 from glassflow.modules.crm.router import router as crm_router
 from glassflow.modules.cutting.router import router as cutting_router
 from glassflow.modules.intelligence.router import router as intelligence_router
+from glassflow.modules.platform.order_router import router as order_router
 from glassflow.modules.platform.router import router as platform_router
 from glassflow.modules.platform.runs import crm_job, schedule_cards
 from glassflow.modules.sales.router import router as sales_router
@@ -108,7 +109,7 @@ def create_app(
             ai="unchecked" if app.state.secrets else "unavailable",
         )
 
-    for router in [platform_router, cutting_router, intelligence_router, crm_router, sales_router]:
+    for router in [platform_router, cutting_router, intelligence_router, crm_router, sales_router, order_router]:
         app.include_router(router, prefix="/api/v1")
     from glassflow.core.resources import resource_root
 

@@ -84,6 +84,7 @@ class OrderSheet(OrderCreate):
     reservation: OrderReservation | None = None
     reminder_ids: list[str] = Field(default_factory=list)
     stale_reason: str | None = None
+    stale_conflicts: list[str] = Field(default_factory=list)
     offer: OrderOffer | None = None
     warehouse_task: WarehouseTask | None = None
     created_at: str

@@ -11,6 +11,14 @@
 получает новое job; опубликованный первый export остается доступен неизменным. Fixtures явно synthetic format-only.
 Следующий пункт: общий DTO/состояния U01, публикация контракта соседям перед implementation U03/A02/U07.
 
+## U01: общий контракт и состояния
+
+- R1 исправлен и опубликован `cd832a3`; контракт U01 объявлен `c3a373e` в `docs/architecture/UPGRADE_CONTRACTS_v1_1.md` до зависимой реализации.
+- Реализован `/order-sheets`: workspace draft, bind проверенного Quote/Remnant, confirm, reserve, человеческая warehouse-check, handover, release/cancel и existing reminder link. Порты C2/C3 атомарны в caller UoW, без network/второго commit. Без адаптера503, fixtures production отсутствуют.
+- Один facts_hash/revision питает обе формы; unknown location явно false; новый замер/KB/quote/inventory/reservation вызывает durable stale, действующие формы скрыты. История полных snapshots в append-only audit_events сохраняет прежние подтвержденные документы.
+- `uv run pytest tests/platform/test_orders.py -q`:4 PASS. Конкурентные два менеджера -> один reserve, другой409 с current source и альтернативой; replay не создает второй резерв; restart сохраняет состояние/history. Изменение размера/прайса сбрасывает предложение; конфликт после reserve откатывает и inventory, и платформу.
+- Это приемка платформенного координатора с явно synthetic transactional C2/C3 adapters. Actual C2/C3/UI U01 acceptance NOT RUN до интеграции. OpenAPI/TS стандартно регенерированы.
+
 - Ветка: `codex/gpt-pro-mustafa-platform`; отдельный worktree `GlassFlow-platform`.
 - Foundation: `16d63c6`.
 - Обновление: 27 ноября 2026, Asia/Qyzylorda.
