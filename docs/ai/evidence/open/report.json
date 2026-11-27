@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T17:00:04.975214+00:00",
+  "generated_at": "2026-11-27T21:00:24.743203+00:00",
   "kind": "open_pack_runtime_evaluation",
   "runtime_path": "IntelligenceService.answer_questions / check_dialogs (same as HTTP)",
   "ai": {
@@ -18,14 +18,14 @@
     "verdicts_sha256": "db4fa0893d47d7581c6c0425b9ad6d69e90b42bc9ced22a75ccdd01dbfea6bd5"
   },
   "kb_version": "kb-f464c67fb8633008",
-  "prompt_version": "assistant-v1-2026-11-27",
+  "prompt_version": "assistant-v2-2026-11-27",
   "answer_batch": {
     "complete": true,
     "counts": {
       "answered": 15,
       "manager_handoff": 3
     },
-    "seconds": 0.156,
+    "seconds": 0.17,
     "paths": [
       "deterministic"
     ]

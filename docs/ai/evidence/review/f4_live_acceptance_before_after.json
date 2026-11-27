@@ -1,0 +1,22 @@
+{
+  "review": "docs/reviews/CLAUDE_3_REVIEW_2026-11-27.md, finding F4",
+  "scenario": "GLASSFLOW_AI_PROVIDER=none + non-empty fake GLASSFLOW_GATEWAY_TOKEN, no provider keys",
+  "before": {
+    "e83c211 (reviewed)": "evaluation live -> exit 0, cases=96, passed=96, accuracy=1.0, ai.runtime_status=disabled, all 252 results path=deterministic, p95=78 ms (reported by the reviewer)",
+    "6cc73b9 (before this fix)": "evaluation live -> exit 0 with status NO_MODEL and no status file; live --model judge_gateway:gateway-pinned -> exit 1 with a bare SystemExit message and no report"
+  },
+  "after": {
+    "live": "exit 2, live_status.json status=BLOCKED reason=profile_disabled",
+    "live --model judge_gateway:gateway-pinned": "exit 2, status=BLOCKED reason=runtime_no_key",
+    "live-open": "exit 2, status=BLOCKED reason=profile_disabled",
+    "provider requests": 0
+  },
+  "acceptance_rules": {
+    "preflight": "one minimal real call through the selected chain before evaluation; failure -> BLOCKED",
+    "counted": "only runs answered by llm_tools from a selected model, without cache hits",
+    "statuses": "PASS (exit 0) | PARTIAL or FAIL (exit 3) | BLOCKED (exit 2)",
+    "latency": "model_call_latency_ms over successful calls of the selected models only; failed calls counted separately; turn latency includes RPM queue",
+    "hybrid_runs": "extended/holdout --allow-ai are labelled live_acceptance=not_applicable"
+  },
+  "tests": "tests/intelligence/test_live_acceptance.py"
+}

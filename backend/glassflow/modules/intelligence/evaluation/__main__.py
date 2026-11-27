@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
+import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -38,52 +38,61 @@ def main() -> None:
         summary = {k: report["selfcheck"][k]["stdout"] for k in ("assistant", "dialogs")}
     elif args.command == "extended":
         report = evaluate_extended(args.pack, args.out / "extended", allow_ai=args.allow_ai, repeats=args.repeats)
-        summary = {k: report[k] for k in ("cases", "passed", "accuracy", "unconfirmed_commercial_claims", "groups")}
+        summary = {k: report[k] for k in ("cases", "passed", "accuracy", "unconfirmed_commercial_claims", "groups",
+                                          "answer_paths", "live_acceptance")}
     elif args.command == "holdout":
         report = evaluate_extended(
             args.pack, args.out / "holdout", allow_ai=args.allow_ai, repeats=args.repeats,
             cases_path=Path(__file__).with_name("cases_holdout.json"), name="holdout",
         )
-        summary = {k: report[k] for k in ("cases", "passed", "accuracy", "unconfirmed_commercial_claims", "groups")}
-    elif args.command == "live-open":
-        from .live import evaluate_open_live
-
-        extra = ["E026", "E031", "E041", "E047", "E053", "E061", "E065", "E069", "E074", "E038", "H005", "H016"]
-        report = evaluate_open_live(args.pack, args.out / "live", model=args.model or "gemini:gemini-3.5-flash-lite",
-                                    fallbacks=[f for f in args.fallbacks.split(",") if f], rpm=args.rpm, extra_ids=extra)
-        summary = {"selfcheck": report["selfcheck_assistant"]["stdout"], "paths": report["paths"],
-                   "latency_series_ms": report["latency_series_ms"], "provider_errors": report["provider_errors"],
-                   "models_answered": report["models_answered"], "model_calls": report["model_calls"]}
+        summary = {k: report[k] for k in ("cases", "passed", "accuracy", "unconfirmed_commercial_claims", "groups",
+                                          "answer_paths", "live_acceptance")}
     elif args.command == "perf":
         report = measure_performance(args.pack, args.out / "perf")
         summary = {k: report[k] for k in ("quote_calculate_ms", "deterministic_turn_ms", "ai_turn_p95")}
     else:
-        has_key = any(os.environ.get(name) for name in ("GEMINI_API_KEY", "OPENROUTER_API_KEY", "GLASSFLOW_GATEWAY_TOKEN"))
-        target = args.out / "live"
-        target.mkdir(parents=True, exist_ok=True)
-        if not has_key or not args.model:
-            summary = {
-                "status": "BLOCKED" if not has_key else "NO_MODEL",
-                "reason": "No provider key in this environment." if not has_key else "Pass --model provider:model_id.",
-                "required": "uv run python -m glassflow.modules.intelligence.evaluation live --model gemini:gemini-3.5-flash-lite",
-                "checked_at": datetime.now(UTC).isoformat(),
-                "critical_cases": CRITICAL,
-            }
-            if not has_key:
-                (target / "live_status.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
-        else:
-            from .live import BROAD, evaluate_live
-
-            ids = CRITICAL if args.cases == "critical" else BROAD if args.cases == "broad" else args.cases.split(",")
-            report = evaluate_live(
-                args.pack, target, model=args.model, fallbacks=[f for f in args.fallbacks.split(",") if f],
-                case_ids=ids, repeats=args.repeats, rpm=args.rpm,
-            )
-            summary = {k: report[k] for k in (
-                "runs", "ok", "accuracy", "answered_by_model", "model_answers_ok", "fallbacks_to_deterministic",
-                "verifier_rejections", "unsupported_claims_shown", "tool_errors", "model_calls", "provider_errors",
-                "models_answered", "tokens", "turn_latency_ms", "model_call_latency_ms")}
+        sys.exit(_live(args))
     print(json.dumps(summary, ensure_ascii=False, indent=2))
+
+
+def _live(args) -> int:
+    """Live acceptance: exit 0 only for PASS; 3 for PARTIAL/FAIL; 2 for BLOCKED (no real model call)."""
+    from .live import BROAD, LiveBlocked, evaluate_live, evaluate_open_live
+
+    target = args.out / "live"
+    target.mkdir(parents=True, exist_ok=True)
+    fallbacks = [f for f in args.fallbacks.split(",") if f]
+    try:
+        if args.command == "live":
+            ids = CRITICAL if args.cases == "critical" else BROAD if args.cases == "broad" else args.cases.split(",")
+            report = evaluate_live(args.pack, target, model=args.model, fallbacks=fallbacks, case_ids=ids,
+                                   repeats=args.repeats, rpm=args.rpm)
+            keys = ("runs", "ok", "accuracy", "paths", "model_calls", "failed_calls", "provider_errors", "models_answered",
+                    "tokens", "turn_latency_ms", "model_call_latency_ms", "preflight")
+        else:
+            extra = ["E026", "E031", "E041", "E047", "E053", "E061", "E065", "E069", "E074", "E038", "H005", "H016"]
+            report = evaluate_open_live(args.pack, target, model=args.model, fallbacks=fallbacks, rpm=args.rpm, extra_ids=extra)
+            keys = ("paths", "latency_series_ms", "selected_model_call_latency_ms", "provider_errors", "models_answered",
+                    "model_calls", "preflight")
+    except LiveBlocked as exc:
+        status = {
+            "status": "BLOCKED",
+            "command": args.command,
+            "reason": exc.reason,
+            "details": exc.details,
+            "checked_at": datetime.now(UTC).isoformat(),
+            "required": "a working provider key (or gateway URL + token) for the selected profile; no model call was made",
+            "critical_cases": CRITICAL,
+        }
+        (target / "live_status.json").write_text(json.dumps(status, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(json.dumps(status, ensure_ascii=False, indent=2))
+        return 2
+    summary = {"acceptance": report["acceptance"], **{k: report.get(k) for k in keys}}
+    if args.command == "live-open":
+        summary["selfcheck"] = report["selfcheck_assistant"]["stdout"]
+    print(json.dumps(summary, ensure_ascii=False, indent=2))
+    status = report["acceptance"]["status"]
+    return 0 if status == "PASS" else 2 if status == "BLOCKED" else 3
 
 
 if __name__ == "__main__":

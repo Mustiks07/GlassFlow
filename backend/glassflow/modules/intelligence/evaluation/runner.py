@@ -237,6 +237,7 @@ def evaluate_extended(
     spec = json.loads((cases_path or CASES_PATH).read_text(encoding="utf-8"))
     results = []
     latencies = []
+    paths: dict[str, int] = {}
     for case in spec["cases"]:
         runs = []
         for _ in range(repeats):
@@ -246,6 +247,7 @@ def evaluate_extended(
             ok, reasons, promises = _check_case(case, reply)
             runs.append({"ok": ok, "reasons": reasons, "unsupported_claims": promises, "answer": reply.answer,
                          "status": reply.status, "path": reply.answer_path, "model_id": reply.model_id})
+            paths[reply.answer_path] = paths.get(reply.answer_path, 0) + 1
         results.append({"id": case["id"], "group": case["group"], "turns": case["turns"], "runs": runs,
                         "ok": all(r["ok"] for r in runs)})
     dialog_results = []
@@ -270,6 +272,8 @@ def evaluate_extended(
         "kind": "extended_synthetic_evaluation",
         "provenance": spec["provenance"],
         "ai": {"allowed": allow_ai, "runtime_status": env.ai_status},
+        "answer_paths": paths,
+        "live_acceptance": "not_applicable: hybrid strategy; deterministic answers are not model quality — use `live`",
         "kb_version": env.kb_version,
         "cases": total,
         "passed": passed,
