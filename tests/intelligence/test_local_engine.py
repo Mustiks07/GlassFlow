@@ -206,3 +206,14 @@ def test_verifier_flags_unsupported_negative_availability():
     for text in ["Свободных остатков под данный размер сейчас нет.", "Этого стекла нет в наличии.", "Остатков подходящего размера нет."]:
         assert "claim:availability" in verify_answer(text, FactSet()).unsupported, text
     assert verify_answer("Остатков подходящего размера нет.", FactSet(), remnant_checked=True).status == "supported"
+
+
+def test_verifier_flags_unsupported_no_delivery_claim():
+    # Found by live manual review: the model wrote «не выполняет монтаж и доставку»; KB r2 says
+    # delivery is agreed by the manager, so a flat denial is unsupported.
+    from glassflow.modules.intelligence.assistant.facts import FactSet
+    from glassflow.modules.intelligence.assistant.verifier import verify_answer
+
+    for text in ["Наша компания не выполняет монтаж и доставку.", "Доставки нет.", "Мы не доставляем заказы."]:
+        assert "claim:delivery" in verify_answer(text, FactSet()).unsupported, text
+    assert verify_answer("Оплату и доставку согласует менеджер.", FactSet()).status == "supported"
