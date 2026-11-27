@@ -3,7 +3,8 @@
 - Ветка: `codex/gpt-pro-mustafa-platform`; отдельный worktree `GlassFlow-platform`.
 - Foundation: `16d63c6`.
 - Обновление: 27 ноября 2026, Asia/Qyzylorda.
-- Общий статус: IN PROGRESS. Это не COMPLETE VERIFIED PRODUCT.
+- Общий статус: PLATFORM IMPLEMENTED / READY FOR INTEGRATION. Это не COMPLETE VERIFIED PRODUCT.
+- Текущий handoff: `docs/release/PLATFORM_HANDOFF.md`; проверенный runtime `0457954`, expanded Windows EXE smoke PASS, 47 pytest PASS. Ниже сохранена хронология этапов; актуальные результаты и ограничения — в заключительных checkpoints.
 
 ## Проверенный этап P-01/P-02/P-04/P-05/P-06
 
@@ -135,3 +136,11 @@ normal restart и backup/restore через actual EXE. Ожидает закл�
 - CI runs `46042114442` и `46043042565`: Linux verify PASS; Windows build/tests/expanded smoke behavior пройдены, но последний print отчета упал из-за cp1252 и кириллицы. Commit `768c89c` исправляет console serialization ASCII escaping, UTF-8 evidence сохраняется; локальный smoke после исправления PASS. Новый remote CI проверяется отдельно.
 - Начиная с `9b93b5c`, author/committer Mustiks07; новые commits и push выполняются без дополнительных запросов. Старую историю не переписывали.
 - Полная миссия остается **PLATFORM IMPLEMENTED / INTEGRATION REQUIRED**: actual C1/C2/C3 run, live gateway/keys/hosting, human labor evidence/team/costs/final PDFs, clean PC и T63–67 остаются непроверенными/заблокированными согласно handoff.
+
+## Remote CI: итог
+
+- [Run46043713770](https://github.com/Mustiks07/GlassFlow/actions/runs/46043713770), commit `768c89c1358d2988bfc6318e61810649386c853f`: **SUCCESS**, оба jobs Linux verify и windows-platform.
+- Linux: locked install, Ruff, 47 pytest, immutable foundation, frontend typecheck/test/build и чистая regeneration contracts PASS.
+- Windows: locked install, frontend build, 47 pytest, PyInstaller двух EXE, expanded frozen smoke, concrete release scanner и upload Windows artifact PASS. Исправление cp1252 подтверждено remote runner.
+- После этого менялись только evidence/status/handoff; runtime build digest тот же. Локально повторно47 pytest PASS и foundation14 PASS. README открыт через опубликованную ветку; remote `85a6a3c` подтвержден `git ls-remote`, author Mustiks07.
+- Следующий шаг — интеграция по `PLATFORM_HANDOFF.md`, без слияния main этой сессией. Невыполненные внешние проверки перечислены выше; дополнительных разрешений на commit/push не требуется.

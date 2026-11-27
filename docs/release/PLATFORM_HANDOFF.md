@@ -213,3 +213,7 @@ CI Linux verify прошел на `0457954`; Windows tests/build/поведен�
 отчета упал на cp1252. `768c89c` исправляет переносимый вывод; UTF-8 JSON evidence остается без потери кириллицы.
 Последующий статус remote runner фиксируется в status. Ни build-machine smoke, ни fixtures не заменяют
 clean Windows/UI/whole-product/live-provider приемку. Последующие commits выполнены от Mustiks07.
+
+Подтвержден итоговый [remote CI run46043713770](https://github.com/Mustiks07/GlassFlow/actions/runs/46043713770)
+на `768c89c`: **SUCCESS** Linux verify и Windows-platform, включая expanded EXE smoke, scanner и upload artifact.
+После этого изменены только evidence/status/handoff. Runtime и generated contracts не изменялись.
