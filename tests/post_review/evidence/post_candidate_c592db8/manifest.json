@@ -1,0 +1,56 @@
+{
+  "source_candidate": "c592db8ba4ca29bd299ffb6a063bbd6648828bbc",
+  "records": {
+    "runtime_run1": {
+      "path": "tests/post_review/evidence/post_candidate_c592db8/runtime_run1.json",
+      "sha256": "4f257021b2def59f513b88c5bae709c29cb176aff2467e8fec06dc64bac32974",
+      "bytes": 871472
+    },
+    "runtime_run2": {
+      "path": "tests/post_review/evidence/post_candidate_c592db8/runtime_run2.json",
+      "sha256": "905f23fdd39f16de08e081dec6b93e65ed46c42cd64044c25ee23fccc6f7578b",
+      "bytes": 871463
+    },
+    "controls": {
+      "path": "tests/post_review/evidence/post_candidate_c592db8/controls.json",
+      "sha256": "b66432dbbf5cd934c8f014c56bb724108b5eabf4ee6103bec64aa60f58cd7554",
+      "bytes": 342161
+    },
+    "restart": {
+      "path": "tests/post_review/evidence/post_candidate_c592db8/restart.json",
+      "sha256": "8e8f8955d7e62cdf05e99b15d8afc4abb5d89486504418148bf7717a0ca6f506",
+      "bytes": 939413
+    },
+    "intelligence_workflow": {
+      "path": "tests/post_review/evidence/post_candidate_c592db8/intelligence_workflow.json",
+      "sha256": "141980f7f4f1e88c0b9a3954dbfd27c78e3a0dedaef966c4e4547897fadaa2e3",
+      "bytes": 24404
+    },
+    "cutting_original12": {
+      "path": "tests/post_review/evidence/post_candidate_c592db8/cutting_original12.json",
+      "sha256": "b912a66268f1b3145e733eec2953f01415480bb55a5df17add80ed08d073f2d0",
+      "bytes": 2018655
+    },
+    "cutting_normalized3": {
+      "path": "tests/post_review/evidence/post_candidate_c592db8/cutting_normalized3.json",
+      "sha256": "62c1c0fe6a183cb439d0e33ce6023c200819f9d963a44e3f7d9f7f94c82d000d",
+      "bytes": 670945
+    },
+    ".qa/candidate-c592db8-runtime": {
+      "preserved_ignored_path": ".qa\\candidate-c592db8-runtime\\report.json",
+      "sha256": "4291a597ac6e3ca28fbdc9ffcad7c712168a9f4072deb50503377b0ceded9af3",
+      "interpretation": "Mutable-source observation or initial runner mistake, not substituted for immutable candidate results; independent AI oracle remains closed."
+    },
+    ".qa/candidate-c592db8-runtime-v2": {
+      "preserved_ignored_path": ".qa\\candidate-c592db8-runtime-v2\\report.json",
+      "sha256": "2c45f2362b3e147d167262d0494c8c3349f2c58d66a339e5460bb3da45dd89d2",
+      "interpretation": "Mutable-source observation or initial runner mistake, not substituted for immutable candidate results; independent AI oracle remains closed."
+    },
+    ".qa/candidate-c592db8-local-exam": {
+      "preserved_ignored_path": ".qa\\candidate-c592db8-local-exam\\report.json",
+      "sha256": "8add2f31e8a844887a3e277b8451d8426bdbe9be7675a5ae29b902cd96ecb9c5",
+      "interpretation": "Mutable-source observation or initial runner mistake, not substituted for immutable candidate results; independent AI oracle remains closed."
+    }
+  },
+  "closed_AI_oracle_not_included": true
+}
