@@ -162,3 +162,10 @@ checkpoint. Публикация a79 не объявляется итогом э
 После единицы поддержана запятая без пробела:«мм,2шт»не становится1.
 Added4positive regressions;55targetedPASS,source HTTP149/149+QA10/10.
 ENGINEv6. Все interim proof сохранены; a7d не принят итоговым runtime.
+
+Coref156708:full736PASS/4SKIP419.29с. После его завершения пересобранUI:
+служебныеinvalid/assumedflags не показываются как подтверждённые параметры,
+selected sides подписаны по-русски.25Vitest/typecheckPASS. Backendпослеfullне меняется.
+Новыйbrowserloop ждёткаждыйAPIresponse+historyturn и проверяет quoteNone,
+а не староеDOMсостояние. Финальныйruntime включаеттолькоэтотdisplay/testchange
+поверхпроверенногоcore; native/fingerprint regressionиCIповторяются.

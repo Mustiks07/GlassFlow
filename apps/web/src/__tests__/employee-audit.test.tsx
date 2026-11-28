@@ -47,6 +47,8 @@ it('clarifies missing fields and structured assistant values without inventing a
   expect(assistantParameterLabel('new_unrecognized_key')).toContain('уточнит менеджер');
   expect(assistantParameterValue('processing', 'euro_edge')).toBe('Евро-кромка');
   expect(assistantParameterValue('processing', 'none')).toBe('Без обработки');
+  expect(assistantParameterValue('selected_sides', 'top,bottom')).toBe('Верхняя, Нижняя');
+  expect(assistantParameterValue('selected_sides', 'long1,short1')).toBe('Одна длинная сторона, Одна короткая сторона');
   expect(assistantParameterValue('width_mm', { value: 450 })).toBe('Параметр требует проверки менеджера');
   expect(assistantParameterValue('width_mm', '{"value":450}')).toBe('Параметр требует проверки менеджера');
   expect(assistantParameterValue('width_mm', '450')).toBe('450');

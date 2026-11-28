@@ -58,7 +58,9 @@ export function assistantParameterValue(key: string, value: unknown, productName
     left: 'Левая', right: 'Правая', unknown: 'Неизвестно — требуется уточнение',
     true: 'Да', false: 'Нет', clear: 'Прозрачный', grey: 'Серый', bronze: 'Бронзовый', green: 'Зелёный',
     auto: 'По указанным параметрам', per_m2: 'За квадратный метр', per_sheet: 'За целый лист', unit: 'За штуку',
+    long: 'Две длинные стороны', short: 'Две короткие стороны', long1: 'Одна длинная сторона', short1: 'Одна короткая сторона',
   };
+  if (key === 'selected_sides') return value.split(',').map(side => assistantParameterValue('sides', side.trim())).join(', ');
   if (value === 'none') return key === 'processing' ? 'Без обработки' : 'Не указано';
   if (choices[value]) return choices[value];
   return /_|^[a-f\d]{8}-[a-f\d-]{27,}$/i.test(value) ? 'Параметр требует проверки менеджера' : value;
@@ -228,7 +230,8 @@ export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote
 
 function ReplyDetails({ reply, onApply }: { reply: AssistantReply; onApply: () => void }) {
   const card = reply.card;
-  const params = Object.entries(card?.confirmed_parameters ?? reply.quote?.confirmed_parameters ?? {});
+  const params = Object.entries(card?.confirmed_parameters ?? reply.quote?.confirmed_parameters ?? {})
+    .filter(([key]) => !['invalid_quantity', 'invalid_dimensions', 'quantity_assumed', 'pending_query'].includes(key));
   const assumptions = card?.assumptions ?? reply.quote?.assumptions ?? [];
   return (
     <div className="reply-details">

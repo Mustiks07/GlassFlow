@@ -22,9 +22,19 @@ test('mixed units and invalid numbers through the visible assistant', async ({ p
   await input.press('Control+Enter');
   await expect(page.locator('.quote-total strong')).toHaveText('3 976,00 ₸');
   for (const invalid of ['-2', '− 2', '0', '1,5', '1 / 2', '2 3', '(-2)']) {
-    await input.fill(`Количество: ${invalid} штуки`); await input.press('Control+Enter');
+    const history = page.getByRole('list', { name: 'История уточнений' }).locator(':scope > li');
+    const previous = await history.count();
+    await input.fill(`Количество: ${invalid} штуки`);
+    await expect(page.getByRole('button', { name: 'Отправить ассистенту', exact: true })).toBeEnabled();
+    const response = page.waitForResponse(r => r.url().endsWith('/assistant/turns') && r.request().method() === 'POST');
+    await input.press('Control+Enter');
+    const reply = await (await response).json();
+    expect(reply.quote).toBeNull();
+    expect(reply.status).toBe('clarification');
+    await expect(history).toHaveCount(previous + 2);
     await expect(page.getByText(/Укажите положительное целое количество вместо/).first()).toBeVisible();
     await expect(page.locator('.quote-total')).toHaveCount(0);
+    await expect(page.locator('.confirmed-params .chips')).not.toContainText(['True']);
   }
   await page.screenshot({ path: path.resolve(__dirname, '../evidence/audit/numeric-invalid.png'), fullPage: true });
 });
