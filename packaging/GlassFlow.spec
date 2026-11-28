@@ -36,6 +36,7 @@ for package in ("sqlalchemy", "pydantic", "scikit-learn", "scipy", "ortools"):
 hidden = collect_submodules("glassflow", filter=lambda name: not name.startswith("glassflow.modules.intelligence.evaluation")) + ["scipy.optimize", "ortools.sat.python.cp_model",
     "sklearn.linear_model", "sklearn.compose", "sklearn.preprocessing", "sklearn.pipeline", "sklearn.model_selection",
     "alembic.ddl.sqlite", "sqlalchemy.dialects.sqlite"]
+hidden += collect_submodules("reportlab.graphics.barcode")
 a = Analysis([str(root / "packaging/entrypoint.py")], pathex=[str(root / "backend")],
              binaries=collect_dynamic_libs("ortools"), datas=datas, hiddenimports=hidden,
              excludes=["tkinter", "matplotlib", "pytest", "IPython", "notebook", "glassflow.modules.intelligence.evaluation"], noarchive=False)

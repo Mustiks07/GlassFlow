@@ -13,6 +13,8 @@ if __name__ == "__main__":
 
         main()
     except Exception as exc:
+        if isinstance(exc, ModuleNotFoundError) and "Diagnostics" in os.path.basename(sys.argv[0]):
+            print(f"Отсутствует модуль комплекта: {exc.name}", file=sys.stderr)
         message = f"GlassFlow не удалось запустить ({type(exc).__name__}). Откройте GlassFlowDiagnostics.exe и README для проверки комплекта."
         print(message, file=sys.stderr)
         if os.name == "nt" and len(sys.argv) == 1:
