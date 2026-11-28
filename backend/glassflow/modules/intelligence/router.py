@@ -31,6 +31,11 @@ from glassflow.contracts.intelligence import (
     DialogVerdict,
     DimensionNormalizeRequest,
     DimensionNormalizeResult,
+    IntelligenceReviewItem,
+    KnowledgeImpactPreview,
+    KnowledgeImpactRequest,
+    ManagerCorrectionDraft,
+    ManagerCorrectionRequest,
     MappingConfirmRequest,
     MaterialMapping,
     PriceVersion,
@@ -39,6 +44,8 @@ from glassflow.contracts.intelligence import (
     QuoteConfirmRequest,
     QuoteRequest,
     QuoteReviseRequest,
+    ReviewCategory,
+    ReviewResolveRequest,
 )
 
 from .service import IntelligenceError, IntelligenceService
@@ -47,6 +54,36 @@ router = APIRouter(
     tags=["intelligence"],
     responses={404: {"model": ApiError}, 409: {"model": ApiError}, 422: {"model": ApiError}},
 )
+
+
+@router.get("/assistant/review-items", response_model=list[IntelligenceReviewItem])
+def list_review_items(request: Request, dataset_id: str, category: ReviewCategory | None = None, status: str | None = None):
+    return _run(service_for(request).reviews.list_items, dataset_id, category, status)
+
+
+@router.post("/assistant/review-items/{item_id}/resolve", response_model=IntelligenceReviewItem)
+def resolve_review_item(item_id: str, body: ReviewResolveRequest, request: Request):
+    return _run(service_for(request).reviews.resolve, item_id, body)
+
+
+@router.post("/assistant/review-items/{item_id}/kb-preview", response_model=KnowledgeImpactPreview)
+def preview_review_kb(item_id: str, body: KnowledgeImpactRequest, request: Request):
+    return _run(service_for(request).reviews.kb_preview, item_id, body)
+
+
+@router.post("/dialogs/corrections", response_model=ManagerCorrectionDraft)
+def create_manager_correction(body: ManagerCorrectionRequest, request: Request):
+    return _run(service_for(request).reviews.correction, body)
+
+
+@router.get("/dialogs/corrections", response_model=list[ManagerCorrectionDraft])
+def list_manager_corrections(request: Request, dataset_id: str):
+    return _run(service_for(request).reviews.list_corrections, dataset_id)
+
+
+@router.get("/dialogs/corrections/{draft_id}", response_model=ManagerCorrectionDraft)
+def get_manager_correction(draft_id: str, request: Request, dataset_id: str):
+    return _run(service_for(request).reviews.list_corrections, dataset_id, draft_id)
 
 
 def build_default_service(app) -> IntelligenceService:

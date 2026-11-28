@@ -719,7 +719,7 @@ class LocalEngine:
                     f"Ставки за м² для «{product.name}» в базе нет — есть только цена целого листа; стоимость детали "
                     "рассчитает менеджер."
                 )
-                out.sentences.append("Уточните, пожалуйста, размеры и количество — передам запрос менеджеру.")
+                out.sentences.append("Передам запрос менеджеру для индивидуального расчета.")
                 out.assumptions.append(f"Известная цена целого листа: {_m(sheet.amount)} ₸.")
                 out.needs_manager = True
                 out.status = "manager_handoff"
@@ -773,7 +773,7 @@ class LocalEngine:
                     f"Ставки за м² для «{product.name}» в базе нет — есть только цена целого листа, поэтому стоимость "
                     "детали рассчитает менеджер."
                 )
-                out.sentences.append("Передам запрос менеджеру; уточните, пожалуйста, количество деталей.")
+                out.sentences.append("Передам указанные параметры менеджеру для индивидуального расчета.")
                 out.facts.add("price", sheet.amount, "₸/лист", self._ref(product.product_id, sheet.source_field))
                 out.assumptions.append(f"Известная цена целого листа: {_m(sheet.amount)} ₸ (ставка за м² не выводится из листа).")
             else:

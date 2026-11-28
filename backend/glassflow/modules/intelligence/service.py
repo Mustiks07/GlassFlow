@@ -694,6 +694,11 @@ class IntelligenceService:
         return self.get_quote(quote_id, request.dataset_id)
 
     # ----------------------------------------------------------------- assistant
+    @property
+    def reviews(self):
+        from .reviews import IntelligenceReviews
+        return IntelligenceReviews(self)
+
     def _engine(self, catalog: DatasetCatalog, allow_ai: bool = True) -> AssistantEngine:
         cache = self._answer_caches.setdefault(catalog.dataset_id, AnswerCache())
         return AssistantEngine(
@@ -841,6 +846,7 @@ class IntelligenceService:
             row.updated_at = created
             session.add(TurnRow(id=str(uuid.uuid4()), conversation_id=conversation_id, turn_index=turn_index,
                                 user_text=turn.text, reply_json=reply.model_dump_json(), created_at=created))
+            self.reviews.record_outcome(session, turn.dataset_id, catalog.kb.version, turn.text, result, conversation_id, turn_index)
             if quote_dto is not None:
                 previous = session.scalars(
                     select(QuoteRevisionRow).where(
