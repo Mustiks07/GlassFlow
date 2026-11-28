@@ -36,7 +36,7 @@ test('T27: unmapped catalog product is not "no stock" and not NEW; no invented t
   await page.getByLabel('Длина', { exact: true }).fill('500');
   await page.getByLabel('Ширина', { exact: true }).fill('500');
   await page.getByRole('button', { name: 'Рассчитать' }).click();
-  await expect(page.getByText(/это не «нет в наличии» и не NEW/)).toBeVisible();
+  await expect(page.getByText('Соответствие складу не подтверждено. Наличие материала нужно уточнить')).toBeVisible();
   await expect.poll(() => quoteTotal(page)).toBe('не определен');
   await expect(page.getByText(/Неизвестные позиции — числа не выдумываются/)).toBeVisible();
   await expect(page.getByText(/170 000/).first()).toBeVisible();

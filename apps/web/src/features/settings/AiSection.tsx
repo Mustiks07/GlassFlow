@@ -48,7 +48,7 @@ export function AiSection() {
 
   return (
     <div className="grid-2">
-      <Panel title="Профиль AI" subtitle="По умолчанию бесплатный режим free_only. Платная модель включается только явно, с бюджетом.">
+      <Panel title="Профиль AI" subtitle="По умолчанию режим без денежных списаний. Платная модель включается только явно, с бюджетом.">
         <form
           className="stack"
           onSubmit={event => {

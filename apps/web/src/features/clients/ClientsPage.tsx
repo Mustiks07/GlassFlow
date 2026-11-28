@@ -37,7 +37,7 @@ function Clients({ dataset }: { dataset: Dataset }) {
         <label className="inline-field">
           Политика отбора
           <select value={policy} onChange={event => setPolicy(event.target.value as typeof policy)}>
-            <option value="reference">Эталонная сортировка (reference)</option>
+            <option value="reference">По истории обращений</option>
             <option value="validated_model">Проверенная модель (если доступна)</option>
           </select>
         </label>
@@ -51,7 +51,7 @@ function Clients({ dataset }: { dataset: Dataset }) {
             <Metric label="Уникальных клиентов" value={ranking.data.unique_client_count} />
             <Metric label="Правило отбора" value={ranking.data.policy === 'reference' ? 'По истории обращений' : 'Проверенное правило'} detail="Причины приоритета приведены у каждой заявки" />
             <Metric
-              label="Precision@25 по открытым меткам"
+              label="Доля повторных обращений среди 25 заявок"
               value={ranking.data.observed_precision === null || ranking.data.observed_precision === undefined ? 'Нет фактических данных' : formatPercent(ranking.data.observed_precision)}
               detail={ranking.data.observed_precision === null || ranking.data.observed_precision === undefined ? 'меток нет — это норма для закрытого набора' : 'только открытый набор'}
             />
@@ -75,8 +75,8 @@ function Clients({ dataset }: { dataset: Dataset }) {
                         <th scope="col" className="num">
                           №
                         </th>
-                        <th scope="col">app_id</th>
-                        <th scope="col">client_id</th>
+                        <th scope="col">Заявка</th>
+                        <th scope="col">Клиент</th>
                         <th scope="col" className="num">
                           {policy === 'validated_model' ? 'Оценка модели' : 'Ключ приоритета'}
                         </th>
@@ -150,7 +150,7 @@ function ClientHistory({ dataset, clientId }: { dataset: Dataset; clientId: stri
     queryFn: ({ signal }) => api.applications(dataset.dataset_id, { client_id: clientId, limit: 200 }, signal),
   });
   return (
-    <Panel title={`Исходные заявки ${clientId}`} subtitle="Происхождение признаков: неизмененные строки импорта (source_row).">
+    <Panel title={`Исходные заявки ${clientId}`} subtitle="Данные из исходных строк импортированного файла.">
       {rows.isLoading && <LoadingState />}
       {rows.isError && <ErrorState error={rows.error} onRetry={() => rows.refetch()} />}
       {rows.data && (
@@ -158,7 +158,7 @@ function ClientHistory({ dataset, clientId }: { dataset: Dataset; clientId: stri
           <table className="table compact">
             <thead>
               <tr>
-                <th scope="col">app_id</th>
+                <th scope="col">Заявка</th>
                 <th scope="col">строка</th>
                 {FEATURE_FIELDS.map(field => (
                   <th scope="col" key={field}>

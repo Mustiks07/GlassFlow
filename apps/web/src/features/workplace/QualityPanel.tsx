@@ -42,7 +42,7 @@ export function QualityPanel({ dataset }: { dataset: Dataset }) {
   const latest = history[0];
   return (
     <div className="grid-2">
-      <Panel title="Проверка ответа менеджера" subtitle="Тот же каталог и Pricing, что у ассистента. Цена проверяется в контексте вопроса клиента.">
+      <Panel title="Проверка ответа менеджера" subtitle="Тот же каталог и правила расчёта цены, что у ассистента. Цена проверяется в контексте вопроса клиента.">
         <form
           className="stack"
           onSubmit={event => {

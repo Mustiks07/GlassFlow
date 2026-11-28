@@ -294,7 +294,7 @@ function ExportPanel({ run, runId }: { run: RunView; runId: string }) {
   const result: ExportResult | undefined = exportRun.data;
   const downloadable = (value: string) => /^(\/|https?:|blob:)/.test(value);
   return (
-    <Panel title="4. Скачать результаты" subtitle="Все файлы относятся к одному run. buyers_top50.csv лежит в корне сдачи, не в closed_run.">
+    <Panel title="4. Скачать результаты" subtitle="Все файлы относятся к одному прогону. Файл реестра покупателей помещается в корень сдачи, отдельно от папки результатов.">
       <div className="row">
         <Button variant="primary" icon={<FileCheck2 size={14} aria-hidden="true" />} onClick={() => setOpen(true)} disabled={run.status === 'running'}>
           Проверить и подготовить файлы

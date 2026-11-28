@@ -300,8 +300,8 @@ function DrillDown({
                 <thead>
                   <tr>
                     <th scope="col">строка</th>
-                    <th scope="col">app_id</th>
-                    <th scope="col">client_id</th>
+                    <th scope="col">Заявка</th>
+                    <th scope="col">Клиент</th>
                     <th scope="col">группа</th>
                     <th scope="col">канал</th>
                     <th scope="col" className="num">

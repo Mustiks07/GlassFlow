@@ -93,7 +93,7 @@ function Sales({ dataset }: { dataset: Dataset }) {
           <p className="eyebrow">Продажа остатков</p>
           <h1>Пять карточек свободных исходных кусков</h1>
           <p className="lead">
-            Карточки связаны с выбранной ревизией плана. Цена = полная площадь × ставка materials × коэффициент 0,30–0,70 — только для карточки,
+            Карточки связаны с выбранной ревизией плана. Цена = полная площадь × ставка справочника материалов × коэффициент 0,30–0,70 — только для карточки,
             не скидка каталога. Публикация вовне не выполняется.
           </p>
         </div>
@@ -352,7 +352,7 @@ function BuyersRegistry({
   }, [buyers]);
   const shown = (buyers ?? []).filter(buyer => !filter || `${buyer.name} ${buyer.category} ${buyer.city}`.toLowerCase().includes(filter.toLowerCase()));
   return (
-    <Panel title="Реестр покупателей" subtitle="Публичные организации. Score — экспертная релевантность профиля, не вероятность покупки. Сообщения не отправляются.">
+    <Panel title="Реестр покупателей" subtitle="Публичные организации. Оценка соответствия профиля — экспертный ориентир, не вероятность покупки. Сообщения не отправляются.">
       <Details summary="Импорт реестра (buyers_candidate.csv + evidence.json)">
         <form
           className="row wrap align-end"
@@ -393,7 +393,7 @@ function BuyersRegistry({
                   <th scope="col">Категория</th>
                   <th scope="col">Возможное применение</th>
                   <th scope="col" className="num">
-                    Score
+                    Соответствие профиля
                   </th>
                   <th scope="col">Источник</th>
                 </tr>

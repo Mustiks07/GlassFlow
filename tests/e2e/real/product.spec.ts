@@ -76,7 +76,7 @@ test.describe('real backend', () => {
     await selectDataset(page, /Пакет организаторов · Исходный/);
     await expect(page.getByText('ровно 25')).toBeVisible();
     await expect(page.locator('.metric').filter({ hasText: 'Уникальных клиентов' })).toContainText('15');
-    await expect(page.locator('.metric').filter({ hasText: 'Precision@25' })).toContainText('80,0');
+    await expect(page.locator('.metric').filter({ hasText: 'Доля повторных обращений среди 25 заявок' })).toContainText('80,0');
     await page.getByRole('tab', { name: /25 заявок/ }).click();
     await expect(page.getByRole('region', { name: '25 выбранных заявок' }).locator('tbody tr')).toHaveCount(25);
     await shot(page, 'T40-clients');

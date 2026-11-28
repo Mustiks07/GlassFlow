@@ -154,7 +154,7 @@ function PlanMetrics({ plan }: { plan: CutPlan }) {
         <Metric label="Покрытие площади" value={formatPercent(m.coverage, 4)} detail={`${formatAreaM2(m.covered_area_mm2)} из ${formatAreaM2(m.total_area_mm2)}`} />
         <Metric label="Оценка замещенного материала" value={formatMoney(m.replacement_value_tg, { fixed2: true })} detail="по ставкам materials.csv; не прибыль" />
         <Metric label="Полностью покрытые заказы" value={formatInt(m.fully_covered_orders)} />
-        <Metric label="Детали NEW" value={formatInt(newCount)} detail="не покрыты остатками" />
+        <Metric label="Детали из нового материала" value={formatInt(newCount)} detail="не покрыты остатками" />
         <Metric label="Свободные исходные куски" value={formatInt(plan.free_original_remnant_ids.length)} tone={plan.free_original_remnant_ids.length >= 5 ? 'ok' : 'warn'} detail="нужно ≥ 5 для карточек" />
         <Metric label="Ошибки / пропуски" value={`${m.invalid} / ${m.missing}`} tone={m.invalid === 0 && m.missing === 0 ? 'ok' : 'error'} />
       </div>
@@ -432,7 +432,7 @@ function PartsTable({ parts, plan, datasetId, materials }: { parts: { data?: Par
           <select value={filter.state} onChange={event => setFilter({ ...filter, state: event.target.value })}>
             <option value="">Все</option>
             <option value="placed">На остатке</option>
-            <option value="new">NEW</option>
+            <option value="new">Требуется новый материал</option>
           </select>
         </label>
       </div>
@@ -468,7 +468,7 @@ function PartsTable({ parts, plan, datasetId, materials }: { parts: { data?: Par
                     <td>
                       {isNew ? (
                         <span className="small">
-                          <StatusBadge tone="neutral">NEW</StatusBadge> {(() => {
+                          <StatusBadge tone="neutral">Новый материал</StatusBadge> {(() => {
                             const code = plan?.metrics.new_reasons?.[part.part_id] ?? plan?.new_reasons?.[part.part_id];
                             return code ? reasonLabel(code) : 'причина не передана';
                           })()}

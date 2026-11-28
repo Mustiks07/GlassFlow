@@ -312,7 +312,7 @@ function ProductPrices({ product }: { product: CatalogProduct }) {
       <span className="muted">{product.category}</span>
       {product.prices.map((price, index) => (
         <span key={index} className="price-chip">
-          {PRICE_TYPE[price.price_type] ?? price.price_type}: {price.amount_tg === null ? <em>цены нет в KB — ответ дает менеджер</em> : formatMoney(price.amount_tg)}
+          {PRICE_TYPE[price.price_type] ?? price.price_type}: {price.amount_tg === null ? <em>цены нет в базе знаний — ответ дает менеджер</em> : formatMoney(price.amount_tg)}
           {price.minimum_quantity ? ` (от ${price.minimum_quantity} шт)` : ''}
         </span>
       ))}
