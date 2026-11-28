@@ -25,6 +25,7 @@ from glassflow.core.models import DatasetRow
 from glassflow.core.security import require_owner
 from glassflow.core.uow import idempotent, write_transaction
 from glassflow.modules.platform.imports import LIMIT, commit, dataset, dataset_dto, preview, working_copy
+from glassflow.modules.platform.labor_router import router as labor_router
 
 router = APIRouter(
     tags=["platform"],
@@ -35,6 +36,7 @@ router = APIRouter(
         503: {"model": ApiError},
     },
 )
+router.include_router(labor_router)
 
 
 @router.get("/session", response_model=LocalSession)
