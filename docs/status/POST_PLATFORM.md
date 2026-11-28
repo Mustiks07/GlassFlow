@@ -223,3 +223,27 @@ cutting revision. По отдельному разрешению root тольк
 `uv run pytest tests/post_acceptance/test_dependency_replay.py tests/platform/test_post_budget_checkpoints.py
 -q -o addopts=''` — **10 PASS**,30.40s, scoped Ruff PASS. Regression проверяет8ticks,2coordinator restarts,
 и отдельную следующую попытку. Минимальный product commit отделён от HTTP artifacts/harness.
+
+## Финальный changed-input HTTP acceptance PASS
+
+Frozen runtime4ee5812a65157acd7aa504df3d994497f608e29a = root55049e4 + C3efbf8de + f090a75.
+`uv run python scripts/post_acceptance.py --data .qa/new-inputs-release-final
+--output docs/release/post/http-new-inputs-final` — exit0, **PASS**,53.922s whole observer;
+first full autoaccepted9.781s within120/30 reserve. Actual improvement job completed, not promoted,
+baseline preserved. Unknown exact ZETA phrase manager_handoff,0modelcalls,no pricefacts/sums/readyquote;
+product_issues=[]. Original strict wording retained.
+
+Downloaded5 exact resultCSV+buyers50, original immutable validator coverage0.558090/invalid0/missing0,
+165/298,960705₸ replacement valuation on changed inputs (не исходный open score/не прибыль).
+5cards×3actual evidence matches. Actual deadline persisted150acceptedrows; separate APIcancel persisted300
+with4othermodules complete, partial answers absent. Dependency failed-card ID stable on ticks+restart.
+SameDB actual owned uvicorn process-tree restart preserved identical accepted passport, all old download hashes,
+150partial rowcounts and dependency ID. No API key/model/evaluation KEY/fixture port/DB mutation.
+
+Harness fixes only: real /sale-cards endpoint; durability queries each historical job by ID rather than latest-per-kind;
+Windows venv redirector host stopped by owned Popen PID tree after API coordinator stop, not process-name matching.
+Intermediate harness failures saved in ignored QA, current final report is a fresh complete one-pass invocation.
+Production P1 fixes remain separate commits: C3 unknown identity guard and f090a75 terminal dependency replay.
+Artifacts, exact reproduction and limitations: docs/release/post/http-new-inputs-final; post/README distinguishes
+historical blocked witness. All artifact bytes protected by scoped post/.gitattributes. Root owns final CI/EXE/browser/
+online AI/human/clean-Windows acceptance and main/push; none of those are inferred from this local HTTP PASS.

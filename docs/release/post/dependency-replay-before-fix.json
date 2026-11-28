@@ -1,0 +1,28 @@
+{
+  "runtime_source_sha": "2c6afcc8bc17b9d20b25e778ab68c28399b88d6b",
+  "observation": "read-only diagnostic of actual TCP-created SQLite; no mutation or fake worker",
+  "failed_dependency_count": 17,
+  "cutting_job_id_missing": true,
+  "job_ids": [
+    "cdf1869c-8950-4688-99b0-53c7f298fb1b",
+    "76198790-43fc-468d-832d-353191a57cc3",
+    "1d210fb9-dcbe-49ce-abee-65a9ba286ae3",
+    "f92d961e-eb4b-46ff-bb3a-6f645b5efcd8",
+    "b520d32c-2ade-4ae2-afff-8ba5faaba775",
+    "8179ad5e-3a29-420c-a784-8f17748eab80",
+    "3044ab8d-9572-4371-aad1-72f3e3b8efcb",
+    "8dccefbd-42a0-4d54-a782-f609cb5ea483",
+    "4f60e9ad-e8ca-4ddd-b934-1972f480dbf7",
+    "f09a9edd-b16c-4896-a7d3-e0ce72212971",
+    "14674897-79e4-499d-8858-b6445340b347",
+    "3992a5da-e823-463d-8130-6dd3e7d6e2e0",
+    "9311c30b-d8ca-419e-9ce8-99d33fb64a69",
+    "a5055f68-e07f-492d-86a7-31556c242ccb",
+    "f039866d-66f8-4a2d-a598-423c32b3aaca",
+    "3076e0d1-0e21-43c8-bd05-028188b75ba5",
+    "593bce9c-64e7-4dc8-85c6-70c18c8e223c"
+  ],
+  "run_ids": [
+    "7f789ff3-3a45-4610-909d-82b34c11591e"
+  ]
+}
