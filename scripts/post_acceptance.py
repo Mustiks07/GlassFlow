@@ -239,6 +239,8 @@ def exercise_cancel(client, source, buyer, directory):
     assert any(j["state"] == "cancelled" and j["accepted_row_count"] > 0 for j in view["jobs"])
     exported = post(client, f"/runs/{cancelled['run_id']}/export")
     assert exported["status"] != "ready"
+    assert "answers.csv" not in exported["files"] and "verdicts.csv" not in exported["files"]
+    assert any("UNRESOLVED_VERDICT" in error for error in exported["errors"])
     return {"run": view, "export": exported, "downloads": download(client, exported, directory)}
 
 

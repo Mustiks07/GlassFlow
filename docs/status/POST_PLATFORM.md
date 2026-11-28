@@ -236,7 +236,8 @@ product_issues=[]. Original strict wording retained.
 Downloaded5 exact resultCSV+buyers50, original immutable validator coverage0.558090/invalid0/missing0,
 165/298,960705₸ replacement valuation on changed inputs (не исходный open score/не прибыль).
 5cards×3actual evidence matches. Actual deadline persisted150acceptedrows; separate APIcancel persisted300
-with4othermodules complete, partial answers absent. Dependency failed-card ID stable on ticks+restart.
+with4otherjobs complete. Quality's explicit unknown-SKU dialog remains unresolved, UNRESOLVED_VERDICT:
+partial export contains3resultCSV+buyers, answers AND verdicts withheld. Dependency failed-card ID stable on ticks+restart.
 SameDB actual owned uvicorn process-tree restart preserved identical accepted passport, all old download hashes,
 150partial rowcounts and dependency ID. No API key/model/evaluation KEY/fixture port/DB mutation.
 

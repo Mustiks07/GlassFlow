@@ -25,8 +25,9 @@ For another reproduction, choose a new fresh data/output directory; existing DBs
 - A real12s total/4s reserve run with1000 new requests expired: RUN_WORK_BUDGET_EXCEEDED,
  150 parent-accepted rows durable, incomplete answers not published. Failed card dependency remains one stable
   job across repeated ticks and restart, instead of the17 duplicates previously observed.
-- A separate actual API cancellation stopped assistant after300 accepted rows while the other four modules
-  completed. Partial export contains solution/picks/verdicts/sale_cards/buyers; answers.csv is absent.
+- A separate actual API cancellation stopped assistant after300 accepted rows while the other four jobs
+  completed. Quality correctly kept the explicit unknown-SKU dialog unresolved: UNRESOLVED_VERDICT.
+  Partial export contains solution/picks/sale_cards/buyers; both answers.csv and verdicts.csv are withheld.
 - Coordinator stopped via API; the owned uvicorn process tree was stopped on Windows, then restarted on the
   same SQLite. The accepted passport remained exactly identical, old artifact URLs returned identical bytes,
  150 existing partial-row counts and terminal dependency ID survived. No fixture worker, fake port or DB mutation.
