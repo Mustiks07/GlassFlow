@@ -30,8 +30,8 @@ WORD_NUMBERS = {
     "шесть": 6, "семь": 7, "восемь": 8, "девять": 9, "десять": 10, "двадцать": 20, "сто": 100,
 }
 _COUNT_NOUN = r"(?:шт\b\.?|штук\w*|штуч\w*|детал\w*|лист(?:а|ов)?\b|изделий|изделия|зеркал(?:а|о)?\b|стек(?:ол|ла|ло)|полок)"
-_COUNT_NUMBER = r"(?:\(?[+\-−]\s*)?\d[\d.,/e+\-− ()]*"
-_QUANTITY = re.compile(rf"(?<![\w.,/+\-−])({_COUNT_NUMBER})\s*{_COUNT_NOUN}")
+_COUNT_NUMBER = r"(?:\(\s*)?(?:[+\-−]\s*)?\d[\d.,/e+\-− ()]*"
+_QUANTITY = re.compile(rf"(?:(?<![\w.,/+\-−])|(?<=[a-zа-яё][.,]))({_COUNT_NUMBER})\s*{_COUNT_NOUN}")
 _QUANTITY_WORD = re.compile(rf"\b((?:минус\s+)?(?:{'|'.join(WORD_NUMBERS)}))\s+{_COUNT_NOUN}")
 _QUANTITY_EXPLICIT = re.compile(rf"(?:в количестве|количеств\w*|кол-?во)\s*[:=]?\s*({_COUNT_NUMBER}|(?:минус\s+)?(?:{'|'.join(WORD_NUMBERS)}))(?![\w])")
 _THRESHOLD = re.compile(r"\bот\s+(\d+)\s*(?:шт|штук)|\bопт(?:ом|ов\w*)?\b|оптов")
@@ -257,11 +257,17 @@ def extract(text: str, *, format_exclusions: set[str] | None = None) -> Extracti
 def quantity_value(raw: str) -> Decimal:
     """Validate the entire numeric span before removing valid thousands separators.
 
-    Unsupported operators, brackets and malformed grouping must not expose a valid
+    Unsupported expressions and malformed grouping must not expose a valid
     suffix (``1 / 2`` → ``2``) or become a different integer (``2 3`` → ``23``).
     Zero is the existing invalid-count sentinel, never a default order quantity.
     """
     token = raw.removeprefix("минус ").strip()
+    # A sentence/clause terminator is not a decimal digit. All remaining content
+    # must still match one number; separators inside expressions are never removed.
+    if token.endswith(('.', ',')):
+        token = token[:-1]
+    if token.startswith('(') and token.endswith(')') and token.count('(') == token.count(')') == 1:
+        token = token[1:-1].strip()
     try:
         if token in WORD_NUMBERS:
             value = Decimal(WORD_NUMBERS[token])

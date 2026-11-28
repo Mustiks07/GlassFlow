@@ -120,3 +120,22 @@ def test_count_before_hardware_name_does_not_reinterpret_invalid_token(client, i
     assert result.status_code == 200, result.text
     assert result.json()['status'] == 'clarification' and result.json()['quote'] is None
     assert 'quantity' in result.json()['card']['missing_parameters']
+
+
+@pytest.mark.parametrize('quantity', ['количество 2. Общая цена', 'количество 2, общая цена', '(2) штуки'])
+def test_valid_count_punctuation_keeps_complete_quote(client, imported, quantity):
+    result = client.post('/api/v1/assistant/turns', json=dict(dataset_id=imported['dataset_id'],
+        kb_version=imported['kb_version'], allow_ai=False, inventory_mode='none',
+        text=f'Стекло 6 мм прозрачное 450x370 мм, {quantity}, евро-кромка по всем сторонам'))
+    assert result.status_code == 200, result.text
+    assert result.json()['quote']['quantity'] == 2
+    assert result.json()['quote']['total_tg'] == '3976.00'
+
+
+def test_quantity_after_unit_comma_does_not_default_to_one(client, imported):
+    result = client.post('/api/v1/assistant/turns', json=dict(dataset_id=imported['dataset_id'],
+        kb_version=imported['kb_version'], allow_ai=False, inventory_mode='none',
+        text='Стекло 6 мм прозрачное 450x370 мм,2 штуки, евро-кромка по всем сторонам'))
+    assert result.status_code == 200, result.text
+    assert result.json()['quote']['quantity'] == 2
+    assert result.json()['quote']['total_tg'] == '3976.00'
