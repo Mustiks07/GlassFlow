@@ -39,11 +39,11 @@ jobs:
       - run: pnpm build
       - run: uv run pytest
       - run: uv run pyinstaller --noconfirm packaging/GlassFlow.spec
-      - run: uv run python scripts/smoke_frozen.py
+      - run: uv run python scripts/smoke_frozen.py --report docs/release/integration/frozen-smoke.json
       - run: uv run python scripts/scan_release.py dist/GlassFlow
       - uses: actions/upload-artifact@v4
         with:
-          name: windows-platform-smoke
+          name: windows-integrated-smoke
           path: |
-            docs/release/frozen-smoke.json
+            docs/release/integration/frozen-smoke.json
             dist/GlassFlow/

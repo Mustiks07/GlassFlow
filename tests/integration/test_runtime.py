@@ -89,9 +89,22 @@ def test_import_quote_atomic_order_reservation_warehouse_actual_use_and_replay(r
     q, _ = quote(client, d)
     assert q["total_tg"] == "1988.00" and not q["preliminary"]
     rid = q["candidate_refs"][0]["remnant_id"]
+    recipient = post(client, '/crm/rank', {'dataset_id': d})['rows'][0]
+    example = post(client, '/crm/reminders', dict(dataset_id=d,
+        recipient_client_id=recipient['client_id'], source_app_ids=[recipient['app_id']],
+        subject_type='quote_example', subject_ref=q['quote_id'], subject_version=q['revision'],
+        due_at='2026-12-01T05:00:00Z', owner='M2', text='Пример расчета для другого клиента'))
+    example = post(client, f"/crm/reminders/{example['reminder_id']}/confirm",
+        dict(dataset_id=d, expected_version=example['version']))
+    assert example['state'] == 'scheduled' and example['recipient_client_id'] != q['customer_id']
+    specific = post(client, '/crm/reminders', dict(dataset_id=d,
+        recipient_client_id=recipient['client_id'], source_app_ids=[recipient['app_id']],
+        subject_type='specific_remnant', subject_ref=rid, subject_version=0,
+        compatibility_ref=q['quote_id'], compatibility_version=q['revision'], owner='M2'))
     sheet = action(client, order(client, d, q, rid), "confirm")
     sheet = action(client, sheet, "reserve")
     assert sheet["reservation"]["state"] == "active"
+    assert client.get(f"/api/v1/crm/reminders/{specific['reminder_id']}", params={'dataset_id': d}).json()['state'] == 'stale'
     sheet = action(client, sheet, "warehouse-check")
     sheet = action(client, sheet, "handover")
     usage = complete_use(client, sheet, "order")

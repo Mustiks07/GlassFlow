@@ -1,6 +1,7 @@
 """Scan a concrete prepared package. Never print matched credentials."""
 
 import argparse
+import hashlib
 import re
 from pathlib import Path
 
@@ -10,6 +11,10 @@ PATTERNS = [
     re.compile(rb"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
 ]
 
+# Public Mozilla CA bundle shipped by the certifi version pinned in uv.lock.
+# Exact content is approved, never an arbitrary PEM or a private-key exemption.
+CERTIFI_CA_SHA256 = "bb92c6ac31c92f4f553bffd6bf093db02c858c23e111b0b4df9bafa3fdbe00d1"
+
 
 def scan(root):
     errors = []
@@ -17,15 +22,20 @@ def scan(root):
         if not path.is_file():
             continue
         relative = path.relative_to(root).as_posix()
+        content = path.read_bytes()
+        approved_public_ca = (
+            relative.endswith("_internal/certifi/cacert.pem")
+            and hashlib.sha256(content).hexdigest() == CERTIFI_CA_SHA256
+        )
         if re.search(r"_KEY\.(?:csv|json)$", path.name, re.I) or path.name in {
             ".env",
             "glassflow.db",
             "pending-restore.json",
         }:
             errors.append(f"Forbidden runtime file: {relative}")
-        if path.suffix.lower() in {".db", ".sqlite", ".joblib", ".pkl", ".pem", ".key"}:
+        if path.suffix.lower() in {".db", ".sqlite", ".joblib", ".pkl", ".pem", ".key"} and not approved_public_ca:
             errors.append(f"Unapproved runtime artifact: {relative}")
-        if any(pattern.search(path.read_bytes()) for pattern in PATTERNS):
+        if any(pattern.search(content) for pattern in PATTERNS):
             errors.append(f"Possible credential in {relative}; value redacted")
     return errors
 

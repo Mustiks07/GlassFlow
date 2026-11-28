@@ -27,3 +27,16 @@ def test_full_release_refuses_partial_export(tmp_path):
         "module_provenance": {"assistant": {"synthetic": True}}}), encoding="utf8")
     with pytest.raises(ValueError, match="Synthetic"):
         verify_export(tmp_path)
+
+
+def test_only_exact_pinned_public_certifi_bundle_is_approved(tmp_path):
+    import certifi
+
+    bundle = tmp_path / '_internal/certifi/cacert.pem'
+    bundle.parent.mkdir(parents=True)
+    bundle.write_bytes(Path(certifi.where()).read_bytes())
+    assert scan(tmp_path) == []
+    bundle.write_bytes(bundle.read_bytes() + b'changed')
+    assert 'Unapproved runtime artifact' in scan(tmp_path)[0]
+    bundle.write_bytes(b'-----BEGIN PRIVATE KEY-----\nsynthetic\n')
+    assert len(scan(tmp_path)) == 2
