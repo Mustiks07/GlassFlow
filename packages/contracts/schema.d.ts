@@ -3842,7 +3842,7 @@ export interface components {
             /** Source Text */
             source_text: string;
             /** Source Unit */
-            source_unit?: ("mm" | "cm" | "m") | null;
+            source_unit?: ("mm" | "cm" | "m" | "mixed") | null;
             /** Normalized Text */
             normalized_text?: string | null;
             /** Message Ru */

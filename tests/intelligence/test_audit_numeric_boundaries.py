@@ -19,6 +19,9 @@ def client(tmp_path):
     "45 x 37 см", "ширина 370 мм, длина 450 мм", "длина: 45 см, ширина: 370 мм",
 ])
 def test_equivalent_dimensions_have_same_persisted_quote(client, imported, dimensions):
+    normalized = client.post('/api/v1/quotes/dimensions/normalize', json={'text': dimensions})
+    assert normalized.status_code == 200, normalized.text
+    assert normalized.json()['dimensions'] == dict(length_mm=450, width_mm=370)
     response = client.post('/api/v1/assistant/turns', json={
         'dataset_id': imported['dataset_id'], 'kb_version': imported['kb_version'],
         'text': f'Стекло 6 мм прозрачное {dimensions}, 2 штуки, евро-кромка по всем сторонам. Рассчитайте итог.',

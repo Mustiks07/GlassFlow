@@ -84,3 +84,11 @@ Live в3 отдельных профилях: luna503,GLM15s timeouts,terra503.0
 8 негативных вариантов; quote отсутствует, требуется quantity/geometry clarification.
 Далее: commit финального runtime, EXE и browser/локальный экзамен повторно;
 согласованная baseline/extended600 серия, настоящий examples PDF и готовность ZIP.
+
+
+Отдельный API /quotes/dimensions/normalize дополнительно проверен для всех7
+эквивалентных записей: добавлен source_unit=mixed в Python DTO и стандартно
+перегенерированы OpenAPI/TS. Финальные49numeric/choices/model/labor regressions PASS,
+включая нормализатор; typecheck/build и Ruff PASS. Runtime замораживается для
+окончательной EXE/600s серии. 59c1777 CI Linux+Windows PASS; source после него
+менялся только в signed numeric grammar/контракте нормализации, проверяется заново.

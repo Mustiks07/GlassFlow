@@ -219,7 +219,7 @@ class DimensionNormalizeResult(DTO):
     status: Literal["ok", "ambiguous", "invalid"]
     dimensions: Dimensions | None = None
     source_text: str
-    source_unit: Literal["mm", "cm", "m"] | None = None
+    source_unit: Literal["mm", "cm", "m", "mixed"] | None = None
     normalized_text: str | None = None
     message_ru: str | None = None
 

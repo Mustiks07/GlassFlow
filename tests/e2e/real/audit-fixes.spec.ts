@@ -14,6 +14,9 @@ async function workspace(page: Page, name: string) {
 
 test('mixed units and invalid numbers through the visible assistant', async ({ page }) => {
   await workspace(page, 'Audit numerical browser checks');
+  const normalized = await page.request.post('/api/v1/quotes/dimensions/normalize', { data: { text: '45 см x 370 мм' } });
+  expect(normalized.ok(), await normalized.text()).toBeTruthy();
+  expect(await normalized.json()).toMatchObject({ source_unit: 'mixed', dimensions: { length_mm: 450, width_mm: 370 } });
   const input = page.getByLabel('Текст запроса', { exact: true });
   await input.fill('Стекло 6 мм прозрачное 45 см x 370 мм, 2 штуки, евро-кромка по всем сторонам');
   await input.press('Control+Enter');
