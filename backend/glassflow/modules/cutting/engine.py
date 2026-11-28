@@ -30,7 +30,7 @@ from .geometry import validate_plan
 from .metrics import compute_metrics
 from .solver import CuttingSolver, SolveOutcome, SolverSettings
 
-ENGINE_VERSION = "cutting-engine/1.0"
+ENGINE_VERSION = "cutting-engine/1.1-min-free-incumbent"
 
 
 def default_workers() -> int:
@@ -60,7 +60,9 @@ class _Bridge:
             return
         plan = self.to_plan(outcome)
         # Only a plan valid for the ORIGINAL task (including every requested lock) is published.
-        if plan.status == "validated":
+        required_free = plan.config.minimum_free_remnants if plan.config is not None else 0
+        if (plan.status == "validated" and plan.metrics.free_original_remnants >= required_free
+                and plan.evidence.get('minimum_free_remnants_met') is True):
             self.context.incumbent(plan)
 
 
@@ -137,6 +139,8 @@ class CuttingEngine:
         evidence.update({k: v for k, v in outcome.stats.items() if isinstance(v, (str, int, float, bool)) or v is None})
         evidence["wall_seconds"] = round(time.perf_counter() - started, 3)
         evidence["stage"] = outcome.stage
+        evidence['minimum_free_remnants_met'] = (outcome.meets_min_free and
+            metrics.free_original_remnants >= config.minimum_free_remnants)
         lock_issues = [to_plan_issue(c) for c in outcome.conflicts]
         return CutPlan(
             dataset_id=data.dataset_id, plan_id="unsaved", revision=0, status=status,

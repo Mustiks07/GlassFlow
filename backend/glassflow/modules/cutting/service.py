@@ -1134,7 +1134,6 @@ class CuttingService:
         metrics, free = compute_metrics(snapshot, report, stored.new_reasons)
         config = SolverConfig.model_validate(json.loads(row.config_json)) if row.config_json != "{}" else None
         minimum = config.minimum_free_remnants if config else 5
-        minimum = min(minimum, sum(1 for r in snapshot.remnants.values() if r.original))
         historical = [x for x in json.loads(row.evidence_json).get("free_original_remnant_ids", "").split(",") if x]
         live = set(free)
         gone = [rid for rid in historical if rid not in live]
