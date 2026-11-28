@@ -255,7 +255,7 @@ function SolvePanel({
       </form>
       {solve.error && <ErrorState error={solve.error} onRetry={() => solve.mutate()} context="Запуск расчета" />}
       {jobId && <JobPanel jobId={jobId} title="Поиск раскроя" />}
-      {ready && job.data?.state !== 'completed' && <p className="small">Доступен последний валидный план: <span className="mono">{ready}</span></p>}
+      {ready && job.data?.state !== 'completed' && <div className="small">Сохранён последний проверенный план.<Details summary="Ссылка на результат для поддержки">{ready}</Details></div>}
     </Panel>
   );
 }
@@ -599,7 +599,7 @@ function EditorPanel({ dataset, plan, remnants, parts, materials }: { dataset: D
             <strong>Черновик</strong> · изменено размещений: {Object.keys(draft?.overrides ?? {}).length} · исключено кусков: {draft?.excluded.length ?? 0}
             {newlyNew.length > 0 && (
               <div className="small">
-                Новые NEW: <span className="mono">{newlyNew.map(item => item.part_id).join(', ')}</span>
+                Теперь требуют нового материала: <span className="mono">{newlyNew.map(item => item.part_id).join(', ')}</span>
               </div>
             )}
             <div className="small">
@@ -728,8 +728,8 @@ function ComparePanel({ dataset, basePlanId, candidatePlanId, onAdopt, onClose }
             <Metric label="Δ покрытия" value={`${data.delta_coverage >= 0 ? '+' : '−'}${formatPercent(Math.abs(data.delta_coverage), 3)}`} />
             <Metric label="Δ свободных исходных кусков" value={formatSignedInt(data.delta_free_original_remnants)} tone={data.delta_free_original_remnants < 0 ? 'warn' : undefined} />
           </div>
-          <Details summary={`Детали, ставшие NEW (${data.newly_new_part_ids.length}) и покрытые заново (${data.newly_covered_part_ids.length}); изменений размещения: ${data.changes.filter(item => item.kind !== 'unchanged').length}`}>
-            <p className="small mono">NEW: {data.newly_new_part_ids.join(', ') || '—'}</p>
+          <Details summary={`Детали из нового материала (${data.newly_new_part_ids.length}) и покрытые заново (${data.newly_covered_part_ids.length}); изменений размещения: ${data.changes.filter(item => item.kind !== 'unchanged').length}`}>
+            <p className="small mono">Требуют нового материала: {data.newly_new_part_ids.join(', ') || '—'}</p>
             <p className="small mono">Покрыты: {data.newly_covered_part_ids.join(', ') || '—'}</p>
           </Details>
           {data.affected_reserved_remnant_ids.length > 0 && (
@@ -761,16 +761,17 @@ function ExclusionImpact({ dataset, planId, remnantId }: { dataset: Dataset; pla
       <div>
         <strong>Исключение {remnantId}: прогноз сервера</strong>
         <p className="small">
-          Затронуто деталей: {data.affected_part_ids.length} · новые NEW: <span className="mono">{data.new_part_ids.join(', ') || '—'}</span> · Δ площади{' '}
+          Затронуто деталей: {data.affected_part_ids.length} · требуют нового материала: <span className="mono">{data.new_part_ids.join(', ') || '—'}</span> · изменение площади{' '}
           {formatSignedInt(data.delta_covered_area_mm2)} мм² · Δ оценки {formatSignedMoney(data.delta_value_tg)}
         </p>
         {(data.affected_reservation_ids.length > 0 || data.affected_order_ids.length > 0) && (
-          <p className="small">
-            Резервы: {data.affected_reservation_ids.join(', ') || '—'} · заказы: {data.affected_order_ids.join(', ') || '—'}
-          </p>
+          <div className="small">
+            Затронуто резервов: {data.affected_reservation_ids.length} · заказы: {data.affected_order_ids.join(', ') || '—'}
+            <Details summary="Номера резервов для поддержки">{data.affected_reservation_ids.join(', ') || '—'}</Details>
+          </div>
         )}
         {data.note_ru && <p className="small muted">{data.note_ru}</p>}
-        <p className="small muted">Действующий план не изменен. Для нового размещения запустите расчет: исключенные куски передаются в solver.</p>
+        <p className="small muted">Действующий план не изменен. Для нового размещения запустите расчет: исключенные куски будут учтены при подборе.</p>
       </div>
     </div>
   );

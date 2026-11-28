@@ -49,7 +49,7 @@ function Clients({ dataset }: { dataset: Dataset }) {
           <div className="metrics-row">
             <Metric label="Заявок в отборе" value={ranking.data.rows.length} detail={ranking.data.rows.length === 25 ? 'ровно 25' : 'ожидалось 25'} tone={ranking.data.rows.length === 25 ? 'ok' : 'error'} />
             <Metric label="Уникальных клиентов" value={ranking.data.unique_client_count} />
-            <Metric label="Политика" value={ranking.data.policy} detail={ranking.data.policy_version} />
+            <Metric label="Правило отбора" value={ranking.data.policy === 'reference' ? 'По истории обращений' : 'Проверенное правило'} detail="Причины приоритета приведены у каждой заявки" />
             <Metric
               label="Precision@25 по открытым меткам"
               value={ranking.data.observed_precision === null || ranking.data.observed_precision === undefined ? 'Нет фактических данных' : formatPercent(ranking.data.observed_precision)}
@@ -215,11 +215,12 @@ function RemindersList({ dataset }: { dataset: Dataset }) {
               </tr>
             </thead>
             <tbody>
-              {reminders.data.map(item => (
+              {reminders.data.map((item, index) => (
                 <tr key={item.reminder_id} id={`reminder-${item.reminder_id}`} aria-selected={target === item.reminder_id}>
                   <td className="mono small">
-                    {item.reminder_id}
-                    <div className="muted">v{item.version}</div>
+                    Напоминание {index + 1}
+                    <div className="muted">версия {item.version}</div>
+                    <Details summary="Номер напоминания для поддержки">{item.reminder_id}</Details>
                   </td>
                   <td className="mono">{item.recipient_client_id}</td>
                   <td>
