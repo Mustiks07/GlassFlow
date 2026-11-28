@@ -33,7 +33,8 @@ def test_equivalent_dimensions_have_same_persisted_quote(client, imported, dimen
 
 
 @pytest.mark.parametrize('invalid', ['0 штук', '-2 штуки', '−2 штуки', '1,5 штуки', '1.5 штуки',
-    'ноль штук', 'минус две штуки', '1/2 штуки', 'количество: 0', 'количество: ноль', 'количество: 1,5'])
+    'ноль штук', 'минус две штуки', '1/2 штуки', 'количество: 0', 'количество: ноль', 'количество: 1,5',
+    '- 2 штуки', '− 2 штуки', 'количество: − 2'])
 def test_invalid_count_never_becomes_confirmable_quote(client, imported, invalid):
     body = dict(dataset_id=imported['dataset_id'], kb_version=imported['kb_version'], allow_ai=False,
                 text=f'Стекло 6 мм прозрачное 450x370 мм, {invalid}, евро-кромка по всем сторонам.')
@@ -60,7 +61,8 @@ def test_invalid_followup_retires_previous_draft(client, imported):
     assert result.status_code == 409, result.text
 
 
-@pytest.mark.parametrize('raw', ['-450x370 мм', '450x-370 мм', '−450×370 мм', 'минус 450x370 мм'])
+@pytest.mark.parametrize('raw', ['-450x370 мм', '450x-370 мм', '−450×370 мм', 'минус 450x370 мм',
+    '- 450x370 мм', '450x− 370 мм'])
 def test_negative_geometry_is_not_reinterpreted(raw):
     ex = extract(raw)
     assert not ex.dimensions and ex.invalid_dimensions
@@ -105,3 +107,13 @@ def test_installation_verb_uses_actual_kb_rule(engine, text):
     result = engine.respond(text)
     assert result.intent != 'unrecognized'
     assert 'не выполня' in result.answer
+
+
+@pytest.mark.parametrize('quantity', ['− 2', '-1 500', '1/2'])
+def test_count_before_hardware_name_does_not_reinterpret_invalid_token(client, imported, quantity):
+    result = client.post('/api/v1/assistant/turns', json=dict(dataset_id=imported['dataset_id'],
+        kb_version=imported['kb_version'], allow_ai=False, inventory_mode='none',
+        text=f'Цена {quantity} блоков питания DS-100-12?'))
+    assert result.status_code == 200, result.text
+    assert result.json()['status'] == 'clarification' and result.json()['quote'] is None
+    assert 'quantity' in result.json()['card']['missing_parameters']

@@ -68,3 +68,19 @@ smoke backup/restore+scanner PASS. Local regression147/149,QA10/10,0 provider ca
 пересобирались во время прогона. DB jobs показывают INVALID_ACCEPTED_ROW;9 checkpoint
 тестов на неизменной версии повторно PASS. Полная проверка повторяется после
 окончательной фиксации runtime/production assets; fingerprint guards не изменены.
+
+
+Frozen-source59c1777: полный Python717PASS/4SKIP422.09с. Все20 EXE browser
+повторно PASS; native changed-input/export/restart68.453с PASS; backup/restore/scanner
+PASS; local149/149 иQA10/10, исключительно deterministic0provider calls.
+Live в3 отдельных профилях: luna503,GLM15s timeouts,terra503.0 model answers/15fallback,
+8 provider calls; консервативная quota debit142212, usage фактических error calls
+неизвестен; все3 закрытые базы/файлы проверены на отсутствие ключа. Paidfalse.
+
+Дополнительно воспроизведён spaced-minus: «− 2 штуки»/«− 450×370» теряли знак.
+Полный signed span теперь включает пробелы; цифровые количества перед названием
+фурнитуры используют тот же grammar и не превращают denominator/суффикс группы в
+количество. Типографское тире-разделитель сохранено отдельной регрессией. Добавлены
+8 негативных вариантов; quote отсутствует, требуется quantity/geometry clarification.
+Далее: commit финального runtime, EXE и browser/локальный экзамен повторно;
+согласованная baseline/extended600 серия, настоящий examples PDF и готовность ZIP.

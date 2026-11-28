@@ -19,7 +19,7 @@ _UNIT_WORDS = [
     ("m", r"м|метр\w*"),
 ]
 _UNIT = r"(?:мм|миллиметр\w*|см|сантиметр\w*|м(?![²2а-я])|метр\w*)"
-_NUMBER = r"[+\-−]?(?:\d{1,3}(?: \d{3})+|\d+)(?:[.,]\d+)?"
+_NUMBER = r"(?:[+\-−]\s*)?(?:\d{1,3}(?: \d{3})+|\d+)(?:[.,]\d+)?"
 _SEP = r"\s*(?:[x×х*]|на)\s*"
 _PAIR = re.compile(rf"(?<![\d.,x+\-−])({_NUMBER})\s*({_UNIT})?{_SEP}({_NUMBER})\s*({_UNIT})?(?!\d|[.,]\d|\s*x\s*\d)")
 _TRIPLE = re.compile(r"\d+(?:[.,]\d+)?\s*x\s*\d+(?:[.,]\d+)?\s*x\s*\d+(?:[.,]\d+)?")
@@ -30,7 +30,7 @@ WORD_NUMBERS = {
     "шесть": 6, "семь": 7, "восемь": 8, "девять": 9, "десять": 10, "двадцать": 20, "сто": 100,
 }
 _COUNT_NOUN = r"(?:шт\b\.?|штук\w*|штуч\w*|детал\w*|лист(?:а|ов)?\b|изделий|изделия|зеркал(?:а|о)?\b|стек(?:ол|ла|ло)|полок)"
-_COUNT_NUMBER = r"[+\-−]?(?:\d{1,3}(?: \d{3})+|\d+)[\d.,/e+\-−]*"
+_COUNT_NUMBER = r"(?:[+\-−]\s*)?(?:\d{1,3}(?: \d{3})+|\d+)[\d.,/e+\-−]*"
 _QUANTITY = re.compile(rf"(?<![\w.,/+\-−])({_COUNT_NUMBER})\s*{_COUNT_NOUN}")
 _QUANTITY_WORD = re.compile(rf"\b((?:минус\s+)?(?:{'|'.join(WORD_NUMBERS)}))\s+{_COUNT_NOUN}")
 _QUANTITY_EXPLICIT = re.compile(rf"(?:в количестве|количеств\w*|кол-?во)\s*[:=]?\s*({_COUNT_NUMBER}|(?:минус\s+)?(?:{'|'.join(WORD_NUMBERS)}))(?![\w])")
@@ -96,7 +96,8 @@ def extract_dimensions(text: str, exclude: set[str] | None = None) -> tuple[list
     are skipped. Explicit cm/m are converted to integer mm; numbers without a unit default to
     mm when they are integers, decimals without a unit are ambiguous.
     """
-    value = normalize(text)
+    # A spaced typographic dash is punctuation; keep it distinct from a signed number.
+    value = normalize(re.sub(r"(?<=\s)[—–](?=\s)", " ", text))
     value = re.sub(r"(?<=\d)\s*на\s*(?=\d)", "x", value)
     exclude = exclude or set()
     triples = [m.span() for m in _TRIPLE.finditer(value)]

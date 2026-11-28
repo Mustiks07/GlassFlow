@@ -18,9 +18,11 @@ test('mixed units and invalid numbers through the visible assistant', async ({ p
   await input.fill('Стекло 6 мм прозрачное 45 см x 370 мм, 2 штуки, евро-кромка по всем сторонам');
   await input.press('Control+Enter');
   await expect(page.locator('.quote-total strong')).toHaveText('3 976,00 ₸');
-  await input.fill('Количество: -2 штуки'); await input.press('Control+Enter');
-  await expect(page.getByText(/Укажите положительное целое количество вместо/).first()).toBeVisible();
-  await expect(page.locator('.quote-total')).toHaveCount(0);
+  for (const invalid of ['-2', '− 2', '0', '1,5']) {
+    await input.fill(`Количество: ${invalid} штуки`); await input.press('Control+Enter');
+    await expect(page.getByText(/Укажите положительное целое количество вместо/).first()).toBeVisible();
+    await expect(page.locator('.quote-total')).toHaveCount(0);
+  }
   await page.screenshot({ path: path.resolve(__dirname, '../evidence/audit/numeric-invalid.png'), fullPage: true });
 });
 

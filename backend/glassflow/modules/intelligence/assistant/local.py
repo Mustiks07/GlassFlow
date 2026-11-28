@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field, replace
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 
 from glassflow.contracts.common import Dimensions, Evidence
 from glassflow.contracts.cutting import FindRequest
@@ -19,7 +19,7 @@ from ..catalog.kb import KnowledgeBase, Product
 from ..catalog.mapping import MappingDecision
 from ..catalog.matching import COLOR_LEXICON, MatchResult, match_products, query_features
 from ..catalog.text import format_decimal, format_money, normalize, stem, stems_match, words
-from ..nlu.extract import WORD_NUMBERS, Extraction, extract
+from ..nlu.extract import _COUNT_NUMBER, WORD_NUMBERS, Extraction, extract
 from ..ports_consumed import InventoryPort, ServiceUnavailable
 from ..pricing import PricingInput, PricingResult, calculate, pricing_input_for, resolve_sides
 from .facts import FactSet
@@ -960,13 +960,18 @@ def _quantity_before_name(text: str, product: Product) -> tuple[Decimal, str] | 
     """«4 полкодержателя», «две лупы»: a count directly before a word of the product name."""
     name_stems = {stem(w) for w in words(product.name) if not w.isdigit() and len(w) > 3}
     value = normalize(text)
-    for match in re.finditer(r"(?<![\w\d.,x+\-−])([+\-−]?\d+(?:[.,]\d+)?|(?:минус\s+)?(?:" + "|".join(WORD_NUMBERS) + r"))\s+([а-яa-z-]+)", value):
+    for match in re.finditer(r"(?<![\w\d.,x/+\-−])(" + _COUNT_NUMBER + r"|(?:минус\s+)?(?:" + "|".join(WORD_NUMBERS) + r"))\s+([а-яa-z-]+)", value):
         raw, word = match.groups()
         if re.match(r"(?:мм|см|м|шт|штук|лист|кв|м2|м²|тг|тенге|вт)\b", word):
             continue
         if any(stems_match(stem(word), name_stem) for name_stem in name_stems):
             token = raw.removeprefix("минус ")
-            number = Decimal(WORD_NUMBERS[token]) if token in WORD_NUMBERS else Decimal(token.replace(",", ".").replace("−", "-"))
+            try:
+                number = Decimal(WORD_NUMBERS[token]) if token in WORD_NUMBERS else Decimal(token.replace(" ", "").replace(",", ".").replace("−", "-"))
+                if "/" in token or "e" in token:
+                    number = Decimal(0)
+            except InvalidOperation:
+                number = Decimal(0)
             return (-number if raw.startswith("минус ") else number), match.group(0)
     return None
 
