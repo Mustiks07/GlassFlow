@@ -30,3 +30,55 @@ Root actual production browser checks4PASS (comparable analytics, old label/curr
 Initial fullpytest on a changing tree had three checkpoint failures; root merged/rebuilt runtime files while workers were being spawned, invalidating source fingerprints. The unchanged checkpoint suite subsequently9PASS; independent immutable-archive runs/restart reproduced no product defect. Final full suite must run against frozen sources and web assets.
 
 Online preflight candidate6016aac: supplier gpt-6-luna3model/2fallback,10calls,weighted31359; twoMODEL_UNAVAILABLE503. Separate glm-5.3-flash trial5correct client responses but2model/3fallback,weighted81048, so not accepted model accuracy. Additional one short connectivity success and two availability probes stay outside model acceptance; reserve1000weighted for their conservative cumulative accounting. No149-turn live exam completed yet. Concrete deadline/typed-status/unknown hardware/stale correction/KB gap defects are being fixed before final model candidate. Hybrid remains default.
+
+
+## Итог post-integration, 28 ноября 2026
+
+Актуальный итог заменяет ограничения ранних checkpoint выше: ключ включённой квоты предоставлен;
+50 публичных buyer профилей независимо проверены; конечный EXE и browser E2E выполнены.
+Рабочий hybrid проверен, конкурсный релиз/live AI не приняты. Полная сводка и ограничения:
+[FINAL_STATUS](../release/post/FINAL_STATUS.md).
+
+База5648852; branch codex/post-integration-upgrades. Интегрированы авторские ветки:
+platform d1247560d4b5b3c9f11f86e7e75d543d4ba0ba15,
+algorithms197a08f, intelligence4ed2ce0, independent review987ba4a52f20ae65dca680d21ce803d7b6d06b53.
+Проверенный runtime2fc1d83496a84e4ecfe1845158671d425039bfac; последующие изменения — проверки,
+документация, evidence и воспроизводимая упаковка. Одна БД/Alembic0007, реальные C2/C3/CRM/склад/KB/jobs/exports.
+N02 исправлены повторный failed-card storm и преждевременный partial в окне dispatch;
+независимо проверены UTC deadline, durable checkpoint и hard-kill/retry.
+C3-F5 сохраняет связь товар/единица/роль/количество/source; неизвестные параметры не превращаются в цену.
+Проверены versioned correction history и stale KB, N01 пять карточек×три покупателя.
+
+Команды/результаты: uv sync --locked --all-groups; pnpm install --frozen-lockfile;
+uv run pytest -o addopts='' -q --junitxml=docs/release/post/final-pytest.xml —657 PASS/4 SKIP;
+дополнительно tests/post_review —15 PASS; Ruff/foundation PASS;
+scripts/export_openapi.py + pnpm contracts:generate + git diff packages/contracts — без расхождений;
+pnpm typecheck/test/build —25 tests PASS, check:bundle PASS.
+Настоящий EXE: product10+integrated2+post4 Playwright PASS,1366/1920/125%; fixtures не использованы.
+scripts/post_frozen_acceptance.py — конечный native changed-input protocol PASS51,484с,
+первый полный принятый экспорт9,954с; пять CSV298/18/25/8/5,50 buyers отдельно,
+validate.py invalid=missing=0. Частичный отказ, отмена, дедлайн, restart и immutable accepted snapshot PASS.
+scripts/smoke_frozen.py — singleton/restart/backup/restore/real scipy+ortools PASS;
+упаковка исправлена после реального ModuleNotFound динамического ReportLab barcode, первый failure сохранён.
+
+Именно конечный каталог Genezis/dist/GlassFlow-post-2fc1d83 запущен, его учебный ZIP импортирован,
+frozen solver completed/validated. ZIP151644915 байт SHA256
+89ffa59e672fd9b488bff7521106d2c318434264f18eb2838af5b8986783deae;
+1405 файлов, CRC/scanner/hash index PASS. Runtime digest
+c60673f1556aa92bcdb03b3a38542ba7296e6d54ce9a1f2add6e7a5db840ce8d.
+Старые GlassFlow-integrated-3f83310 EXE/ZIP и исходные финальные материалы сохранены побайтно.
+
+Дополнительная задача удобства завершена: понятные статусы/ошибки/названия материалов,
+технические JSON/UUID в закрытой поддержке, физические piece IDs сохранены;
+реальные складские PDF/этикетки визуально проверены. Flow logo/палитра пользовательского ZIP сохранены.
+
+Local raw137/149 и55/55 canonical Quote — разные метрики;8 различных P2 остаются.
+Три live preflight не приняты (503/тайм-ауты/verifier),199311 weighted+5000 резерв <=1млн;
+полный live149 NOT_RUN/BLOCKED. Paid=false. N11/N12/N14:24 trials NO PROMOTION;
+N16 deferred, N17 NO PROMOTION, N18 human NOT_RUN.
+Не проведены чистая Windows11/первый сотрудник,10 реальных человеческих пар,
+внешний HTTPS gateway, закрытая официальная приёмка/подача. Финальные экономика/examples PDF
+без этих фактов не созданы; пользовательская презентация draft не заменена.
+
+Следующий точный шаг: fast-forward сохранённого main, обычный push без force, проверить remote SHA
+и Linux/Windows CI. Результат публикации фиксируется отдельным checkpoint; не считать pending CI зелёным.

@@ -1,0 +1,12 @@
+{
+  "directory": "C:\\Users\\User\\Documents\\ChatGPT\\Genezis\\dist\\GlassFlow-post-2fc1d83",
+  "archive": "C:\\Users\\User\\Documents\\ChatGPT\\Genezis\\dist\\GlassFlow-post-2fc1d83.zip",
+  "archive_sha256": "89ffa59e672fd9b488bff7521106d2c318434264f18eb2838af5b8986783deae",
+  "archive_bytes": 151644915,
+  "exe_sha256": "372a3c221c5f5e5f09147a6a008eafb1578c036a09f730e590bf46bd3e4d662e",
+  "runtime_commit": "2fc1d83496a84e4ecfe1845158671d425039bfac",
+  "source_digest": "c60673f1556aa92bcdb03b3a38542ba7296e6d54ce9a1f2add6e7a5db840ce8d",
+  "files": 1405,
+  "scan": "passed",
+  "zip_crc": "passed"
+}

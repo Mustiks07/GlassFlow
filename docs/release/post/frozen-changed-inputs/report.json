@@ -1,0 +1,54 @@
+{
+  "source_sha": "44e3d2d154bdfca9eb81917f7b663adc2d080529",
+  "runtime_source_digest": "a4ea5095e54e0bde93f8012afe8ad7d4ab048deb3e7e61e6f41ad6812967ab8d",
+  "exe_sha256": "cacea4f5b26c4124697d8acaf35ee482620b94f3784e0d420738655a0846fba5",
+  "transport": "actual_windows_exe_tcp",
+  "clean_windows": "not_run",
+  "human_measurements": "not_run",
+  "online_ai": "not_run",
+  "official_hidden_accuracy": "not_run_no_changed_input_KEY",
+  "status": "failed",
+  "input_changes": [
+    {
+      "file": "stock_open.csv",
+      "all_ids_replaced": true,
+      "rows_reversed": true,
+      "future_labels_removed": false
+    },
+    {
+      "file": "orders_open.csv",
+      "all_ids_replaced": true,
+      "rows_reversed": true,
+      "future_labels_removed": false
+    },
+    {
+      "file": "questions_open.csv",
+      "all_ids_replaced": true,
+      "rows_reversed": true,
+      "future_labels_removed": false
+    },
+    {
+      "file": "dialogs_open.csv",
+      "all_ids_replaced": true,
+      "rows_reversed": true,
+      "future_labels_removed": false
+    },
+    {
+      "file": "applications_open.csv",
+      "all_ids_replaced": true,
+      "rows_reversed": true,
+      "future_labels_removed": true
+    }
+  ],
+  "input_hashes": {
+    "materials.csv": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
+    "stock_open.csv": "af944d2f464ab25aa90465d09bd72fdffc36cbf1fa5a26d21329892f37fbda19",
+    "orders_open.csv": "3c42a263c39bd3880308af9dd90a25803d1e334b2c100e0594fc8ed8526e1638",
+    "ksm_knowledge_base.json": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+    "questions_open.csv": "949facc5364117e6a2d67b9391cf0606715f4e2ff610ecad0dee99e6ef8cbf2d",
+    "dialogs_open.csv": "c932fc074d77cde9ee0904c3f305671c85edf9ef0932f849e1f99eec554138d2",
+    "applications_open.csv": "8ec627cd0e27b7df417f0fea9eed09626b50357a06366c1391080c69d3d3241e"
+  },
+  "failure": "RuntimeError: Frozen host exited before readiness; inspect frozen-host.log",
+  "total_observer_seconds": 5.11
+}

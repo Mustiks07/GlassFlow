@@ -1,0 +1,11 @@
+{
+  "runtime_commit": "2fc1d83496a84e4ecfe1845158671d425039bfac",
+  "transport": "actual_windows_exe_tcp",
+  "base_url": "http://127.0.0.1:19184",
+  "data_dir": ".runtime/frozen-browser-final-acceptance",
+  "real": 10,
+  "integrated": 2,
+  "post": 4,
+  "unexpected": 0,
+  "fixture": false
+}

@@ -82,5 +82,10 @@ test('actual correction draft is visible without changing original dialogue', as
   await expect(page.getByText('Черновик проверен по действующей базе знаний', { exact: true })).toBeVisible();
   await expect(page.getByText(/История диалога сохранена; автоматической отправки нет/)).toBeVisible();
   await expect(page.getByRole('textbox', { name: 'Ответ менеджера', exact: true })).toHaveValue('Стекло 6 мм прозрачное стоит 100 тенге за м2.');
+  await page.reload();
+  await page.getByRole('tab', { name: 'Проверка ответа менеджера' }).click();
+  await page.getByText('Сохранённые черновики исправлений', { exact: true }).click();
+  await page.getByText(/Черновик от /).click();
+  await expect(page.getByText('Черновик проверен по действующей базе знаний', { exact: true })).toBeVisible();
   await page.screenshot({ path: path.resolve(__dirname, '../evidence/post/N19-actual-draft.png'), fullPage: true });
 });

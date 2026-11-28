@@ -5,12 +5,14 @@
       "id": "N01",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "software_verified_on_build_machine",
+      "sha": "2fc1d83",
       "evidence": [
         "docs/status/POST_PLATFORM.md",
-        "docs/status/POST_ALGORITHMS.md"
+        "docs/status/POST_ALGORITHMS.md",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
       "limitations": []
     },
@@ -18,12 +20,14 @@
       "id": "N02",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "software_verified_on_build_machine",
+      "sha": "2fc1d83",
       "evidence": [
         "docs/status/POST_PLATFORM.md",
-        "docs/status/POST_ALGORITHMS.md"
+        "docs/status/POST_ALGORITHMS.md",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
       "limitations": []
     },
@@ -31,12 +35,14 @@
       "id": "N03",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "software_verified_on_build_machine",
+      "sha": "2fc1d83",
       "evidence": [
         "docs/status/POST_PLATFORM.md",
-        "docs/status/POST_ALGORITHMS.md"
+        "docs/status/POST_ALGORITHMS.md",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
       "limitations": []
     },
@@ -44,24 +50,30 @@
       "id": "N04",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "hybrid_verified_live_not_accepted",
+      "sha": "2fc1d83",
       "evidence": [
-        "docs/status/POST_INTELLIGENCE.md"
+        "docs/status/POST_INTELLIGENCE.md",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
-      "limitations": []
+      "limitations": [
+        "Independent local raw137/149; eight distinct P2 cases remain; canonical direct Quote55/55. No live149 acceptance; supplier503/timeouts, fallback counted separately."
+      ]
     },
     {
       "id": "N05",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "software_verified_on_build_machine",
+      "sha": "2fc1d83",
       "evidence": [
         "tests/platform/test_post_labor_workflow.py",
-        "tests/e2e/real/post-integration.spec.ts"
+        "tests/e2e/real/post-integration.spec.ts",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
       "limitations": [
         "Software timer/attestation/export gates verified; no genuine ten-pair human labor result supplied."
@@ -71,12 +83,14 @@
       "id": "N06",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "software_verified_on_build_machine",
+      "sha": "2fc1d83",
       "evidence": [
         "docs/status/POST_PLATFORM.md",
-        "docs/status/POST_ALGORITHMS.md"
+        "docs/status/POST_ALGORITHMS.md",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
       "limitations": []
     },
@@ -84,11 +98,13 @@
       "id": "N07",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "software_verified_on_build_machine",
+      "sha": "2fc1d83",
       "evidence": [
-        "docs/status/POST_INTELLIGENCE.md"
+        "docs/status/POST_INTELLIGENCE.md",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
       "limitations": []
     },
@@ -96,11 +112,13 @@
       "id": "N08",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "software_verified_on_build_machine",
+      "sha": "2fc1d83",
       "evidence": [
-        "tests/insights/evidence/post-insights-final.xml"
+        "tests/insights/evidence/post-insights-final.xml",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
       "limitations": []
     },
@@ -108,11 +126,13 @@
       "id": "N09",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "software_verified_on_build_machine",
+      "sha": "2fc1d83",
       "evidence": [
-        "tests/insights/evidence/post-insights-final.xml"
+        "tests/insights/evidence/post-insights-final.xml",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
       "limitations": []
     },
@@ -120,12 +140,14 @@
       "id": "N10",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "software_verified_on_build_machine",
+      "sha": "2fc1d83",
       "evidence": [
         "docs/status/POST_PLATFORM.md",
-        "docs/status/POST_ALGORITHMS.md"
+        "docs/status/POST_ALGORITHMS.md",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
       "limitations": []
     },
@@ -163,12 +185,14 @@
       "id": "N13",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "software_verified_on_build_machine",
+      "sha": "2fc1d83",
       "evidence": [
         "docs/status/POST_PLATFORM.md",
-        "docs/status/POST_ALGORITHMS.md"
+        "docs/status/POST_ALGORITHMS.md",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
       "limitations": []
     },
@@ -191,11 +215,13 @@
       "id": "N15",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "software_verified_on_build_machine",
+      "sha": "2fc1d83",
       "evidence": [
-        "tests/insights/evidence/post-insights-final.xml"
+        "tests/insights/evidence/post-insights-final.xml",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
       "limitations": []
     },
@@ -236,20 +262,27 @@
       "sha": null,
       "evidence": [],
       "limitations": [
-        "No first operator observation supplied; no unmeasured guided-tour claim. Employee-facing language cleanup explicitly requested separately and implemented pending final browser review."
+        "No first operator observation supplied. Separately requested employee language cleanup implemented and verified by 16 native browser E2E; no human onboarding result claimed."
       ]
     },
     {
       "id": "N19",
       "implemented": true,
       "connected": true,
-      "verified": false,
-      "status": "integration_verification_in_progress",
-      "sha": "68d71b2",
+      "verified": true,
+      "status": "software_verified_on_build_machine",
+      "sha": "2fc1d83",
       "evidence": [
-        "docs/status/POST_INTELLIGENCE.md"
+        "docs/status/POST_INTELLIGENCE.md",
+        "docs/release/post/FINAL_STATUS.md",
+        "docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md"
       ],
       "limitations": []
     }
-  ]
+  ],
+  "runtime_sha": "2fc1d83496a84e4ecfe1845158671d425039bfac",
+  "working_hybrid": "verified_on_build_machine",
+  "contest_release": "not_accepted",
+  "final_evidence": "docs/release/post/FINAL_STATUS.md",
+  "ci": "pending_publication"
 }

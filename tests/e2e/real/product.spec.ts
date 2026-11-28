@@ -47,7 +47,7 @@ test.describe('real backend', () => {
     for (const [label, value] of [['Остатки', '200'], ['Детали заказов', '298'], ['Заказы', '110'], ['Заявки CRM', '700'], ['Вопросы', '18'], ['Диалоги', '8']]) {
       await expect(page.locator('.metric').filter({ hasText: label }).first()).toContainText(value);
     }
-    await expect(page.getByText('Файл с эталонными ответами исключён из рабочих данных.', { exact: true })).toBeVisible();
+    await expect(page.getByRole('listitem').filter({ hasText: 'Файл с эталонными ответами исключён из рабочих данных.' })).toBeVisible();
     await page.getByText('Исходное сообщение для поддержки', { exact: true }).click();
     await expect(page.getByText(/KEY\.csv: evaluation\/служебный файл исключен из runtime/)).toBeVisible();
     await page.getByText('Исходное сообщение для поддержки', { exact: true }).click();
@@ -141,7 +141,7 @@ test.describe('real backend', () => {
     await expect(page.getByText(/Провайдер доступен|Провайдер недоступен|Сервис недоступен/).first()).toBeVisible();
     await page.goto('/#/settings/system');
     await page.getByRole('button', { name: 'Создать резервную копию сейчас' }).click();
-    await expect(page.getByText(/Копия создана: .* · целостность ok/)).toBeVisible();
+    await expect(page.getByText('Копия создана · Целостность подтверждена', { exact: true })).toBeVisible();
   });
 
   test('route 4 (CRM module only): contest snapshot → run → export picks.csv of that run', async ({ page }) => {
