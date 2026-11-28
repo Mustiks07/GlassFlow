@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-11-27T16:42:32.853843+00:00",
+  "kind": "local_performance",
+  "machine": {
+    "platform": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "cpu_count": 4,
+    "processor": "x86_64"
+  },
+  "note": "Linux CI container, not the Windows reference laptop of TZ §27; network AI not included.",
+  "quote_calculate_ms": {
+    "n": 100,
+    "p50": 4.55,
+    "p95": 6.19,
+    "target_p95": 300
+  },
+  "deterministic_turn_ms": {
+    "n": 30,
+    "p50": 14.55,
+    "p95": 24.7
+  },
+  "ai_turn_p95": "NOT MEASURED: no provider key in this environment (target p95 ≤ 15 s over 30 live requests)"
+}

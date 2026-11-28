@@ -1,0 +1,214 @@
+{
+  "generated_at": "2026-11-27T17:40:41.122135+00:00",
+  "kind": "live_online_path_evaluation",
+  "strategy": "ai_first",
+  "profile": {
+    "mode": "free_only",
+    "primary": "gemini:gemini-3.8-flash",
+    "fallbacks": [
+      "gemini:gemini-3.5-flash-lite"
+    ],
+    "rpm": 8,
+    "max_tool_iterations": 6,
+    "max_retries": 2
+  },
+  "prompt_version": "assistant-v2-2026-11-27",
+  "kb_version": "kb-f464c67fb8633008",
+  "runs": 4,
+  "ok": 4,
+  "accuracy": 1.0,
+  "answered_by_model": 0,
+  "model_answer_share": 0.0,
+  "model_answers_ok": 0,
+  "fallbacks_to_deterministic": 4,
+  "verifier_rejections": 0,
+  "unsupported_claims_shown": 0,
+  "tool_errors": 0,
+  "model_calls": 18,
+  "provider_errors": {
+    "rate_limit": 1,
+    "server": 15
+  },
+  "models_answered": [
+    "gemini-3.5-flash-lite",
+    "gemini-3.8-flash"
+  ],
+  "tokens": {
+    "input": 2916,
+    "output": 44,
+    "thought": 165
+  },
+  "cost_usd_reported": "0",
+  "calls_with_unknown_cost": 18,
+  "turn_latency_ms": {
+    "n": 5,
+    "p50": 89049.3,
+    "p95": 89369.5
+  },
+  "turn_latency_without_queue_ms": {
+    "n": 4,
+    "p50": 89135.0,
+    "p95": 178040.0
+  },
+  "queue_ms_total": 0,
+  "model_call_latency_ms": {
+    "n": 2,
+    "p50": 11828.0,
+    "p95": 22850
+  },
+  "results": [
+    {
+      "id": "E026",
+      "group": "compute",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Стекло 6 мм прозрачное, 450×370 мм: 0,1665 м² × 8 000 ₸ = 1 332 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ = 656 ₸. Итого предварительно 1 988 ₸; окончательную стоимость подтверждает менеджер.",
+      "answer_path": "fallback",
+      "verifier_status": "not_applicable",
+      "mode": "local_limited",
+      "model_id": null,
+      "seconds": 89.05,
+      "model_attempts": 3,
+      "provider_errors": [
+        "server",
+        "server",
+        "server"
+      ],
+      "provider_error_messages": [
+        "Gemini: ошибка сервиса (504). Deadline expired before operation could complete.",
+        "Gemini: ошибка сервиса (503). This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+        "Gemini: ошибка сервиса (504). Deadline expired before operation could complete."
+      ],
+      "queue_ms": 0,
+      "provider_ms": 84700,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "thought_tokens": 0,
+      "tools": [],
+      "tool_errors": 0,
+      "llm_status": "provider_error",
+      "llm_unsupported": [],
+      "fallback_model_used": false
+    },
+    {
+      "id": "E053",
+      "group": "unknown_price",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Цена этой модели зеркала в базе не указана — стоимость рассчитает менеджер. Уточните, пожалуйста, размер и вариант подсветки — передам запрос менеджеру.",
+      "answer_path": "fallback",
+      "verifier_status": "not_applicable",
+      "mode": "local_limited",
+      "model_id": null,
+      "seconds": 53.41,
+      "model_attempts": 4,
+      "provider_errors": [
+        "server",
+        "server",
+        "server",
+        "rate_limit"
+      ],
+      "provider_error_messages": [
+        "Gemini: ошибка сервиса (504). Deadline expired before operation could complete.",
+        "Gemini: ошибка сервиса (503). This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+        "Gemini: ошибка сервиса (503). This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+        "Gemini: квота исчерпана (429). You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. T"
+      ],
+      "queue_ms": 0,
+      "provider_ms": 49151,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "thought_tokens": 0,
+      "tools": [],
+      "tool_errors": 0,
+      "llm_status": "provider_error",
+      "llm_unsupported": [],
+      "fallback_model_used": false
+    },
+    {
+      "id": "E065",
+      "group": "rule",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Скидок и акций помощник не обещает: условия называет только менеджер. Предварительную стоимость по прайсу могу рассчитать сразу.",
+      "answer_path": "fallback",
+      "verifier_status": "not_applicable",
+      "mode": "local_limited",
+      "model_id": null,
+      "seconds": 89.22,
+      "model_attempts": 5,
+      "provider_errors": [
+        "server",
+        "server",
+        "server",
+        "server"
+      ],
+      "provider_error_messages": [
+        "Gemini: ошибка сервиса (503). This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+        "Gemini: ошибка сервиса (504). Deadline expired before operation could complete.",
+        "Gemini: ошибка сервиса (503). This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+        "Gemini: ошибка сервиса (504). Deadline expired before operation could complete."
+      ],
+      "queue_ms": 0,
+      "provider_ms": 84843,
+      "input_tokens": 1448,
+      "output_tokens": 16,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "get_rules",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "provider_error",
+      "llm_unsupported": [],
+      "fallback_model_used": true
+    },
+    {
+      "id": "E080",
+      "group": "multi_turn",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Стекло 6 мм прозрачное, 451×370 мм: 0,16687 м² × 8 000 ₸ = 1 334,96 ₸. Евро-кромка по всем 4 сторонам: 1,642 м × 400 ₸ = 656,80 ₸. Итого предварительно 1 991,76 ₸; окончательную стоимость подтверждает менеджер.",
+      "answer_path": "fallback",
+      "verifier_status": "not_applicable",
+      "mode": "local_limited",
+      "model_id": null,
+      "seconds": 178.04,
+      "model_attempts": 6,
+      "provider_errors": [
+        "server",
+        "server",
+        "server",
+        "server",
+        "server"
+      ],
+      "provider_error_messages": [
+        "Gemini: ошибка сервиса (504). Deadline expired before operation could complete.",
+        "Gemini: ошибка сервиса (504). Deadline expired before operation could complete.",
+        "Gemini: ошибка сервиса (504). Deadline expired before operation could complete.",
+        "Gemini: ошибка сервиса (503). This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+        "Gemini: ошибка сервиса (504). Deadline expired before operation could complete."
+      ],
+      "queue_ms": 0,
+      "provider_ms": 172984,
+      "input_tokens": 1468,
+      "output_tokens": 28,
+      "thought_tokens": 165,
+      "tools": [],
+      "tool_errors": 0,
+      "llm_status": "provider_error",
+      "llm_unsupported": [],
+      "fallback_model_used": false
+    }
+  ]
+}

@@ -1,0 +1,583 @@
+{
+  "acceptance": {
+    "status": "PASS",
+    "online_open_answers": 18,
+    "open_questions": 18,
+    "selfcheck_15_of_15_no_penalty": true,
+    "note": "selfcheck is a pass only for the online path when every open answer came from the selected model"
+  },
+  "preflight": {
+    "ok": true,
+    "model_id": "gemini-3.5-flash-lite",
+    "provider": "gemini",
+    "latency_ms": 1182,
+    "attempts": 1
+  },
+  "selected_models": [
+    "gemini-3.5-flash-lite"
+  ],
+  "generated_at": "2026-11-27T21:08:14.361263+00:00",
+  "kind": "live_open_questions_ai_first",
+  "profile": {
+    "primary": "gemini:gemini-3.5-flash-lite",
+    "fallbacks": [],
+    "rpm": 14,
+    "request_timeout_s": 15,
+    "turn_deadline_s": 60
+  },
+  "prompt_version": "assistant-v2-2026-11-27",
+  "selfcheck_assistant": {
+    "command": "python -I -X utf8 selfcheck.py assistant answers_live.csv questions_open_KEY.csv",
+    "exit_code": 0,
+    "stdout": "вопросов 18; баллы 36/36; выдумок 0; ИТОГО за ассистента 15.0 из 15 (штраф −1 за каждую выдумку)",
+    "stderr": "",
+    "score": 15.0,
+    "max": 15
+  },
+  "paths": {
+    "fallback": 1,
+    "llm_tools": 29
+  },
+  "latency_series_ms": {
+    "n": 30,
+    "p50": 3862.5,
+    "p95": 50610,
+    "without_queue": {
+      "n": 30,
+      "p50": 3194.5,
+      "p95": 5578
+    }
+  },
+  "model_calls": 106,
+  "selected_model_call_latency_ms": {
+    "n": 105,
+    "p50": 979,
+    "p95": 1184
+  },
+  "provider_errors": {
+    "rate_limit": 1
+  },
+  "models_answered": [
+    "gemini-3.5-flash-lite"
+  ],
+  "tokens": {
+    "input": 177988,
+    "output": 6293
+  },
+  "series": [
+    {
+      "id": "Q01",
+      "ms": 3082,
+      "queue_ms": 0,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 3,
+      "errors": []
+    },
+    {
+      "id": "Q02",
+      "ms": 1971,
+      "queue_ms": 0,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 2,
+      "errors": []
+    },
+    {
+      "id": "Q03",
+      "ms": 3988,
+      "queue_ms": 0,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 4,
+      "errors": []
+    },
+    {
+      "id": "Q04",
+      "ms": 4446,
+      "queue_ms": 0,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 4,
+      "errors": []
+    },
+    {
+      "id": "Q05",
+      "ms": 48468,
+      "queue_ms": 45603,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 3,
+      "errors": []
+    },
+    {
+      "id": "Q06",
+      "ms": 4106,
+      "queue_ms": 376,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 4,
+      "errors": []
+    },
+    {
+      "id": "Q07",
+      "ms": 3005,
+      "queue_ms": 149,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 3,
+      "errors": []
+    },
+    {
+      "id": "Q08",
+      "ms": 2974,
+      "queue_ms": 65,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 3,
+      "errors": []
+    },
+    {
+      "id": "Q09",
+      "ms": 49177,
+      "queue_ms": 46081,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 3,
+      "errors": []
+    },
+    {
+      "id": "Q10",
+      "ms": 3892,
+      "queue_ms": 0,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 4,
+      "errors": []
+    },
+    {
+      "id": "Q11",
+      "ms": 6023,
+      "queue_ms": 276,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 6,
+      "errors": []
+    },
+    {
+      "id": "Q12",
+      "ms": 48767,
+      "queue_ms": 45874,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 3,
+      "errors": []
+    },
+    {
+      "id": "Q13",
+      "ms": 3260,
+      "queue_ms": 529,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 3,
+      "errors": []
+    },
+    {
+      "id": "Q14",
+      "ms": 4331,
+      "queue_ms": 311,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 4,
+      "errors": []
+    },
+    {
+      "id": "Q15",
+      "ms": 3715,
+      "queue_ms": 7,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 4,
+      "errors": []
+    },
+    {
+      "id": "Q16",
+      "ms": 49870,
+      "queue_ms": 45993,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 4,
+      "errors": []
+    },
+    {
+      "id": "Q17",
+      "ms": 3587,
+      "queue_ms": 368,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 3,
+      "errors": []
+    },
+    {
+      "id": "Q18",
+      "ms": 3917,
+      "queue_ms": 96,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 4,
+      "errors": []
+    },
+    {
+      "id": "E026",
+      "ms": 3833,
+      "queue_ms": 0,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 4,
+      "errors": []
+    },
+    {
+      "id": "E031",
+      "ms": 52216,
+      "queue_ms": 46638,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 6,
+      "errors": []
+    },
+    {
+      "id": "E041",
+      "ms": 2960,
+      "queue_ms": 31,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 3,
+      "errors": []
+    },
+    {
+      "id": "E047",
+      "ms": 4034,
+      "queue_ms": 144,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 4,
+      "errors": []
+    },
+    {
+      "id": "E053",
+      "ms": 50593,
+      "queue_ms": 46068,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 5,
+      "errors": []
+    },
+    {
+      "id": "E061",
+      "ms": 3416,
+      "queue_ms": 602,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 3,
+      "errors": []
+    },
+    {
+      "id": "E065",
+      "ms": 3259,
+      "queue_ms": 89,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 3,
+      "errors": []
+    },
+    {
+      "id": "E069",
+      "ms": 1686,
+      "queue_ms": 0,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 2,
+      "errors": []
+    },
+    {
+      "id": "E074",
+      "ms": 50610,
+      "queue_ms": 45537,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 5,
+      "errors": []
+    },
+    {
+      "id": "E038",
+      "ms": 2096,
+      "queue_ms": 273,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 2,
+      "errors": []
+    },
+    {
+      "id": "H005",
+      "ms": 3389,
+      "queue_ms": 335,
+      "path": "llm_tools",
+      "model": "gemini-3.5-flash-lite",
+      "attempts": 3,
+      "errors": []
+    },
+    {
+      "id": "H016",
+      "ms": 1635,
+      "queue_ms": 136,
+      "path": "fallback",
+      "model": null,
+      "attempts": 2,
+      "errors": [
+        "rate_limit"
+      ]
+    }
+  ],
+  "answers": [
+    {
+      "id": "Q01",
+      "answer": "Розничная цена уголка для сборки рамочного фасада (большого) составляет 450,00 тг за штуку, а при заказе от 100 штук цена составляет 350,00 тг за штуку. Уточните, пожалуйста, какое количество уголков вам необходимо?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q02",
+      "answer": "Наша компания не выполняет монтаж и доставку, мы занимаемся изготовлением и продажей стекол и зеркал. Пожалуйста, уточните размеры зеркала и нужную толщину, чтобы мы могли рассчитать его стоимость.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q03",
+      "answer": "Стоимость стекла 6 мм прозрачного размером 1200×1800 мм составляет 17 280 ₸ (из расчета 8 000 ₸ за м²). Нужна ли вам дополнительная обработка кромки?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q04",
+      "answer": "Стекло серое 8 мм размером 1000×1200 мм стоит 24 000,00 ₸ (цена за 1 м² составляет 20 000,00 ₸). Уточните, требуется ли обработка кромки или закалка для этого изделия?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q05",
+      "answer": "Рифлёное стекло прозрачное 5 мм стоит 40 000 тенге за квадратный метр. Пожалуйста, уточните нужные размеры стекла в миллиметрах и количество, чтобы сделать расчет.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q06",
+      "answer": "Стоимость целого листа рифлёного серого стекла 8 мм составляет 200 000 тг. Уточните, пожалуйста, требуются ли вам индивидуальные размеры детали для точного расчёта.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q07",
+      "answer": "Оплата заказа на сайте картой не принимается, все детали по оплате согласует менеджер. Какой именно товар вас интересует для расчета предварительной стоимости заказа?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q08",
+      "answer": "Стоимость фацета на стекло 6 мм рассчитывается индивидуально, точную цену сможет назвать менеджер. Подскажите, пожалуйста, какие размеры стекла вам требуются и какая ширина фацета планируется?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q09",
+      "answer": "Стоимость силикона для зеркал ZUNXIN 997 в розницу составляет 1500.00 тг за штуку, а при заказе от 100 штук — 1300.00 тг за штуку.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q10",
+      "answer": "Розничная цена полкодержателя 19 × 15 × 16 мм составляет 150.00 тенге за штуку. При заказе от 100 штук цена за единицу снижается до 100.00 тенге. Уточните, пожалуйста, нужное количество фурнитуры для оформления заказа.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q11",
+      "answer": "В нашем каталоге модель зеркала AB1020 не имеет фиксированной цены, стоимость рассчитывает менеджер. Уточните, пожалуйста, нужные размеры изделия, чтобы мы могли передать запрос специалисту.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q12",
+      "answer": "Стоимость целого листа стекла «Стекло бронза 8 мм» составляет 90 000,00 тенге. Уточните, пожалуйста, требуются ли вам дополнительные услуги, такие как обработка кромки или закалка?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q13",
+      "answer": "К сожалению, я не могу самостоятельно устанавливать скидки — их условия и предоставление согласует только менеджер. Уточните, пожалуйста, параметры нужного изделия (вид стекла, толщину и размеры), чтобы я мог сделать предварительный расчет.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q14",
+      "answer": "В каталоге нет точной фиксированной цены на пескоструйную обработку зеркал, так как стоимость зависит от параметров заказа. Я передам ваш вопрос менеджеру для детального расчета. Уточните, пожалуйста, размеры зеркала и какой рисунок или площадь обработки планируется?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q15",
+      "answer": "Стоимость стекла 4 мм прозрачного составляет 4 500 ₸ за квадратный метр. Уточните, пожалуйста, требуемые размеры и количество изделий для более точного расчёта.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q16",
+      "answer": "Стоимость зеркала 4 мм в размере листа 2750 × 1605 составляет 24000.00 ₸. Потребуется ли вам дополнительная обработка кромки или доставка?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q17",
+      "answer": "В нашем каталоге есть несколько вариантов серого стекла: «Стекло серое» стоит 10000.00 тенге за квадратный метр, «Стекло серое комфорт» — 15000.00 тенге, а «Стекло серое 8 мм» — 20000.00 тенге. Уточните, пожалуйста, какой именно вид и толщина стекла вас интересуют?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "Q18",
+      "answer": "Предварительная стоимость зеркала 4 мм (лист 3210 × 2250) размером 700×1500 мм составляет 12 075,00 ₸ (по цене 11 500,00 ₸/м²). Уточните, требуется ли дополнительная обработка кромки изделия?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "E026",
+      "answer": "Предварительная стоимость изделия составляет 1988.00 ₸, в том числе стекло 6 мм прозрачное — 1332.00 ₸ и евро-кромка по всем сторонам — 656.00 ₸. Подскажите, требуется ли вам закаленное стекло для этого заказа?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "E031",
+      "answer": "Предварительная стоимость стекла 8 мм прозрачного 500×500 мм составляет 3000 тенге. Стоимость обработки кромки по всем сторонам для толщины 8 мм уточнит менеджер. Подскажите, требуется ли вам доставка?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "E041",
+      "answer": "Силикон для зеркал ZUNXIN 997 доступен по цене 1500.00 тенге за штуку в розницу или 1300.00 тенге за штуку при заказе от 100 штук. Уточните, пожалуйста, какое количество вам требуется?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "E047",
+      "answer": "Предварительная стоимость 150 полкодержателей 10 × 14 × 12 мм составляет 12 000.00 ₸ (по оптовой цене 80.00 ₸ за штуку). Уточните, пожалуйста, требуются ли дополнительные комплектующие для вашего заказа.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "E053",
+      "answer": "К сожалению, стоимость зеркала модели AB1001 не указана в каталоге, и точную цену рассчитывает менеджер. Пожалуйста, уточните нужные размеры изделия, чтобы мы могли передать запрос специалисту.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "E061",
+      "answer": "Наша компания не выполняет монтаж зеркал дома у клиентов, мы занимаемся поставкой стекла, зеркал, фурнитуры и профилей. Какой размер зеркала и тип обработки вас интересуют?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "E065",
+      "answer": "Мы ценим крупные заказы, но вопросы предоставления скидок и специальных условий обсуждаются индивидуально с менеджером. Пожалуйста, сообщите параметры нужного вам стекла — вид, толщину и размеры, чтобы мы могли сделать предварительный расчет.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "E069",
+      "answer": "Стоимость стекла 4 мм прозрачного составляет 4500.00 тенге за квадратный метр. Для точного предварительного расчета укажите, пожалуйста, требуемые размеры изделия и количество.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "E074",
+      "answer": "К сожалению, в нашем каталоге не нашлось подходящего материала толщиной 6 мм по вашему запросу. Передаю вопрос менеджеру для подбора варианта и уточнения точной стоимости.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "E038",
+      "answer": "Рифлёное прозрачное стекло 8 мм доступно по цене 170 000 тенге за лист. Укажите, пожалуйста, точные размеры изделия и необходимое количество.",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "H005",
+      "answer": "Сенсорный переключатель двойной + часы YZKJ-B3-13LTC стоит 5500.00 тенге за штуку. Уточните, пожалуйста, сколько штук вам требуется?",
+      "path": "llm_tools",
+      "verifier": "supported",
+      "selected_model": true,
+      "cache_hit": false
+    },
+    {
+      "id": "H016",
+      "answer": "Стекло 6 мм прозрачное, 300×200 мм, 2 шт: 0,06 м² × 8 000 ₸ × 2 = 960 ₸. Евро-кромка по всем 4 сторонам: 1 м × 400 ₸ × 2 = 800 ₸. Итого предварительно 1 760 ₸; окончательную стоимость подтверждает менеджер.",
+      "path": "fallback",
+      "verifier": "not_applicable",
+      "selected_model": false,
+      "cache_hit": false
+    }
+  ]
+}

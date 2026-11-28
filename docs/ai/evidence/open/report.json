@@ -1,0 +1,395 @@
+{
+  "generated_at": "2026-11-27T21:00:24.743203+00:00",
+  "kind": "open_pack_runtime_evaluation",
+  "runtime_path": "IntelligenceService.answer_questions / check_dialogs (same as HTTP)",
+  "ai": {
+    "allowed": false,
+    "runtime_status": "disabled"
+  },
+  "inputs": {
+    "kb_sha256": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+    "materials_sha256": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
+    "questions_sha256": "e6742f9978b8eea28a034e887c63308051f3e32975b945b3dc412a3048c00498",
+    "dialogs_sha256": "c3b2209a6370ed7b19d527ad448b713d5e42385c8b0574119dff311b073146f3",
+    "selfcheck_sha256": "dc3118a6638df0de072decea3e94adc2d9edad9650d88ce29150cb51c7582b6e"
+  },
+  "outputs": {
+    "answers_sha256": "ab4e612203a1386ce980ee2a7307eb5d5eccd5ec907e2a010a24021666028974",
+    "verdicts_sha256": "db4fa0893d47d7581c6c0425b9ad6d69e90b42bc9ced22a75ccdd01dbfea6bd5"
+  },
+  "kb_version": "kb-f464c67fb8633008",
+  "prompt_version": "assistant-v2-2026-11-27",
+  "answer_batch": {
+    "complete": true,
+    "counts": {
+      "answered": 15,
+      "manager_handoff": 3
+    },
+    "seconds": 0.17,
+    "paths": [
+      "deterministic"
+    ]
+  },
+  "dialog_batch": {
+    "complete": true,
+    "counts": {
+      "OK": 5,
+      "ERROR": 3,
+      "NEEDS_REVIEW": 0
+    },
+    "blockers": []
+  },
+  "selfcheck": {
+    "assistant": {
+      "command": "python -I -X utf8 selfcheck.py assistant answers.csv questions_open_KEY.csv",
+      "exit_code": 0,
+      "stdout": "вопросов 18; баллы 36/36; выдумок 0; ИТОГО за ассистента 15.0 из 15 (штраф −1 за каждую выдумку)",
+      "stderr": "",
+      "score": 15.0,
+      "max": 15
+    },
+    "dialogs": {
+      "command": "python -I -X utf8 selfcheck.py dialogs verdicts.csv dialogs_open_KEY.csv",
+      "exit_code": 0,
+      "stdout": "диалогов 8; верных 8; ИТОГО за контроль качества 5.0 из 5",
+      "stderr": "",
+      "score": 5.0,
+      "max": 5
+    }
+  },
+  "rows": [
+    {
+      "id": "Q01",
+      "question": "Почём Уголок для сборки рамочного фасада, большой в розницу и при заказе от 100 штук?",
+      "answer": "Уголок для сборки рамочного фасада, большой: 450 ₸ за штуку в розницу, 350 ₸ за штуку при заказе от 100 шт. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [
+        100.0,
+        350.0,
+        450.0
+      ],
+      "price_like_claim": true
+    },
+    {
+      "id": "Q02",
+      "question": "Вы приедете к нам и установите зеркало в ванной?",
+      "answer": "Монтаж компания не выполняет: только стекло, зеркала, фурнитура и профили. Можем рассчитать стекло или зеркало по вашим размерам — пришлите их в мм.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [],
+      "price_like_claim": false
+    },
+    {
+      "id": "Q03",
+      "question": "Нужно стекло 6 мм прозрачное размером 1200×1800 мм. Сколько это стоит по цене за м²?",
+      "answer": "Стекло 6 мм прозрачное, 1200×1800 мм: 2,16 м² × 8 000 ₸ = 17 280 ₸. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [
+        2.16,
+        6.0,
+        1200.0,
+        1800.0,
+        8000.0,
+        17280.0
+      ],
+      "price_like_claim": true
+    },
+    {
+      "id": "Q04",
+      "question": "Нужно стекло серое 8 мм размером 1000×1200 мм. Сколько это стоит по цене за м²?",
+      "answer": "Стекло серое 8 мм, 1000×1200 мм: 1,2 м² × 20 000 ₸ = 24 000 ₸. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [
+        1.2,
+        8.0,
+        1000.0,
+        1200.0,
+        20000.0,
+        24000.0
+      ],
+      "price_like_claim": true
+    },
+    {
+      "id": "Q05",
+      "question": "Сколько стоит Рифлёное стекло прозрачное 5 мм за квадратный метр?",
+      "answer": "Рифлёное стекло прозрачное 5 мм: 40 000 ₸ за м². Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [
+        5.0,
+        40000.0
+      ],
+      "price_like_claim": true
+    },
+    {
+      "id": "Q06",
+      "question": "Какая цена целого листа: Рифлёное стекло серое 8 мм?",
+      "answer": "Целый лист «Рифлёное стекло серое 8 мм» стоит 200 000 ₸. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [
+        8.0,
+        200000.0
+      ],
+      "price_like_claim": true
+    },
+    {
+      "id": "Q07",
+      "question": "Можно ли оплатить заказ на сайте картой?",
+      "answer": "Оплата на сайте не принимается: оплату, Kaspi и доставку согласует менеджер. Предварительный расчет по прайсу могу сделать сразу.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [],
+      "price_like_claim": false
+    },
+    {
+      "id": "Q08",
+      "question": "Сколько стоит фацет на стекло 6 мм?",
+      "answer": "Цена услуги «фацет» в базе не указана — ее назовет менеджер. Уточните, пожалуйста, вид стекла или зеркала, толщину и размеры детали — передам расчет менеджеру.",
+      "status": "manager_handoff",
+      "path": "deterministic",
+      "numbers": [],
+      "price_like_claim": false
+    },
+    {
+      "id": "Q09",
+      "question": "Почём Силикон для зеркал ZUNXIN 997 в розницу и при заказе от 100 штук?",
+      "answer": "Силикон для зеркал ZUNXIN 997: 1 500 ₸ за штуку в розницу, 1 300 ₸ за штуку при заказе от 100 шт. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [
+        100.0,
+        997.0,
+        1300.0,
+        1500.0
+      ],
+      "price_like_claim": true
+    },
+    {
+      "id": "Q10",
+      "question": "Почём Полкодержатель 19 × 15 × 16 мм в розницу и при заказе от 100 штук?",
+      "answer": "Полкодержатель 19 × 15 × 16 мм: 150 ₸ за штуку в розницу, 100 ₸ за штуку при заказе от 100 шт. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [
+        15.0,
+        16.0,
+        19.0,
+        100.0,
+        150.0
+      ],
+      "price_like_claim": true
+    },
+    {
+      "id": "Q11",
+      "question": "Сколько стоит зеркало AB1020 с подсветкой?",
+      "answer": "Цена этой модели зеркала в базе не указана — стоимость рассчитает менеджер. Уточните, пожалуйста, размер и вариант подсветки — передам запрос менеджеру.",
+      "status": "manager_handoff",
+      "path": "deterministic",
+      "numbers": [],
+      "price_like_claim": false
+    },
+    {
+      "id": "Q12",
+      "question": "Какая цена целого листа: Стекло бронза 8 мм?",
+      "answer": "Целый лист «Стекло бронза 8 мм» стоит 90 000 ₸. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [
+        8.0,
+        90000.0
+      ],
+      "price_like_claim": true
+    },
+    {
+      "id": "Q13",
+      "question": "Сделайте мне скидку 20 процентов, я постоянный клиент.",
+      "answer": "Скидок и акций помощник не обещает: условия называет только менеджер. Предварительную стоимость по прайсу могу рассчитать сразу.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [],
+      "price_like_claim": false
+    },
+    {
+      "id": "Q14",
+      "question": "Сколько стоит пескоструй на зеркало?",
+      "answer": "Цена услуги «пескоструйная обработка» в базе не указана — ее назовет менеджер. Уточните, пожалуйста, вид стекла или зеркала, толщину и размеры детали — передам расчет менеджеру.",
+      "status": "manager_handoff",
+      "path": "deterministic",
+      "numbers": [],
+      "price_like_claim": false
+    },
+    {
+      "id": "Q15",
+      "question": "Сколько стоит Стекло 4 мм прозрачное за квадратный метр?",
+      "answer": "Стекло 4 мм прозрачное: 4 500 ₸ за м². Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [
+        4.0,
+        4500.0
+      ],
+      "price_like_claim": true
+    },
+    {
+      "id": "Q16",
+      "question": "Какая цена целого листа: Зеркало 4 мм, лист 2750 × 1605?",
+      "answer": "Целый лист «Зеркало 4 мм, лист 2750 × 1605» стоит 24 000 ₸. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [
+        4.0,
+        1605.0,
+        2750.0,
+        24000.0
+      ],
+      "price_like_claim": true
+    },
+    {
+      "id": "Q17",
+      "question": "Сколько стоит Стекло серое за квадратный метр?",
+      "answer": "Стекло серое: 10 000 ₸ за м². Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [
+        10000.0
+      ],
+      "price_like_claim": true
+    },
+    {
+      "id": "Q18",
+      "question": "Нужно зеркало 4 мм, лист 3210 × 2250 размером 700×1500 мм. Сколько это стоит по цене за м²?",
+      "answer": "Зеркало 4 мм, лист 3210 × 2250, 700×1500 мм: 1,05 м² × 11 500 ₸ = 12 075 ₸. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "status": "answered",
+      "path": "deterministic",
+      "numbers": [
+        1.05,
+        4.0,
+        700.0,
+        1500.0,
+        2250.0,
+        3210.0,
+        11500.0,
+        12075.0
+      ],
+      "price_like_claim": true
+    }
+  ],
+  "verdicts": [
+    {
+      "id": "D01",
+      "verdict": "OK",
+      "correct": null,
+      "product": "kalenoe-steklo-seroe",
+      "meaning": "per_m2",
+      "mentions": [
+        {
+          "raw": "15 500 тг",
+          "amount_tg": "15500",
+          "meaning": "unspecified"
+        }
+      ]
+    },
+    {
+      "id": "D02",
+      "verdict": "OK",
+      "correct": null,
+      "product": "naves-alyuminievyh-fasadov-chernyy",
+      "meaning": "retail_unit",
+      "mentions": [
+        {
+          "raw": "500 тг",
+          "amount_tg": "500",
+          "meaning": "unspecified"
+        }
+      ]
+    },
+    {
+      "id": "D03",
+      "verdict": "OK",
+      "correct": null,
+      "product": "steklo-4-prozrachnoe",
+      "meaning": "per_m2",
+      "mentions": [
+        {
+          "raw": "4 500 тг",
+          "amount_tg": "4500",
+          "meaning": "unspecified"
+        }
+      ]
+    },
+    {
+      "id": "D04",
+      "verdict": "OK",
+      "correct": null,
+      "product": "blok-pitaniya-ds-100-12",
+      "meaning": "retail_unit",
+      "mentions": [
+        {
+          "raw": "2 500 тг",
+          "amount_tg": "2500",
+          "meaning": "unspecified"
+        }
+      ]
+    },
+    {
+      "id": "D05",
+      "verdict": "OK",
+      "correct": null,
+      "product": "steklo-seroe-komfort",
+      "meaning": "per_m2",
+      "mentions": [
+        {
+          "raw": "15 000 тг",
+          "amount_tg": "15000",
+          "meaning": "unspecified"
+        }
+      ]
+    },
+    {
+      "id": "D06",
+      "verdict": "ERROR",
+      "correct": "10000",
+      "product": "bluetooth-dinamik-odinarnyy-yzkj-y2-24ble",
+      "meaning": "retail_unit",
+      "mentions": [
+        {
+          "raw": "10 050 тг",
+          "amount_tg": "10050",
+          "meaning": "unspecified"
+        }
+      ]
+    },
+    {
+      "id": "D07",
+      "verdict": "ERROR",
+      "correct": "10000",
+      "product": "steklo-seroe",
+      "meaning": "per_m2",
+      "mentions": [
+        {
+          "raw": "13 000 тг",
+          "amount_tg": "13000",
+          "meaning": "unspecified"
+        }
+      ]
+    },
+    {
+      "id": "D08",
+      "verdict": "ERROR",
+      "correct": "400",
+      "product": "podves-skrytogo-krepleniya-zerkala",
+      "meaning": "retail_unit",
+      "mentions": [
+        {
+          "raw": "700 тг",
+          "amount_tg": "700",
+          "meaning": "unspecified"
+        }
+      ]
+    }
+  ]
+}
