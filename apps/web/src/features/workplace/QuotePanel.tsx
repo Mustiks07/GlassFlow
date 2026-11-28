@@ -23,7 +23,7 @@ const PRICE_TYPE: Record<string, string> = {
 const MAPPING_LABEL: Record<Quote['material_mapping_status'], string> = {
   confirmed: 'Складской материал подтвержден',
   proposed: 'Соответствие предложено, но не подтверждено менеджером',
-  unmapped: 'Нет подтвержденного соответствия складу (это не «нет в наличии» и не NEW)',
+  unmapped: 'Соответствие складу не подтверждено. Наличие материала нужно уточнить',
   ambiguous: 'Соответствие неоднозначно — нужен выбор менеджера',
 };
 
@@ -328,7 +328,7 @@ export function QuoteResult({ quote, stale }: { quote: Quote; stale: boolean }) 
       <div className="quote-head">
         <div>
           <span className="small muted">
-            Расчет <span className="mono">{quote.quote_id}</span> · ревизия {quote.revision}
+            Расчет · ревизия {quote.revision}<Details summary="Номер расчета для поддержки">{quote.quote_id}</Details>
           </span>
           <div className="row wrap">
             <StatusBadge tone={tone}>{STATUS_LABEL[quote.status]}</StatusBadge>

@@ -238,7 +238,7 @@ export function CandidatePanel({
             if (!open) confirm.reset();
           }}
           title="Подтвердить предложение"
-          action={`Ревизия ${quote.revision} предложения ${quote.quote_id} станет подтвержденной. Цена остается предварительной до согласования условий менеджером; склад этим действием не резервируется.`}
+          action={`Ревизия ${quote.revision} текущего предложения станет подтвержденной. Цена остается предварительной до согласования условий менеджером; склад этим действием не резервируется.`}
           affected={[
             { label: 'Итог (предварительный)', value: formatMoney(quote.total_tg, { fixed2: true }) },
             { label: 'Ожидаемая ревизия', value: String(quote.revision) },
@@ -262,7 +262,7 @@ export function CandidatePanel({
             if (!open) reserve.reset();
           }}
           title={`Зарезервировать ${chosen.remnant_id}`}
-          action={`Целый кусок ${chosen.remnant_id} будет зарезервирован под предложение ${quote.quote_id} (ревизия ${quote.revision}). Сервер повторно проверит версию и свободный статус; при изменении вернется конфликт с актуальным состоянием.`}
+          action={`Целый кусок ${chosen.remnant_id} будет зарезервирован под текущее предложение (ревизия ${quote.revision}). Сервер повторно проверит версию и свободный статус; при изменении вернется конфликт с актуальным состоянием.`}
           affected={[
             { label: 'Остаток', value: <span className="mono">{chosen.remnant_id}</span> },
             { label: 'Ожидаемая версия', value: String(chosen.remnant_version) },

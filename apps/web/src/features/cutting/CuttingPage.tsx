@@ -164,7 +164,7 @@ function PlanMetrics({ plan }: { plan: CutPlan }) {
           {SEARCH_STATUS_LABEL[plan.search_status]}
         </StatusBadge>
         <span className="small muted">
-          <span className="mono">{plan.plan_id}</span> · ревизия {plan.revision}
+            План · ревизия {plan.revision}<Details summary="Номер плана для поддержки">{plan.plan_id}</Details>
           {stopReason && <> · остановка: {stopReason}</>}
           {plan.inventory_current === false && <> · склад изменился после расчета</>}
         </span>
