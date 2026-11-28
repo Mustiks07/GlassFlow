@@ -25,8 +25,35 @@ from glassflow.modules.cutting.solver import CuttingSolver, SolverSettings
 HERE = pathlib.Path(__file__).resolve().parent
 VARIANTS = ["baseline", "N11_directed", "N12_locations", "N14_components"]
 SEEDS = [7, 19, 41]
-BUDGET = 9.0
+BUDGET = 20.0
 MEMORY = 1024**3
+
+
+def single_cpu():
+    """Hard per-process CPU allocation, including native-library workers."""
+    if os.name == "nt":
+        from ctypes import wintypes
+
+        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+        kernel.GetCurrentProcess.restype = wintypes.HANDLE
+        kernel.GetProcessAffinityMask.argtypes = [
+            wintypes.HANDLE,
+            ctypes.POINTER(ctypes.c_size_t),
+            ctypes.POINTER(ctypes.c_size_t),
+        ]
+        kernel.SetProcessAffinityMask.argtypes = [wintypes.HANDLE, ctypes.c_size_t]
+        handle = kernel.GetCurrentProcess()
+        allowed, system = ctypes.c_size_t(), ctypes.c_size_t()
+        if not kernel.GetProcessAffinityMask(handle, ctypes.byref(allowed), ctypes.byref(system)):
+            raise OSError(ctypes.get_last_error(), "GetProcessAffinityMask")
+        core = allowed.value.bit_length() - 1
+        if not kernel.SetProcessAffinityMask(handle, 1 << core):
+            raise OSError(ctypes.get_last_error(), "SetProcessAffinityMask")
+        return [core]
+    cores = os.sched_getaffinity(0)
+    core = max(cores)
+    os.sched_setaffinity(0, {core})
+    return sorted(os.sched_getaffinity(0))
 
 
 class Directed(CuttingSolver):
@@ -198,7 +225,11 @@ def peak_rss(pid):
 
 
 def worker(variant, family, seed):
+    affinity = single_cpu()
     snapshot = build(family, seed)
+    frozen = json.loads((HERE / "inputs" / f"{family}-{seed}.json").read_text(encoding="utf8"))
+    if source_hash(snapshot) != frozen["input_sha256"]:
+        raise RuntimeError("Frozen paired input changed")
     start = time.perf_counter()
 
     def emit(event, **body):
@@ -255,7 +286,7 @@ def worker(variant, family, seed):
         ),
         callbacks=Callback(),
     )
-    emit("started", input_sha256=source_hash(snapshot))
+    emit("started", input_sha256=source_hash(snapshot), cpu_affinity=affinity)
     result = solver.run()
     emit(
         "finished",
@@ -274,6 +305,7 @@ def trial(variant, family, seed):
         text=True,
         encoding="utf8",
         creationflags=0x08000000 if os.name == "nt" else 0,
+        env={**os.environ, "OMP_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1", "MKL_NUM_THREADS": "1"},
     )
     events = queue.Queue()
 
@@ -293,7 +325,8 @@ def trial(variant, family, seed):
     peak = 0
     stop = "process_finished"
     detail = None
-    while process.poll() is None or not events.empty():
+    affinity = None
+    while process.poll() is None or thread.is_alive() or not events.empty():
         peak = max(peak, peak_rss(process.pid))
         try:
             event = events.get(timeout=0.02)
@@ -302,13 +335,15 @@ def trial(variant, family, seed):
         if event:
             if event["event"] == "started":
                 deadline = time.monotonic() + BUDGET + 0.15
+                affinity = event["cpu_affinity"]
             elif event["event"] == "incumbent" and event["elapsed"] <= BUDGET:
                 if first is None:
                     first = event["elapsed"]
                 best = event
             elif event["event"] == "finished":
                 detail = event
-        if peak > MEMORY or time.monotonic() > deadline:
+                peak = max(peak, event["peak_rss_bytes"])
+        if process.poll() is None and (peak > MEMORY or time.monotonic() > deadline):
             stop = "memory_limit" if peak > MEMORY else "common_deadline"
             process.kill()
             break
@@ -327,6 +362,7 @@ def trial(variant, family, seed):
         "input_sha256": source_hash(snapshot),
         "budget_seconds": BUDGET,
         "workers": 1,
+        "cpu_affinity": affinity,
         "memory_limit_bytes": MEMORY,
         "peak_rss_bytes": peak,
         "valid_complete": valid,
@@ -341,10 +377,11 @@ def trial(variant, family, seed):
 
 def compare():
     report = {
-        "base_commit": "5648852d64189ffd7269c277002f6fbc40c8039a",
+        "baseline_commit": "a079a28",
+        "previous_pilot": "pilot-9s-partial.json: interrupted; existing baseline corrected before v2",
         "candidate_source_sha256": hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),
         "protocol_sha256": hashlib.sha256((HERE / "PROTOCOL.md").read_bytes()).hexdigest(),
-        "clock": "same9s process budget; latest independently valid incumbent at <=9s, late final ignored",
+        "clock": "same20s process budget; latest independently valid incumbent at <=20s, late final ignored",
         "memory": "native OS peak RSS in fresh isolated process; hard1GiB parent monitor",
         "machine": {"os": sys.platform, "python": sys.version, "logical_cpus": os.cpu_count()},
         "trials": [],
@@ -382,6 +419,9 @@ def compare():
             and a["peak_rss_bytes"] > 0
             and b["peak_rss_bytes"] > 0
             and b["peak_rss_bytes"] <= a["peak_rss_bytes"] * 1.15
+            and b["peak_rss_bytes"] <= MEMORY
+            and a["cpu_affinity"] == b["cpu_affinity"]
+            and len(a["cpu_affinity"] or []) == 1
             for a, b in pairs
         )
 
@@ -401,7 +441,10 @@ def compare():
             (b["selected"] or {}).get("area", 0) - (a["selected"] or {}).get("area", 0) for a, b in pairs
         ]
         if variant == "N12_locations":
-            better = sum(b["selected"]["locations"] < a["selected"]["locations"] for a, b in pairs)
+            better = sum(
+                (b["selected"] or {}).get("locations", 999) < (a["selected"] or {}).get("locations", 0)
+                for a, b in pairs
+            )
             promote = (
                 guard
                 and all(d >= 0 for d in changes)

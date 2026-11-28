@@ -1,7 +1,7 @@
 # Post-integration algorithms
 
 Base5648852, branch codex/post-algorithms, worktree GlassFlow-post-algorithms. Owner Mustiks07.
-Original case/spec/validators/evidence and runtime baseline solver are unchanged.
+Original case/spec/validators/evidence are unchanged. Runtime solver received the priority0 correctness fix described below; research candidates remain disabled.
 
 ## Implemented checkpoint
 
@@ -29,7 +29,7 @@ Contracts sent to root before dependent UI; root approved plan scope and tempere
 Complete further stale/ID/lock/invalid/persistence boundaries and full C2 suite; preregistered N11/N12/N14
 comparison in docs/experiments/post_cutting/PROTOCOL.md, then run all trials and decide promotion. Baseline remains
 production until criteria pass. Root independently integrates functional UI/actual E2E/packaging.
-Pending architecture approval: explicit BEGIN for C2 read_session to guarantee multi-query read snapshot.
+Explicit BEGIN architecture approved and implemented as described below.
 
 ## Snapshot and boundaries checkpoint
 
@@ -40,3 +40,51 @@ Added boundaries for nonoriginal/unknown eligibility, preserved requested locks,
 
 9s pilot found a valid-geometry incumbent with fewer than requested5 free originals. Preserved all observed rows in pilot-9s-partial.json, interrupted comparison, no promotion conclusions. Root approved fix: checked all-NEW seed before native/greedy, immediate deadline/cancel handling; strict requested minimum (no min(requested,available) relaxation), no published incumbent below requested free constraint, limited status if impossible. Engine version cutting-engine/1.1-min-free-incumbent. Requested locks remain independently checked before publication.
 Target first-complete+N01:16 PASS; existing solver targets17 PASS; whole C2 after main seed fix94 PASS/1 SKIP92.63s (then one extra excluded-stock boundary separately PASS). Original quick coverage>=55.8080067%, geometry valid and five free retained. New20s paired study will freeze before running any new candidate; old9s history remains available.
+
+## Additional bounded evidence
+
+V2 protocol frozen at bb7f480, before running candidates: same six mathematical input hashes, declared reuse
+after baseline correctness fix, all24 trials20s/1GiB/one OS CPU(11 on this Windows10 host), workers1 and native
+threads1. PeakWorkingSet includes native allocations; parent samples limit every20ms, final high-water is
+also recorded. Late incumbents ignored. No heavy600 profile, no hidden review exam read.
+
+N03 HTTP/service experiment (`uv run python docs/experiments/post_cutting/scarcity_comparison.py`) runs real
+FastAPI routes + SQLite on36 explicitly synthetic cases with changed IDs: quantity1/2, impossible joint order,
+reserved alternative, nonscarce geometry,1ms fallback. All baseline payloads/order unchanged;11 warm proof
+witnesses independently validated;18 negative cases no_proof;6 tiny budgets limited. Cold native import
+consumed1044.15ms and returned limited without invented advice; remaining35 HTTP requests p95=28.26ms.
+Developer-host performance is not a clean-machine acceptance result. Reproduction script and every response
+saved in scarcity-comparison.json. Global candidate order is intentionally not promoted; optional proof is
+separate. Root owns live dataset/E2E acceptance and the visible frontend state.
+
+N13 read-only geometric margin pilot enabled: uses actual validated placements, edge5/gap3 or tempered
+whole-piece deviation±2, never changes placement/tolerances/reserve and makes no defect probability claim.
+No promotion of manufacturing-risk recommendations. Exact bounds regression is in test_post_insights.py.
+
+Final whole C2 suite after every runtime change:95 PASS/1 SKIP/1 dependency deprecation warning in103.43s;
+command `uv run python -` with `pytest.main(['tests/cutting','-q','-o','addopts=','--junitxml=.qa/post-cutting-final.xml'])`,
+test process constrained to CPU0 to leave comparison CPU11 available. No test checks disabled; optional600s
+profile remains skipped by its existing explicit flag. Scope Ruff PASS. Actual candidate timing saved separately;
+tracked original evidence restored byte-for-byte. Logs/JUnit are in ignored .qa for root audit.
+
+## Completed research queue and final metric boundary
+
+All24 preregistered v2 trials completed.24/24 selected incumbents independently valid and free>=5; no
+variant promoted. N11 deltas [0,0,0,26300,0,0]mm², median0, dense wins0/3; N12 no area change and location
+improvements0/6, with mixed7 native-memory guard failure184.93MiB vs baseline150.46MiB (>15%); N14 deltas
+[0,0,0,-4500,-11800,2200]mm², two regressions. Every row and actual stop reason retained in comparison.json,
+full table/limitations/decisions RESULTS.md, reproducible rendering summarize.py. Experimental prototypes
+are never imported by production. First complete1.6–4.4ms here is pure solver callback, not HTTP/product latency.
+Actual diagnostics show N11 phase reached4/6 cases; no benefit claimed for unexercised cases. Scalar report
+does not retain placement coordinates; every chosen plan was validated during run. Original interrupted
+pilot remains preserved separately. No hidden exam or heavy600s run claimed.
+
+After all trials ended (runtime sources held fixed throughout study), fixed one displayed-metric boundary:
+SolveInput unavailable/occupied IDs are excluded from free_original count/list even if raw row status is
+still available. compute_metrics accepts optional excluded set; engine and direct N01 repair pass it.
+Existing no-false-publication guard remains. Regressions+N01+review fixes+inventory API40 PASS in10.00s;
+scope Ruff PASS. The earlier whole suite95 PASS/1 SKIP predates only this small metric exclusion correction.
+
+Root handles remaining sales registry/queue bridge, OpenAPI/TS regeneration, frontend integration, actual
+service/browser E2E and clean-machine/human/packaging acceptance. Own algorithm queue N01/N03/N10/N13 and
+honest N11/N12/N14 decisions is complete. New root-authorized PlanInsights.tsx UI handoff follows separately.

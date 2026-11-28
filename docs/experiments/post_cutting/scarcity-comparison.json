@@ -1,0 +1,2688 @@
+{
+  "kind": "synthetic HTTP/service experiment, not real production E2E",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "python": "3.12.11",
+  "budget_ms": 300,
+  "tiny_budget_ms": 1,
+  "samples": [
+    {
+      "case": "quantity1",
+      "repeat": 0,
+      "dataset_id": "n03-quantity1-changed-3",
+      "cold": true,
+      "http_ms": 1044.146200059913,
+      "baseline_http_ms": 199.17130004614592,
+      "status": "limited",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-quantity1-changed-3",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-quantity1-changed-3-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-quantity1-changed-3-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "limited",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 1030.959,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "quantity2",
+      "repeat": 0,
+      "dataset_id": "n03-quantity2-changed-3",
+      "cold": false,
+      "http_ms": 91.54429996851832,
+      "baseline_http_ms": 12.644900009036064,
+      "status": "proved",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-quantity2-changed-3",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-quantity2-changed-3-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-quantity2-changed-3-long",
+              "remnant_version": 1,
+              "x_mm": 88,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 1,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 2,
+          "requested_quantity": 2,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "proved",
+        "recommended_remnant_id": "n03-quantity2-changed-3-other",
+        "explanations": [
+          {
+            "preserve_remnant_id": "n03-quantity2-changed-3-long",
+            "alternative_remnant_id": "n03-quantity2-changed-3-other",
+            "known_order_id": "n03-quantity2-changed-3-order",
+            "pending_part_ids": [
+              "n03-quantity2-changed-3-part-7"
+            ],
+            "joint_witness": [
+              {
+                "part_id": "n03-quantity2-changed-3-part-7",
+                "remnant_id": "n03-quantity2-changed-3-long",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_e275eb409d_0",
+                "remnant_id": "n03-quantity2-changed-3-other",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 1,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_e275eb409d_1",
+                "remnant_id": "n03-quantity2-changed-3-other",
+                "x_mm": 48,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              }
+            ],
+            "request_part_ids": [
+              "_request_e275eb409d_0",
+              "_request_e275eb409d_1"
+            ],
+            "reason_ru": "Оставим n03-quantity2-changed-3-long для известных нераспределенных деталей заказа n03-quantity2-changed-3-order. Если заявка размещена на n03-quantity2-changed-3-other, для нее и всех 1 деталей есть совместная допустимая раскладка; с текущими назначениями заявки такая совместная раскладка невозможна. Это не прогноз спроса."
+          }
+        ],
+        "elapsed_ms": 77.265,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "joint_impossible",
+      "repeat": 0,
+      "dataset_id": "n03-joint_impossible-changed-3",
+      "cold": false,
+      "http_ms": 19.314999924972653,
+      "baseline_http_ms": 13.17900000140071,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-joint_impossible-changed-3",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-joint_impossible-changed-3-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-joint_impossible-changed-3-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 6.158,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "reserved",
+      "repeat": 0,
+      "dataset_id": "n03-reserved-changed-3",
+      "cold": false,
+      "http_ms": 18.495899974368513,
+      "baseline_http_ms": 13.658200041390955,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-reserved-changed-3",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-reserved-changed-3-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 1.963,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "not_scarce",
+      "repeat": 0,
+      "dataset_id": "n03-not_scarce-changed-3",
+      "cold": false,
+      "http_ms": 15.371500048786402,
+      "baseline_http_ms": 9.048399981111288,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-not_scarce-changed-3",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-not_scarce-changed-3-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-not_scarce-changed-3-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 300,
+                "width_mm": 250
+              },
+              "waste_area_mm2": 71800,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 0.033,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "tiny_budget",
+      "repeat": 0,
+      "dataset_id": "n03-tiny_budget-changed-3",
+      "cold": false,
+      "http_ms": 15.327699948102236,
+      "baseline_http_ms": 13.066800078377128,
+      "status": "limited",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-tiny_budget-changed-3",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-tiny_budget-changed-3-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-tiny_budget-changed-3-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "limited",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 1.544,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "quantity1",
+      "repeat": 1,
+      "dataset_id": "n03-quantity1-changed-32",
+      "cold": false,
+      "http_ms": 22.756799939088523,
+      "baseline_http_ms": 11.68240001425147,
+      "status": "proved",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-quantity1-changed-32",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-quantity1-changed-32-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-quantity1-changed-32-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "proved",
+        "recommended_remnant_id": "n03-quantity1-changed-32-other",
+        "explanations": [
+          {
+            "preserve_remnant_id": "n03-quantity1-changed-32-long",
+            "alternative_remnant_id": "n03-quantity1-changed-32-other",
+            "known_order_id": "n03-quantity1-changed-32-order",
+            "pending_part_ids": [
+              "n03-quantity1-changed-32-part-7"
+            ],
+            "joint_witness": [
+              {
+                "part_id": "n03-quantity1-changed-32-part-7",
+                "remnant_id": "n03-quantity1-changed-32-long",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_bf0706aa32_0",
+                "remnant_id": "n03-quantity1-changed-32-other",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 1,
+                "lock_kind": "none"
+              }
+            ],
+            "request_part_ids": [
+              "_request_bf0706aa32_0"
+            ],
+            "reason_ru": "Оставим n03-quantity1-changed-32-long для известных нераспределенных деталей заказа n03-quantity1-changed-32-order. Если заявка размещена на n03-quantity1-changed-32-other, для нее и всех 1 деталей есть совместная допустимая раскладка; с текущими назначениями заявки такая совместная раскладка невозможна. Это не прогноз спроса."
+          }
+        ],
+        "elapsed_ms": 7.542,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "quantity2",
+      "repeat": 1,
+      "dataset_id": "n03-quantity2-changed-32",
+      "cold": false,
+      "http_ms": 26.49109996855259,
+      "baseline_http_ms": 10.75350004248321,
+      "status": "proved",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-quantity2-changed-32",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-quantity2-changed-32-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-quantity2-changed-32-long",
+              "remnant_version": 1,
+              "x_mm": 88,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 1,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 2,
+          "requested_quantity": 2,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "proved",
+        "recommended_remnant_id": "n03-quantity2-changed-32-other",
+        "explanations": [
+          {
+            "preserve_remnant_id": "n03-quantity2-changed-32-long",
+            "alternative_remnant_id": "n03-quantity2-changed-32-other",
+            "known_order_id": "n03-quantity2-changed-32-order",
+            "pending_part_ids": [
+              "n03-quantity2-changed-32-part-7"
+            ],
+            "joint_witness": [
+              {
+                "part_id": "n03-quantity2-changed-32-part-7",
+                "remnant_id": "n03-quantity2-changed-32-long",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_7759a54f48_0",
+                "remnant_id": "n03-quantity2-changed-32-other",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 1,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_7759a54f48_1",
+                "remnant_id": "n03-quantity2-changed-32-other",
+                "x_mm": 48,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              }
+            ],
+            "request_part_ids": [
+              "_request_7759a54f48_0",
+              "_request_7759a54f48_1"
+            ],
+            "reason_ru": "Оставим n03-quantity2-changed-32-long для известных нераспределенных деталей заказа n03-quantity2-changed-32-order. Если заявка размещена на n03-quantity2-changed-32-other, для нее и всех 1 деталей есть совместная допустимая раскладка; с текущими назначениями заявки такая совместная раскладка невозможна. Это не прогноз спроса."
+          }
+        ],
+        "elapsed_ms": 12.728,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "joint_impossible",
+      "repeat": 1,
+      "dataset_id": "n03-joint_impossible-changed-32",
+      "cold": false,
+      "http_ms": 15.126499929465353,
+      "baseline_http_ms": 13.766000047326088,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-joint_impossible-changed-32",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-joint_impossible-changed-32-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-joint_impossible-changed-32-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 4.579,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "reserved",
+      "repeat": 1,
+      "dataset_id": "n03-reserved-changed-32",
+      "cold": false,
+      "http_ms": 11.850199894979596,
+      "baseline_http_ms": 9.727000026032329,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-reserved-changed-32",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-reserved-changed-32-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 1.791,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "not_scarce",
+      "repeat": 1,
+      "dataset_id": "n03-not_scarce-changed-32",
+      "cold": false,
+      "http_ms": 12.77300005313009,
+      "baseline_http_ms": 11.988700018264353,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-not_scarce-changed-32",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-not_scarce-changed-32-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-not_scarce-changed-32-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 300,
+                "width_mm": 250
+              },
+              "waste_area_mm2": 71800,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 0.036,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "tiny_budget",
+      "repeat": 1,
+      "dataset_id": "n03-tiny_budget-changed-32",
+      "cold": false,
+      "http_ms": 13.134800014086068,
+      "baseline_http_ms": 12.36239995341748,
+      "status": "limited",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-tiny_budget-changed-32",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-tiny_budget-changed-32-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-tiny_budget-changed-32-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "limited",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 1.2,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "quantity1",
+      "repeat": 2,
+      "dataset_id": "n03-quantity1-changed-61",
+      "cold": false,
+      "http_ms": 19.993599969893694,
+      "baseline_http_ms": 11.419899994507432,
+      "status": "proved",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-quantity1-changed-61",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-quantity1-changed-61-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-quantity1-changed-61-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "proved",
+        "recommended_remnant_id": "n03-quantity1-changed-61-other",
+        "explanations": [
+          {
+            "preserve_remnant_id": "n03-quantity1-changed-61-long",
+            "alternative_remnant_id": "n03-quantity1-changed-61-other",
+            "known_order_id": "n03-quantity1-changed-61-order",
+            "pending_part_ids": [
+              "n03-quantity1-changed-61-part-7"
+            ],
+            "joint_witness": [
+              {
+                "part_id": "n03-quantity1-changed-61-part-7",
+                "remnant_id": "n03-quantity1-changed-61-long",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_5392bd9bac_0",
+                "remnant_id": "n03-quantity1-changed-61-other",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 1,
+                "lock_kind": "none"
+              }
+            ],
+            "request_part_ids": [
+              "_request_5392bd9bac_0"
+            ],
+            "reason_ru": "Оставим n03-quantity1-changed-61-long для известных нераспределенных деталей заказа n03-quantity1-changed-61-order. Если заявка размещена на n03-quantity1-changed-61-other, для нее и всех 1 деталей есть совместная допустимая раскладка; с текущими назначениями заявки такая совместная раскладка невозможна. Это не прогноз спроса."
+          }
+        ],
+        "elapsed_ms": 8.13,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "quantity2",
+      "repeat": 2,
+      "dataset_id": "n03-quantity2-changed-61",
+      "cold": false,
+      "http_ms": 28.255400015041232,
+      "baseline_http_ms": 9.834800031967461,
+      "status": "proved",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-quantity2-changed-61",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-quantity2-changed-61-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-quantity2-changed-61-long",
+              "remnant_version": 1,
+              "x_mm": 88,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 1,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 2,
+          "requested_quantity": 2,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "proved",
+        "recommended_remnant_id": "n03-quantity2-changed-61-other",
+        "explanations": [
+          {
+            "preserve_remnant_id": "n03-quantity2-changed-61-long",
+            "alternative_remnant_id": "n03-quantity2-changed-61-other",
+            "known_order_id": "n03-quantity2-changed-61-order",
+            "pending_part_ids": [
+              "n03-quantity2-changed-61-part-7"
+            ],
+            "joint_witness": [
+              {
+                "part_id": "n03-quantity2-changed-61-part-7",
+                "remnant_id": "n03-quantity2-changed-61-long",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_1f5058a64e_0",
+                "remnant_id": "n03-quantity2-changed-61-other",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 1,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_1f5058a64e_1",
+                "remnant_id": "n03-quantity2-changed-61-other",
+                "x_mm": 48,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              }
+            ],
+            "request_part_ids": [
+              "_request_1f5058a64e_0",
+              "_request_1f5058a64e_1"
+            ],
+            "reason_ru": "Оставим n03-quantity2-changed-61-long для известных нераспределенных деталей заказа n03-quantity2-changed-61-order. Если заявка размещена на n03-quantity2-changed-61-other, для нее и всех 1 деталей есть совместная допустимая раскладка; с текущими назначениями заявки такая совместная раскладка невозможна. Это не прогноз спроса."
+          }
+        ],
+        "elapsed_ms": 13.612,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "joint_impossible",
+      "repeat": 2,
+      "dataset_id": "n03-joint_impossible-changed-61",
+      "cold": false,
+      "http_ms": 16.54530002269894,
+      "baseline_http_ms": 129.91749995853752,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-joint_impossible-changed-61",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-joint_impossible-changed-61-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-joint_impossible-changed-61-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 3.975,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "reserved",
+      "repeat": 2,
+      "dataset_id": "n03-reserved-changed-61",
+      "cold": false,
+      "http_ms": 12.034500017762184,
+      "baseline_http_ms": 10.696299956180155,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-reserved-changed-61",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-reserved-changed-61-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 1.656,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "not_scarce",
+      "repeat": 2,
+      "dataset_id": "n03-not_scarce-changed-61",
+      "cold": false,
+      "http_ms": 12.406000052578747,
+      "baseline_http_ms": 10.410099988803267,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-not_scarce-changed-61",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-not_scarce-changed-61-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-not_scarce-changed-61-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 300,
+                "width_mm": 250
+              },
+              "waste_area_mm2": 71800,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 0.04,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "tiny_budget",
+      "repeat": 2,
+      "dataset_id": "n03-tiny_budget-changed-61",
+      "cold": false,
+      "http_ms": 13.440000009723008,
+      "baseline_http_ms": 10.668399976566434,
+      "status": "limited",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-tiny_budget-changed-61",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-tiny_budget-changed-61-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-tiny_budget-changed-61-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "limited",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 0.787,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "quantity1",
+      "repeat": 3,
+      "dataset_id": "n03-quantity1-changed-90",
+      "cold": false,
+      "http_ms": 18.00749998074025,
+      "baseline_http_ms": 9.965100092813373,
+      "status": "proved",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-quantity1-changed-90",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-quantity1-changed-90-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-quantity1-changed-90-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "proved",
+        "recommended_remnant_id": "n03-quantity1-changed-90-other",
+        "explanations": [
+          {
+            "preserve_remnant_id": "n03-quantity1-changed-90-long",
+            "alternative_remnant_id": "n03-quantity1-changed-90-other",
+            "known_order_id": "n03-quantity1-changed-90-order",
+            "pending_part_ids": [
+              "n03-quantity1-changed-90-part-7"
+            ],
+            "joint_witness": [
+              {
+                "part_id": "n03-quantity1-changed-90-part-7",
+                "remnant_id": "n03-quantity1-changed-90-long",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_5f71280e14_0",
+                "remnant_id": "n03-quantity1-changed-90-other",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 1,
+                "lock_kind": "none"
+              }
+            ],
+            "request_part_ids": [
+              "_request_5f71280e14_0"
+            ],
+            "reason_ru": "Оставим n03-quantity1-changed-90-long для известных нераспределенных деталей заказа n03-quantity1-changed-90-order. Если заявка размещена на n03-quantity1-changed-90-other, для нее и всех 1 деталей есть совместная допустимая раскладка; с текущими назначениями заявки такая совместная раскладка невозможна. Это не прогноз спроса."
+          }
+        ],
+        "elapsed_ms": 6.332,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "quantity2",
+      "repeat": 3,
+      "dataset_id": "n03-quantity2-changed-90",
+      "cold": false,
+      "http_ms": 22.910800063982606,
+      "baseline_http_ms": 11.42299990169704,
+      "status": "proved",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-quantity2-changed-90",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-quantity2-changed-90-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-quantity2-changed-90-long",
+              "remnant_version": 1,
+              "x_mm": 88,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 1,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 2,
+          "requested_quantity": 2,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "proved",
+        "recommended_remnant_id": "n03-quantity2-changed-90-other",
+        "explanations": [
+          {
+            "preserve_remnant_id": "n03-quantity2-changed-90-long",
+            "alternative_remnant_id": "n03-quantity2-changed-90-other",
+            "known_order_id": "n03-quantity2-changed-90-order",
+            "pending_part_ids": [
+              "n03-quantity2-changed-90-part-7"
+            ],
+            "joint_witness": [
+              {
+                "part_id": "n03-quantity2-changed-90-part-7",
+                "remnant_id": "n03-quantity2-changed-90-long",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_1c33fda5e7_0",
+                "remnant_id": "n03-quantity2-changed-90-other",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 1,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_1c33fda5e7_1",
+                "remnant_id": "n03-quantity2-changed-90-other",
+                "x_mm": 48,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              }
+            ],
+            "request_part_ids": [
+              "_request_1c33fda5e7_0",
+              "_request_1c33fda5e7_1"
+            ],
+            "reason_ru": "Оставим n03-quantity2-changed-90-long для известных нераспределенных деталей заказа n03-quantity2-changed-90-order. Если заявка размещена на n03-quantity2-changed-90-other, для нее и всех 1 деталей есть совместная допустимая раскладка; с текущими назначениями заявки такая совместная раскладка невозможна. Это не прогноз спроса."
+          }
+        ],
+        "elapsed_ms": 10.614,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "joint_impossible",
+      "repeat": 3,
+      "dataset_id": "n03-joint_impossible-changed-90",
+      "cold": false,
+      "http_ms": 16.59989997278899,
+      "baseline_http_ms": 8.260900038294494,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-joint_impossible-changed-90",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-joint_impossible-changed-90-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-joint_impossible-changed-90-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 3.902,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "reserved",
+      "repeat": 3,
+      "dataset_id": "n03-reserved-changed-90",
+      "cold": false,
+      "http_ms": 25.66430007573217,
+      "baseline_http_ms": 10.711299953982234,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-reserved-changed-90",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-reserved-changed-90-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 3.301,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "not_scarce",
+      "repeat": 3,
+      "dataset_id": "n03-not_scarce-changed-90",
+      "cold": false,
+      "http_ms": 13.473699917085469,
+      "baseline_http_ms": 11.696800007484853,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-not_scarce-changed-90",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-not_scarce-changed-90-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-not_scarce-changed-90-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 300,
+                "width_mm": 250
+              },
+              "waste_area_mm2": 71800,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 0.029,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "tiny_budget",
+      "repeat": 3,
+      "dataset_id": "n03-tiny_budget-changed-90",
+      "cold": false,
+      "http_ms": 12.729499954730272,
+      "baseline_http_ms": 12.131800060160458,
+      "status": "limited",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-tiny_budget-changed-90",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-tiny_budget-changed-90-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-tiny_budget-changed-90-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "limited",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 0.684,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "quantity1",
+      "repeat": 4,
+      "dataset_id": "n03-quantity1-changed-119",
+      "cold": false,
+      "http_ms": 22.12739991955459,
+      "baseline_http_ms": 11.337700067088008,
+      "status": "proved",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-quantity1-changed-119",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-quantity1-changed-119-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-quantity1-changed-119-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "proved",
+        "recommended_remnant_id": "n03-quantity1-changed-119-other",
+        "explanations": [
+          {
+            "preserve_remnant_id": "n03-quantity1-changed-119-long",
+            "alternative_remnant_id": "n03-quantity1-changed-119-other",
+            "known_order_id": "n03-quantity1-changed-119-order",
+            "pending_part_ids": [
+              "n03-quantity1-changed-119-part-7"
+            ],
+            "joint_witness": [
+              {
+                "part_id": "n03-quantity1-changed-119-part-7",
+                "remnant_id": "n03-quantity1-changed-119-long",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_b0ac7b764e_0",
+                "remnant_id": "n03-quantity1-changed-119-other",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 1,
+                "lock_kind": "none"
+              }
+            ],
+            "request_part_ids": [
+              "_request_b0ac7b764e_0"
+            ],
+            "reason_ru": "Оставим n03-quantity1-changed-119-long для известных нераспределенных деталей заказа n03-quantity1-changed-119-order. Если заявка размещена на n03-quantity1-changed-119-other, для нее и всех 1 деталей есть совместная допустимая раскладка; с текущими назначениями заявки такая совместная раскладка невозможна. Это не прогноз спроса."
+          }
+        ],
+        "elapsed_ms": 7.83,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "quantity2",
+      "repeat": 4,
+      "dataset_id": "n03-quantity2-changed-119",
+      "cold": false,
+      "http_ms": 25.106600020080805,
+      "baseline_http_ms": 10.131699964404106,
+      "status": "proved",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-quantity2-changed-119",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-quantity2-changed-119-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-quantity2-changed-119-long",
+              "remnant_version": 1,
+              "x_mm": 88,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 1,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 2,
+          "requested_quantity": 2,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "proved",
+        "recommended_remnant_id": "n03-quantity2-changed-119-other",
+        "explanations": [
+          {
+            "preserve_remnant_id": "n03-quantity2-changed-119-long",
+            "alternative_remnant_id": "n03-quantity2-changed-119-other",
+            "known_order_id": "n03-quantity2-changed-119-order",
+            "pending_part_ids": [
+              "n03-quantity2-changed-119-part-7"
+            ],
+            "joint_witness": [
+              {
+                "part_id": "n03-quantity2-changed-119-part-7",
+                "remnant_id": "n03-quantity2-changed-119-long",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_fd587b763d_0",
+                "remnant_id": "n03-quantity2-changed-119-other",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 1,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_fd587b763d_1",
+                "remnant_id": "n03-quantity2-changed-119-other",
+                "x_mm": 48,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              }
+            ],
+            "request_part_ids": [
+              "_request_fd587b763d_0",
+              "_request_fd587b763d_1"
+            ],
+            "reason_ru": "Оставим n03-quantity2-changed-119-long для известных нераспределенных деталей заказа n03-quantity2-changed-119-order. Если заявка размещена на n03-quantity2-changed-119-other, для нее и всех 1 деталей есть совместная допустимая раскладка; с текущими назначениями заявки такая совместная раскладка невозможна. Это не прогноз спроса."
+          }
+        ],
+        "elapsed_ms": 11.1,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "joint_impossible",
+      "repeat": 4,
+      "dataset_id": "n03-joint_impossible-changed-119",
+      "cold": false,
+      "http_ms": 23.98689999245107,
+      "baseline_http_ms": 16.240400029346347,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-joint_impossible-changed-119",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-joint_impossible-changed-119-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-joint_impossible-changed-119-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 3.915,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "reserved",
+      "repeat": 4,
+      "dataset_id": "n03-reserved-changed-119",
+      "cold": false,
+      "http_ms": 18.59110000077635,
+      "baseline_http_ms": 13.47809995058924,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-reserved-changed-119",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-reserved-changed-119-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 2.052,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "not_scarce",
+      "repeat": 4,
+      "dataset_id": "n03-not_scarce-changed-119",
+      "cold": false,
+      "http_ms": 11.12219993956387,
+      "baseline_http_ms": 9.685600060038269,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-not_scarce-changed-119",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-not_scarce-changed-119-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-not_scarce-changed-119-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 300,
+                "width_mm": 250
+              },
+              "waste_area_mm2": 71800,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 0.031,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "tiny_budget",
+      "repeat": 4,
+      "dataset_id": "n03-tiny_budget-changed-119",
+      "cold": false,
+      "http_ms": 15.89340006466955,
+      "baseline_http_ms": 9.938000002875924,
+      "status": "limited",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-tiny_budget-changed-119",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-tiny_budget-changed-119-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-tiny_budget-changed-119-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "limited",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 0.821,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "quantity1",
+      "repeat": 5,
+      "dataset_id": "n03-quantity1-changed-148",
+      "cold": false,
+      "http_ms": 16.721900086849928,
+      "baseline_http_ms": 10.967199923470616,
+      "status": "proved",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-quantity1-changed-148",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-quantity1-changed-148-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-quantity1-changed-148-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "proved",
+        "recommended_remnant_id": "n03-quantity1-changed-148-other",
+        "explanations": [
+          {
+            "preserve_remnant_id": "n03-quantity1-changed-148-long",
+            "alternative_remnant_id": "n03-quantity1-changed-148-other",
+            "known_order_id": "n03-quantity1-changed-148-order",
+            "pending_part_ids": [
+              "n03-quantity1-changed-148-part-7"
+            ],
+            "joint_witness": [
+              {
+                "part_id": "n03-quantity1-changed-148-part-7",
+                "remnant_id": "n03-quantity1-changed-148-long",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_1ef2494d6c_0",
+                "remnant_id": "n03-quantity1-changed-148-other",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 1,
+                "lock_kind": "none"
+              }
+            ],
+            "request_part_ids": [
+              "_request_1ef2494d6c_0"
+            ],
+            "reason_ru": "Оставим n03-quantity1-changed-148-long для известных нераспределенных деталей заказа n03-quantity1-changed-148-order. Если заявка размещена на n03-quantity1-changed-148-other, для нее и всех 1 деталей есть совместная допустимая раскладка; с текущими назначениями заявки такая совместная раскладка невозможна. Это не прогноз спроса."
+          }
+        ],
+        "elapsed_ms": 7.109,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "quantity2",
+      "repeat": 5,
+      "dataset_id": "n03-quantity2-changed-148",
+      "cold": false,
+      "http_ms": 23.065400077030063,
+      "baseline_http_ms": 9.652600041590631,
+      "status": "proved",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-quantity2-changed-148",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-quantity2-changed-148-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-quantity2-changed-148-long",
+              "remnant_version": 1,
+              "x_mm": 88,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 1,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 2,
+          "requested_quantity": 2,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "proved",
+        "recommended_remnant_id": "n03-quantity2-changed-148-other",
+        "explanations": [
+          {
+            "preserve_remnant_id": "n03-quantity2-changed-148-long",
+            "alternative_remnant_id": "n03-quantity2-changed-148-other",
+            "known_order_id": "n03-quantity2-changed-148-order",
+            "pending_part_ids": [
+              "n03-quantity2-changed-148-part-7"
+            ],
+            "joint_witness": [
+              {
+                "part_id": "n03-quantity2-changed-148-part-7",
+                "remnant_id": "n03-quantity2-changed-148-long",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_32bdc07e9c_0",
+                "remnant_id": "n03-quantity2-changed-148-other",
+                "x_mm": 5,
+                "y_mm": 5,
+                "rot": 1,
+                "lock_kind": "none"
+              },
+              {
+                "part_id": "_request_32bdc07e9c_1",
+                "remnant_id": "n03-quantity2-changed-148-other",
+                "x_mm": 48,
+                "y_mm": 5,
+                "rot": 0,
+                "lock_kind": "none"
+              }
+            ],
+            "request_part_ids": [
+              "_request_32bdc07e9c_0",
+              "_request_32bdc07e9c_1"
+            ],
+            "reason_ru": "Оставим n03-quantity2-changed-148-long для известных нераспределенных деталей заказа n03-quantity2-changed-148-order. Если заявка размещена на n03-quantity2-changed-148-other, для нее и всех 1 деталей есть совместная допустимая раскладка; с текущими назначениями заявки такая совместная раскладка невозможна. Это не прогноз спроса."
+          }
+        ],
+        "elapsed_ms": 13.857,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "joint_impossible",
+      "repeat": 5,
+      "dataset_id": "n03-joint_impossible-changed-148",
+      "cold": false,
+      "http_ms": 13.515500002540648,
+      "baseline_http_ms": 10.192399960942566,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-joint_impossible-changed-148",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-joint_impossible-changed-148-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-joint_impossible-changed-148-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 3.867,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "reserved",
+      "repeat": 5,
+      "dataset_id": "n03-reserved-changed-148",
+      "cold": false,
+      "http_ms": 13.334800023585558,
+      "baseline_http_ms": 11.178300017490983,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-reserved-changed-148",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-reserved-changed-148-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 2.053,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "not_scarce",
+      "repeat": 5,
+      "dataset_id": "n03-not_scarce-changed-148",
+      "cold": false,
+      "http_ms": 11.530800024047494,
+      "baseline_http_ms": 8.428200031630695,
+      "status": "no_proof",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-not_scarce-changed-148",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-not_scarce-changed-148-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-not_scarce-changed-148-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 300,
+                "width_mm": 250
+              },
+              "waste_area_mm2": 71800,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "no_proof",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 0.025,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    },
+    {
+      "case": "tiny_budget",
+      "repeat": 5,
+      "dataset_id": "n03-tiny_budget-changed-148",
+      "cold": false,
+      "http_ms": 10.820999974384904,
+      "baseline_http_ms": 10.129899950698018,
+      "status": "limited",
+      "baseline_unchanged": true,
+      "independently_valid": true,
+      "expected": true,
+      "response": {
+        "dataset_id": "n03-tiny_budget-changed-148",
+        "baseline": {
+          "candidates": [
+            {
+              "remnant_id": "n03-tiny_budget-changed-148-long",
+              "remnant_version": 1,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R1",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 210,
+                "width_mm": 110
+              },
+              "waste_area_mm2": 19900,
+              "age_days": 10,
+              "shares_remnant_with_plan": false
+            },
+            {
+              "remnant_id": "n03-tiny_budget-changed-148-other",
+              "remnant_version": 2,
+              "x_mm": 5,
+              "y_mm": 5,
+              "rot": 0,
+              "location_raw": "R2",
+              "copy_index": 0,
+              "remnant_dimensions": {
+                "length_mm": 160,
+                "width_mm": 160
+              },
+              "waste_area_mm2": 22400,
+              "age_days": 0,
+              "shares_remnant_with_plan": false
+            }
+          ],
+          "reason_codes": [],
+          "scope": "free_whole_remnants",
+          "covered_quantity": 1,
+          "requested_quantity": 1,
+          "reasons_ru": [],
+          "inventory_version": "2:3"
+        },
+        "status": "limited",
+        "recommended_remnant_id": null,
+        "explanations": [],
+        "elapsed_ms": 0.676,
+        "inventory_version": "2:3",
+        "plan_id": null,
+        "plan_revision": null,
+        "baseline_order_preserved": true,
+        "pending_basis": "uncovered_parts_of_selected_plan_or_imported_orders_without_plan"
+      }
+    }
+  ],
+  "p95_warm_http_ms": 28.255400015041232,
+  "all_checks": true,
+  "ordering_decision": "unchanged baseline; optional independently checked joint advice only",
+  "cold_note": "Cold native import can exhaust budget; limited keeps ordinary candidates and makes no reason claim."
+}

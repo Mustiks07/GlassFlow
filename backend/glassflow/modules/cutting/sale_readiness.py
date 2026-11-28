@@ -198,7 +198,8 @@ def ensure_sale_readiness(snapshot: SolveInput, baseline: CutPlan, eligible_orig
     if repaired is not None:
         checked = validate_plan(full, repaired, unavailable_remnant_ids=unavailable,
                                 locks=[to_assignment(p) for p in task.locks])
-        metrics, free_ids = compute_metrics(full, checked, baseline.metrics.new_reasons)
+        metrics, free_ids = compute_metrics(full, checked, baseline.metrics.new_reasons,
+                                           excluded_remnant_ids=unavailable)
         candidate = CutPlan(dataset_id=task.dataset_id, plan_id='unsaved', revision=0, status='validated',
             placements=[to_placement(a) for a in repaired], metrics=metrics, free_original_remnant_ids=free_ids,
             search_status='feasible', stop_reason='bounded_sale_relocation_completed',

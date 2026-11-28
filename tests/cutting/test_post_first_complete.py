@@ -79,3 +79,17 @@ def test_excluded_originals_do_not_make_an_infeasible_initial_seed_publishable()
         def incumbent(self,plan):emitted.append(plan)
     plan = CuttingEngine().solve(task,Callback())
     assert not emitted and plan.evidence['minimum_free_remnants_met'] is False
+    assert not {'piece-0','piece-1'} & set(plan.free_original_remnant_ids)
+    assert plan.metrics.free_original_remnants == len(plan.free_original_remnant_ids) <= 4
+
+
+def test_metrics_exclude_occupied_and_unavailable_even_when_raw_status_available():
+    from glassflow.modules.cutting.domain import Assignment
+    from glassflow.modules.cutting.metrics import compute_metrics
+
+    snapshot = tight()
+    report = validate_plan(snapshot,[Assignment(pid,'NEW') for pid in snapshot.parts])
+    metrics, free = compute_metrics(snapshot,report,
+        excluded_remnant_ids={'piece-0','piece-1','unknown-id'})
+    assert set(free)=={'piece-2','piece-3','piece-4','piece-5'}
+    assert metrics.free_original_remnants==4
