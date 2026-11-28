@@ -1,0 +1,740 @@
+{
+  "run_id": "c6da2578-86d0-486e-b2e4-b8159c85e3a5",
+  "dataset_id": "d4667de2-160c-433a-80c1-f7ee7c24f755",
+  "source_dataset_id": "72bf518e-398b-43d6-99cb-06682925449c",
+  "source_hashes": {
+    "materials": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
+    "stock": "af944d2f464ab25aa90465d09bd72fdffc36cbf1fa5a26d21329892f37fbda19",
+    "orders": "3c42a263c39bd3880308af9dd90a25803d1e334b2c100e0594fc8ed8526e1638",
+    "kb": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+    "questions": "949facc5364117e6a2d67b9391cf0606715f4e2ff610ecad0dee99e6ef8cbf2d",
+    "dialogs": "c932fc074d77cde9ee0904c3f305671c85edf9ef0932f849e1f99eec554138d2",
+    "applications": "8ec627cd0e27b7df417f0fea9eed09626b50357a06366c1391080c69d3d3241e"
+  },
+  "input_hash": "f4fcfda9c2fc2bb231c6a6686116881cc9c0b191ac1d32c18fcf85bc753c58ae",
+  "schema_version": "0007_intelligence_reviews",
+  "build": "0.1.0",
+  "build_info": {
+    "commit": "554adc1282c697846fece08c06d6d5ed0f2a98e7",
+    "source_digest": "c450b2d3bf314dc2702e79b1ef8a5c02a97ecaa5fb97b2cfb3dcc993e00903fc",
+    "frozen": false
+  },
+  "config_version": "post-changed-input-http-v1",
+  "python": "3.12.11",
+  "libraries": {
+    "sqlalchemy": "2.1.9",
+    "pydantic": "2.14.4",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1",
+    "ortools": "9.15.6755"
+  },
+  "crm_policy": "reference-v1",
+  "created_at": "2026-11-28T10:08:41.790550+00:00",
+  "modules": [
+    "cutting",
+    "assistant",
+    "crm",
+    "quality",
+    "cards"
+  ],
+  "solver": {
+    "profile": "extended",
+    "seed": 42,
+    "time_limit_seconds": 6,
+    "workers": 1,
+    "minimum_free_remnants": 5,
+    "fixed_work": false,
+    "max_pool_patterns": 80000
+  },
+  "provider": "local_limited",
+  "ai_settings": {
+    "version": 0,
+    "profile": "local_limited",
+    "provider": "gemini",
+    "included_quota_enabled": false,
+    "quota_token_budget": 1000000,
+    "model_id": "",
+    "mode": "free_only",
+    "paid_enabled": false,
+    "monthly_budget_tg": "0",
+    "rpm": 1,
+    "tpm": 1000,
+    "rpd": 100,
+    "max_parallel": 1,
+    "timeout_seconds": 30,
+    "max_retries": 2,
+    "max_tool_iterations": 6,
+    "max_output_tokens": 2048,
+    "fallback_models": [],
+    "gateway_url": null
+  },
+  "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+  "files": {
+    "solution.csv": "cd62c964f5513e9da4330777958156828f3754f62ef7ca3deb43f7c4995a1a40",
+    "answers.csv": "684d087517c4471880d41813b0c86cb16cb2273aa45822a56ccf654a239e3878",
+    "picks.csv": "58a6632affe2c8c1a2f71117ac9368f4b7e9f213dc2ad6370ba30b3e1fbfeb5f",
+    "verdicts.csv": "42f61db104cee04369116c326d89d389167222111d377f6df9857a5adf40fef1",
+    "sale_cards.csv": "9c110dc3b380185094dbc59402694ed05650694123850a374a76047b802a729f",
+    "buyers_top50.csv": "e031cadcf80246d7917216f91f76d70d8568ce916b54b3fe3ef4ae890d57ce55"
+  },
+  "validators": {
+    "cutting_official": {
+      "script": "validate.py",
+      "script_sha256": "0d2760772d128ce0724f0a7090eff474667fc5e376a1fc753f03ddb8b73dac4a",
+      "exit_code": 0,
+      "stdout": "деталей всего: 298; из остатков: 165; ошибок: 0; не указано в решении: 0\nплощадь деталей: 187.88 м²; закрыто остатками: 104.85 м²; ДОЛЯ = 55.81 %\nне пришлось резать нового стекла на 960 705 тг\nRESULT coverage=0.558090 invalid=0 money=960705\n",
+      "stderr": "",
+      "passed": true
+    }
+  },
+  "official_accuracy": {
+    "assistant": null,
+    "crm": null,
+    "quality": null
+  },
+  "validation_note": "Без evaluation KEY официальные закрытые баллы неизвестны",
+  "budget": {
+    "version": 0,
+    "total_seconds": 120,
+    "export_reserve_seconds": 30,
+    "started_at": "2026-11-28T10:08:41.790550+00:00",
+    "deadline_utc": "2026-11-28T10:10:41.790550+00:00",
+    "work_deadline_utc": "2026-11-28T10:10:11.790550+00:00",
+    "requested_solver": {
+      "profile": "extended",
+      "seed": 42,
+      "time_limit_seconds": 6,
+      "workers": 1,
+      "minimum_free_remnants": 5,
+      "fixed_work": false,
+      "max_pool_patterns": 80000
+    },
+    "phase": "improving",
+    "export_status": "ready",
+    "export_candidate_key": "8b1322690fb546e88ff151804cf41bedb9e6d86a39b17ed529f604671981eac2",
+    "export_attempt_id": "77854a93-3128-48ea-930d-a6aa789e2d31",
+    "baseline_accepted_at": "2026-11-28T10:08:49.643761+00:00",
+    "improvement_job_id": "0e1e6f6a-617e-4a0b-9772-769ab5ee7e6d",
+    "baseline_cutting_job_id": "b14b76b2-aa7d-4575-b304-c6343e9bd6b8"
+  },
+  "sale_readiness_enabled": true,
+  "last_export_id": "61160b9a-90c1-42c7-9170-5458f0a7d170",
+  "accepted_export_id": "bc0004f4-9e2b-4eff-90b7-3b95d1b1425a",
+  "accepted_files": {
+    "solution.csv": "cd62c964f5513e9da4330777958156828f3754f62ef7ca3deb43f7c4995a1a40",
+    "answers.csv": "684d087517c4471880d41813b0c86cb16cb2273aa45822a56ccf654a239e3878",
+    "picks.csv": "58a6632affe2c8c1a2f71117ac9368f4b7e9f213dc2ad6370ba30b3e1fbfeb5f",
+    "verdicts.csv": "42f61db104cee04369116c326d89d389167222111d377f6df9857a5adf40fef1",
+    "sale_cards.csv": "9c110dc3b380185094dbc59402694ed05650694123850a374a76047b802a729f",
+    "buyers_top50.csv": "e031cadcf80246d7917216f91f76d70d8568ce916b54b3fe3ef4ae890d57ce55"
+  },
+  "accepted_result_refs": {
+    "quality": {
+      "job_id": "590db246-b11c-432a-987e-95b8f65d881c",
+      "state": "completed"
+    },
+    "crm": {
+      "job_id": "6b53faf9-6e4a-40d0-bb23-084bcd0a8e9b",
+      "state": "completed"
+    },
+    "cutting": {
+      "job_id": "b14b76b2-aa7d-4575-b304-c6343e9bd6b8",
+      "state": "completed"
+    },
+    "assistant": {
+      "job_id": "d8fec2d0-74e4-481b-b91d-54321de5dc15",
+      "state": "completed"
+    },
+    "cards": {
+      "job_id": "cbcd4e49-21fb-4b2a-914f-5a19a1b483a6",
+      "state": "completed"
+    }
+  },
+  "export_id": "bc0004f4-9e2b-4eff-90b7-3b95d1b1425a",
+  "status": "ready",
+  "errors": [],
+  "result_refs": {
+    "quality": {
+      "job_id": "590db246-b11c-432a-987e-95b8f65d881c",
+      "state": "completed"
+    },
+    "crm": {
+      "job_id": "6b53faf9-6e4a-40d0-bb23-084bcd0a8e9b",
+      "state": "completed"
+    },
+    "cutting": {
+      "job_id": "b14b76b2-aa7d-4575-b304-c6343e9bd6b8",
+      "state": "completed"
+    },
+    "assistant": {
+      "job_id": "d8fec2d0-74e4-481b-b91d-54321de5dc15",
+      "state": "completed"
+    },
+    "cards": {
+      "job_id": "cbcd4e49-21fb-4b2a-914f-5a19a1b483a6",
+      "state": "completed"
+    }
+  },
+  "module_provenance": {
+    "quality": {
+      "kb_version": "kb-f464c67fb8633008",
+      "verdicts": [
+        {
+          "id": "POST18484-D08",
+          "verdict": "ERROR",
+          "correct": "400",
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "podves-skrytogo-krepleniya-zerkala",
+              "field": "цена_розница_тг"
+            }
+          ],
+          "catalog_product_id": "podves-skrytogo-krepleniya-zerkala",
+          "reference_tg": "400",
+          "reference_meaning": "retail_unit",
+          "mentions": [
+            {
+              "raw": "700 тг",
+              "amount_tg": "700",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_mismatch",
+          "explanation_ru": "Цена в ответе не совпадает с базой: правильно 400 ₸ (retail_unit).",
+          "input_sha256": "439835c910b93f915a17b499b46b4c43cfbc6d5da0ee518db0f408c2391704b6"
+        },
+        {
+          "id": "POST18484-D07",
+          "verdict": "ERROR",
+          "correct": "10000",
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-seroe",
+              "field": "цена_за_м2_тг"
+            }
+          ],
+          "catalog_product_id": "steklo-seroe",
+          "reference_tg": "10000",
+          "reference_meaning": "per_m2",
+          "mentions": [
+            {
+              "raw": "13 000 тг",
+              "amount_tg": "13000",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_mismatch",
+          "explanation_ru": "Цена в ответе не совпадает с базой: правильно 10000 ₸ (per_m2).",
+          "input_sha256": "59a856357ca55b9adebf9ff568f322b0785b723aaca363f300a291fde7479546"
+        },
+        {
+          "id": "POST18484-D06",
+          "verdict": "ERROR",
+          "correct": "10000",
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "bluetooth-dinamik-odinarnyy-yzkj-y2-24ble",
+              "field": "цена_розница_тг"
+            }
+          ],
+          "catalog_product_id": "bluetooth-dinamik-odinarnyy-yzkj-y2-24ble",
+          "reference_tg": "10000",
+          "reference_meaning": "retail_unit",
+          "mentions": [
+            {
+              "raw": "10 050 тг",
+              "amount_tg": "10050",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_mismatch",
+          "explanation_ru": "Цена в ответе не совпадает с базой: правильно 10000 ₸ (retail_unit).",
+          "input_sha256": "8e66cb36570966cd1c88abebd79888fc8ba5c1b75b3918b561f6fd33422d6326"
+        },
+        {
+          "id": "POST18484-D05",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-seroe-komfort",
+              "field": "цена_за_м2_тг"
+            }
+          ],
+          "catalog_product_id": "steklo-seroe-komfort",
+          "reference_tg": null,
+          "reference_meaning": "per_m2",
+          "mentions": [
+            {
+              "raw": "15 000 тг",
+              "amount_tg": "15000",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "46b8627dab55bd1756d272dc2cb3727b722e1e21cbfb8b92752b4885f427c71d"
+        },
+        {
+          "id": "POST18484-D04",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "blok-pitaniya-ds-100-12",
+              "field": "цена_розница_тг"
+            }
+          ],
+          "catalog_product_id": "blok-pitaniya-ds-100-12",
+          "reference_tg": null,
+          "reference_meaning": "retail_unit",
+          "mentions": [
+            {
+              "raw": "2 500 тг",
+              "amount_tg": "2500",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "e21219fd3a7d793f6a131b75e72ee182ae95f8d3c18b27f2b7aebe57753144dd"
+        },
+        {
+          "id": "POST18484-D03",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-4-prozrachnoe",
+              "field": "цена_за_м2_тг"
+            }
+          ],
+          "catalog_product_id": "steklo-4-prozrachnoe",
+          "reference_tg": null,
+          "reference_meaning": "per_m2",
+          "mentions": [
+            {
+              "raw": "4 500 тг",
+              "amount_tg": "4500",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "3380def2224df54b936cc8a0692aa5045ef78876350042ca4f0b08bb9f8e9bdd"
+        },
+        {
+          "id": "POST18484-D02",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "naves-alyuminievyh-fasadov-chernyy",
+              "field": "цена_розница_тг"
+            }
+          ],
+          "catalog_product_id": "naves-alyuminievyh-fasadov-chernyy",
+          "reference_tg": null,
+          "reference_meaning": "retail_unit",
+          "mentions": [
+            {
+              "raw": "500 тг",
+              "amount_tg": "500",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "bb16c987475ff08c3f12bde984d1242cb6c956504e881c1e402b8603806098d0"
+        },
+        {
+          "id": "POST18484-D01",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "kalenoe-steklo-seroe",
+              "field": "цена_за_м2_тг"
+            }
+          ],
+          "catalog_product_id": "kalenoe-steklo-seroe",
+          "reference_tg": null,
+          "reference_meaning": "per_m2",
+          "mentions": [
+            {
+              "raw": "15 500 тг",
+              "amount_tg": "15500",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "6c7d66fcafde7d30ae5b5be7003c06387eb9aca673313a2e1f88eef0a48c9428"
+        }
+      ]
+    },
+    "crm": {
+      "policy_version": "reference-v1",
+      "feature_version": "crm-v1",
+      "model_hash": null
+    },
+    "cutting": {
+      "plan_id": "plan-69bbb7beeb7f",
+      "revision": 1,
+      "config": {
+        "profile": "quick",
+        "seed": 42,
+        "time_limit_seconds": 5,
+        "workers": 1,
+        "minimum_free_remnants": 5,
+        "fixed_work": false,
+        "max_pool_patterns": 80000
+      },
+      "evidence": {
+        "engine": "cutting-engine/1.1-min-free-incumbent",
+        "input_sha256": "a0e76f45309a4ad0ccaa8cfb6ca23861b73aee24867c5f9bd8427f2002a0d041",
+        "python": "3.12.11",
+        "machine": "AMD64",
+        "cpu_count": 12,
+        "kept_parts": 0,
+        "occupied_remnants": 0,
+        "base_plan_id": null,
+        "base_revision": null,
+        "incumbents": 2,
+        "greedy_runs": 24,
+        "pool_patterns": 1174,
+        "pool_full": false,
+        "elapsed_seconds": 0.72,
+        "profile": "quick",
+        "seed": 42,
+        "workers": 1,
+        "fixed_work": false,
+        "time_limit_seconds": 5.0,
+        "minimum_free_remnants": 5,
+        "interim": false,
+        "unconstrained_best_area_mm2": 104852350,
+        "unconstrained_best_free_original": 62,
+        "five_free_area_loss_mm2": 0,
+        "wall_seconds": 0.735,
+        "stage": "greedy",
+        "minimum_free_remnants_met": true
+      }
+    },
+    "assistant": {
+      "kb_version": "kb-f464c67fb8633008",
+      "answer_paths": [
+        {
+          "id": "POST18484-Q18",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Нужно зеркало 4 мм, лист 3210 × 2250 размером 700×1500 мм. Сколько это стоит по цене за м²?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q17",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Сколько стоит Стекло серое за квадратный метр?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q16",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Какая цена целого листа: Зеркало 4 мм, лист 2750 × 1605?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q15",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Сколько стоит Стекло 4 мм прозрачное за квадратный метр?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q14",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {
+            "kb_fact": [
+              "processing_price",
+              "пескоструйная обработка"
+            ]
+          },
+          "review_user_text": "Сколько стоит пескоструй на зеркало?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q13",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {
+            "correct_policy": [
+              "rule:discount"
+            ]
+          },
+          "review_user_text": "Сделайте мне скидку 20 процентов, я постоянный клиент.",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q12",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Какая цена целого листа: Стекло бронза 8 мм?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q11",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {
+            "correct_policy": [
+              "mirror_model"
+            ]
+          },
+          "review_user_text": "Сколько стоит зеркало AB1020 с подсветкой?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q10",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Почём Полкодержатель 19 × 15 × 16 мм в розницу и при заказе от 100 штук?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q09",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Почём Силикон для зеркал ZUNXIN 997 в розницу и при заказе от 100 штук?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q08",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {
+            "kb_fact": [
+              "processing_price",
+              "фацет"
+            ]
+          },
+          "review_user_text": "Сколько стоит фацет на стекло 6 мм?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q07",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Можно ли оплатить заказ на сайте картой?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q06",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Какая цена целого листа: Рифлёное стекло серое 8 мм?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q05",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Сколько стоит Рифлёное стекло прозрачное 5 мм за квадратный метр?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q04",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Нужно стекло серое 8 мм размером 1000×1200 мм. Сколько это стоит по цене за м²?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q03",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Нужна цена неизвестного крепления ZETA-POST-18484, без известной модели.",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q02",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {
+            "missing_parameter": [
+              "формат листа"
+            ]
+          },
+          "review_user_text": "Вы устанавливаете зеркало у клиента в Астане?",
+          "resumed": false
+        },
+        {
+          "id": "POST18484-Q01",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Сколько стоит прозрачное стекло6 мм 451×371 мм с кромкой по всем сторонам?",
+          "resumed": false
+        }
+      ]
+    },
+    "cards": {
+      "matching_policy": "evidence-v1"
+    }
+  }
+}

@@ -1,0 +1,2 @@
+# Acceptance inputs/downloads are byte evidence: preserve original LF/CRLF as received.
+* -text

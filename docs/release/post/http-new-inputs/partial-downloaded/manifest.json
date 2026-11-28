@@ -1,0 +1,145 @@
+{
+  "run_id": "941c3553-728a-4bab-b882-52fda9f964fc",
+  "dataset_id": "1552b7d2-41b1-4d86-8e0e-585915e3a90b",
+  "source_dataset_id": "3751dd3a-b5ce-4c1c-a19f-9435836cce6b",
+  "source_hashes": {
+    "materials": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
+    "stock": "6d0ed08e269aa2be1e809157221da755780c11435764930ee497d034d48922f8",
+    "orders": "aaeb47b0552da2b1976063dcaf24b0ae4faf0d85163e90f6f100c49b089d0798",
+    "kb": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+    "questions": "83a36e84f70fa0004dfc7bf6ed9556e7aaf459b469bcdd3f199f4860e71f9862",
+    "dialogs": "2ea16bfcca594edeeb618a2fc54244103a544523fe5fbef93c6f4d09e765f708",
+    "applications": "f29fe90df08bb6941fcfd95c1ad128f99e7c7613800cc15aeac6c444619358bd"
+  },
+  "input_hash": "dfc69fef7e0597e439848bd5c47bb54439539e5f51930097b885edcd6a327770",
+  "schema_version": "0007_intelligence_reviews",
+  "build": "0.1.0",
+  "build_info": {
+    "commit": "554adc1282c697846fece08c06d6d5ed0f2a98e7",
+    "source_digest": "c450b2d3bf314dc2702e79b1ef8a5c02a97ecaa5fb97b2cfb3dcc993e00903fc",
+    "frozen": false
+  },
+  "config_version": "post-changed-input-http-v1",
+  "python": "3.12.11",
+  "libraries": {
+    "sqlalchemy": "2.1.9",
+    "pydantic": "2.14.4",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1",
+    "ortools": "9.15.6755"
+  },
+  "crm_policy": "reference-v1",
+  "created_at": "2026-11-28T10:08:51.663815+00:00",
+  "modules": [
+    "cutting",
+    "assistant",
+    "crm",
+    "quality",
+    "cards"
+  ],
+  "solver": {
+    "profile": "extended",
+    "seed": 42,
+    "time_limit_seconds": 6,
+    "workers": 1,
+    "minimum_free_remnants": 5,
+    "fixed_work": false,
+    "max_pool_patterns": 80000
+  },
+  "provider": "local_limited",
+  "ai_settings": {
+    "version": 0,
+    "profile": "local_limited",
+    "provider": "gemini",
+    "included_quota_enabled": false,
+    "quota_token_budget": 1000000,
+    "model_id": "",
+    "mode": "free_only",
+    "paid_enabled": false,
+    "monthly_budget_tg": "0",
+    "rpm": 1,
+    "tpm": 1000,
+    "rpd": 100,
+    "max_parallel": 1,
+    "timeout_seconds": 30,
+    "max_retries": 2,
+    "max_tool_iterations": 6,
+    "max_output_tokens": 2048,
+    "fallback_models": [],
+    "gateway_url": null
+  },
+  "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+  "files": {
+    "buyers_top50.csv": "e031cadcf80246d7917216f91f76d70d8568ce916b54b3fe3ef4ae890d57ce55"
+  },
+  "validators": {},
+  "official_accuracy": {
+    "assistant": null,
+    "crm": null,
+    "quality": null
+  },
+  "validation_note": "Без evaluation KEY официальные закрытые баллы неизвестны",
+  "budget": {
+    "version": 0,
+    "total_seconds": 12,
+    "export_reserve_seconds": 4,
+    "started_at": "2026-11-28T10:08:51.663815+00:00",
+    "deadline_utc": "2026-11-28T10:09:03.663815+00:00",
+    "work_deadline_utc": "2026-11-28T10:08:59.663815+00:00",
+    "requested_solver": {
+      "profile": "extended",
+      "seed": 42,
+      "time_limit_seconds": 6,
+      "workers": 1,
+      "minimum_free_remnants": 5,
+      "fixed_work": false,
+      "max_pool_patterns": 80000
+    },
+    "phase": "baseline",
+    "export_status": "not_started"
+  },
+  "sale_readiness_enabled": true,
+  "export_id": "37bae629-db10-4c37-8731-497a7f737d04",
+  "status": "partial",
+  "errors": [
+    "cutting: результат не завершен",
+    "assistant: результат не завершен",
+    "crm: результат не завершен",
+    "quality: результат не завершен",
+    "cards: результат не завершен"
+  ],
+  "result_refs": {
+    "quality": {
+      "job_id": "e6f9d827-bb91-47b4-99fe-8d7301341876",
+      "state": "failed"
+    },
+    "crm": {
+      "job_id": "18e57cd8-941e-410e-8be1-a3b4abbf0b04",
+      "state": "failed"
+    },
+    "cutting": {
+      "job_id": "6330e938-7d34-4d1e-bd66-e07ea19d0b10",
+      "state": "failed"
+    },
+    "assistant": {
+      "job_id": "187e2a63-7619-4792-8104-d027a661407c",
+      "state": "failed"
+    }
+  },
+  "module_provenance": {
+    "quality": {
+      "status": "not_recorded"
+    },
+    "crm": {
+      "status": "not_recorded"
+    },
+    "cutting": {
+      "status": "not_recorded"
+    },
+    "assistant": {
+      "status": "not_recorded"
+    }
+  },
+  "accepted_export_id": null,
+  "accepted_files": {}
+}
