@@ -23,7 +23,7 @@ from glassflow.contracts.common import Evidence
 from glassflow.contracts.intelligence import DialogVerdict, PriceMention
 
 from ..catalog.kb import KnowledgeBase, Product
-from ..catalog.matching import match_products
+from ..catalog.matching import UNSUPPORTED_IDENTIFIERS, match_products
 from ..catalog.text import normalize
 from ..nlu.extract import extract
 from ..pricing import PricingInput, calculate, pricing_input_for
@@ -319,6 +319,9 @@ def check_dialog(kb: KnowledgeBase, dialog_id: str, client: str, manager: str) -
     if extract(f"{client} {manager}").model_codes:
         return _model_code_verdict(kb, dialog_id, client, manager, digest)
     client_match = match_products(kb, client)
+    if client_match.reason_code in UNSUPPORTED_IDENTIFIERS:
+        return _needs_review(dialog_id, manager, digest, "explicit_unknown_product",
+                             "Указанный артикул или бренд не подтвержден каталогом; нельзя подменять его ценой другой позиции.")
     if client_match.status == "exact":
         product = client_match.product
         return _from_evaluation(dialog_id, product, _evaluate(kb, product, client, manager), "price_matches_kb", digest)

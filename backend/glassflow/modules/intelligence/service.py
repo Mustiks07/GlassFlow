@@ -64,7 +64,7 @@ from .assistant.local import TurnContext
 from .assistant.prompts import PROMPT_VERSION
 from .catalog.kb import KnowledgeBase, KnowledgeBaseError, Product, parse_knowledge_base
 from .catalog.mapping import MappingDecision, derive_all
-from .catalog.matching import match_products
+from .catalog.matching import UNSUPPORTED_IDENTIFIERS, match_products
 from .catalog.materials import MaterialsError, MaterialsTable, parse_materials
 from .models import AICallRow, ConversationRow, MappingOverrideRow, QualityCheckRow, QuoteRevisionRow, TurnRow
 from .nlu.extract import parse_dimension_text
@@ -785,7 +785,7 @@ class IntelligenceService:
                 for f in (result.tool_context.facts.facts if result.tool_context else local.facts.facts)[:120]
             ],
             alternatives=local.alternatives,
-            needs_manager=local.needs_manager or (result.llm.needs_manager if result.llm else False),
+            needs_manager=local.needs_manager or (result.llm.needs_manager if result.llm and result.answer_path == "llm_tools" else False),
         )
         traces = local.tool_calls if result.answer_path != "llm_tools" else []
         tool_records = [
@@ -858,7 +858,7 @@ class IntelligenceService:
                 for old in previous:
                     old.status = "superseded"
                 self._store_revision(session, quote_dto, request)
-            elif quote_id is not None and local.missing_parameters:
+            elif quote_id is not None and (local.missing_parameters or local.catalog_match_reason in UNSUPPORTED_IDENTIFIERS):
                 for old in session.scalars(select(QuoteRevisionRow).where(
                     QuoteRevisionRow.dataset_id == turn.dataset_id,
                     QuoteRevisionRow.quote_id == quote_id,
@@ -984,6 +984,8 @@ class IntelligenceService:
             included_quota_enabled=profile.included_quota_enabled,
             quota_token_budget=profile.quota_token_budget,
             quota_tokens_spent=runtime.client.quota_tokens_spent if runtime.client else 0,
+            request_timeout_s=profile.request_timeout_s,
+            turn_deadline_s=profile.turn_deadline_s,
             limits={"rpm": profile.rpm, "tpm": profile.tpm, "rpd": profile.rpd, "max_tool_iterations": profile.max_tool_iterations,
                     "max_retries": profile.max_retries, "max_concurrency": profile.max_concurrency},
         )

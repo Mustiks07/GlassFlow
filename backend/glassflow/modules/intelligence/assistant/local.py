@@ -141,6 +141,7 @@ class LocalOutcome:
     candidates: list[dict] = field(default_factory=list)
     inventory_reason_codes: list[str] = field(default_factory=list)
     normalized_dimensions: str | None = None
+    catalog_match_reason: str | None = None
 
     @property
     def answer(self) -> str:
@@ -223,6 +224,9 @@ class LocalEngine:
                 if refined is not None:
                     match = refined
             context.pending_query = text_for_pending[-300:] if match.status == "ambiguous" else None
+            out.catalog_match_reason = match.reason_code
+            if match.reason_code:
+                context.product_id = None
             if match.status == "exact" and ex.quantity is None:
                 quantity = _quantity_before_name(text, match.product)
                 if quantity is not None:
@@ -333,8 +337,7 @@ class LocalEngine:
             else:
                 out.sentences.append(f"Модели {label} нет в базе знаний — ее наличие и цену уточнит менеджер.")
                 out.facts.add("unknown", f"model:{label}", None, "policy:no_kb_fact")
-        out.sentences.append("Уточните, пожалуйста, размер и вариант подсветки — передам запрос менеджеру.")
-        out.clarification = out.sentences[-1]
+        out.sentences.append("Передам указанные параметры менеджеру для индивидуального расчета.")
 
     def _unknown_services(self, ex: Extraction, out: LocalOutcome, match: MatchResult | None) -> None:
         out.intent = "processing_price"
@@ -469,7 +472,7 @@ class LocalEngine:
             self._update_params(ex, context, out)
             self._ambiguous(ex, out, match)
             return True
-        elif context.product_id and (
+        elif context.product_id and not match.reason_code and (
             ex.dimensions or ex.quantity or ex.processing != "none" or ex.price_basis != "auto" or ex.edge_sides is not None
         ):
             product = self.kb.product(context.product_id)
@@ -548,7 +551,11 @@ class LocalEngine:
             price_text = self._short_price(product, basis, out.facts)
             rendered.append(f"{product.name} — {price_text}" if price_text else product.name)
         same_price = len({self._short_price(p, basis, FactSet_dummy()) for p in options}) == 1 and rendered
-        if same_price and options[0].is_hardware:
+        if len(options) == 1:
+            out.sentences.append(f"В каталоге есть «{options[0].name}»; соответствие вашему запросу пока не подтверждено.")
+            question = "Вы имеете в виду эту позицию или другую модель? Укажите точный артикул или название."
+            attribute = "модель или точное название"
+        elif same_price and options[0].is_hardware:
             out.sentences.append(f"{self._common_name(options)}: {self._short_price(options[0], basis, out.facts)}.")
             question = f"Есть варианты: {', '.join(p.name for p in options)} — уточните нужный."
         else:
@@ -722,6 +729,7 @@ class LocalEngine:
                 )
                 out.sentences.append("Передам запрос менеджеру для индивидуального расчета.")
                 out.assumptions.append(f"Известная цена целого листа: {_m(sheet.amount)} ₸.")
+                out.missing_parameters.append("per_m2_price")
                 out.needs_manager = True
                 out.status = "manager_handoff"
             elif parts:

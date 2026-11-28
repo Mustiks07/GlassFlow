@@ -385,7 +385,8 @@ TOOLS: dict[str, Tool] = {
              CompareScenarioArgs, "job", _scenario),
         Tool("verify_answer", "Проверить черновик ответа на неподтвержденные цены, сроки, скидки и обещания.",
              _schema({"answer_ru": _STR}, ["answer_ru"]), VerifyAnswerArgs, "read", _verify),
-        Tool("submit_answer", "Финальный короткий ответ клиенту (2–4 предложения) и уточняющий вопрос при необходимости.",
+        Tool("submit_answer", "Финальный короткий ответ и нужное уточнение. needs_manager=true только для нерешенного вопроса, "
+             "а не обычного подтверждения известной предварительной цены; для полного известного расчета false.",
              _schema({"answer_ru": _STR, "clarification": _STR, "needs_manager": {"type": "boolean"}}, ["answer_ru"]),
              SubmitAnswerArgs, "none", _submit),
     ]
