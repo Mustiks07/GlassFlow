@@ -21250,6 +21250,28 @@
             "title": "Quota Tokens Spent",
             "default": 0
           },
+          "request_timeout_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Timeout S"
+          },
+          "turn_deadline_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Turn Deadline S"
+          },
           "limits": {
             "additionalProperties": {
               "anyOf": [
@@ -27459,6 +27481,22 @@
             "type": "boolean",
             "title": "Requires Human Review",
             "default": true
+          },
+          "is_current": {
+            "type": "boolean",
+            "title": "Is Current",
+            "default": true
+          },
+          "current_kb_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Kb Version"
           }
         },
         "additionalProperties": false,

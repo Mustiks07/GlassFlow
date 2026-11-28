@@ -103,7 +103,7 @@ function Cutting({ dataset }: { dataset: Dataset }) {
           {plan.isLoading && <LoadingState label="Загружаем размещения…" />}
           {plan.isError && <ErrorState error={plan.error} onRetry={() => plan.refetch()} context="План" />}
           {plan.data && <PlanMetrics plan={plan.data} />}
-          {plan.data && <PlanInsights datasetId={dataset.dataset_id} planId={plan.data.plan_id} revision={plan.data.revision} />}
+          {plan.data && <PlanInsights datasetId={dataset.dataset_id} planId={plan.data.plan_id} revision={plan.data.revision} materialNames={Object.fromEntries([...materialMap].map(([id, m]) => [id, m.name]))} />}
           {plan.data && <SaleReadinessPanel datasetId={dataset.dataset_id} planId={plan.data.plan_id} revision={plan.data.revision} key={`${dataset.dataset_id}:${plan.data.plan_id}:${plan.data.revision}`} />}
         </Panel>
       )}
@@ -125,7 +125,7 @@ function Cutting({ dataset }: { dataset: Dataset }) {
           {tab === 'remnants' ? (
             <RemnantsTable dataset={dataset} remnants={remnants} plan={plan.data ?? null} materials={materialMap} />
           ) : (
-            <PartsTable parts={parts} plan={plan.data ?? null} datasetId={dataset.dataset_id} />
+            <PartsTable parts={parts} plan={plan.data ?? null} datasetId={dataset.dataset_id} materials={materialMap} />
           )}
         </div>
         <div className="stack">
@@ -307,7 +307,7 @@ function RemnantsTable({
           <select value={filter.material} onChange={event => setFilter({ ...filter, material: event.target.value })}>
             <option value="">Все</option>
             {materialIds.map(id => (
-              <option key={id}>{id}</option>
+              <option key={id} value={id}>{materials.get(id)?.name ?? 'Материал без названия'}</option>
             ))}
           </select>
         </label>
@@ -362,7 +362,7 @@ function RemnantsTable({
                       {item.defect && <span className="small text-warn"> · дефект</span>}
                     </th>
                     <td>
-                      <span className="mono">{item.material_id}</span>
+                      <span>{materials.get(item.material_id)?.name ?? 'Материал без названия'}</span>
                       {materials.get(item.material_id)?.tempered && <span className="small"> · калёное</span>}
                     </td>
                     <td>{formatDims(item.dimensions)}</td>
@@ -406,7 +406,7 @@ function RemnantsTable({
   );
 }
 
-function PartsTable({ parts, plan, datasetId }: { parts: { data?: Part[]; isLoading: boolean; isError: boolean; error: unknown; refetch: () => unknown }; plan: CutPlan | null; datasetId: string }) {
+function PartsTable({ parts, plan, datasetId, materials }: { parts: { data?: Part[]; isLoading: boolean; isError: boolean; error: unknown; refetch: () => unknown }; plan: CutPlan | null; datasetId: string; materials: Map<string, Material> }) {
   const { select } = useCuttingStore();
   const [filter, setFilter] = useState({ text: '', state: '' });
   const draft = useCuttingStore(state => (plan ? state.drafts[draftKey(datasetId, plan.plan_id)] : undefined));
@@ -462,7 +462,7 @@ function PartsTable({ parts, plan, datasetId }: { parts: { data?: Part[]; isLoad
                       {part.premium && <span className="small"> · премиум</span>}
                     </th>
                     <td className="mono">{part.order_id}</td>
-                    <td className="mono">{part.material_id}</td>
+                    <td>{materials.get(part.material_id)?.name ?? 'Материал без названия'}</td>
                     <td>{formatDims(part.dimensions)}</td>
                     <td>{part.product_type}</td>
                     <td>

@@ -56,8 +56,8 @@ test('labor timer records browser operation but does not fabricate human attesta
   await page.getByRole('button', { name: 'Создать протокол', exact: true }).click();
   await page.getByText('Начать ручное или автоматизированное выполнение', { exact: true }).click();
   await page.getByLabel('Оператор', { exact: true }).fill('automated-browser-check');
-  await page.getByLabel('Идентификатор пары', { exact: true }).fill('automated-not-human');
-  await page.getByLabel('Идентификатор задачи', { exact: true }).fill('timer-ui-only');
+  await page.getByLabel('Название парного замера', { exact: true }).fill('automated-not-human');
+  await page.getByLabel('Название задачи', { exact: true }).fill('timer-ui-only');
   await page.getByLabel('Ссылка на входные данные задачи').fill('test://timer-ui-not-human');
   await page.getByLabel('Одинаковый текст и параметры задачи').fill('Automated timer UI verification. No human active time is attested.');
   await page.getByRole('button', { name: 'Начать измерение', exact: true }).click();
@@ -79,7 +79,7 @@ test('actual correction draft is visible without changing original dialogue', as
   await page.getByRole('textbox', { name: 'Ответ менеджера', exact: true }).fill('Стекло 6 мм прозрачное стоит 100 тенге за м2.');
   await page.getByRole('button', { name: 'Проверить ответ', exact: true }).click();
   await page.getByRole('button', { name: 'Подготовить проверенный черновик исправления' }).click();
-  await expect(page.getByText('Черновик проверен по действующей KB', { exact: true })).toBeVisible();
+  await expect(page.getByText('Черновик проверен по действующей базе знаний', { exact: true })).toBeVisible();
   await expect(page.getByText(/История диалога сохранена; автоматической отправки нет/)).toBeVisible();
   await expect(page.getByRole('textbox', { name: 'Ответ менеджера', exact: true })).toHaveValue('Стекло 6 мм прозрачное стоит 100 тенге за м2.');
   await page.screenshot({ path: path.resolve(__dirname, '../evidence/post/N19-actual-draft.png'), fullPage: true });

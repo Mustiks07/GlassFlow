@@ -9,6 +9,7 @@ export const FIELD_LABELS: Record<string, string> = {
   monthly_budget_tg: 'Денежный бюджет', quota_token_budget: 'Лимит включённой квоты',
   model_id: 'Модель', provider: 'Сервис ИИ', gateway_url: 'Адрес шлюза', api_key: 'Ключ доступа',
   active_seconds: 'Активное время', result_ref: 'Ссылка на результат', input_hash: 'Входные данные',
+  total_budget_seconds: 'Общий бюджет времени', export_reserve_seconds: 'Резерв на проверку и экспорт',
   price_basis: 'Единица расчёта цены', price_meaning: 'Основание цены', unit: 'Единица',
 };
 export function fieldLabel(name: string): string { return FIELD_LABELS[name] ?? 'Поле формы'; }

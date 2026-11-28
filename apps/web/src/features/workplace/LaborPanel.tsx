@@ -88,11 +88,11 @@ export function LaborPanel({ dataset, onExport }: { dataset: Dataset; onExport: 
         <Button onClick={() => refresh()} busy={busy}>Обновить измерения</Button>
         {writable && <details><summary>Начать ручное или автоматизированное выполнение</summary><div className="stack">
           <label>Оператор <input value={operator} onChange={e => setOperator(e.target.value)} placeholder="Имя или учётная запись сотрудника" /></label>
-          <div className="row wrap"><label>Идентификатор пары <input value={pair} onChange={e => setPair(e.target.value)} /></label>
-            <label>Идентификатор задачи <input value={task} onChange={e => setTask(e.target.value)} /></label></div>
+          <div className="row wrap"><label>Название парного замера <input value={pair} onChange={e => setPair(e.target.value)} placeholder="Например: расчёт полок, первая пара" /></label>
+            <label>Название задачи <input value={task} onChange={e => setTask(e.target.value)} placeholder="Одна задача для обоих способов" /></label></div>
           <label>Ссылка на входные данные задачи <input value={inputRef} onChange={e => setInputRef(e.target.value)} placeholder="Сохранённый запрос, документ или расчёт" /></label>
           <label>Одинаковый текст и параметры задачи <textarea value={inputText} onChange={e => setInputText(e.target.value)} /></label>
-          <p className="small">Для обоих способов оставьте этот текст без изменений: приложение проверяет его хеш. Чередуйте порядок способов между парами.</p>
+          <p className="small">Одна пара содержит одну задачу, выполненную двумя способами. Оставьте название пары, задачу и входные данные без изменений. Приложение проверит их совпадение. Чередуйте порядок способов между парами.</p>
           <div className="row wrap"><label>Способ <select value={method} onChange={e => setMethod(e.target.value as typeof method)}><option value="manual">Вручную</option><option value="app">В GlassFlow</option></select></label>
             <label>Порядок в этой паре <select value={order} onChange={e => setOrder(e.target.value as typeof order)}><option value="manual_first">Сначала вручную</option><option value="app_first">Сначала в GlassFlow</option></select></label></div>
           <Button variant="primary" disabled={!operator.trim() || !pair.trim() || !task.trim() || !inputRef.trim() || !inputText.trim()} busy={busy} onClick={begin}>Начать измерение</Button>

@@ -2468,6 +2468,10 @@ export interface components {
              * @default 0
              */
             quota_tokens_spent?: number;
+            /** Request Timeout S */
+            request_timeout_s?: number | null;
+            /** Turn Deadline S */
+            turn_deadline_s?: number | null;
             /** Limits */
             limits?: {
                 [key: string]: number | null;
@@ -4646,6 +4650,13 @@ export interface components {
              * @default true
              */
             requires_human_review?: boolean;
+            /**
+             * Is Current
+             * @default true
+             */
+            is_current?: boolean;
+            /** Current Kb Version */
+            current_kb_version?: string | null;
         };
         /** ManagerCorrectionRequest */
         ManagerCorrectionRequest: {

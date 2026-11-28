@@ -1,10 +1,10 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 import { useApi } from '../../api/context';
 import type { Dataset, DialogVerdict } from '../../api/types';
-import { formatMoney } from '../../lib/format';
-import { Button, ErrorState, Field, Panel, StatusBadge, TableWrap } from '../../ui/kit';
+import { formatDateTime, formatMoney } from '../../lib/format';
+import { Button, Details, ErrorState, Field, Panel, StatusBadge, TableWrap } from '../../ui/kit';
 import { kbVersionOf } from '../shell/dataset';
 import { EvidenceList } from './EvidenceList';
 import type { components } from '../../../../../packages/contracts/schema';
@@ -14,6 +14,7 @@ const VERDICT: Record<DialogVerdict['verdict'], { label: string; tone: 'ok' | 'e
   ERROR: { label: 'Цена неверна', tone: 'error' },
   NEEDS_REVIEW: { label: 'Нужна проверка: недостаточно контекста', tone: 'warn' },
 };
+const PRICE_MEANING: Record<string, string> = { per_m2: 'за квадратный метр', per_sheet: 'за лист', retail_unit: 'за штуку в розницу', bulk_unit: 'за штуку при оптовом количестве', total: 'сумма заказа', unspecified: 'единицу нужно уточнить' };
 
 interface Checked {
   client: string;
@@ -64,6 +65,7 @@ export function QualityPanel({ dataset }: { dataset: Dataset }) {
         </form>
       </Panel>
       <Panel title="Результат" subtitle="Неопределенность не отображается зеленым.">
+        <CorrectionHistory dataset={dataset} />
         {!latest && <p className="muted small">Результат появится после проверки.</p>}
         {latest && <><VerdictCard checked={latest} /><CorrectionDraft dataset={dataset} checked={latest} key={latest.verdict.id + latest.client + latest.manager} /></>}
         {history.length > 1 && (
@@ -85,7 +87,7 @@ export function QualityPanel({ dataset }: { dataset: Dataset }) {
                     <td className="mono">{item.verdict.id}</td>
                     <td>{item.manager}</td>
                     <td>
-                      <StatusBadge tone={VERDICT[item.verdict.verdict].tone}>{item.verdict.verdict}</StatusBadge>
+                      <StatusBadge tone={VERDICT[item.verdict.verdict].tone}>{VERDICT[item.verdict.verdict].label}</StatusBadge>
                     </td>
                     <td className="num">{item.verdict.correct ? formatMoney(item.verdict.correct) : '—'}</td>
                   </tr>
@@ -113,12 +115,12 @@ function VerdictCard({ checked }: { checked: Checked }) {
       {verdict.reference_tg && (
         <p className="small">
           Эталон: {formatMoney(verdict.reference_tg)}
-          {verdict.reference_meaning ? ` (${verdict.reference_meaning})` : ''}
+          {verdict.reference_meaning ? ` · ${PRICE_MEANING[verdict.reference_meaning] ?? 'единица требует проверки'}` : ''}
         </p>
       )}
       {verdict.mentions && verdict.mentions.length > 0 && (
         <p className="small">
-          Цены в ответе: {verdict.mentions.map(item => `${item.raw} → ${formatMoney(item.amount_tg)} (${item.meaning})`).join('; ')}
+          Цены в ответе: {verdict.mentions.map(item => `${formatMoney(item.amount_tg)} · ${PRICE_MEANING[item.meaning] ?? 'единица требует проверки'}`).join('; ')}
         </p>
       )}
       {verdict.explanation_ru && <p className="small">{verdict.explanation_ru}</p>}
@@ -132,13 +134,30 @@ function VerdictCard({ checked }: { checked: Checked }) {
 
 function CorrectionDraft({ dataset, checked }: { dataset: Dataset; checked: Checked }) {
   const { client } = useApi();
+  const cache = useQueryClient();
   const draft = useMutation({ mutationFn: () => client.post<components['schemas']['ManagerCorrectionDraft']>('/dialogs/corrections', {
     dataset_id: dataset.dataset_id, id: checked.verdict.id, kb_version: kbVersionOf(dataset) ?? '', client: checked.client, manager: checked.manager,
-  }) });
+  }), onSuccess: () => cache.invalidateQueries({ queryKey: ['correction-drafts', dataset.dataset_id] }) });
   return <div className="stack"><Button disabled={draft.isPending} onClick={() => draft.mutate()}>Подготовить проверенный черновик исправления</Button>
-    {draft.error && <ErrorState error={draft.error} />}{draft.data && <div role="status"><strong>{draft.data.status === 'DRAFT_VERIFIED' ? 'Черновик проверен по действующей KB' : draft.data.status === 'NOT_NEEDED' ? 'Исправление не требуется' : 'Нужен разбор человеком'}</strong>
-      {draft.data.answer && <p className="pre">{draft.data.answer}</p>}{draft.data.applicable_price_tg != null && <p>{formatMoney(draft.data.applicable_price_tg)} · {draft.data.unit} · {draft.data.price_meaning}</p>}
-      <p className="small">Источник: {draft.data.source_ref ?? 'нет подтверждённого основания'}</p><EvidenceList evidence={draft.data.evidence ?? []} /><p className="small muted">Черновик требует проверки человеком. История диалога сохранена; автоматической отправки нет.</p>
-    </div>}
+    {draft.error && <ErrorState error={draft.error} />}{draft.data && <DraftView value={draft.data} kbVersion={kbVersionOf(dataset)} />}
   </div>;
+}
+
+function DraftView({ value, kbVersion }: { value: components['schemas']['ManagerCorrectionDraft']; kbVersion: string | null }) {
+  const stale = value.is_current === false || (Boolean(kbVersion) && value.kb_version !== kbVersion);
+  return <div role="status"><strong>{stale ? 'Прайс изменился: черновик требует новой проверки' : value.status === 'DRAFT_VERIFIED' ? 'Черновик проверен по действующей базе знаний' : value.status === 'NOT_NEEDED' ? 'Исправление не требуется' : 'Нужен разбор человеком'}</strong>
+    {!stale && value.answer && <p className="pre">{value.answer}</p>}{!stale && value.applicable_price_tg != null && <p>{formatMoney(value.applicable_price_tg)} · {value.unit}</p>}
+    {!stale && <EvidenceList evidence={value.evidence ?? []} />}<p className="small muted">Черновик требует проверки человеком. История диалога сохранена; автоматической отправки нет.</p>
+  </div>;
+}
+
+function CorrectionHistory({ dataset }: { dataset: Dataset }) {
+  const { client } = useApi();
+  const [open, setOpen] = useState(false);
+  const drafts = useQuery({ queryKey: ['correction-drafts', dataset.dataset_id], enabled: open,
+    queryFn: () => client.get<components['schemas']['ManagerCorrectionDraft'][]>('/dialogs/corrections', { query: { dataset_id: dataset.dataset_id } }) });
+  return <details onToggle={e => setOpen(e.currentTarget.open)}><summary>Сохранённые черновики исправлений</summary>
+    <Button onClick={() => drafts.refetch()}>Обновить черновики</Button>{drafts.isError && <ErrorState error={drafts.error} />}{drafts.data?.length === 0 && <p>Сохранённых черновиков пока нет.</p>}
+    {drafts.data?.slice().reverse().map(value => <Details key={value.draft_id} summary={`Черновик от ${formatDateTime(value.created_at)}${value.is_current === false ? ' · прайс изменился' : ''}`}><DraftView value={value} kbVersion={kbVersionOf(dataset)} /></Details>)}
+  </details>;
 }

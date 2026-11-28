@@ -13,6 +13,7 @@ import { JobPanel } from '../shell/JobPanel';
 import { RequireDataset } from '../shell/RequireDataset';
 import { TERMINAL, useJob } from '../shell/useJob';
 import { PassportPanel } from './PassportPanel';
+import { ResumePanel } from './ResumePanel';
 import { errorAction, humanText, stageLabel } from '../../ui/human';
 
 export function RunsPage() {
@@ -192,6 +193,7 @@ function Runs({ dataset }: { dataset: Dataset }) {
         {run.data && <RunStatus run={run.data} />}
         {run.data?.budget && <p className="small">Осталось на весь прогон: {typeof run.data.budget.remaining_seconds === 'number' ? `${Math.ceil(run.data.budget.remaining_seconds)} с` : 'уточняется'}. Резерв на проверку и экспорт: {String(run.data.budget.export_reserve_seconds ?? 'уточняется')} с.</p>}
         {runId && <PassportPanel datasetId={dataset.dataset_id} runId={runId} />}
+        {runId && run.data && <ResumePanel run={run.data} runId={runId} />}
       </Panel>
 
       {run.data && runId && (TERMINAL.includes(job.data?.state ?? 'completed') || !jobId) && <ExportPanel run={run.data} runId={runId} />}
@@ -203,12 +205,12 @@ function Runs({ dataset }: { dataset: Dataset }) {
           if (!value) start.reset();
         }}
         title="Запустить конкурсный прогон"
-        action="Будет создан неизменный run из выбранного снимка с фиксированной конфигурацией. Изменения рабочих копий в прогон не попадают."
+        action="Будет создан неизменный прогон из выбранного снимка. Изменения рабочих копий в него не попадают."
         affected={[
           { label: 'Набор', value: `${dataset.name} (${MODE_LABEL[dataset.mode]})` },
           { label: 'Модули', value: modules.map(id => MODULES.find(module => module.id === id)?.label).join(', ') },
-          { label: 'Конфигурация', value: 'contest-v1 · раскрой extended 600 с, seed 42, 1 поток' },
-          { label: 'AI-профиль', value: aiProfile },
+          { label: 'Поиск раскроя', value: 'Тщательный поиск в пределах общего бюджета, не более 600 секунд; один поток' },
+          { label: 'Доступ к ИИ', value: ({ direct: 'Ключ команды', judge_gateway: 'Шлюз жюри', local_limited: 'Локальный режим' })[aiProfile] },
         ]}
         confirmLabel="Запустить"
         onConfirm={() => start.mutate()}

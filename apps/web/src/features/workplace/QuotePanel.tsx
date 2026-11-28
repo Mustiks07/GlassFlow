@@ -197,7 +197,7 @@ export function QuotePanel({
         noValidate
       >
         <div className="form-grid">
-          <Field label="Поиск по каталогу" hint={catalog.data ? `${products.length} позиций · KB ${kbVersion?.replace(/^sha256:/, '').slice(0, 10)}` : undefined}>
+          <Field label="Поиск по каталогу" hint={catalog.data ? `${products.length} позиций из действующей базы знаний` : undefined}>
             {props => <input {...props} type="search" value={search} onChange={event => setSearch(event.target.value)} placeholder="стекло 6 мм, зеркало, уголок…" />}
           </Field>
           <Field label="Товар каталога" required error={show('catalogProductId') ?? serverField('catalog_product_id')}>
@@ -266,7 +266,7 @@ export function QuotePanel({
             {show('sides') && <small className="field-error">{show('sides')}</small>}
           </fieldset>
         )}
-        <Field label="Заказчик текущего предложения (client_id, необязательно)" hint="Это заказчик расчета. Адресат CRM-напоминания выбирается отдельно и его не меняет.">
+        <Field label="Заказчик текущего предложения, необязательно" hint="Это заказчик расчета. Адресат напоминания выбирается отдельно и его не меняет.">
           {props => <input {...props} value={draft.customerId} onChange={event => update({ customerId: event.target.value })} placeholder="например, новый клиент без ID" />}
         </Field>
         {form.notes.length > 0 && (
@@ -373,12 +373,12 @@ export function QuoteResult({ quote, stale }: { quote: Quote; stale: boolean }) 
           </table>
         </TableWrap>
       )}
-      <p className="small">
+      <div className="small">
         <StatusBadge tone={quote.material_mapping_status === 'confirmed' ? 'ok' : 'warn'}>{MAPPING_LABEL[quote.material_mapping_status]}</StatusBadge>
         {quote.material_id && (
-          <span className="mono"> material_id: {quote.material_id}</span>
+          <Details summary="Код материала для поддержки"><span className="mono">{quote.material_id}</span></Details>
         )}
-      </p>
+      </div>
       {quote.unknown_components && quote.unknown_components.length > 0 && (
         <div className="state state-warn">
           <div>
