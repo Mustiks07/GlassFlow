@@ -72,3 +72,8 @@ Worktree: `GlassFlow-post-intelligence`, branch `codex/post-intelligence`, base 
 - N19 stale GET returns 409; lists expose is_current/current_kb_version with historical values; storage unchanged. New KB creates a new current draft. N07 missing per-m² rate is classified kb_fact; known manager-priced AB rules remain correct_policy.
 - Latest focused unknown/budget/workflow suite: 38 passed. Existing catalogue/local/dialog suite plus earlier boundary cases: 103 passed. Provider/resilience/provenance boundary subset: 39 passed. Ruff all backend/tests/scripts passed. Full final suite will run after this source freeze.
 - Parent owns next named live preflight (new prompt/source SHA), independent sealed exam, actual TCP verification and all release checks. This child made no live calls and used no secrets.
+
+## Static-full regression follow-up
+
+- The full run on `a7e95ff` found one existing F1 regression: the generic hardware guard had included weak aluminium-hinge candidates in the otherwise internal/external glass-hinge interpretation set. The old expectation ERROR 450 was retained. The fix first preserves candidates with identical mentioned features, excludes weaker incomplete interpretations, and does not choose a SKU or filter by price. Differing canonical corrections still remain NEEDS_REVIEW.
+- The independent 5-warmup run on the integrator's intermediate SHA remains historical evidence. The held-out exam has not been run or read by this child. Final full verification runs again on frozen production sources after this correction.

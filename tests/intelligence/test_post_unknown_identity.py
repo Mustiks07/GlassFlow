@@ -18,6 +18,7 @@ def test_unknown_explicit_code_cannot_be_replaced_with_generic_hardware(app_clie
     assert result["status"] == "manager_handoff" and result["quote"] is None
     assert result["card"]["catalog_product_id"] is None
     assert "400" not in result["answer"] and "200" not in result["answer"]
+    assert not any(fact["kind"] in {"price", "line", "total"} for fact in result["card"]["facts"])
 
 
 def test_exact_csv_unknown_request_remains_unpriced_in_batch(app_client):

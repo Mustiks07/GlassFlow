@@ -344,18 +344,22 @@ def match_products(kb: KnowledgeBase, text: str, *, kinds: set[str] | None = Non
             return MatchResult("exact", [best] + [c for c in candidates if c is not best][: limit - 1])
         return MatchResult("ambiguous", tied[:limit])
     best = candidates[0]
-    distinguishing_hit = len(candidates) > 1 and any(
-        not label.startswith("number:") and all(label not in other.matched for other in candidates[1:])
-        for label in best.matched
-    )
-    if best.product.is_hardware and not distinguishing_hit:
-        return MatchResult("ambiguous", candidates[:limit], "hardware_identity_incomplete")
-    # A shorter catalogue name scores higher, but does not identify a SKU.
+    # Preserve the actual interpretation set before considering weak matches.
+    # E.g. internal/external glass hinges share all mentioned features; an
+    # aluminium-facade hinge matching only "hinge" is not another interpretation.
     mentioned = {value for value in best.matched if not value.startswith("number:")}
     indistinguishable = [candidate for candidate in candidates
                          if {value for value in candidate.matched if not value.startswith("number:")} == mentioned]
     if len(indistinguishable) > 1:
         return MatchResult("ambiguous", indistinguishable[:limit])
+    distinguishing_hit = len(candidates) > 1 and any(
+        not label.startswith("number:") and all(label not in other.matched for other in candidates[1:])
+        for label in best.matched
+    )
+    if best.product.is_hardware and not distinguishing_hit:
+        viable = [candidate for candidate in candidates if mentioned <= set(candidate.matched)]
+        return MatchResult("ambiguous", viable[:limit], "hardware_identity_incomplete")
+    # A shorter catalogue name scores higher, but does not identify a SKU.
     tied = [c for c in candidates if best.score - c.score < 0.5]
     if len(tied) == 1 and (best.score >= 0.5 or len(candidates) == 1 or best.score - candidates[1].score >= 1.0):
         return MatchResult("exact", [best] + candidates[1:limit])
