@@ -1,0 +1,10 @@
+{
+  "runtime_code_commit": "ba32194be5575c513ab7b3fd89cffcad1a5a6a1b",
+  "bundle_path": "C:\\Users\\User\\Documents\\ChatGPT\\Genezis\\dist\\GlassFlow-integrated-ba32194",
+  "archive_path": "C:\\Users\\User\\Documents\\ChatGPT\\Genezis\\dist\\GlassFlow-integrated-ba32194.zip",
+  "archive_bytes": 151142140,
+  "archive_sha256": "df74cae1cddd06721e9ec11188b360588bc2df494382f5d2a0a947e652898e9d",
+  "exe_sha256": "785ec45a662d9d5e201d97a24709da9e15dad4a3b9cb54a0185e896647d8385d",
+  "archive_crc": "passed",
+  "status": "working_integrated_bundle_not_full_contest_release"
+}

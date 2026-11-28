@@ -1,0 +1,8 @@
+{
+  "runs": 200,
+  "median_ms": 20.81,
+  "p95_ms": 29.48,
+  "max_ms": 511.54,
+  "remnants": 200,
+  "note": "service-level timing incl. SQLite reads, developer laptop; not the reference machine"
+}

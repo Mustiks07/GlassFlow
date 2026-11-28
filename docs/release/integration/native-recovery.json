@@ -1,0 +1,13 @@
+{
+  "status": "passed_actual_executable_abrupt_restart_and_retry",
+  "build_commit": "ba32194be5575c513ab7b3fd89cffcad1a5a6a1b",
+  "original_job_id": "f6e6360b-af3a-4ee1-a2e1-ab50d3c8c821",
+  "recovered_state": "interrupted",
+  "error_code": "PROCESS_RESTARTED",
+  "last_valid_incumbent_preserved": true,
+  "retry_job_id": "1dd32ffb-63d5-4bc9-94ff-a14e69bb8f79",
+  "same_retry_key_deduplicated": true,
+  "retry_final_state": "completed",
+  "retry_plan_validated": true,
+  "restart_ms": 6000.0
+}

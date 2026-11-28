@@ -1,0 +1,1438 @@
+{
+  "updated": "2026-11-28",
+  "team": "Vtiposhniki",
+  "runtime_code_commit": "ba32194be5575c513ab7b3fd89cffcad1a5a6a1b",
+  "release_status": "working_integrated_version_not_full_contest_acceptance",
+  "status_semantics": {
+    "automated_evidence": "Автоматические свидетельства, не заявление о полном ручном прохождении T",
+    "partial": "Проверена часть условий",
+    "blocked": "Нужно внешнее условие",
+    "not_run": "Не выполнялось"
+  },
+  "requirements": [
+    {
+      "id": "R01",
+      "title": "Один инструмент и связный сценарий остаток-цена-ответ-CRM",
+      "status": "partial",
+      "test_ids": [
+        "T28",
+        "T43",
+        "T60"
+      ]
+    },
+    {
+      "id": "R02",
+      "title": "Загрузка склада и заказов",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T01",
+        "T03",
+        "T50"
+      ]
+    },
+    {
+      "id": "R03",
+      "title": "Добавление нового остатка",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T03",
+        "T20"
+      ]
+    },
+    {
+      "id": "R04",
+      "title": "Удаление использованного остатка",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T20"
+      ]
+    },
+    {
+      "id": "R05",
+      "title": "Показ стеллажа и ячейки",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T28",
+        "T57"
+      ]
+    },
+    {
+      "id": "R06",
+      "title": "Читаемая схема и итог в тенге",
+      "status": "partial",
+      "test_ids": [
+        "T15",
+        "T22",
+        "T58"
+      ]
+    },
+    {
+      "id": "R07",
+      "title": "Русский интерфейс и запуск обычным менеджером за 5 минут",
+      "status": "partial",
+      "test_ids": [
+        "T54",
+        "T57"
+      ]
+    },
+    {
+      "id": "R08",
+      "title": "Можно заменить данные своими",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T04",
+        "T50"
+      ]
+    },
+    {
+      "id": "R09",
+      "title": "Точный material_id",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T10",
+        "T26",
+        "T27"
+      ]
+    },
+    {
+      "id": "R10",
+      "title": "Размеры в мм и поворот 90 градусов",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T08",
+        "T10"
+      ]
+    },
+    {
+      "id": "R11",
+      "title": "Отступ 5 мм",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T08"
+      ]
+    },
+    {
+      "id": "R12",
+      "title": "Зазор 3 мм и отсутствие пересечений",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T09",
+        "T13"
+      ]
+    },
+    {
+      "id": "R13",
+      "title": "Одна деталь целиком и только один раз",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T12",
+        "T13"
+      ]
+    },
+    {
+      "id": "R14",
+      "title": "Калёное ±2 мм, одна деталь на кусок",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T11"
+      ]
+    },
+    {
+      "id": "R15",
+      "title": "Премиум запрещен на дефектном",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T10"
+      ]
+    },
+    {
+      "id": "R16",
+      "title": "NEW без раскладки новых листов",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T12",
+        "T50"
+      ]
+    },
+    {
+      "id": "R17",
+      "title": "Максимум площади, ноль ошибок",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T13",
+        "T15"
+      ]
+    },
+    {
+      "id": "R18",
+      "title": "Указать все детали в solution.csv",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T12",
+        "T51"
+      ]
+    },
+    {
+      "id": "R19",
+      "title": "Формат строже валидатора",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T12",
+        "T51"
+      ]
+    },
+    {
+      "id": "R20",
+      "title": "Только база знаний для товаров/цен/правил",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T24",
+        "T25",
+        "T33"
+      ]
+    },
+    {
+      "id": "R21",
+      "title": "Цены в тенге и расчет площади",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T28",
+        "T29"
+      ]
+    },
+    {
+      "id": "R22",
+      "title": "Предварительная цена, подтверждение менеджера",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T24",
+        "T28"
+      ]
+    },
+    {
+      "id": "R23",
+      "title": "Не выдумывать наличие и сроки",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T23",
+        "T25"
+      ]
+    },
+    {
+      "id": "R24",
+      "title": "Неизвестная позиция или цена передается менеджеру",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T25",
+        "T27"
+      ]
+    },
+    {
+      "id": "R25",
+      "title": "Скидки и акции не обещать",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T25",
+        "T49"
+      ]
+    },
+    {
+      "id": "R26",
+      "title": "Монтаж не выполняется; оплата и доставка через менеджера",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T24",
+        "T25"
+      ]
+    },
+    {
+      "id": "R27",
+      "title": "Короткий русский ответ",
+      "status": "partial",
+      "test_ids": [
+        "T24",
+        "T32"
+      ]
+    },
+    {
+      "id": "R28",
+      "title": "Сопутствующие товары",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T30"
+      ]
+    },
+    {
+      "id": "R29",
+      "title": "answers.csv: id,answer; 30 закрытых вопросов",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T31",
+        "T50",
+        "T51"
+      ]
+    },
+    {
+      "id": "R30",
+      "title": "Выбрать 25 разных app_id из 260 закрытых строк",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T40",
+        "T42",
+        "T50"
+      ]
+    },
+    {
+      "id": "R31",
+      "title": "Объяснить отбор",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T40",
+        "T41"
+      ]
+    },
+    {
+      "id": "R32",
+      "title": "Метка = новая заявка в течение 60 дней",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T06",
+        "T41"
+      ]
+    },
+    {
+      "id": "R33",
+      "title": "Напоминание по прошлому клиенту и предложению",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T42",
+        "T43",
+        "T44"
+      ]
+    },
+    {
+      "id": "R34",
+      "title": "Найти неверную цену и исправить",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T37",
+        "T38",
+        "T39"
+      ]
+    },
+    {
+      "id": "R35",
+      "title": "verdicts.csv: id,verdict,correct; 10 строк",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T37",
+        "T50",
+        "T51"
+      ]
+    },
+    {
+      "id": "R36",
+      "title": "Ровно 50 разных организаций",
+      "status": "partial",
+      "test_ids": [
+        "T47"
+      ]
+    },
+    {
+      "id": "R37",
+      "title": "Не менее 30 организаций в Астане",
+      "status": "partial",
+      "test_ids": [
+        "T47"
+      ]
+    },
+    {
+      "id": "R38",
+      "title": "Не менее 5 категорий",
+      "status": "partial",
+      "test_ids": [
+        "T47"
+      ]
+    },
+    {
+      "id": "R39",
+      "title": "Точная схема buyers_top50.csv",
+      "status": "partial",
+      "test_ids": [
+        "T47",
+        "T51"
+      ]
+    },
+    {
+      "id": "R40",
+      "title": "Реальность, рабочая ссылка и профиль потребности",
+      "status": "partial",
+      "test_ids": [
+        "T47",
+        "T58"
+      ]
+    },
+    {
+      "id": "R41",
+      "title": "5 карточек свободных исходных остатков",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T17",
+        "T48"
+      ]
+    },
+    {
+      "id": "R42",
+      "title": "Цена 30-70% нового эквивалента",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T49"
+      ]
+    },
+    {
+      "id": "R43",
+      "title": "Точная схема sale_cards.csv",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T49",
+        "T51"
+      ]
+    },
+    {
+      "id": "R44",
+      "title": "M1-M5 и все семь показателей",
+      "status": "partial",
+      "test_ids": [
+        "T45",
+        "T60"
+      ]
+    },
+    {
+      "id": "R45",
+      "title": "Явные знаменатели",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T45"
+      ]
+    },
+    {
+      "id": "R46",
+      "title": "История не меняется от симуляций склада",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T05",
+        "T46"
+      ]
+    },
+    {
+      "id": "R47",
+      "title": "economics.pdf одна страница",
+      "status": "partial",
+      "test_ids": [
+        "T58",
+        "T61"
+      ]
+    },
+    {
+      "id": "R48",
+      "title": "Открытый набор примерно месяц",
+      "status": "partial",
+      "test_ids": [
+        "T61"
+      ]
+    },
+    {
+      "id": "R49",
+      "title": "Денежный эффект без двойного счета",
+      "status": "partial",
+      "test_ids": [
+        "T61"
+      ]
+    },
+    {
+      "id": "R50",
+      "title": "README.md",
+      "status": "partial",
+      "test_ids": [
+        "T54",
+        "T58"
+      ]
+    },
+    {
+      "id": "R51",
+      "title": "code/ и зафиксированные зависимости",
+      "status": "partial",
+      "test_ids": [
+        "T54",
+        "T55",
+        "T59"
+      ]
+    },
+    {
+      "id": "R52",
+      "title": "examples.pdf по3примера каждой части",
+      "status": "partial",
+      "test_ids": [
+        "T58",
+        "T61"
+      ]
+    },
+    {
+      "id": "R53",
+      "title": "Пять CSV в closed_run; buyers в корне",
+      "status": "automated_evidence",
+      "test_ids": [
+        "T50",
+        "T51"
+      ]
+    },
+    {
+      "id": "R54",
+      "title": "Закрытый прогон29.11,10:00-11:00",
+      "status": "partial",
+      "test_ids": [
+        "T50",
+        "T62",
+        "T63"
+      ]
+    },
+    {
+      "id": "R55",
+      "title": "Создание файлов на Drive до11:00, допуск11:05",
+      "status": "partial",
+      "test_ids": [
+        "T63"
+      ]
+    },
+    {
+      "id": "R56",
+      "title": "Ссылка и заморозка до12:00",
+      "status": "partial",
+      "test_ids": [
+        "T64"
+      ]
+    },
+    {
+      "id": "R57",
+      "title": "Презентацию можно менять до14:00",
+      "status": "partial",
+      "test_ids": [
+        "T60",
+        "T65"
+      ]
+    },
+    {
+      "id": "R58",
+      "title": "Регистрация всей команды14:45-15:15",
+      "status": "partial",
+      "test_ids": [
+        "T66"
+      ]
+    },
+    {
+      "id": "R59",
+      "title": "Питч3мин, вопросы2мин, смена1мин",
+      "status": "partial",
+      "test_ids": [
+        "T60"
+      ]
+    },
+    {
+      "id": "R60",
+      "title": "Четыре ответа питча",
+      "status": "partial",
+      "test_ids": [
+        "T60",
+        "T61"
+      ]
+    },
+    {
+      "id": "R61",
+      "title": "Совпадение чисел и ограничений",
+      "status": "partial",
+      "test_ids": [
+        "T51",
+        "T52",
+        "T58",
+        "T61"
+      ]
+    },
+    {
+      "id": "R62",
+      "title": "Разрешенные модели/библиотеки указаны",
+      "status": "partial",
+      "test_ids": [
+        "T59",
+        "T67"
+      ]
+    },
+    {
+      "id": "R63",
+      "title": "Учебные данные, не искать реальные данные клиентов KSM",
+      "status": "partial",
+      "test_ids": [
+        "T33",
+        "T59"
+      ]
+    },
+    {
+      "id": "R64",
+      "title": "Только публичные организации, без контактов частных лиц",
+      "status": "partial",
+      "test_ids": [
+        "T47",
+        "T59"
+      ]
+    },
+    {
+      "id": "R65",
+      "title": "Не получать закрытый набор заранее и не подгонять ответы",
+      "status": "partial",
+      "test_ids": [
+        "T31",
+        "T41",
+        "T50",
+        "T59"
+      ]
+    },
+    {
+      "id": "R66",
+      "title": "Права и передача кода по согласованию",
+      "status": "partial",
+      "test_ids": [
+        "T67"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "T01",
+      "title": "Загрузить исходный пакет",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_imports.py",
+        "tests/platform/test_persistence.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T02",
+      "title": "Повторить импорт, затем изменить одну строку",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_imports.py",
+        "tests/platform/test_persistence.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T03",
+      "title": "Дубли ID, неизвестный material_id, отрицательный размер",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_imports.py",
+        "tests/platform/test_persistence.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T04",
+      "title": "Другие данные с теми же R/P/C ID",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_imports.py",
+        "tests/platform/test_persistence.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T05",
+      "title": "Изменить цены, резервы и размеры в рабочей копии",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_imports.py",
+        "tests/platform/test_persistence.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T06",
+      "title": "Импорт без метки возврата",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_imports.py",
+        "tests/platform/test_persistence.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T07",
+      "title": "Прервать запись импорта или результата",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_imports.py",
+        "tests/platform/test_persistence.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T08",
+      "title": "Обычная деталь ровно на границе 5 мм и на 1 мм за ней",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/cutting/test_geometry.py",
+        "tests/cutting/test_random_validator.py",
+        "tests/cutting/test_review_fixes.py",
+        "open-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T09",
+      "title": "Две детали с зазором 3 мм и 2 мм",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/cutting/test_geometry.py",
+        "tests/cutting/test_random_validator.py",
+        "tests/cutting/test_review_fixes.py",
+        "open-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T10",
+      "title": "Поворот, несовпадающий материал, premium на defect",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/cutting/test_geometry.py",
+        "tests/cutting/test_random_validator.py",
+        "tests/cutting/test_review_fixes.py",
+        "open-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T11",
+      "title": "Каленое совпадает в пределах 2 мм, затем 3 мм; две детали",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/cutting/test_geometry.py",
+        "tests/cutting/test_random_validator.py",
+        "tests/cutting/test_review_fixes.py",
+        "open-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T12",
+      "title": "Дублировать или пропустить part_id",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/cutting/test_geometry.py",
+        "tests/cutting/test_random_validator.py",
+        "tests/cutting/test_review_fixes.py",
+        "open-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T13",
+      "title": "Сгенерировать случайные малые задачи",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/cutting/test_geometry.py",
+        "tests/cutting/test_random_validator.py",
+        "tests/cutting/test_review_fixes.py",
+        "open-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T14",
+      "title": "Остановить поиск по лимиту и отменить job",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/cutting/test_geometry.py",
+        "tests/cutting/test_random_validator.py",
+        "tests/cutting/test_review_fixes.py",
+        "open-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T15",
+      "title": "Полный обычный расчет открытого набора",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/cutting/test_geometry.py",
+        "tests/cutting/test_random_validator.py",
+        "tests/cutting/test_review_fixes.py",
+        "open-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T16",
+      "title": "Изменить locks и исключить занятый кусок",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/cutting/test_geometry.py",
+        "tests/cutting/test_random_validator.py",
+        "tests/cutting/test_review_fixes.py",
+        "open-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T17",
+      "title": "План использует почти все куски",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/cutting/test_geometry.py",
+        "tests/cutting/test_random_validator.py",
+        "tests/cutting/test_review_fixes.py",
+        "open-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T18",
+      "title": "Два клиента одновременно резервируют один кусок",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/integration/test_runtime.py",
+        "tests/platform/test_orders.py",
+        "tests/platform/test_material_use.py",
+        "integrated-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T19",
+      "title": "Повторить запрос подтверждения с тем же ключом",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/integration/test_runtime.py",
+        "tests/platform/test_orders.py",
+        "tests/platform/test_material_use.py",
+        "integrated-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T20",
+      "title": "Добавить остаток, перезапустить, зарезервировать и списать",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/integration/test_runtime.py",
+        "tests/platform/test_orders.py",
+        "tests/platform/test_material_use.py",
+        "integrated-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T21",
+      "title": "Создать новую цену после подтвержденного предложения",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/integration/test_runtime.py",
+        "tests/platform/test_orders.py",
+        "tests/platform/test_material_use.py",
+        "integrated-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T22",
+      "title": "Перетащить деталь в недопустимое положение",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/integration/test_runtime.py",
+        "tests/platform/test_orders.py",
+        "tests/platform/test_material_use.py",
+        "integrated-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T23",
+      "title": "Изменить версию остатка во время AI-ответа",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/integration/test_runtime.py",
+        "tests/platform/test_orders.py",
+        "tests/platform/test_material_use.py",
+        "integrated-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T24",
+      "title": "Исходные вопросы автоматически через runtime",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T25",
+      "title": "Неизвестные AB1012, цены AB-моделей, фацет, сроки и скидка",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T26",
+      "title": "Стекло серое без толщины и серое 8 мм",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T27",
+      "title": "Рифленое 8 мм 500×500, затем обычное прозрачное 8 мм",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T28",
+      "title": "450×370 clear-6 с кромкой; затем 451×370; количество 2",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T29",
+      "title": "Фурнитура 99 и 100 штук; нет цены за м² у листа",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T30",
+      "title": "Сопутствующая фурнитура и запрос совместимости",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T31",
+      "title": "18 вопросов с другими ID, перестановкой и перефразировкой",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T32",
+      "title": "Не менее 60 независимых контрольных запросов",
+      "status": "blocked",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Нужны ключ/квота и новая live оценка >=95%, критические повторы. Прежние81,4% не PASS."
+    },
+    {
+      "id": "T33",
+      "title": "Вход просит игнорировать каталог или выполнить команду",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T34",
+      "title": "429, timeout, поврежденный tool JSON, недоступный provider",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Fault-injection провайдера проверен; не доказательство реальной квоты/доступности."
+    },
+    {
+      "id": "T35",
+      "title": "Переключить Gemini на проверенную OpenRouter-модель",
+      "status": "blocked",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Нужны ключ/квота и новая live оценка >=95%, критические повторы. Прежние81,4% не PASS."
+    },
+    {
+      "id": "T36",
+      "title": "Отключить сеть полностью",
+      "status": "partial",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Локальный runtime проверен без provider key; физическое отключение всей сети отдельно не выполнялось."
+    },
+    {
+      "id": "T37",
+      "title": "Все 8 исходных диалогов через автоматический модуль",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T38",
+      "title": "10 050 вместо 10 000; числа размера и модели рядом",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T39",
+      "title": "Неверные 13 000 и 700 в исходных контекстах",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/intelligence",
+        "tests/intelligence/test_commercial_binding.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T40",
+      "title": "Baseline на исходных 700 заявках",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_sources.py",
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T41",
+      "title": "Обучение/оценка модели с client-group и temporal split",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_sources.py",
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T42",
+      "title": "25 заявок содержат несколько одного клиента",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_sources.py",
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T43",
+      "title": "Создать напоминание другому клиенту после расчета",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_sources.py",
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T44",
+      "title": "Остаток напоминания занят до открытия/подтверждения",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_sources.py",
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T45",
+      "title": "Показать M1–M5 и drill-down каждого показателя",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_sources.py",
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T46",
+      "title": "Изменить раскрой, цены и прогнозы",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_sources.py",
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "real-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T47",
+      "title": "Проверить полный реестр организаций",
+      "status": "partial",
+      "evidence": [
+        "BUYER_REVIEW.md",
+        "data/buyers/integration-source-checks.json",
+        "open-run/buyers_top50.csv"
+      ],
+      "note": "50 уникальных/49 Астана/9 категорий;44/50 HTTP/TLS PASS, публичные выборки перепроверены. См. BUYER_REVIEW.md."
+    },
+    {
+      "id": "T48",
+      "title": "Сгенерировать карточки и затем изменить план",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T49",
+      "title": "Граничные цены карточек и top3",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T50",
+      "title": "Полный новый набор с измененными ID/размерами",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T51",
+      "title": "Скачать конечные CSV и запустить штатные скрипты на Windows",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T52",
+      "title": "Посмотреть закрытые результаты без KEY",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T53",
+      "title": "Один модуль прогона упал",
+      "status": "automated_evidence",
+      "evidence": [
+        "tests/platform/test_exports.py",
+        "tests/integration/test_runtime.py",
+        "open-run/integration-report.json",
+        "changed-input-run/integration-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T54",
+      "title": "Чистый компьютер без Python/Node/Docker",
+      "status": "blocked",
+      "evidence": [
+        "frozen-smoke.json",
+        "fixture-report.json",
+        "integrated-report.json"
+      ],
+      "note": "EXE проходит на Windows10 машине сборки; чистая Windows11 без dev tools недоступна."
+    },
+    {
+      "id": "T55",
+      "title": "Запустить frozen worker, остановить и перезапустить",
+      "status": "automated_evidence",
+      "evidence": [
+        "frozen-smoke.json",
+        "native-recovery.json",
+        "exe-real-report.json",
+        "exe-integrated-report.json"
+      ],
+      "note": "Actual EXE native worker, cancel/incumbent, abrupt kill/restart interrupted + сохранение incumbent, deduplicated retry completed/validated."
+    },
+    {
+      "id": "T56",
+      "title": "Создать backup при работе и восстановить",
+      "status": "automated_evidence",
+      "evidence": [
+        "frozen-smoke.json",
+        "fixture-report.json",
+        "integrated-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T57",
+      "title": "Проверить UI при 1366×768, 125%, клавиатурой",
+      "status": "automated_evidence",
+      "evidence": [
+        "frozen-smoke.json",
+        "fixture-report.json",
+        "integrated-report.json"
+      ],
+      "note": "Предметные автоматические проверки; не самостоятельная ручная конкурсная приемка."
+    },
+    {
+      "id": "T58",
+      "title": "Осмотреть итоговые PDF и гостевые скачанные файлы",
+      "status": "partial",
+      "evidence": [
+        "frozen-smoke.json",
+        "fixture-report.json",
+        "integrated-report.json"
+      ],
+      "note": "CSV и приложение открыты;6 страниц существующей презентации просмотрены, placeholders. Финальные PDF/гостевой hosting не приняты."
+    },
+    {
+      "id": "T59",
+      "title": "Проверить пакет, JS, логи и manifest",
+      "status": "partial",
+      "evidence": [
+        "frozen-smoke.json",
+        "fixture-report.json",
+        "integrated-report.json"
+      ],
+      "note": "Runtime/JS/package scanner проверены; полный независимый license/legal review не выполнен."
+    },
+    {
+      "id": "T60",
+      "title": "Репетиция выступления с итоговой сборкой",
+      "status": "not_run",
+      "evidence": [
+        "README.md",
+        "../../status/GPT_PRO_INTEGRATOR.md"
+      ],
+      "note": "Нужна человеческая репетиция с трудозамерами и суммарным live<=30 с."
+    },
+    {
+      "id": "T61",
+      "title": "Сверить экономику, UI, README и слайды",
+      "status": "partial",
+      "evidence": [
+        "README.md",
+        "../../status/GPT_PRO_INTEGRATOR.md"
+      ],
+      "note": "Открытые CSV/UI/README согласованы; финальные экономика/слайды и10 пар труда отсутствуют."
+    },
+    {
+      "id": "T62",
+      "title": "Замерить профиль производительности и AI квоты",
+      "status": "partial",
+      "evidence": [
+        "README.md",
+        "../../status/GPT_PRO_INTEGRATOR.md"
+      ],
+      "note": "Настоящие быстрый/extended профили и локальный p95 измерены; квоты модели/референсная машина не проверены."
+    },
+    {
+      "id": "T63",
+      "title": "29 ноября создать пять готовых файлов на Drive до 11:00",
+      "status": "not_run",
+      "evidence": [
+        "README.md",
+        "../../status/GPT_PRO_INTEGRATOR.md"
+      ],
+      "note": "Будущее конкурсное действие команды; не выполнялось и не подменяется текущей интеграцией."
+    },
+    {
+      "id": "T64",
+      "title": "До 12:00 подать ссылку и зафиксировать папку",
+      "status": "not_run",
+      "evidence": [
+        "README.md",
+        "../../status/GPT_PRO_INTEGRATOR.md"
+      ],
+      "note": "Будущее конкурсное действие команды; не выполнялось и не подменяется текущей интеграцией."
+    },
+    {
+      "id": "T65",
+      "title": "Закончить презентацию до 14:00",
+      "status": "not_run",
+      "evidence": [
+        "README.md",
+        "../../status/GPT_PRO_INTEGRATOR.md"
+      ],
+      "note": "Будущее конкурсное действие команды; не выполнялось и не подменяется текущей интеграцией."
+    },
+    {
+      "id": "T66",
+      "title": "Проверить явку и оборудование команды",
+      "status": "not_run",
+      "evidence": [
+        "README.md",
+        "../../status/GPT_PRO_INTEGRATOR.md"
+      ],
+      "note": "Будущее конкурсное действие команды; не выполнялось и не подменяется текущей интеграцией."
+    },
+    {
+      "id": "T67",
+      "title": "Проверить происхождение компонентов и условия передачи",
+      "status": "partial",
+      "evidence": [
+        "README.md",
+        "../../status/GPT_PRO_INTEGRATOR.md"
+      ],
+      "note": "Инвентари библиотек/лицензий сохранены; условия передачи прав требуют отдельного согласования."
+    }
+  ],
+  "clarifications": [
+    {
+      "id": "F01",
+      "status": "automated_evidence",
+      "note": "См. исходное ТЗ; F07 требует репетиции, F08 реальной квоты. Автоматическая проверка не заменяет полную приемку."
+    },
+    {
+      "id": "F02",
+      "status": "automated_evidence",
+      "note": "См. исходное ТЗ; F07 требует репетиции, F08 реальной квоты. Автоматическая проверка не заменяет полную приемку."
+    },
+    {
+      "id": "F03",
+      "status": "automated_evidence",
+      "note": "См. исходное ТЗ; F07 требует репетиции, F08 реальной квоты. Автоматическая проверка не заменяет полную приемку."
+    },
+    {
+      "id": "F04",
+      "status": "automated_evidence",
+      "note": "См. исходное ТЗ; F07 требует репетиции, F08 реальной квоты. Автоматическая проверка не заменяет полную приемку."
+    },
+    {
+      "id": "F05",
+      "status": "automated_evidence",
+      "note": "См. исходное ТЗ; F07 требует репетиции, F08 реальной квоты. Автоматическая проверка не заменяет полную приемку."
+    },
+    {
+      "id": "F06",
+      "status": "automated_evidence",
+      "note": "См. исходное ТЗ; F07 требует репетиции, F08 реальной квоты. Автоматическая проверка не заменяет полную приемку."
+    },
+    {
+      "id": "F07",
+      "status": "not_run",
+      "note": "См. исходное ТЗ; F07 требует репетиции, F08 реальной квоты. Автоматическая проверка не заменяет полную приемку."
+    },
+    {
+      "id": "F08",
+      "status": "partial",
+      "note": "См. исходное ТЗ; F07 требует репетиции, F08 реальной квоты. Автоматическая проверка не заменяет полную приемку."
+    },
+    {
+      "id": "F09",
+      "status": "automated_evidence",
+      "note": "См. исходное ТЗ; F07 требует репетиции, F08 реальной квоты. Автоматическая проверка не заменяет полную приемку."
+    }
+  ]
+}
