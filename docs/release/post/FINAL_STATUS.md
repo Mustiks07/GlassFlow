@@ -6,13 +6,13 @@
 
 ## Точные артефакты
 
-- Проверенный runtime: `2fc1d83496a84e4ecfe1845158671d425039bfac`.
-- Digest исходников: `c60673f1556aa92bcdb03b3a38542ba7296e6d54ce9a1f2add6e7a5db840ce8d`.
-- EXE: `C:/Users/User/Documents/ChatGPT/Genezis/dist/GlassFlow-post-2fc1d83/GlassFlow.exe`.
-- ZIP рядом, SHA256 `89ffa59e672fd9b488bff7521106d2c318434264f18eb2838af5b8986783deae`,151644915 байт.
-- [Индекс упаковки](package-2fc1d83.json):1405 файлов, scanner и ZIP CRC PASS.
+- Проверенный runtime: `9b91085f3190371b0773e02b33803a9dc1385285`.
+- Digest исходников: `17fff6ba316de85b9d43b2ada9c75f0e95ce3d507a1264e0c454f55830939aaf`.
+- EXE: `C:/Users/User/Documents/ChatGPT/Genezis/dist/GlassFlow-post-9b91085/GlassFlow.exe`.
+- ZIP рядом, SHA256 `59d25d45e33644d4ba99ceb77771c42c7c8bec66ae63da192ebbb3ddeab582bc`,151648207 байт.
+- [Индекс упаковки](package-9b91085.json):1405 файлов, scanner и ZIP CRC PASS.
   «НАЧАТЬ ЗДЕСЬ.txt» и учебный ZIP содержат инструкции и семь исходных файлов без KEY/секретов.
-  Запуск из конечного каталога, импорт этого ZIP и настоящий frozen solver [PASS](portable-final.json).
+  Запуск из конечного каталога, импорт этого ZIP и настоящий frozen solver [PASS](final-portable-9b91085.json).
 
 Финальный Git SHA включает более поздние документацию, проверки и evidence; штамп EXE
 намеренно указывает фактически собранный runtime. Эти статусы не следует смешивать.
@@ -29,16 +29,16 @@ backup/restore и канонические M1–M5. Новый паспорт с
   Четыре SKIP не превращены в PASS: необязательный600-секундный C2 и три отсутствующие цены единицы KB.
 - Ruff/foundation, Python→OpenAPI→TypeScript без ручного выбора схем, typecheck/build и25 frontend tests PASS.
 - **16 настоящих browser E2E на конечном EXE**,10 основных+2 интеграционных+4 новых,0 skipped/flaky;
-  [отчёты и снимки](../../../tests/e2e/evidence/post/final-native/),1366/1920/125%.
-- [Полный native HTTP протокол с изменёнными ID/размерами](frozen-changed-inputs-2fc1d83/report.json):
-  PASS, первый полный принятый результат9,954с, наблюдение51,484с. Пять точных CSV:
+  [отчёты и снимки](../../../tests/e2e/evidence/post/final-native-9b91085/),1366/1920/125%.
+- [Полный native HTTP протокол с изменёнными ID/размерами](final-native-9b91085/report.json):
+  PASS, первый полный принятый результат11.812с, наблюдение58.719с. Пять точных CSV:
   solution298/answers18/picks25/verdicts8/sale_cards5;50 buyers отдельно.
   Неизмененный validate.py: coverage0,558090, invalid0, missing0, money960705.
   Это изменённые входы; сравнивать эту площадь с историческим другим набором нельзя.
 - Пять карточек по три подходящих публичных покупателя, неизвестная позиция без выдуманной цены,
   частичный отказ/дедлайн/отмена/перезапуск и неизменность принятых CSV/паспортов проверены реально.
 - [Frozen smoke](frozen-smoke-8635bfc.json): singleton, GUI/console PE, SciPy/OR-Tools,
-  restart/persistence/backup/restore PASS на Windows10 build19045. Конечный2fc1d83 повторил native протокол.
+  restart/persistence/backup/restore PASS на Windows10 build19045. Конечный9b91085 повторил native протокол.
   Первый неудачный native запуск44e3d2d сохранён [отдельно](frozen-changed-inputs/report.json);
   отсутствующие динамические ReportLab barcode modules добавлены в packaging, проверки не отключены.
 - [Независимое функциональное заключение](../../reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md)
@@ -75,6 +75,26 @@ Monetary paid выключен; model/deterministic/cache/fallback учитыв�
 50 организаций независимо проверены по публичным источникам. Engineering applications и размерные
 допущения обозначены; интерес к покупке не подтверждён. Сообщения покупателям не отправлялись.
 
-Перед commit проверены36 точных SHA staged Git blobs CSV/manifest;95 staged файлов без секретных
-паттернов/private portal URL. Runtime backend/frontend/contracts/packaging байты совпадают с2fc1d83.
+На checkpoint33f0006 проверены36 точных SHA staged Git blobs CSV/manifest и95 staged файлов без секретных
+паттернов/private portal URL. Последующие изменения UI отдельно проверены на конечном9b91085.
 Исходные case/spec/presentation и ancestry24049e1/2cff2d0 сохранены.
+
+
+## Последний просмотр сотрудником и CI
+
+Убраны первичные receipt/quote/plan/reminder/result/reservation UUID, internal policy values,
+NEW/UNKNOWN/solver/Score/Pricing/KB/free_only, англоязычные заголовки полей и категории каталога.
+Физические номера кусков, деталей, клиентов и заказов остаются рабочими ссылками. Исходные
+значения сохранены в API/БД и закрытых сведениях поддержки; подтверждение и проверки версий не изменены.
+Доля повторных обращений подписана по смыслу, отдельно от прогноза продаж. Разница ревизий показывает
+человеческие названия изменённых полей и компонентов цены. Независимый read-only проход завершён.
+25 frontend tests и16 native E2E повторены после последней правки;59 fixture проверок отдельно.
+
+CI33f0006: Linux PASS, Windows671 PASS/4 SKIP/1 failure из-за чтения live SQLite SHM.
+Тест не отключён: coordinator drained и engine disposed перед обязательной проверкой всех
+оставшихся DB/sidecar bytes; непустая glassflow.db обязательна, unreadable не пропускаются.
+Локальные3 job tests PASS; CI fb1f69c: оба job PASS, включая полный Python672 PASS/4 SKIP,
+Windows EXE/smoke/scanner. Backend/контракты/зависимости послеfb1f69c не менялись.
+[Проверенный CI](https://github.com/Mustiks07/GlassFlow/actions/runs/46139419873).
+Для итогового main CI запускается заново, без skip/ослабления; статус виден по его SHA в GitHub Actions.
+Исторические2fc1d83/1abca5d/440c06c отчёты и сборки сохранены как предыдущие checkpoints.

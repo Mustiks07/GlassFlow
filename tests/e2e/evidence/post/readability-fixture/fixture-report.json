@@ -1,0 +1,2256 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+      "C:\\Users\\User\\Documents\\ChatGPT\\GlassFlow-post-integration\\apps\\web\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "playwright.fixture.config.ts"
+    ],
+    "configFile": "C:\\Users\\User\\Documents\\ChatGPT\\GlassFlow-post-integration\\apps\\web\\playwright.fixture.config.ts",
+    "rootDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-post-integration/tests/e2e/fixture",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 6
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-post-integration/tests/e2e/.results/fixture",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "laptop-1366",
+        "name": "laptop-1366",
+        "testDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-post-integration/tests/e2e/fixture",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-post-integration/tests/e2e/.results/fixture",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "full-hd-1920",
+        "name": "full-hd-1920",
+        "testDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-post-integration/tests/e2e/fixture",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-post-integration/tests/e2e/.results/fixture",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "zoom-125",
+        "name": "zoom-125",
+        "testDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-post-integration/tests/e2e/fixture",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../../tests/e2e/.results/fixture-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 6,
+    "webServer": {
+      "command": "pnpm build:fixture && pnpm exec vite preview --outDir dist-fixture --port 4174 --strictPort --host 127.0.0.1",
+      "url": "http://127.0.0.1:4174",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "cutting.spec.ts",
+      "file": "cutting.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "T22: invalid edit → visible reason → server invalid → active plan unchanged → fix",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2162,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:08.103Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "53b086f65d5c6f4cd300-ee6e50a81800eccfca22",
+          "file": "cutting.spec.ts",
+          "line": 5,
+          "column": 5
+        },
+        {
+          "title": "keyboard editing: arrows move the selected part, R rotates, table reflects coordinates",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1670,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:08.135Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "53b086f65d5c6f4cd300-f90a90e373099b523800",
+          "file": "cutting.spec.ts",
+          "line": 30,
+          "column": 5
+        },
+        {
+          "title": "tempered remnant is drawn as one whole part without cut lines",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1382,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:08.134Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "53b086f65d5c6f4cd300-d31fc051fe2e42641304",
+          "file": "cutting.spec.ts",
+          "line": 44,
+          "column": 5
+        },
+        {
+          "title": "solve job shows real stages, last valid plan and comparison; plan not applied automatically",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 5807,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:08.135Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "53b086f65d5c6f4cd300-9c6804dca69f923170bc",
+          "file": "cutting.spec.ts",
+          "line": 51,
+          "column": 5
+        },
+        {
+          "title": "NEW parts show distinct reasons; UNKNOWN is not called impossible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 1405,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:08.137Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "53b086f65d5c6f4cd300-39db2a2c0e08f5265b35",
+          "file": "cutting.spec.ts",
+          "line": 60,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "managers.spec.ts",
+      "file": "managers.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "T45: seven metrics with denominators and source-row drill-down",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 1454,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:08.132Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83944ec04ce3557ef834-8a5161401a01ab5967ff",
+          "file": "managers.spec.ts",
+          "line": 5,
+          "column": 5
+        },
+        {
+          "title": "filters validate the day range and show unknown manager group label",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 801,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:09.787Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83944ec04ce3557ef834-0ea91879184e29acb1aa",
+          "file": "managers.spec.ts",
+          "line": 19,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "route1-quote-reserve.spec.ts",
+      "file": "route1-quote-reserve.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "route 1: free request, clarification, quote, candidate R006, confirm and reserve",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 2033,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:09.807Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "955b815a5a990c47764e-38f9ea7442fcfb270f89",
+          "file": "route1-quote-reserve.spec.ts",
+          "line": 5,
+          "column": 5
+        },
+        {
+          "title": "T23: concurrent remnant change before reservation returns a visible conflict",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 1388,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:09.858Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "955b815a5a990c47764e-8ba36364c710b5812a56",
+          "file": "route1-quote-reserve.spec.ts",
+          "line": 39,
+          "column": 5
+        },
+        {
+          "title": "form input survives a refresh and an API error",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1192,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:10.055Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "955b815a5a990c47764e-bc991d3286f85dcb98cb",
+          "file": "route1-quote-reserve.spec.ts",
+          "line": 54,
+          "column": 5
+        },
+        {
+          "title": "immutable source snapshot cannot be confirmed; working copy is offered",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1202,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:10.488Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "955b815a5a990c47764e-6aa3d63a0429a3a3c4f8",
+          "file": "route1-quote-reserve.spec.ts",
+          "line": 66,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "route2-revision.spec.ts",
+      "file": "route2-revision.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "route 2: 450→451 marks the old total stale and creates revision 2 with a diff",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1434,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:10.629Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d3c8b60b788daed2f1ca-e4b4ea7ae4e19d2b6c4a",
+          "file": "route2-revision.spec.ts",
+          "line": 5,
+          "column": 5
+        },
+        {
+          "title": "T28: quantity 2 of the original part is 3 976,00",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 1112,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:11.282Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d3c8b60b788daed2f1ca-9da69e993a49d4a80096",
+          "file": "route2-revision.spec.ts",
+          "line": 24,
+          "column": 5
+        },
+        {
+          "title": "T27: unmapped catalog product is not \"no stock\" and not NEW; no invented total",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1065,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:11.285Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d3c8b60b788daed2f1ca-d9fc642132a2fd86abb8",
+          "file": "route2-revision.spec.ts",
+          "line": 31,
+          "column": 5
+        },
+        {
+          "title": "ambiguous unit input asks for clarification instead of rounding",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 922,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:11.722Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d3c8b60b788daed2f1ca-a96bb24476a2233af284",
+          "file": "route2-revision.spec.ts",
+          "line": 45,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "route3-crm.spec.ts",
+      "file": "route3-crm.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "route 3: 25 rows, grouped clients, reminder draft → confirm without outbound sending",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 1720,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:11.877Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bc1d71b579fc5696b16b-d439ed24c3c5c3281f03",
+          "file": "route3-crm.spec.ts",
+          "line": 5,
+          "column": 5
+        },
+        {
+          "title": "T43: workplace reminder keeps the quote customer separate from the recipient",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 928,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:12.095Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bc1d71b579fc5696b16b-c8bd0780075c4fc929d1",
+          "file": "route3-crm.spec.ts",
+          "line": 30,
+          "column": 5
+        },
+        {
+          "title": "T44: a reminder for a specific remnant becomes stale when the remnant is taken; confirmation is blocked",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1297,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:12.403Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bc1d71b579fc5696b16b-72ff84034f0c02030562",
+          "file": "route3-crm.spec.ts",
+          "line": 40,
+          "column": 5
+        },
+        {
+          "title": "validated_model policy that was not promoted is shown as a conflict, not as results",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 770,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:12.431Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bc1d71b579fc5696b16b-69e7231201f161188a1b",
+          "file": "route3-crm.spec.ts",
+          "line": 59,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "route4-contest.spec.ts",
+      "file": "route4-contest.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "route 4: contest run produces five files of one run; no official closed scores",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10030,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:12.670Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77ed1ee700e685dc3447-888d9aa7ffa5bf9a29d5",
+          "file": "route4-contest.spec.ts",
+          "line": 5,
+          "column": 5
+        },
+        {
+          "title": "T53: assistant failure gives a partial package, never a fake complete one",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 9861,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:13.051Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77ed1ee700e685dc3447-0dd5cfa8c09286dbe0c4",
+          "file": "route4-contest.spec.ts",
+          "line": 24,
+          "column": 5
+        },
+        {
+          "title": "a non-contest snapshot is flagged before running",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 575,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:13.230Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77ed1ee700e685dc3447-baf0b06c563c2a5d7bf1",
+          "file": "route4-contest.spec.ts",
+          "line": 38,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "route5-resilience.spec.ts",
+      "file": "route5-resilience.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "T36: AI offline keeps the local calculation and labels the dialog as limited",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 1146,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:13.625Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41cb41790eca45537734-e0df4272fb9dca799b7b",
+          "file": "route5-resilience.spec.ts",
+          "line": 5,
+          "column": 5
+        },
+        {
+          "title": "network loss shows \"no connection\" with retry; nothing is fabricated",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4351,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:13.742Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41cb41790eca45537734-9f80624b72407f2e46b5",
+          "file": "route5-resilience.spec.ts",
+          "line": 17,
+          "column": 5
+        },
+        {
+          "title": "429 shows the rate limit with a retry hint and keeps the input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 778,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:13.830Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41cb41790eca45537734-a7894ae0d7b27ccd7093",
+          "file": "route5-resilience.spec.ts",
+          "line": 30,
+          "column": 5
+        },
+        {
+          "title": "undelivered backend operation is shown as \"not connected\", not as data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 582,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:14.169Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41cb41790eca45537734-9893144cdb23243dab9f",
+          "file": "route5-resilience.spec.ts",
+          "line": 39,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "sales.spec.ts",
+      "file": "sales.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "T48: cards → plan change → stale, export blocked",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 6476,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:14.630Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9732fc60f5589579a1d1-05cb89bc6a86eeba4c81",
+          "file": "sales.spec.ts",
+          "line": 5,
+          "column": 5
+        },
+        {
+          "title": "T49: card coefficient outside 0.30–0.70 is rejected before sending",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 703,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:14.775Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9732fc60f5589579a1d1-813aa9838d51cd7577e9",
+          "file": "sales.spec.ts",
+          "line": 26,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "visual-a11y.spec.ts",
+      "file": "visual-a11y.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "@visual workplace: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 1142,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:14.799Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-d54a46a232ce64c3bed6",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual cutting: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 1114,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:15.514Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-218f13556e6d099c23db",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual sales: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 1040,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:15.959Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-d5fa46c7cef43c1360fe",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual clients: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 985,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:16.647Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-0e4faeb31eaece2291d4",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual managers: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 972,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:17.014Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-fa1dfea50870a384bdc9",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual runs: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 990,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:17.644Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-194780c34728fbef9a4b",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual settings: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 1045,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:18.000Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-6f6cd27221d835c6c9f1",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual workplace after calculation: total is not clipped",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 832,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:18.118Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-3d8c714c4b81ceeaca89",
+          "file": "visual-a11y.spec.ts",
+          "line": 18,
+          "column": 5
+        },
+        {
+          "title": "@visual long names and large sums wrap instead of overflowing",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 423,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:18.646Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-f0a678abb33cd3b03673",
+          "file": "visual-a11y.spec.ts",
+          "line": 31,
+          "column": 5
+        },
+        {
+          "title": "@a11y keyboard: skip link, Tab order reaches navigation, Escape closes dialogs, visible focus",
+          "ok": true,
+          "tags": [
+            "a11y"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 631,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:18.963Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-bd595b04ffbdd32cdaf7",
+          "file": "visual-a11y.spec.ts",
+          "line": 40,
+          "column": 5
+        },
+        {
+          "title": "@a11y form fields have labels and statuses have text, not colour only",
+          "ok": true,
+          "tags": [
+            "a11y"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1366",
+              "projectName": "laptop-1366",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 498,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:19.058Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-6a2baba18db7078a9f16",
+          "file": "visual-a11y.spec.ts",
+          "line": 62,
+          "column": 5
+        },
+        {
+          "title": "@visual workplace: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full-hd-1920",
+              "projectName": "full-hd-1920",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 1230,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:19.870Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-bc2990ca56bef9f4871c",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual cutting: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full-hd-1920",
+              "projectName": "full-hd-1920",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 1255,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:20.398Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-2e05fc487db89db4e77f",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual sales: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full-hd-1920",
+              "projectName": "full-hd-1920",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1259,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:20.430Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-f257fc29fcc98313427a",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual clients: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full-hd-1920",
+              "projectName": "full-hd-1920",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 1330,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:21.833Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-e123898cf2ce01849841",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual managers: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full-hd-1920",
+              "projectName": "full-hd-1920",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 1121,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:21.265Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-fed23b389d0b20850c16",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual runs: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full-hd-1920",
+              "projectName": "full-hd-1920",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 1313,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:21.799Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-5af1add039fa13560695",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual settings: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full-hd-1920",
+              "projectName": "full-hd-1920",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1320,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:21.864Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-cde9e292a4cc83d4e62b",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual workplace after calculation: total is not clipped",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full-hd-1920",
+              "projectName": "full-hd-1920",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 1170,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:22.409Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-b290a4742c4795e5d389",
+          "file": "visual-a11y.spec.ts",
+          "line": 18,
+          "column": 5
+        },
+        {
+          "title": "@visual long names and large sums wrap instead of overflowing",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full-hd-1920",
+              "projectName": "full-hd-1920",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 924,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:23.845Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-7059a0edd6f92f3b9a6a",
+          "file": "visual-a11y.spec.ts",
+          "line": 31,
+          "column": 5
+        },
+        {
+          "title": "@visual workplace: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "zoom-125",
+              "projectName": "zoom-125",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1408,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:24.042Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-3fb7898548e047e588f9",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual cutting: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "zoom-125",
+              "projectName": "zoom-125",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 1450,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:24.186Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-edf500bbfaff923a007a",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual sales: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "zoom-125",
+              "projectName": "zoom-125",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1491,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:24.263Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-8aeea78ae2142f7a4eb3",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual clients: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "zoom-125",
+              "projectName": "zoom-125",
+              "results": [
+                {
+                  "workerIndex": 14,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 1344,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:24.684Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-25d583374598bee423d0",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual managers: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "zoom-125",
+              "projectName": "zoom-125",
+              "results": [
+                {
+                  "workerIndex": 15,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 1302,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:25.158Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-da3a50a371260a543138",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual runs: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "zoom-125",
+              "projectName": "zoom-125",
+              "results": [
+                {
+                  "workerIndex": 16,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1338,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:26.110Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-82a39c8269525f22daf5",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual settings: layout, no page overflow, screenshot",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "zoom-125",
+              "projectName": "zoom-125",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1317,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:25.691Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-d45859923e22cdc85ab3",
+          "file": "visual-a11y.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "@visual workplace after calculation: total is not clipped",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "zoom-125",
+              "projectName": "zoom-125",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 4,
+                  "status": "passed",
+                  "duration": 1210,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:25.883Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-7855bb644ea8aab9136f",
+          "file": "visual-a11y.spec.ts",
+          "line": 18,
+          "column": 5
+        },
+        {
+          "title": "@visual long names and large sums wrap instead of overflowing",
+          "ok": true,
+          "tags": [
+            "visual"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "zoom-125",
+              "projectName": "zoom-125",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 658,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:26.045Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-dd89c72e976ca685d8a1",
+          "file": "visual-a11y.spec.ts",
+          "line": 31,
+          "column": 5
+        },
+        {
+          "title": "@a11y keyboard: skip link, Tab order reaches navigation, Escape closes dialogs, visible focus",
+          "ok": true,
+          "tags": [
+            "a11y"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "zoom-125",
+              "projectName": "zoom-125",
+              "results": [
+                {
+                  "workerIndex": 14,
+                  "parallelIndex": 5,
+                  "status": "passed",
+                  "duration": 960,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:26.343Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-027a327e310ff4f3f2c2",
+          "file": "visual-a11y.spec.ts",
+          "line": 40,
+          "column": 5
+        },
+        {
+          "title": "@a11y form fields have labels and statuses have text, not colour only",
+          "ok": true,
+          "tags": [
+            "a11y"
+          ],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "zoom-125",
+              "projectName": "zoom-125",
+              "results": [
+                {
+                  "workerIndex": 15,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 685,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T11:16:26.652Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83521dd0232004bf657f-f771ce75aa4ca303b1d2",
+          "file": "visual-a11y.spec.ts",
+          "line": 62,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-28T11:15:53.923Z",
+    "duration": 33921.802,
+    "expected": 59,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

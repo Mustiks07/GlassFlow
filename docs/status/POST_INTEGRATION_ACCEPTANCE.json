@@ -7,7 +7,7 @@
       "connected": true,
       "verified": true,
       "status": "software_verified_on_build_machine",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "docs/status/POST_PLATFORM.md",
         "docs/status/POST_ALGORITHMS.md",
@@ -22,7 +22,7 @@
       "connected": true,
       "verified": true,
       "status": "software_verified_on_build_machine",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "docs/status/POST_PLATFORM.md",
         "docs/status/POST_ALGORITHMS.md",
@@ -37,7 +37,7 @@
       "connected": true,
       "verified": true,
       "status": "software_verified_on_build_machine",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "docs/status/POST_PLATFORM.md",
         "docs/status/POST_ALGORITHMS.md",
@@ -52,7 +52,7 @@
       "connected": true,
       "verified": true,
       "status": "hybrid_verified_live_not_accepted",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "docs/status/POST_INTELLIGENCE.md",
         "docs/release/post/FINAL_STATUS.md",
@@ -68,7 +68,7 @@
       "connected": true,
       "verified": true,
       "status": "software_verified_on_build_machine",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "tests/platform/test_post_labor_workflow.py",
         "tests/e2e/real/post-integration.spec.ts",
@@ -85,7 +85,7 @@
       "connected": true,
       "verified": true,
       "status": "software_verified_on_build_machine",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "docs/status/POST_PLATFORM.md",
         "docs/status/POST_ALGORITHMS.md",
@@ -100,7 +100,7 @@
       "connected": true,
       "verified": true,
       "status": "software_verified_on_build_machine",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "docs/status/POST_INTELLIGENCE.md",
         "docs/release/post/FINAL_STATUS.md",
@@ -114,7 +114,7 @@
       "connected": true,
       "verified": true,
       "status": "software_verified_on_build_machine",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "tests/insights/evidence/post-insights-final.xml",
         "docs/release/post/FINAL_STATUS.md",
@@ -128,7 +128,7 @@
       "connected": true,
       "verified": true,
       "status": "software_verified_on_build_machine",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "tests/insights/evidence/post-insights-final.xml",
         "docs/release/post/FINAL_STATUS.md",
@@ -142,7 +142,7 @@
       "connected": true,
       "verified": true,
       "status": "software_verified_on_build_machine",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "docs/status/POST_PLATFORM.md",
         "docs/status/POST_ALGORITHMS.md",
@@ -187,7 +187,7 @@
       "connected": true,
       "verified": true,
       "status": "software_verified_on_build_machine",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "docs/status/POST_PLATFORM.md",
         "docs/status/POST_ALGORITHMS.md",
@@ -217,7 +217,7 @@
       "connected": true,
       "verified": true,
       "status": "software_verified_on_build_machine",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "tests/insights/evidence/post-insights-final.xml",
         "docs/release/post/FINAL_STATUS.md",
@@ -271,7 +271,7 @@
       "connected": true,
       "verified": true,
       "status": "software_verified_on_build_machine",
-      "sha": "2fc1d83",
+      "sha": "9b91085",
       "evidence": [
         "docs/status/POST_INTELLIGENCE.md",
         "docs/release/post/FINAL_STATUS.md",
@@ -280,9 +280,17 @@
       "limitations": []
     }
   ],
-  "runtime_sha": "2fc1d83496a84e4ecfe1845158671d425039bfac",
+  "runtime_sha": "9b91085f3190371b0773e02b33803a9dc1385285",
   "working_hybrid": "verified_on_build_machine",
   "contest_release": "not_accepted",
   "final_evidence": "docs/release/post/FINAL_STATUS.md",
-  "ci": "pending_publication"
+  "ci": {
+    "url": "https://github.com/Mustiks07/GlassFlow/actions?query=branch%3Amain",
+    "rule": "Acceptance requires both Linux verify and Windows native checks for the published main SHA; see current GitHub status.",
+    "previous_failed_run": 46138593367,
+    "reason": "Windows SQLite SHM byte scan raced with live handles; fixed by draining coordinator and closing engine before mandatory full file scan.",
+    "verified_preceding_sha": "fb1f69c623c529a25301a16b95626494d2877115",
+    "verified_preceding_run": 46139419873,
+    "verified_preceding_jobs": "both_success"
+  }
 }

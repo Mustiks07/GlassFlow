@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "runtime_commit": "9b91085f3190371b0773e02b33803a9dc1385285",
+  "source_digest": "17fff6ba316de85b9d43b2ada9c75f0e95ce3d507a1264e0c454f55830939aaf",
+  "stamp_files_match_current_source": 152,
+  "executable": "C:\\Users\\User\\Documents\\ChatGPT\\Genezis\\dist\\GlassFlow-post-9b91085\\GlassFlow.exe",
+  "ready": {
+    "status": "ready",
+    "database": true,
+    "business_modules_ready": true,
+    "schema": true,
+    "worker": true,
+    "ai": "unavailable",
+    "modules": {
+      "cutting": true,
+      "assistant": true,
+      "quality": true,
+      "crm": true,
+      "cards": true
+    }
+  },
+  "starter_zip_sha256": "96b618b6bca3926a27a6a41233d28232b5c4f5db2e7a347615d088ae889ace73",
+  "import_counts": {
+    "materials": 8,
+    "stock": 200,
+    "orders": 298,
+    "kb": 1,
+    "questions": 18,
+    "dialogs": 8,
+    "applications": 700,
+    "distinct_orders": 110
+  },
+  "job_id": "0ca7d03f-de9d-43b9-98b0-ad7a4d01f928",
+  "plan_id": "plan-b0cba16f8ba0",
+  "plan_status": "validated",
+  "transport": "actual_relocated_windows_exe_tcp"
+}

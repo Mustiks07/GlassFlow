@@ -1,0 +1,10 @@
+{
+  "runtime_commit": "9b91085f3190371b0773e02b33803a9dc1385285",
+  "transport": "actual_windows_exe_tcp",
+  "base_url": "http://127.0.0.1:19394",
+  "data_dir": ".runtime/quote-final-browser",
+  "real": 10,
+  "integrated": 2,
+  "post": 4,
+  "fixture": false
+}

@@ -82,3 +82,32 @@ N16 deferred, N17 NO PROMOTION, N18 human NOT_RUN.
 
 Следующий точный шаг: fast-forward сохранённого main, обычный push без force, проверить remote SHA
 и Linux/Windows CI. Результат публикации фиксируется отдельным checkpoint; не считать pending CI зелёным.
+
+
+## Конечная поставка и удобство, 28 ноября
+
+Актуальный runtime **9b91085f3190371b0773e02b33803a9dc1385285** заменяет предыдущие2fc/1ab/440 checkpoints.
+Папка/ZIP: Genezis/dist/GlassFlow-post-9b91085; ZIP SHA256
+59d25d45e33644d4ba99ceb77771c42c7c8bec66ae63da192ebbb3ddeab582bc,151648207 bytes.
+Source digest17fff6ba316de85b9d43b2ada9c75f0e95ce3d507a1264e0c454f55830939aaf.
+Именно этот EXE:16 browser E2E PASS, новый TCP protocol PASS58.719с,
+первый полный принятый комплект11.812с, exact CSV5+buyers50,
+изменённые ID/размеры, deadline/cancel/partial/restart/accepted hashes. Запуск конечной папки,
+импорт её учебного ZIP и настоящий validated solver PASS;152 stamp files совпадают с исходниками.
+См. [финальную сводку](../release/post/FINAL_STATUS.md), final-native-9b91085 и final-portable-9b91085.
+
+После независимого полного прохода первичные экраны больше не показывают служебные UUID/JSON/NEW/
+UNKNOWN/solver/Pricing/Score/KB/free_only, machine field headers, rawкатегории/поля разницы ревизий.
+Служебные значения доступны в закрытой поддержке, реальные предметные номера сохранены.
+25 frontend tests/typecheck/build/bundle PASS;59 fixture отдельно,16 настоящих EXE E2E после последней правки.
+
+Обычный push уже сохранил main564→33f0006→fb1f69c без force. CI33f0006 дал реальный Windows
+PermissionError liveSHM; это исправлено жизненным циклом теста без пропуска byte scan.
+CI fb1f69c **Linux+Windows PASS**, полный Python672 PASS/4 SKIP, native build/smoke/scanner.
+Итоговая документация/evidence и UI идут следующим обычным fast-forward/push, CI повторяется для
+точного нового main SHA; GitHubActions — источник текущего статуса. Maincheckout и production assets синхронизируются.
+Исходные14inputs/spec/presentation и ancestry24049e1/2cff2d0 сохранены; старые финальные материалы не заменены.
+
+Рабочая версия проверена; liveAI/полная конкурсная приёмка не приняты. Внешние условия и8локальныхP2
+перечислены в FINAL_STATUS. После завершения публикации следующий этап — эти внешние проверки,
+реальные человеческие пары/Windows11/hosting и согласование финальных конкурсных материалов.

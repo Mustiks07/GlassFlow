@@ -1,0 +1,10 @@
+{
+  "runtime_commit": "440c06cd7b84118d89dd8ebb65baa791cff0d8ad",
+  "transport": "actual_windows_exe_tcp",
+  "base_url": "http://127.0.0.1:19294",
+  "data_dir": ".runtime/employee-final-browser",
+  "real": 10,
+  "integrated": 2,
+  "post": 4,
+  "fixture": false
+}
