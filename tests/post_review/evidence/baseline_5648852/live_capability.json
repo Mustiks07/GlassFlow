@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-28T09:16:47.769813+00:00",
+  "reviewer_code_commit": "334c0c70023872a885c2582eb848d6067e68e8c2",
+  "oracle_sha256": "505301657dd8b68832c876dced667d6a87c784f0a27183438b8eecec4bb7d59b",
+  "mode": "live",
+  "rubric": "mechanical action+bound structured total+currency+completeness+refusal; manual semantic review still required",
+  "rubric_revision": "1.1-adjudicated-before-candidate",
+  "baseline_product_commit": "5648852d64189ffd7269c277002f6fbc40c8039a",
+  "results": [],
+  "quality_results": [],
+  "live_acceptance": {
+    "status": "BLOCKED",
+    "reason": "Public model_first capability or configured selected model missing; no paid/profile mutation attempted"
+  },
+  "readiness": {
+    "status": "ready",
+    "database": true,
+    "business_modules_ready": true,
+    "schema": true,
+    "worker": true,
+    "ai": "unavailable",
+    "modules": {
+      "cutting": true,
+      "assistant": true,
+      "quality": true,
+      "crm": true,
+      "cards": true
+    }
+  },
+  "profile": {
+    "profile": "local_limited",
+    "provider": "none",
+    "model_id": null,
+    "mode": "free_only",
+    "fallback_models": [],
+    "key_configured": false,
+    "budget_limit_usd": "0",
+    "limits": {
+      "rpm": 1,
+      "tpm": 1000,
+      "rpd": 100,
+      "max_tool_iterations": 6,
+      "max_retries": 2,
+      "max_concurrency": 1
+    }
+  },
+  "public_capabilities": {
+    "model_first": false,
+    "legacy_cache_hit_public": false
+  }
+}

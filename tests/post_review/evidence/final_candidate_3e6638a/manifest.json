@@ -1,0 +1,44 @@
+{
+  "candidate_root_sha": "3e6638a3ffa40df09f787b3bfb94a7bb3f4d1dd5",
+  "intelligence_source_freeze": "efbf8de",
+  "oracle_not_included": true,
+  "artifact_policy": "Canonical LF JSON copies; original working-report byte hashes kept separately. No secret/portal/evaluation KEY.",
+  "reports": [
+    {
+      "path": "tests/post_review/evidence/final_candidate_3e6638a/runtime_run1.json",
+      "sha256": "1b421a1bf872b7d39a0e0864be2f6c98ae0759b6d7f7ac18f19d4d50b7cdcd05",
+      "source_raw_sha256": "13e5a9746992a4ea530a7334a79770a79e5fcc266ce0bc9769ea53fd34890f16"
+    },
+    {
+      "path": "tests/post_review/evidence/final_candidate_3e6638a/runtime_run2.json",
+      "sha256": "c8642b7fbb2dec7d7d4c871bf3643230677c9894b4616e5f1c415c28586bf659",
+      "source_raw_sha256": "65cf408b3674b88644e83db3438e4d593f2bcb5960d41d160f40170349ddc1ce"
+    },
+    {
+      "path": "tests/post_review/evidence/final_candidate_3e6638a/intelligence_workflow.json",
+      "sha256": "35b0ae1dafd6c964e37c556641d38f05af757b660e9647f688e1fbad444f08fe",
+      "source_raw_sha256": "922b13aca581039833c4149cebd72e4a5e460ff0d363891ce1f398fa21926064"
+    },
+    {
+      "path": "tests/post_review/evidence/final_candidate_3e6638a/failed_cards_two_restarts.json",
+      "sha256": "18b5d901b0f933ddc0c9dbd7cbd337bb01e4cbf63776b44a708529c5fc31a799",
+      "source_raw_sha256": "18b5d901b0f933ddc0c9dbd7cbd337bb01e4cbf63776b44a708529c5fc31a799"
+    },
+    {
+      "path": "tests/post_review/evidence/final_candidate_3e6638a/UTC_expiry.json",
+      "sha256": "d4ee451bd096adcc6fdd85d6da905596be4e0761c314e318456cbf3a74555a5f",
+      "source_raw_sha256": "d4ee451bd096adcc6fdd85d6da905596be4e0761c314e318456cbf3a74555a5f"
+    },
+    {
+      "path": "tests/post_review/evidence/final_candidate_3e6638a/prior_92aed19_transient_race.json",
+      "sha256": "9afaad31964303b995b42536a3cdb3cf303e15d3d745fc068e5c3c74b6e8d23c",
+      "source_raw_sha256": "ca7fc46ce35fac577f09c74df899455a5e5ee1145ef628b9997bab52677ac8d1"
+    }
+  ],
+  "source_archive_sha256": "ce807048b1416ce5bd3b0f1397e326c13f504ec90be0e8ddb8a983cf95591999",
+  "archive_backend_build_stamp": {
+    "commit": "3e6638a",
+    "source_digest": "6ba6600a50230689379b35c1c0799808a2d8f599202598945af152d8a8d88bad",
+    "frozen": false
+  }
+}

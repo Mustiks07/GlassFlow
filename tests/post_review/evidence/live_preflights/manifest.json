@@ -1,0 +1,43 @@
+{
+  "scope": "Three root-owned real named-profile transport trials; warmups only, no held-out model exam. Profiles/prompts differ; do not pool into model accuracy. No reviewer provider calls.",
+  "weighted_preflights": 199311,
+  "small_probe_conservative_allowance": 5000,
+  "cumulative_weighted_upper_bound": 204311,
+  "user_cap": 1000000,
+  "full_149_model_exam": "BLOCKED_NOT_RUN_UNSTABLE_PROVIDER",
+  "reports": [
+    {
+      "path": "tests/post_review/evidence/live_preflights/live-preflight-6016aac.json",
+      "sha256": "18f14654dae615d1ab0ad2d7aa5d6c35819f7aa0c88bb7da902b4ac739b063df",
+      "source_raw_sha256": "18f14654dae615d1ab0ad2d7aa5d6c35819f7aa0c88bb7da902b4ac739b063df",
+      "weighted_debit": 31359,
+      "origins": {
+        "model": 3,
+        "fallback": 2
+      },
+      "live_acceptance_status": "PREFLIGHT_FAILED"
+    },
+    {
+      "path": "tests/post_review/evidence/live_preflights/live-preflight-glm-6016aac.json",
+      "sha256": "4b1378aae777e2e20d19c61151ed60d96ef2146a4352ab0e9bcbe097ad3a47cc",
+      "source_raw_sha256": "4b1378aae777e2e20d19c61151ed60d96ef2146a4352ab0e9bcbe097ad3a47cc",
+      "weighted_debit": 81048,
+      "origins": {
+        "fallback": 3,
+        "model": 2
+      },
+      "live_acceptance_status": "PREFLIGHT_FAILED"
+    },
+    {
+      "path": "tests/post_review/evidence/live_preflights/live-preflight-glm-55049e4.json",
+      "sha256": "01111fdbeca553520b5ae27aac219b6367547f5ebe59469c0c184501f0fa9560",
+      "source_raw_sha256": "01111fdbeca553520b5ae27aac219b6367547f5ebe59469c0c184501f0fa9560",
+      "weighted_debit": 86904,
+      "origins": {
+        "fallback": 3,
+        "model": 2
+      },
+      "live_acceptance_status": "PREFLIGHT_FAILED"
+    }
+  ]
+}

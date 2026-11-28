@@ -1,0 +1,538 @@
+{
+  "baseline_product_commit": "5648852d64189ffd7269c277002f6fbc40c8039a",
+  "mode": "actual_HTTP_local_no_provider",
+  "note": "Separate minimal reproductions, not disclosure of the held-out exam. Treat related held cases IR057/IR059 as regression after disclosure.",
+  "records": [
+    {
+      "request": {
+        "dataset_id": "40a7d8e8-495f-4b48-8f67-21690992d410",
+        "kb_version": "kb-f464c67fb8633008",
+        "inventory_mode": "none",
+        "allow_ai": false,
+        "customer_id": "REVIEW-P0",
+        "text": "Стекло 6 мм прозрачное 640×420 мм, 4 шт., кромка по выбранным сторонам. Рассчитайте итог."
+      },
+      "reply": {
+        "conversation_id": "9fc56bf3-1393-4bb5-bc23-5deb4cd3ebe9",
+        "answer": "Стекло 6 мм прозрачное, 640×420 мм, 4 шт: 0,2688 м² × 8 000 ₸ × 4 = 8 601,60 ₸. Если кромка нужна по всем 4 сторонам — 3 392 ₸, итого 11 993,60 ₸; уточните, по каким сторонам обрабатывать.",
+        "clarification": "Если кромка нужна по всем 4 сторонам — 3 392 ₸, итого 11 993,60 ₸; уточните, по каким сторонам обрабатывать.",
+        "quote": {
+          "dataset_id": "40a7d8e8-495f-4b48-8f67-21690992d410",
+          "quote_id": "2d5b82d0-183a-43d6-a721-f1f93a17d2ba",
+          "revision": 1,
+          "status": "calculated",
+          "components": [
+            {
+              "label": "Стекло 6 мм прозрачное 640×420 мм",
+              "amount_tg": "8601.60",
+              "evidence": [
+                {
+                  "source": "ksm_knowledge_base.json",
+                  "source_version": "kb-f464c67fb8633008",
+                  "record_id": "steklo-6-prozrachnoe",
+                  "field": "цена_за_м2_тг"
+                }
+              ],
+              "component": "glass",
+              "quantity": 4,
+              "unit_price_tg": "8000.00",
+              "unit": "м²",
+              "measure_per_unit": "0.2688",
+              "exact_amount_tg": "8601.6000",
+              "formula": "0.2688 м² × 8000 ₸/м² × 4 шт"
+            }
+          ],
+          "total_tg": "8601.60",
+          "preliminary": true,
+          "clarification": null,
+          "material_mapping_status": "confirmed",
+          "material_id": "clear-6",
+          "catalog_product_id": "steklo-6-prozrachnoe",
+          "product_name": "Стекло 6 мм прозрачное",
+          "kb_version": "kb-f464c67fb8633008",
+          "customer_id": "REVIEW-P0",
+          "dimensions": {
+            "length_mm": 640,
+            "width_mm": 420
+          },
+          "quantity": 4,
+          "processing": {
+            "kind": "none",
+            "sides": "all",
+            "selected_sides": []
+          },
+          "price_basis": "per_m2",
+          "confirmed_parameters": {
+            "catalog_product_id": "steklo-6-prozrachnoe",
+            "product_name": "Стекло 6 мм прозрачное",
+            "length_mm": "640",
+            "width_mm": "420",
+            "quantity": "4",
+            "price_basis": "per_m2"
+          },
+          "assumptions": [],
+          "unknown_components": [],
+          "known_subtotal_tg": "8601.60",
+          "rounding_policy": "ROUND_HALF_UP to 0.01 per line; total equals the sum of displayed lines",
+          "source_versions": {
+            "kb": "kb-f464c67fb8633008",
+            "kb_sha256": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+            "pricing": "pricing-v1",
+            "materials": "materials-1391e1fa6600d028",
+            "mapping": "mapping-rules-v1:exact_normalized_name@0"
+          },
+          "inventory_status": "not_requested",
+          "candidate_refs": [],
+          "inventory_reason_codes": [],
+          "stale": false,
+          "created_at": "2026-11-28T09:10:58.278390+00:00",
+          "confirmed_at": null,
+          "confirmed_by": null,
+          "diff": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-6-prozrachnoe",
+              "field": "название"
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "steklo-6-prozrachnoe",
+            "field": "название"
+          },
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "steklo-6-prozrachnoe",
+            "field": "цена_за_м2_тг"
+          }
+        ],
+        "mode": "local_limited",
+        "provider": null,
+        "model_id": null,
+        "answer_path": "deterministic",
+        "status": "clarification",
+        "card": {
+          "intent": "quote",
+          "catalog_product_id": "steklo-6-prozrachnoe",
+          "product_name": "Стекло 6 мм прозрачное",
+          "confirmed_parameters": {
+            "product_id": "steklo-6-prozrachnoe",
+            "length_mm": "640",
+            "width_mm": "420",
+            "quantity": "4",
+            "processing": "euro_edge",
+            "edge_sides": "selected",
+            "price_basis": "auto",
+            "customer_id": "REVIEW-P0"
+          },
+          "assumptions": [],
+          "missing_parameters": [
+            "edge_sides"
+          ],
+          "normalized_dimensions": "640×420 мм",
+          "facts": [
+            {
+              "fact_id": "f1",
+              "kind": "name",
+              "value": "6",
+              "unit": null,
+              "source_ref": "kb:kb-f464c67fb8633008:steklo-6-prozrachnoe:название",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f2",
+              "kind": "dimension",
+              "value": "640",
+              "unit": "мм",
+              "source_ref": "input:normalized",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f3",
+              "kind": "dimension",
+              "value": "420",
+              "unit": "мм",
+              "source_ref": "input:normalized",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f4",
+              "kind": "line",
+              "value": "8601.60",
+              "unit": "₸",
+              "source_ref": "pricing:glass",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f5",
+              "kind": "price",
+              "value": "8000",
+              "unit": "₸/м²",
+              "source_ref": "pricing:glass:rate",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f6",
+              "kind": "measure",
+              "value": "0.2688",
+              "unit": "м²",
+              "source_ref": "pricing:glass:measure",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f7",
+              "kind": "total",
+              "value": "8601.60",
+              "unit": "₸",
+              "source_ref": "pricing:total",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f8",
+              "kind": "total",
+              "value": "8601.60",
+              "unit": "₸",
+              "source_ref": "pricing:known_subtotal",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f9",
+              "kind": "dimension",
+              "value": "640",
+              "unit": "мм",
+              "source_ref": "context",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f10",
+              "kind": "dimension",
+              "value": "420",
+              "unit": "мм",
+              "source_ref": "context",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f11",
+              "kind": "quantity",
+              "value": "4",
+              "unit": "шт",
+              "source_ref": "context",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f12",
+              "kind": "line",
+              "value": "3392.00",
+              "unit": "₸",
+              "source_ref": "pricing:edge_all_sides_variant",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f13",
+              "kind": "total",
+              "value": "11993.60",
+              "unit": "₸",
+              "source_ref": "pricing:total_all_sides_variant",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f14",
+              "kind": "rendered_claim",
+              "value": "Стекло 6 мм прозрачное, 640×420 мм, 4 шт: 0,2688 м² × 8 000 ₸ × 4 = 8 601,60 ₸. Если кромка нужна по всем 4 сторонам — 3 392 ₸, итого 11 993,60 ₸; уточните, по каким сторонам обрабатывать.",
+              "unit": null,
+              "source_ref": "renderer:local:kb-f464c67fb8633008",
+              "status": "supported"
+            }
+          ],
+          "alternatives": [
+            "Калёное стекло 6 мм"
+          ],
+          "needs_manager": false
+        },
+        "tool_calls": [
+          {
+            "tool": "search_catalog",
+            "status": "ok",
+            "arguments": {
+              "query_sha": "local"
+            },
+            "summary": "exact: ['steklo-6-prozrachnoe', 'kalenoe-steklo-6']",
+            "error_code": null
+          },
+          {
+            "tool": "calculate_quote",
+            "status": "ok",
+            "arguments": {
+              "catalog_product_id": "steklo-6-prozrachnoe",
+              "length_mm": 640,
+              "width_mm": 420,
+              "quantity": 4,
+              "processing": "none"
+            },
+            "summary": "total=8601.60 unknown=[]",
+            "error_code": null
+          }
+        ],
+        "verifier_status": "supported",
+        "ai_unavailable_reason": "AI отключен для этого запроса.",
+        "turn_index": 0,
+        "latency_ms": 32
+      },
+      "confirm_http": 200,
+      "confirmed_quote": {
+        "dataset_id": "40a7d8e8-495f-4b48-8f67-21690992d410",
+        "quote_id": "2d5b82d0-183a-43d6-a721-f1f93a17d2ba",
+        "revision": 1,
+        "status": "confirmed",
+        "components": [
+          {
+            "label": "Стекло 6 мм прозрачное 640×420 мм",
+            "amount_tg": "8601.60",
+            "evidence": [
+              {
+                "source": "ksm_knowledge_base.json",
+                "source_version": "kb-f464c67fb8633008",
+                "record_id": "steklo-6-prozrachnoe",
+                "field": "цена_за_м2_тг"
+              }
+            ],
+            "component": "glass",
+            "quantity": 4,
+            "unit_price_tg": "8000.00",
+            "unit": "м²",
+            "measure_per_unit": "0.2688",
+            "exact_amount_tg": "8601.6000",
+            "formula": "0.2688 м² × 8000 ₸/м² × 4 шт"
+          }
+        ],
+        "total_tg": "8601.60",
+        "preliminary": false,
+        "clarification": null,
+        "material_mapping_status": "confirmed",
+        "material_id": "clear-6",
+        "catalog_product_id": "steklo-6-prozrachnoe",
+        "product_name": "Стекло 6 мм прозрачное",
+        "kb_version": "kb-f464c67fb8633008",
+        "customer_id": "REVIEW-P0",
+        "dimensions": {
+          "length_mm": 640,
+          "width_mm": 420
+        },
+        "quantity": 4,
+        "processing": {
+          "kind": "none",
+          "sides": "all",
+          "selected_sides": []
+        },
+        "price_basis": "per_m2",
+        "confirmed_parameters": {
+          "catalog_product_id": "steklo-6-prozrachnoe",
+          "product_name": "Стекло 6 мм прозрачное",
+          "length_mm": "640",
+          "width_mm": "420",
+          "quantity": "4",
+          "price_basis": "per_m2"
+        },
+        "assumptions": [],
+        "unknown_components": [],
+        "known_subtotal_tg": "8601.60",
+        "rounding_policy": "ROUND_HALF_UP to 0.01 per line; total equals the sum of displayed lines",
+        "source_versions": {
+          "kb": "kb-f464c67fb8633008",
+          "kb_sha256": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+          "pricing": "pricing-v1",
+          "materials": "materials-1391e1fa6600d028",
+          "mapping": "mapping-rules-v1:exact_normalized_name@0"
+        },
+        "inventory_status": "not_requested",
+        "candidate_refs": [],
+        "inventory_reason_codes": [],
+        "stale": false,
+        "created_at": "2026-11-28T09:10:58.278390+00:00",
+        "confirmed_at": "2026-11-28T09:10:58.302384+00:00",
+        "confirmed_by": "independent-review",
+        "diff": null,
+        "evidence": [
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "steklo-6-prozrachnoe",
+            "field": "название"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "dataset_id": "40a7d8e8-495f-4b48-8f67-21690992d410",
+        "kb_version": "kb-f464c67fb8633008",
+        "inventory_mode": "none",
+        "allow_ai": false,
+        "customer_id": "REVIEW-P0",
+        "text": "Нужен сенсорный переключатель для зеркала, сколько за 3 шт?"
+      },
+      "reply": {
+        "conversation_id": "d6c96ee3-7bc8-479f-a71c-529f9a61654a",
+        "answer": "Сенсорный переключатель двойной YZKJ-F2FTC: 3 шт × 2 000 ₸ = 6 000 ₸ (розничная цена). При заказе от 100 шт — 1 800 ₸ за штуку. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+        "clarification": null,
+        "quote": null,
+        "evidence": [
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "sensor-dvoynoy-yzkj-f2ftc",
+            "field": "название"
+          },
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "sensor-dvoynoy-yzkj-f2ftc",
+            "field": "цена_розница_тг"
+          }
+        ],
+        "mode": "local_limited",
+        "provider": null,
+        "model_id": null,
+        "answer_path": "deterministic",
+        "status": "answered",
+        "card": {
+          "intent": "hardware_price",
+          "catalog_product_id": "sensor-dvoynoy-yzkj-f2ftc",
+          "product_name": "Сенсорный переключатель двойной YZKJ-F2FTC",
+          "confirmed_parameters": {
+            "product_id": "sensor-dvoynoy-yzkj-f2ftc",
+            "quantity": "3",
+            "processing": "none",
+            "price_basis": "auto",
+            "customer_id": "REVIEW-P0"
+          },
+          "assumptions": [],
+          "missing_parameters": [],
+          "normalized_dimensions": null,
+          "facts": [
+            {
+              "fact_id": "f1",
+              "kind": "name",
+              "value": "2",
+              "unit": null,
+              "source_ref": "kb:kb-f464c67fb8633008:sensor-dvoynoy-yzkj-f2ftc:название",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f2",
+              "kind": "threshold",
+              "value": "100",
+              "unit": "шт",
+              "source_ref": "kb:kb-f464c67fb8633008:sensor-dvoynoy-yzkj-f2ftc:цена_от_100_шт_тг",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f3",
+              "kind": "quantity",
+              "value": "3",
+              "unit": "шт",
+              "source_ref": "context",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f4",
+              "kind": "line",
+              "value": "6000.00",
+              "unit": "₸",
+              "source_ref": "pricing:hardware",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f5",
+              "kind": "price",
+              "value": "2000",
+              "unit": "₸/шт",
+              "source_ref": "pricing:hardware:rate",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f6",
+              "kind": "measure",
+              "value": "1",
+              "unit": "шт",
+              "source_ref": "pricing:hardware:measure",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f7",
+              "kind": "total",
+              "value": "6000.00",
+              "unit": "₸",
+              "source_ref": "pricing:total",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f8",
+              "kind": "total",
+              "value": "6000.00",
+              "unit": "₸",
+              "source_ref": "pricing:known_subtotal",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f9",
+              "kind": "price",
+              "value": "1800",
+              "unit": "₸/шт",
+              "source_ref": "kb:kb-f464c67fb8633008:sensor-dvoynoy-yzkj-f2ftc:цена_от_100_шт_тг",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f10",
+              "kind": "rendered_claim",
+              "value": "Сенсорный переключатель двойной YZKJ-F2FTC: 3 шт × 2 000 ₸ = 6 000 ₸ (розничная цена). При заказе от 100 шт — 1 800 ₸ за штуку. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+              "unit": null,
+              "source_ref": "renderer:local:kb-f464c67fb8633008",
+              "status": "supported"
+            }
+          ],
+          "alternatives": [
+            "Сенсорный переключатель двойной + часы YZKJ-B3-13LTC",
+            "Сенсорный переключатель с источником питания YZKJ-Y1-36TC",
+            "Сенсорный переключатель одинарный YZKJ-TCW"
+          ],
+          "needs_manager": false
+        },
+        "tool_calls": [
+          {
+            "tool": "search_catalog",
+            "status": "ok",
+            "arguments": {
+              "query_sha": "local"
+            },
+            "summary": "exact: ['sensor-dvoynoy-yzkj-f2ftc', 'sensor-dvoynoy-chasy-yzkj-b3-13ltc', 'sensor-s-istochnikom-yzkj-y1-36tc', 'sensor-odinarnyy-yzkj-tcw']",
+            "error_code": null
+          },
+          {
+            "tool": "calculate_quote",
+            "status": "ok",
+            "arguments": {
+              "catalog_product_id": "sensor-dvoynoy-yzkj-f2ftc",
+              "length_mm": null,
+              "width_mm": null,
+              "quantity": 3,
+              "processing": "none"
+            },
+            "summary": "total=6000.00 unknown=[]",
+            "error_code": null
+          }
+        ],
+        "verifier_status": "supported",
+        "ai_unavailable_reason": "AI отключен для этого запроса.",
+        "turn_index": 0,
+        "latency_ms": 30
+      }
+    }
+  ]
+}

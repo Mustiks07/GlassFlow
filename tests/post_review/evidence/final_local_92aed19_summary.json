@@ -1,0 +1,76 @@
+{
+  "candidate": "92aed19",
+  "mode": "local_only",
+  "origin_counts": {
+    "deterministic": 149
+  },
+  "raw_grade_unchanged": {
+    "turns": 149,
+    "not_run_turns": 0,
+    "distinct_cases": 79,
+    "correct": 137,
+    "accuracy": 0.9195,
+    "distinct_correct": 71,
+    "distinct_accuracy": 0.8987,
+    "quality_correct": 10,
+    "quality_total": 10,
+    "failures_by_family": {
+      "units_and_wording": 1,
+      "sheet_unit": 9,
+      "ambiguity": 1,
+      "rules": 1
+    },
+    "origins": {
+      "deterministic": 149
+    },
+    "latency_p50_ms": 33.42,
+    "latency_p95_ms": 73.56,
+    "fabrication_count": 0,
+    "unnecessary_refusal_count": 6,
+    "incomplete_count": 11,
+    "unnecessary_question_count": 0
+  },
+  "canonical_control_distinct_total": 55,
+  "canonical_control_distinct_passed": 55,
+  "severity_review": {
+    "categories": [
+      {
+        "category": "whole_sheet_quantity_total_missing",
+        "distinct_cases": 5,
+        "turns": 9,
+        "severity": "P2 coverage",
+        "unit_rates_correctly_labelled": true,
+        "unnecessary_handoff_distinct_subset": 2,
+        "unnecessary_handoff_turn_subset": 6
+      },
+      {
+        "category": "dimension_wording_not_parsed",
+        "distinct_cases": 1,
+        "turns": 1,
+        "severity": "P2 coverage"
+      },
+      {
+        "category": "clarification_not_asked_between_named_variants",
+        "distinct_cases": 1,
+        "turns": 1,
+        "severity": "P2 coverage"
+      },
+      {
+        "category": "policy_intent_not_recognized",
+        "distinct_cases": 1,
+        "turns": 1,
+        "severity": "P2 coverage"
+      }
+    ],
+    "distinct_failed": 8,
+    "failed_turns": 12,
+    "false_applicable_price_total_unit_assertions_observed": 0,
+    "failed_turns_with_persisted_quotable_total": 0,
+    "P1_operation_authorization_defect_observed_in_these_failures": false,
+    "score_not_regraded": true
+  },
+  "closed_raw_report_path": ".qa\\candidate-92aed19-local-exam\\report.json",
+  "closed_raw_report_sha256": "665dc8488c04db8345e4b8323d2381dc29227bf0e0424e098f920a7fc928ad8b",
+  "closed_oracle_not_disclosed": true,
+  "live_AI_acceptance": "NOT_ACCEPTED_FULL_EXAM_BLOCKED_NOT_RUN"
+}
