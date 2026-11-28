@@ -1,0 +1,965 @@
+{
+  "input_sha256": "5812577b315508e633cbf356268b381ed25534695c4a7a737057a03c07d05204",
+  "solve_input": {
+    "dataset_id": "mixed-41",
+    "materials": [
+      {
+        "material_id": "clear",
+        "name": "",
+        "thickness_mm": 0,
+        "unit_price_tg": "4500",
+        "tempered": false
+      },
+      {
+        "material_id": "mirror",
+        "name": "",
+        "thickness_mm": 0,
+        "unit_price_tg": "9500",
+        "tempered": false
+      }
+    ],
+    "remnants": [
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-28",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 730,
+          "width_mm": 450
+        },
+        "age_days": 4,
+        "defect": false,
+        "location_raw": "Rack 1 / cell 1",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-249",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 850,
+          "width_mm": 590
+        },
+        "age_days": 17,
+        "defect": false,
+        "location_raw": "Rack 2 / cell 0",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-62",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 730,
+          "width_mm": 450
+        },
+        "age_days": 6,
+        "defect": false,
+        "location_raw": "Rack 0 / cell 1",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-11",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 550,
+          "width_mm": 610
+        },
+        "age_days": 3,
+        "defect": false,
+        "location_raw": "Rack 0 / cell 0",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-300",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 870,
+          "width_mm": 350
+        },
+        "age_days": 20,
+        "defect": false,
+        "location_raw": "Rack 2 / cell 1",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-96",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 590,
+          "width_mm": 650
+        },
+        "age_days": 8,
+        "defect": false,
+        "location_raw": "Rack 2 / cell 1",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-266",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 570,
+          "width_mm": 350
+        },
+        "age_days": 18,
+        "defect": false,
+        "location_raw": "Rack 0 / cell 1",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-232",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 550,
+          "width_mm": 490
+        },
+        "age_days": 16,
+        "defect": false,
+        "location_raw": "Rack 1 / cell 1",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-283",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 910,
+          "width_mm": 610
+        },
+        "age_days": 19,
+        "defect": false,
+        "location_raw": "Rack 1 / cell 0",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-147",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 870,
+          "width_mm": 390
+        },
+        "age_days": 11,
+        "defect": false,
+        "location_raw": "Rack 2 / cell 0",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-79",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 670,
+          "width_mm": 350
+        },
+        "age_days": 7,
+        "defect": false,
+        "location_raw": "Rack 1 / cell 0",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-198",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 930,
+          "width_mm": 370
+        },
+        "age_days": 14,
+        "defect": false,
+        "location_raw": "Rack 2 / cell 1",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-164",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 950,
+          "width_mm": 610
+        },
+        "age_days": 12,
+        "defect": false,
+        "location_raw": "Rack 0 / cell 1",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-113",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 630,
+          "width_mm": 370
+        },
+        "age_days": 9,
+        "defect": false,
+        "location_raw": "Rack 0 / cell 0",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-45",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 570,
+          "width_mm": 590
+        },
+        "age_days": 5,
+        "defect": false,
+        "location_raw": "Rack 2 / cell 0",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-130",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 690,
+          "width_mm": 590
+        },
+        "age_days": 10,
+        "defect": false,
+        "location_raw": "Rack 1 / cell 1",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-181",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 930,
+          "width_mm": 350
+        },
+        "age_days": 13,
+        "defect": false,
+        "location_raw": "Rack 1 / cell 0",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      },
+      {
+        "dataset_id": "mixed-41",
+        "remnant_id": "mixed-41-piece-215",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 690,
+          "width_mm": 630
+        },
+        "age_days": 15,
+        "defect": false,
+        "location_raw": "Rack 0 / cell 0",
+        "status": "available",
+        "version": 0,
+        "internal_id": null,
+        "origin": "source",
+        "original": true,
+        "rack": null,
+        "cell": null,
+        "parent_remnant_id": null,
+        "active_reservation_id": null,
+        "status_reason": null
+      }
+    ],
+    "parts": [
+      {
+        "part_id": "mixed-41-part-460",
+        "order_id": "mixed-41-order-11",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 530,
+          "width_mm": 380
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-590",
+        "order_id": "mixed-41-order-15",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 370,
+          "width_mm": 340
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-382",
+        "order_id": "mixed-41-order-9",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 180,
+          "width_mm": 180
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-148",
+        "order_id": "mixed-41-order-3",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 540,
+          "width_mm": 340
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-447",
+        "order_id": "mixed-41-order-11",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 470,
+          "width_mm": 230
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-434",
+        "order_id": "mixed-41-order-11",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 200,
+          "width_mm": 350
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-395",
+        "order_id": "mixed-41-order-10",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 400,
+          "width_mm": 330
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-252",
+        "order_id": "mixed-41-order-6",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 260,
+          "width_mm": 190
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-577",
+        "order_id": "mixed-41-order-14",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 450,
+          "width_mm": 390
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-473",
+        "order_id": "mixed-41-order-12",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 540,
+          "width_mm": 320
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-187",
+        "order_id": "mixed-41-order-4",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 350,
+          "width_mm": 210
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-291",
+        "order_id": "mixed-41-order-7",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 380,
+          "width_mm": 280
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-551",
+        "order_id": "mixed-41-order-14",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 290,
+          "width_mm": 190
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-161",
+        "order_id": "mixed-41-order-4",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 230,
+          "width_mm": 360
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-83",
+        "order_id": "mixed-41-order-2",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 450,
+          "width_mm": 200
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-343",
+        "order_id": "mixed-41-order-8",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 370,
+          "width_mm": 340
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-330",
+        "order_id": "mixed-41-order-8",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 320,
+          "width_mm": 190
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-525",
+        "order_id": "mixed-41-order-13",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 510,
+          "width_mm": 250
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-564",
+        "order_id": "mixed-41-order-14",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 390,
+          "width_mm": 320
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-109",
+        "order_id": "mixed-41-order-2",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 500,
+          "width_mm": 380
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-18",
+        "order_id": "mixed-41-order-0",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 530,
+          "width_mm": 220
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-70",
+        "order_id": "mixed-41-order-1",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 400,
+          "width_mm": 280
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-616",
+        "order_id": "mixed-41-order-15",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 350,
+          "width_mm": 340
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-317",
+        "order_id": "mixed-41-order-8",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 310,
+          "width_mm": 270
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-499",
+        "order_id": "mixed-41-order-12",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 360,
+          "width_mm": 130
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-5",
+        "order_id": "mixed-41-order-0",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 490,
+          "width_mm": 330
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-278",
+        "order_id": "mixed-41-order-7",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 460,
+          "width_mm": 340
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-226",
+        "order_id": "mixed-41-order-5",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 210,
+          "width_mm": 210
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-421",
+        "order_id": "mixed-41-order-10",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 330,
+          "width_mm": 290
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-200",
+        "order_id": "mixed-41-order-5",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 350,
+          "width_mm": 360
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-408",
+        "order_id": "mixed-41-order-10",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 320,
+          "width_mm": 390
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-304",
+        "order_id": "mixed-41-order-7",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 290,
+          "width_mm": 260
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-57",
+        "order_id": "mixed-41-order-1",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 550,
+          "width_mm": 140
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-174",
+        "order_id": "mixed-41-order-4",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 430,
+          "width_mm": 360
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-239",
+        "order_id": "mixed-41-order-6",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 390,
+          "width_mm": 310
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-356",
+        "order_id": "mixed-41-order-9",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 250,
+          "width_mm": 260
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-31",
+        "order_id": "mixed-41-order-0",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 540,
+          "width_mm": 130
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-96",
+        "order_id": "mixed-41-order-2",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 200,
+          "width_mm": 130
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-44",
+        "order_id": "mixed-41-order-1",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 310,
+          "width_mm": 380
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-486",
+        "order_id": "mixed-41-order-12",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 390,
+          "width_mm": 180
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-512",
+        "order_id": "mixed-41-order-13",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 410,
+          "width_mm": 280
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-538",
+        "order_id": "mixed-41-order-13",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 500,
+          "width_mm": 230
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-213",
+        "order_id": "mixed-41-order-5",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 180,
+          "width_mm": 340
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-135",
+        "order_id": "mixed-41-order-3",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 450,
+          "width_mm": 230
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-265",
+        "order_id": "mixed-41-order-6",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 190,
+          "width_mm": 300
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-603",
+        "order_id": "mixed-41-order-15",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 290,
+          "width_mm": 170
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-122",
+        "order_id": "mixed-41-order-3",
+        "material_id": "mirror",
+        "dimensions": {
+          "length_mm": 280,
+          "width_mm": 370
+        },
+        "premium": false,
+        "product_type": ""
+      },
+      {
+        "part_id": "mixed-41-part-369",
+        "order_id": "mixed-41-order-9",
+        "material_id": "clear",
+        "dimensions": {
+          "length_mm": 340,
+          "width_mm": 190
+        },
+        "premium": false,
+        "product_type": ""
+      }
+    ],
+    "locks": [],
+    "config": {
+      "profile": "standard",
+      "seed": 41,
+      "time_limit_seconds": 9,
+      "workers": 1,
+      "minimum_free_remnants": 5,
+      "fixed_work": false,
+      "max_pool_patterns": 10000
+    },
+    "unavailable_remnant_ids": [],
+    "occupied_remnant_ids": [],
+    "previous_placements": [],
+    "base_plan_id": null,
+    "base_revision": null
+  }
+}

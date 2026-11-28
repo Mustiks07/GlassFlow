@@ -18,7 +18,9 @@ latency p95<1с на машине разработки отдельно от э�
 
 До запуска фиксируются JSON inputs двух семейств(dense64/18, mixed48/18), seeds7,19,41,
 одинаковый solver budget9с, workers1, pool cap10000, minimum free5, memory ceiling1GiB,
-все12 пар baseline/candidate с одинаковыми источниками. Каждый trial — свежий процесс.
+все24 trials (6 baseline и18 парных candidate сравнений) с одинаковыми источниками.
+Порядок4 вариантов циклически сдвигается по family/seed для контроля фазовой нагрузки.
+Каждый trial — свежий процесс.
 Windows PeakWorkingSet/Linux ru_maxrss включает native память; не tracemalloc.
 Все результаты, в том числе ухудшения, сохраняются. Baseline текущий CuttingSolver.
 
