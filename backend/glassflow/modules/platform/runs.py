@@ -274,7 +274,8 @@ def schedule_cards(factory):
             if cutting and cutting.state in {"queued", "running"}:
                 continue
             if not cutting or cutting.state != "completed":
-                card = enqueue(session, run.dataset_id, "cards", {}, run.id)
+                card = enqueue(session, run.dataset_id, "cards",
+                               {"cutting_job_id": cutting.id} if cutting else {}, run.id)
                 card.state, card.stage, card.error_code = "failed", "dependency", "CUTTING_NOT_COMPLETED"
                 card.stopped, card.finished_at = True, now()
             else:

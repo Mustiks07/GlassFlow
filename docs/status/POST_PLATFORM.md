@@ -213,3 +213,13 @@ Report/source/downloads: docs/release/post/http-new-inputs, README содерж�
 это ошибка проверяющего, не исправление продукта. Публичный source/case/final materials не менялись.
 Следующий шаг: дождаться Intelligence fixed SHA, merge на остановленной isolated ветке, новый fresh полный TCP run
 и строго повторить unknown probe; прежний blocked report сохранить отдельно. Затем root final EXE/browser/release.
+
+## N02 terminal dependency replay P1
+
+Fresh actual HTTP failure на общей базе2c6afcc выявил17 failed cards одного terminal cutting attempt.
+Причина: budget scheduler записывал failed dependency с input={} и на каждом tick воспринимал его как другую
+cutting revision. По отдельному разрешению root только runs.py: failed card теперь хранит cutting_job_id.
+История не удаляется; новая явная попытка cutting получает ровно один свой dependency result.
+`uv run pytest tests/post_acceptance/test_dependency_replay.py tests/platform/test_post_budget_checkpoints.py
+-q -o addopts=''` — **10 PASS**,30.40s, scoped Ruff PASS. Regression проверяет8ticks,2coordinator restarts,
+и отдельную следующую попытку. Минимальный product commit отделён от HTTP artifacts/harness.
