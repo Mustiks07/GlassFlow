@@ -62,7 +62,7 @@ export function EconomicsPanel({ dataset }: { dataset: Dataset }) {
         <Button variant="primary" busy={busy} onClick={calculate}>Рассчитать сценарий</Button>
       </>}
       {scenario && <>
-        <p>Версия {scenario.version} · {scenario.formula_version}. Сценарный расчет, не финальная конкурсная записка.</p>
+        <p>Версия {scenario.version}. Сценарный расчет, не финальная конкурсная записка.</p>
         <dl className="facts"><dt>Прирост оценки материала за набор</dt><dd>{formatMoney(scenario.results.planned_material_delta_tg)}</dd>
           <dt>Месячный эффект материала с учетом доли</dt><dd>{formatMoney(scenario.results.material_delta_tg)}</dd>
           <dt>Труд</dt><dd>{formatMoney(scenario.results.labor_effect_tg)}</dd><dt>Расходы</dt><dd>{formatMoney(scenario.results.monthly_costs_tg)}</dd>

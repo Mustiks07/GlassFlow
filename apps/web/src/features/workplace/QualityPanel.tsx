@@ -10,8 +10,8 @@ import { EvidenceList } from './EvidenceList';
 import type { components } from '../../../../../packages/contracts/schema';
 
 const VERDICT: Record<DialogVerdict['verdict'], { label: string; tone: 'ok' | 'error' | 'warn' }> = {
-  OK: { label: 'OK — цена верна', tone: 'ok' },
-  ERROR: { label: 'ERROR — цена неверна', tone: 'error' },
+  OK: { label: 'Цена верна', tone: 'ok' },
+  ERROR: { label: 'Цена неверна', tone: 'error' },
   NEEDS_REVIEW: { label: 'Нужна проверка: недостаточно контекста', tone: 'warn' },
 };
 
@@ -122,7 +122,6 @@ function VerdictCard({ checked }: { checked: Checked }) {
         </p>
       )}
       {verdict.explanation_ru && <p className="small">{verdict.explanation_ru}</p>}
-      {verdict.reason_code && <p className="small muted mono">{verdict.reason_code}</p>}
       <div>
         <strong className="small">Основание</strong>
         <EvidenceList evidence={verdict.evidence} />

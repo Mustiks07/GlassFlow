@@ -24,8 +24,8 @@ from glassflow.modules.platform.material_use_router import router as material_us
 from glassflow.modules.platform.order_router import router as order_router
 from glassflow.modules.platform.router import router as platform_router
 from glassflow.modules.platform.runs import crm_job, schedule_cards
-from glassflow.modules.sales.router import router as sales_router
 from glassflow.modules.sales.readiness_router import router as sale_readiness_router
+from glassflow.modules.sales.router import router as sales_router
 
 
 def create_app(

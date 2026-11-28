@@ -41,7 +41,7 @@ describe('honest states without backend', () => {
     window.location.hash = '#/cutting';
     renderWith(transport);
     expect((await screen.findAllByText(/Модуль не подключен/, {}, { timeout: 4000 })).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/не подменяются демонстрационными/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Операция недоступна в установленной версии/).length).toBeGreaterThan(0);
   });
 });
 

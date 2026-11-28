@@ -11,6 +11,7 @@ import { useAppStore } from '../../state/store';
 import { Button, ConfirmDialog, Details, EmptyState, ErrorState, Field, LoadingState, Metric, Panel, StatusBadge, TableWrap, type Tone } from '../../ui/kit';
 import { isMutable } from '../shell/dataset';
 import { RequireDataset } from '../shell/RequireDataset';
+import { PLAN_STATUS_LABEL } from '../cutting/labels';
 
 export function SalesPage() {
   return <RequireDataset>{dataset => <Sales dataset={dataset} key={dataset.dataset_id} />}</RequireDataset>;
@@ -118,7 +119,7 @@ function Sales({ dataset }: { dataset: Dataset }) {
               <select value={chosenPlan.plan_id} onChange={event => setPlanId(event.target.value)}>
                 {plans.data.map(plan => (
                   <option key={plan.plan_id} value={plan.plan_id}>
-                    {plan.plan_id} · ревизия {plan.revision} · {plan.status}
+                    План · ревизия {plan.revision} · {PLAN_STATUS_LABEL[plan.status] ?? 'Требует проверки'} · {Math.round((plan.coverage ?? 0) * 100)}%
                   </option>
                 ))}
               </select>

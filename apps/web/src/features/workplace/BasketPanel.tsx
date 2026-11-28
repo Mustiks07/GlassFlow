@@ -9,6 +9,7 @@ import { formatMoney } from '../../lib/format';
 import { ActualUse, flowLabel } from './OrderFlowPanel';
 import { useRoute } from '../../state/router';
 import { OperationalDocument } from './OperationalDocument';
+import { errorAction, humanText } from '../../ui/human';
 
 type Basket = components['schemas']['Basket'];
 type Line = components['schemas']['BasketLineDraft'];
@@ -40,7 +41,7 @@ export function BasketPanel({ dataset }: { dataset: Dataset }) {
       const value = await api.getJob(job.job_id);
       setStage(value.stage);
       if (value.state === 'completed') return value.result as Record<string, unknown>;
-      if (!['queued', 'running'].includes(value.state)) throw new Error(`Задание ${value.state}: ${value.error_code ?? ''}`);
+      if (!['queued', 'running'].includes(value.state)) throw new Error(errorAction(value.error_code));
       await new Promise(resolve => setTimeout(resolve, 300));
     }
     throw new Error('Расчет продолжается. Откройте сохраненную корзину и проверьте задания.');
@@ -125,7 +126,7 @@ export function BasketPanel({ dataset }: { dataset: Dataset }) {
           {['draft', 'needs_review', 'ready', 'stale'].includes(basket.state ?? "") && <Button busy={busy} disabled={!note.trim() || !lines.length} onClick={() => run(calculate)}>Проверил строки — рассчитать и подобрать совместно</Button>}
           <div className="metric"><span>Итог всей корзины</span><strong>{basket.total_tg == null ? 'Требуется уточнение' : formatMoney(basket.total_tg)}</strong></div>
           {basket.total_tg == null && basket.known_subtotal_tg && <p>Известная часть: {formatMoney(basket.known_subtotal_tg)}. Это не сумма заказа.</p>}
-          {basket.issues?.map(issue => <p role="status" key={issue}>{issue.startsWith('line:') ? 'Уточните параметры, цену или совместимость указанной позиции.' : issue === 'joint_stock_validation_required' ? 'Требуется совместная проверка размещения всех стеклянных позиций.' : issue}</p>)}
+          {basket.issues?.map(issue => <p role="status" key={issue}>{issue.startsWith('line:') ? 'Уточните параметры, цену или совместимость указанной позиции.' : issue === 'joint_stock_validation_required' ? 'Требуется совместная проверка размещения всех стеклянных позиций.' : humanText(issue, 'Корзина требует проверки параметров, совместимости или актуальности склада.')}</p>)}
           <div className="row wrap">{([
             ['confirm', 'Подтвердить всю корзину', basket.state === 'ready'],
             ['reserve', 'Резерв всей корзины', basket.state === 'confirmed'],

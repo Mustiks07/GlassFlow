@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useId, useRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { ERROR_TITLES, asApiError, type ApiError } from '../api/errors';
+import { fieldLabel, humanText } from './human';
 
 // ---------------------------------------------------------------- Buttons
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
@@ -150,9 +151,10 @@ export function OfflineAiNotice({ detail }: { detail?: string }) {
       <div>
         <strong>Свободный диалог ограничен</strong>
         <p>
-          AI-провайдер недоступен{detail ? `: ${detail}` : ''}. Каталог, точный расчет, подбор остатков, CRM и аналитика работают
+          Сервис ИИ сейчас не может ответить. Каталог, точный расчет, подбор остатков, клиенты и аналитика работают
           локально. Используйте структурированную форму расчета.
         </p>
+        {detail && <Details summary="Подробности для поддержки"><p className="pre">{detail}</p></Details>}
       </div>
     </div>
   );
@@ -180,21 +182,17 @@ export function ErrorState({
           {ERROR_TITLES[e.kind]}
           {context ? ` · ${context}` : ''}
         </strong>
-        <p>{e.message}</p>
+        <p>{humanText(e.message, 'Не удалось выполнить действие. Проверьте данные и связь с приложением; при повторной ошибке передайте подробности поддержке.')}</p>
         {e.kind === 'not_implemented' && (
-          <p className="muted">Владелец модуля еще не подключил эту операцию к серверу. Данные не подменяются демонстрационными.</p>
+          <p className="muted">Операция недоступна в установленной версии. Обновите приложение или обратитесь к ответственному за систему.</p>
         )}
         {e.retryAfterSeconds !== null && <p>Повторить можно через {e.retryAfterSeconds} с.</p>}
-        {e.conflictObjects.length > 0 && (
-          <p>
-            Затронуто: <span className="mono">{e.conflictObjects.join(', ')}</span>
-          </p>
-        )}
+        {e.conflictObjects.length > 0 && <p>Изменились связанные записи. Обновите данные перед повторным действием.</p>}
         {e.fieldErrors.length > 0 && (
           <ul className="field-error-list">
             {e.fieldErrors.map(item => (
               <li key={item.field}>
-                <span className="mono">{item.name}</span>: {item.message}
+                <span>{fieldLabel(item.name)}</span>: {item.message}
                 {item.raw ? ` (значение: ${item.raw})` : ''}
               </li>
             ))}
@@ -212,8 +210,10 @@ export function ErrorState({
               <dd className="mono">{e.code}</dd>
               <dt>HTTP</dt>
               <dd className="mono">{e.status ?? 'нет ответа'}</dd>
-              <dt>correlation_id</dt>
+              <dt>Номер обращения</dt>
               <dd className="mono">{e.correlationId ?? 'нет'}</dd>
+              <dt>Сообщение сервера</dt><dd className="pre">{e.message}</dd>
+              {e.conflictObjects.length > 0 && <><dt>Связанные записи</dt><dd>{e.conflictObjects.join(', ')}</dd></>}
             </dl>
           </Details>
         </div>

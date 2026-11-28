@@ -3,102 +3,130 @@
   "items": [
     {
       "id": "N01",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "docs/status/POST_PLATFORM.md",
+        "docs/status/POST_ALGORITHMS.md"
+      ],
       "limitations": []
     },
     {
       "id": "N02",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "docs/status/POST_PLATFORM.md",
+        "docs/status/POST_ALGORITHMS.md"
+      ],
       "limitations": []
     },
     {
       "id": "N03",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "docs/status/POST_PLATFORM.md",
+        "docs/status/POST_ALGORITHMS.md"
+      ],
       "limitations": []
     },
     {
       "id": "N04",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "docs/status/POST_INTELLIGENCE.md"
+      ],
       "limitations": []
     },
     {
       "id": "N05",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
-      "limitations": []
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "tests/platform/test_post_labor_workflow.py",
+        "tests/e2e/real/post-integration.spec.ts"
+      ],
+      "limitations": [
+        "Software timer/attestation/export gates verified; no genuine ten-pair human labor result supplied."
+      ]
     },
     {
       "id": "N06",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "docs/status/POST_PLATFORM.md",
+        "docs/status/POST_ALGORITHMS.md"
+      ],
       "limitations": []
     },
     {
       "id": "N07",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "docs/status/POST_INTELLIGENCE.md"
+      ],
       "limitations": []
     },
     {
       "id": "N08",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "tests/insights/evidence/post-insights-final.xml"
+      ],
       "limitations": []
     },
     {
       "id": "N09",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "tests/insights/evidence/post-insights-final.xml"
+      ],
       "limitations": []
     },
     {
       "id": "N10",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "docs/status/POST_PLATFORM.md",
+        "docs/status/POST_ALGORITHMS.md"
+      ],
       "limitations": []
     },
     {
@@ -106,29 +134,42 @@
       "implemented": false,
       "connected": false,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
-      "limitations": []
+      "status": "experiment_complete_no_promotion",
+      "sha": "873bc1c",
+      "evidence": [
+        "docs/experiments/post_cutting/RESULTS.md",
+        "docs/experiments/post_cutting/comparison.json"
+      ],
+      "limitations": [
+        "All24pairedtrialscompleted; no stable benefit satisfying preregistered promotion gates; baseline retained."
+      ]
     },
     {
       "id": "N12",
       "implemented": false,
       "connected": false,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
-      "limitations": []
+      "status": "experiment_complete_no_promotion",
+      "sha": "873bc1c",
+      "evidence": [
+        "docs/experiments/post_cutting/RESULTS.md",
+        "docs/experiments/post_cutting/comparison.json"
+      ],
+      "limitations": [
+        "All24pairedtrialscompleted; no stable benefit satisfying preregistered promotion gates; baseline retained."
+      ]
     },
     {
       "id": "N13",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "docs/status/POST_PLATFORM.md",
+        "docs/status/POST_ALGORITHMS.md"
+      ],
       "limitations": []
     },
     {
@@ -136,19 +177,26 @@
       "implemented": false,
       "connected": false,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
-      "limitations": []
+      "status": "experiment_complete_no_promotion",
+      "sha": "873bc1c",
+      "evidence": [
+        "docs/experiments/post_cutting/RESULTS.md",
+        "docs/experiments/post_cutting/comparison.json"
+      ],
+      "limitations": [
+        "All24pairedtrialscompleted; no stable benefit satisfying preregistered promotion gates; baseline retained."
+      ]
     },
     {
       "id": "N15",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "tests/insights/evidence/post-insights-final.xml"
+      ],
       "limitations": []
     },
     {
@@ -156,39 +204,51 @@
       "implemented": false,
       "connected": false,
       "verified": false,
-      "status": "planned",
+      "status": "deferred_by_explicit_scope",
       "sha": null,
-      "evidence": [],
-      "limitations": []
+      "evidence": [
+        "docs/architecture/POST_INTEGRATION_CONTRACTS.md"
+      ],
+      "limitations": [
+        "Compensating material use requires separate post-contest design; no reverse stock operation introduced."
+      ]
     },
     {
       "id": "N17",
       "implemented": false,
       "connected": false,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
-      "limitations": []
+      "status": "no_promotion",
+      "sha": "12f4b6d",
+      "evidence": [
+        "docs/ai/post/N04_N07_N19_N17.md"
+      ],
+      "limitations": [
+        "No demonstrated independent benefit/latency case for an additional extractor. Deterministic parameter fixes retained."
+      ]
     },
     {
       "id": "N18",
       "implemented": false,
       "connected": false,
       "verified": false,
-      "status": "planned",
+      "status": "not_run_human_observation",
       "sha": null,
       "evidence": [],
-      "limitations": []
+      "limitations": [
+        "No first operator observation supplied; no unmeasured guided-tour claim. Employee-facing language cleanup explicitly requested separately and implemented pending final browser review."
+      ]
     },
     {
       "id": "N19",
-      "implemented": false,
-      "connected": false,
+      "implemented": true,
+      "connected": true,
       "verified": false,
-      "status": "planned",
-      "sha": null,
-      "evidence": [],
+      "status": "integration_verification_in_progress",
+      "sha": "68d71b2",
+      "evidence": [
+        "docs/status/POST_INTELLIGENCE.md"
+      ],
       "limitations": []
     }
   ]

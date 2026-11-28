@@ -16077,6 +16077,137 @@
         }
       }
     },
+    "/api/v1/sale-readiness/{job_id}": {
+      "get": {
+        "tags": [
+          "sales"
+        ],
+        "summary": "Readiness Result",
+        "operationId": "readiness_result_api_v1_sale_readiness__job_id__get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          },
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaleReadiness"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
     "/api/v1/sale-readiness": {
       "post": {
         "tags": [
@@ -29256,6 +29387,17 @@
           "snapshot": {
             "$ref": "#/components/schemas/Remnant"
           },
+          "material_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Material Name"
+          },
           "snapshot_hash": {
             "type": "string",
             "title": "Snapshot Hash"
@@ -32444,6 +32586,134 @@
           "top3_buyers"
         ],
         "title": "SaleCard"
+      },
+      "SaleReadiness": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ready_unchanged",
+              "ready_alternative",
+              "tradeoff_available",
+              "evidence_shortage",
+              "limited",
+              "cancelled",
+              "stale"
+            ],
+            "title": "Status"
+          },
+          "baseline": {
+            "$ref": "#/components/schemas/CutPlan"
+          },
+          "alternative": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CutPlan"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tradeoff": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CutPlan"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "eligible_original_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Eligible Original Ids"
+          },
+          "baseline_free_eligible_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Baseline Free Eligible Ids"
+          },
+          "candidate_free_eligible_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Candidate Free Eligible Ids"
+          },
+          "registry_version": {
+            "type": "string",
+            "title": "Registry Version"
+          },
+          "input_fingerprint": {
+            "type": "string",
+            "title": "Input Fingerprint"
+          },
+          "inventory_fingerprint": {
+            "type": "string",
+            "title": "Inventory Fingerprint"
+          },
+          "registry_fingerprint": {
+            "type": "string",
+            "title": "Registry Fingerprint"
+          },
+          "minimum_free": {
+            "type": "integer",
+            "title": "Minimum Free",
+            "default": 5
+          },
+          "delta_area_mm2": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta Area Mm2"
+          },
+          "search_performed": {
+            "type": "boolean",
+            "title": "Search Performed",
+            "default": false
+          },
+          "elapsed_seconds": {
+            "type": "number",
+            "title": "Elapsed Seconds",
+            "default": 0
+          },
+          "reason_ru": {
+            "type": "string",
+            "title": "Reason Ru"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "status",
+          "baseline",
+          "eligible_original_ids",
+          "baseline_free_eligible_ids",
+          "registry_version",
+          "input_fingerprint",
+          "inventory_fingerprint",
+          "registry_fingerprint",
+          "reason_ru"
+        ],
+        "title": "SaleReadiness"
       },
       "SaleReadinessRequest": {
         "properties": {
