@@ -35,14 +35,18 @@ from glassflow.contracts.cutting import (
     InventoryChange,
     MeasurementUpdate,
     NewRemnant,
+    NewRequirements,
     PlanComparison,
     PlanLayout,
+    PlanMargins,
     PlanSummary,
     ReleaseRequest,
     Remnant,
     RemnantPage,
     RemnantUpdate,
     ReserveRequest,
+    ScarcityRequest,
+    ScarcityResult,
     SolutionExport,
     SolveInput,
     SolveRequest,
@@ -201,6 +205,11 @@ def find_candidates(request: Request, body: FindRequest):
     return _run(request, lambda s: s.find_candidates(body), write=False)
 
 
+@router.post('/cutting/scarcity', response_model=ScarcityResult)
+def scarcity(request: Request, body: ScarcityRequest):
+    return _run(request, lambda s: s.scarcity(body), write=False)
+
+
 @router.post("/cutting/solve-input", response_model=SolveInput)
 def solve_input(request: Request, body: SolveRequest):
     """The exact serialisable snapshot a solve job would receive (for the platform worker and audits)."""
@@ -256,6 +265,18 @@ def plan_layout(request: Request, plan_id: str, dataset_id: str, revision: Annot
 @router.get("/plans/{plan_id}/export", response_model=SolutionExport)
 def plan_export(request: Request, plan_id: str, dataset_id: str, revision: Annotated[int | None, Query(ge=0)] = None):
     return _run(request, lambda s: s.export(dataset_id, plan_id, revision), write=False)
+
+
+@router.get('/plans/{plan_id}/new-requirements', response_model=NewRequirements)
+def plan_new_requirements(request: Request, plan_id: str, dataset_id: str,
+                          revision: Annotated[int | None, Query(ge=0)] = None):
+    return _run(request, lambda s: s.new_requirements(dataset_id, plan_id, revision), write=False)
+
+
+@router.get('/plans/{plan_id}/geometry-margins', response_model=PlanMargins)
+def plan_geometry_margins(request: Request, plan_id: str, dataset_id: str,
+                          revision: Annotated[int | None, Query(ge=0)] = None):
+    return _run(request, lambda s: s.geometry_margins(dataset_id, plan_id, revision), write=False)
 
 
 @router.get("/plans/{plan_id}/free-remnants", response_model=FreeRemnantsCheck)
