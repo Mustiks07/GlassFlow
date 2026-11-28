@@ -10,7 +10,7 @@ from fastapi import Request
 from sqlalchemy import String, create_engine, event
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 
-SCHEMA_HEAD = "0005_execution_history"
+SCHEMA_HEAD = "0007_intelligence_reviews"
 
 
 class Base(DeclarativeBase):

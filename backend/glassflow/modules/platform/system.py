@@ -100,6 +100,8 @@ def validate_backup(path):
                 ("0002_immutable_history",),
                 ("0003_material_use",),
                 ("0004_domains",),
+                ("0005_execution_history",),
+                ("0006_operational_documents",),
                 (SCHEMA_HEAD,),
             }:
                 raise ValueError()
