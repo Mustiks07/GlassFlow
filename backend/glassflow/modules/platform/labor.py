@@ -1,5 +1,6 @@
 """N05 durable human measurement protocol. No synthetic labor is inferred."""
 
+from collections import Counter
 from copy import deepcopy
 from datetime import UTC, datetime
 from decimal import Decimal
@@ -85,9 +86,20 @@ def view(row):
     data["measurements"] = [projected(m, moment()) for m in data["measurements"]]
     pairs = pair_rows(data)
     ready = [p for p in pairs if p["ready"]]
+    counts = order_counts(data)
+    balanced = set(counts) == {"manual_first", "app_first"}
     return LaborStudyView(**data, study_id=row.id, version=row.version, pairs=pairs,
-                          ready_pair_count=len(ready), export_ready=len(ready) >= 10
-                          and len({p["task_id"] for p in ready}) == len(ready)).model_dump(mode="json")
+                          ready_pair_count=len(ready), export_ready=len(ready) >= 10 and len(ready) == len(pairs)
+                          and len({p["task_id"] for p in ready}) == len(ready) and balanced,
+                          order_counts=counts, protocol_warnings=[] if balanced else [
+                              "Для части пар поменяйте порядок способов: обучение на задаче может менять результат."]).model_dump(mode="json")
+
+
+def order_counts(data):
+    first = {}
+    for item in data["measurements"]:
+        first.setdefault(item["pair_id"], item["planned_order"])
+    return dict(Counter(first.values()))
 
 
 def create(session, body, correlation):
@@ -202,9 +214,12 @@ def export(session, dataset_id, study_id):
     row = get_object(session, dataset_id, "labor_study", study_id)
     data = row.data
     pairs = pair_rows(data)
+    counts = order_counts(data)
     if any(not p["ready"] for p in pairs) or len(pairs) < 10 or len({p["task_id"] for p in pairs}) != len(pairs):
         raise AppError(409, "TEN_HUMAN_PAIRS_REQUIRED", "Для U07 нужны минимум десять разных полных подтвержденных пар.",
                        conflicts=[f"{p['pair_id']}:{p['reason_code']}" for p in pairs if not p["ready"]])
+    if set(counts) != {"manual_first", "app_first"}:
+        raise AppError(409, "COUNTERBALANCE_REQUIRED", "Включите оба порядка способов для контроля знакомства с задачей.")
     studies = []
     for pair in pairs:
         values = {m["method"]: m for m in data["measurements"] if m["pair_id"] == pair["pair_id"]}
@@ -223,4 +238,4 @@ def export(session, dataset_id, study_id):
     return LaborStudyExport(study_id=row.id, study_version=row.version, labor_studies=studies,
         pair_count=len(pairs), negative_saving_pairs=sum(s < 0 for s in savings),
         median_saved_active_seconds=scalar(median(savings)),
-        source_ref=f"labor-study:{row.id}:v{row.version}").model_dump(mode="json")
+        source_ref=f"labor-study:{row.id}:v{row.version}", order_counts=counts).model_dump(mode="json")

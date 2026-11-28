@@ -11,6 +11,7 @@ from glassflow.core.models import JobRow, ObjectRow, now, uid
 from glassflow.core.resources import build_info
 from glassflow.core.uow import canonical_hash, get_object
 from glassflow.modules.crm.service import rank_rows
+from glassflow.modules.platform.budgets import bound_solver, budget_view, create_budget, remaining
 from glassflow.modules.platform.imports import dataset, records, working_copy
 
 MODULE_FILES = {
@@ -68,6 +69,8 @@ def create_run(session, request, services, correlation):
         raise AppError(409, "IMMUTABLE_SOURCE_REQUIRED", "Выберите исходный снимок для конкурсного прогона.")
     if not request.modules or len(set(request.modules)) != len(request.modules):
         raise AppError(422, "INVALID_MODULES", "Выберите неповторяющиеся модули.")
+    if request.total_budget_seconds is not None and set(request.modules) == set(MODULE_FILES) and not request.buyer_registry_version:
+        raise AppError(409, "BUYER_REGISTRY_REQUIRED", "Полный бюджетный комплект требует закрепленного реестра покупателей.")
     copy = working_copy(session, source.id, f"Прогон: {source.name}", services, correlation, mode="contest")
     snapshot = dataset(session, copy["dataset_id"])
     if request.buyer_registry_version:
@@ -115,16 +118,23 @@ def create_run(session, request, services, correlation):
         "official_accuracy": {"assistant": None, "crm": None, "quality": None},
         "validation_note": "Без evaluation KEY официальные закрытые баллы неизвестны",
     }
+    budget = (create_budget(request.total_budget_seconds, request.export_reserve_seconds,
+                            request.solver_config.model_dump()) if request.total_budget_seconds is not None else None)
+    if budget:
+        manifest["budget"] = budget
     row = ObjectRow(dataset_id=snapshot.id, kind="run", id=run_id, version=0, data=manifest)
     session.add(row)
     first_job = None
-    for module in request.modules:
+    ordered_modules = (sorted(request.modules, key=lambda m: {"quality": 0, "crm": 1, "cutting": 2,
+        "assistant": 3, "cards": 4}[m]) if budget else request.modules)
+    for module in ordered_modules:
         if module == "cards":
             continue  # Dependency scheduled only after the final validated cutting result.
         from glassflow.core.snapshots import cutting_snapshot
 
+        solver = bound_solver(request.solver_config.model_dump(), budget, baseline=True)
         typed_cutting = (
-            cutting_snapshot(snapshot.id, inputs, request.solver_config.model_dump()).model_dump(mode="json")
+            cutting_snapshot(snapshot.id, inputs, solver).model_dump(mode="json")
             if module == "cutting"
             else None
         )
@@ -142,9 +152,11 @@ def create_run(session, request, services, correlation):
                 "dataset_id": snapshot.id,
                 "run_id": run_id,
                 "config_version": request.config_version,
-                "solver_config": request.solver_config.model_dump(),
+                "solver_config": solver,
+                **({"run_budget": budget, "phase": "baseline"} if budget else {}),
                 "ai_profile": request.ai_profile,
                 "ai_settings": settings.model_dump(exclude={"secret_present"}),
+                "input_source_hashes": {kind: snapshot.source_hashes[kind] for kind in allowed_inputs},
                 **{f"{kind}_bytes_b64": base64.b64encode(source_bytes[kind]).decode("ascii")
                    for kind in ("kb", "materials") if kind in allowed_inputs},
                 "cutting_snapshot": typed_cutting,
@@ -167,12 +179,20 @@ def find_run(session, run_id):
 
 
 def latest_jobs(session, run_id):
-    return {
-        j.kind: j
-        for j in session.scalars(
+    result = {}
+    for j in session.scalars(
             select(JobRow).where(JobRow.run_id == run_id).order_by(JobRow.created_at, JobRow.id)
-        )
-    }
+        ):
+        if j.kind == "cutting" and j.input.get("phase") == "improvement":
+            if j.state != "completed" or not (j.result or {}).get("promotion", {}).get("promoted"):
+                continue
+            current = result.get("cutting")
+            metrics, before = (j.result or {}).get("metrics", {}), (current.result or {}).get("metrics", {}) if current else {}
+            if (metrics.get("covered_area_mm2", -1), metrics.get("fully_covered_orders", 0)) <= (
+                    before.get("covered_area_mm2", -1), before.get("fully_covered_orders", 0)):
+                continue
+        result[j.kind] = j
+    return result
 
 
 def run_view(session, run_id):
@@ -180,7 +200,12 @@ def run_view(session, run_id):
     jobs = list(latest_jobs(session, run_id).values())
     complete = {j.kind for j in jobs if j.state == "completed"}
     requested = set(row.data["modules"])
-    waiting = any(j.state in {"queued", "running"} for j in jobs)
+    waiting = any(j.state in {"queued", "running"} for j in session.scalars(select(JobRow).where(JobRow.run_id == run_id)))
+    budget = row.data.get("budget")
+    if budget and set(row.data["modules"]) == set(MODULE_FILES) and remaining(budget) > 0:
+        refs = {j.kind: {"job_id": j.id, "state": j.state} for j in jobs}
+        if complete == requested and row.data.get("accepted_result_refs") != refs:
+            waiting = waiting or budget.get("export_status") not in {"partial", "failed"}
     status = (
         "running"
         if waiting
@@ -195,6 +220,8 @@ def run_view(session, run_id):
         "status": status,
         "jobs": [job_dto(j).model_dump() for j in jobs],
         "missing_modules": sorted(requested - complete),
+        "version": row.version,
+        "budget": budget_view(budget),
     }
 
 
@@ -203,12 +230,15 @@ def schedule_cards(factory):
 
     with write_transaction(factory) as session:
         for run in session.scalars(select(ObjectRow).where(ObjectRow.kind == "run")):
+            schedule_improvement(session, run)
             if "cards" not in run.data["modules"]:
                 continue
             jobs = list(latest_jobs(session, run.id).values())
-            if any(j.kind == "cards" for j in jobs):
-                continue
             cutting = next((j for j in jobs if j.kind == "cutting"), None)
+            previous = next((j for j in jobs if j.kind == "cards"), None)
+            if previous and (not run.data.get("budget") or not cutting or
+                    previous.input.get("cutting_job_id") == cutting.id):
+                continue
             if cutting and cutting.state in {"queued", "running"}:
                 continue
             if not cutting or cutting.state != "completed":
@@ -225,6 +255,77 @@ def schedule_cards(factory):
                         "run_id": run.id,
                         "cutting_result": cutting.result,
                         "buyer_registry_version": run.data["buyer_registry_version"],
+                        "cutting_job_id": cutting.id,
+                        **({"run_budget": run.data["budget"]} if run.data.get("budget") else {}),
                     },
                     run.id,
                 )
+
+
+def schedule_improvement(session, run):
+    from copy import deepcopy
+
+    from glassflow.core.uow import audit
+
+    budget = run.data.get("budget")
+    if (not budget or not run.data.get("accepted_export_id") or budget.get("improvement_job_id")
+            or "cutting" not in run.data["modules"] or remaining(budget, work=True) <= 7):
+        return
+    requested = budget["requested_solver"]
+    if requested.get("profile") == "quick" or requested.get("time_limit_seconds", 5) <= 5:
+        return
+    selected = latest_jobs(session, run.id).get("cutting")
+    if not selected or selected.state != "completed":
+        return
+    snapshot = deepcopy(selected.input)
+    solver = bound_solver(requested, budget)
+    snapshot.update(phase="improvement", run_budget=deepcopy(budget), solver_config=solver,
+                    baseline_metrics=deepcopy(selected.result.get("metrics", {})))
+    snapshot["cutting_snapshot"]["config"] = solver
+    snapshot.pop("checkpoint_lineage", None)
+    job = enqueue(session, run.dataset_id, "cutting", snapshot, run.id)
+    budget = {**budget, "phase": "improving", "improvement_job_id": job.id,
+              "baseline_cutting_job_id": selected.id}
+    run.data = {**run.data, "budget": budget}
+    audit(session, run.dataset_id, "run.improvement_scheduled", run.id, "coordinator",
+          baseline_job_id=selected.id, improvement_job_id=job.id, budget_version=budget["version"])
+
+
+def renew_budget(session, run_id, body, correlation):
+    from glassflow.core.uow import audit
+    run = get_object(session, body.dataset_id, "run", run_id, body.expected_version)
+    if session.scalar(select(JobRow).where(JobRow.run_id == run_id, JobRow.state.in_(["queued", "running"]))):
+        raise AppError(409, "RUN_ACTIVE", "Сначала остановите текущие задания; бюджет не продлевается скрыто.")
+    previous = run.data.get("budget") or {}
+    budget = create_budget(body.total_budget_seconds, body.export_reserve_seconds, run.data["solver"],
+                           version=previous.get("version", -1) + 1)
+    run.data = {**run.data, "budget": budget}
+    run.version += 1
+    audit(session, run.dataset_id, "run.budget_renewed", run.id, correlation,
+          budget_version=budget["version"], deadline_utc=budget["deadline_utc"], previous_budget=previous,
+          renewed_budget=budget)
+    return run_view(session, run_id)
+
+
+def auto_export_candidates(factory):
+    """Claim one small export task; the actual filesystem/validator work runs elsewhere."""
+    from glassflow.core.uow import write_transaction
+    with write_transaction(factory) as session:
+        for run in session.scalars(select(ObjectRow).where(ObjectRow.kind == "run").order_by(ObjectRow.id)):
+            budget = run.data.get("budget")
+            if not budget or set(run.data["modules"]) != set(MODULE_FILES) or remaining(budget) <= 0:
+                continue
+            jobs = latest_jobs(session, run.id)
+            if set(jobs) != set(MODULE_FILES) or any(j.state != "completed" for j in jobs.values()):
+                continue
+            refs = {k: {"job_id": j.id, "state": j.state} for k, j in jobs.items()}
+            if run.data.get("accepted_result_refs") == refs:
+                continue
+            key = canonical_hash({"refs": refs, "budget_version": budget["version"]})
+            if budget.get("export_candidate_key") == key and budget.get("export_status") != "interrupted":
+                continue
+            attempt = uid()
+            run.data = {**run.data, "budget": {**budget, "export_candidate_key": key,
+                        "export_attempt_id": attempt, "export_status": "running"}}
+            return run.id, budget["version"], attempt
+    return None

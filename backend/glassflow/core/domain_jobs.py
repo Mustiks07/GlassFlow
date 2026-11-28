@@ -56,22 +56,65 @@ def engine_for(snapshot, context):
 
 
 def assistant_job(snapshot, context):
+    from glassflow.modules.intelligence.assistant.engine import cache_key
     from glassflow.modules.intelligence.assistant.local import TurnContext
+    from glassflow.modules.platform.checkpoints import (
+        payload_from_answer,
+        row_fingerprint,
+        validate_assistant_checkpoint,
+    )
 
     engine = engine_for(snapshot, context)
 
     async def run():
         rows, paths = [], []
+        reusable = {r["row_id"]: r for r in snapshot.get("accepted_rows", [])}
+        proofs = {}
         for index, question in enumerate(snapshot["questions"]):
             context.progress("answering", index, len(snapshot["questions"]))
+            row_id = question["id"]
+            fingerprint = row_fingerprint(snapshot, row_id)
+            previous = reusable.get(row_id)
+            if previous and previous["fingerprint"] == fingerprint:
+                payload = previous["payload"]
+                rows.append({"id": row_id, **payload["row"]})
+                paths.append({"id": row_id, **payload["provenance"], "source_path": payload["provenance"]["path"],
+                              "path": "checkpoint_reuse", "resumed": True,
+                              "source_job_id": previous.get("source_job_id")})
+                continue
+            models = engine.runtime.client.chain() if engine.runtime and engine.runtime.client else []
+            semantic_key = cache_key(question["question"], engine.kb.version, models, {})
+            available = context.remaining_seconds()
+            if available is not None and engine.runtime and engine.runtime.client:
+                for profile in (engine.runtime.profile, engine.runtime.client.profile):
+                    profile.turn_deadline_s = max(.001, min(profile.turn_deadline_s, available))
+                    profile.request_timeout_s = max(.001, min(profile.request_timeout_s, available))
             answer = await engine.turn(question["question"], TurnContext(), inventory_mode="none",
                                        allow_ai=snapshot.get("ai_profile") != "local_limited")
-            rows.append({"id": question["id"], "answer": answer.answer})
-            paths.append({"id": question["id"], "path": answer.answer_path, "provider": answer.provider,
-                          "model_id": answer.model_id, "verifier_status": answer.verifier_status})
+            payload = payload_from_answer(answer, proofs.get(semantic_key) if answer.cache_hit else None)
+            if not validate_assistant_checkpoint(snapshot, row_id, fingerprint, payload):
+                # Fail closed on incomplete/unreplayable model evidence. The model's output
+                # is not promoted to a verified row merely because the child says so.
+                local = engine.local.respond(question["question"], TurnContext(), inventory_mode="none")
+                payload["row"]["answer"] = local.answer
+                payload["tool_calls"] = []
+                payload["inventory_used"] = False
+                payload["provenance"].update(path="fallback", provider=None, model_id=None,
+                    verifier_status="parent_policy_fallback", parent_verifier_rejected=True)
+            if payload["tool_calls"]:
+                proofs[semantic_key] = payload["tool_calls"]
+            context.checkpoint(row_id, fingerprint, payload)
+            rows.append({"id": row_id, **payload["row"]})
+            paths.append({"id": row_id, **payload["provenance"], "resumed": False})
         return {"rows": rows, "provenance": {"kb_version": engine.local.kb.version, "answer_paths": paths}}
 
     return asyncio.run(run())
+
+
+from glassflow.modules.platform.checkpoints import validate_assistant_checkpoint  # noqa: E402
+
+assistant_job.checkpoint_validator = validate_assistant_checkpoint
+assistant_job.requires_complete_checkpoints = True
 
 
 def quality_job(snapshot, context):
