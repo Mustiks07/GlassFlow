@@ -98,7 +98,11 @@ class Service:
 
     def start(self):
         with socket.socket() as probe:
-            probe.bind(("127.0.0.1", self.port))  # Refuse to touch another listener.
+            probe.settimeout(.5)
+            if probe.connect_ex(("127.0.0.1", self.port)) == 0:
+                raise RuntimeError("Refusing to touch an existing listener")
+            # A recently stopped Windows socket may be in TIME_WAIT; it is not
+            # another listener. Uvicorn itself owns the SO_REUSEADDR bind.
         env = {k: v for k, v in os.environ.items() if not re.search(r"API_KEY|TOKEN|SECRET|GEMINI|BASISWEB|OPENROUTER|OPENAI|AI_PROFILE", k, re.I)}
         env.update(GLASSFLOW_DATA_DIR=str(self.data), PYTHONPATH=str(ROOT / "backend"))
         self.data.mkdir(parents=True, exist_ok=True)
@@ -125,7 +129,13 @@ class Service:
         if self.process.poll() is None:
             try:
                 client.post("/api/v1/system/shutdown", headers={"X-GlassFlow-Session": client.get("/api/v1/session").json()["session_token"]}).raise_for_status()
-                self.process.terminate()  # Uvicorn host is separate from the stopped coordinator.
+                # Windows venv python.exe may be a redirector with the real host
+                # beneath it. Stop only this owned tree, not a process-name match.
+                if os.name == "nt":
+                    subprocess.run(["taskkill", "/PID", str(self.process.pid), "/T", "/F"],
+                        capture_output=True, timeout=15, creationflags=subprocess.CREATE_NO_WINDOW)
+                else:
+                    self.process.terminate()
                 self.process.wait(timeout=15)
             except (httpx.HTTPError, subprocess.TimeoutExpired):
                 self.process.kill()
@@ -229,6 +239,8 @@ def exercise_cancel(client, source, buyer, directory):
     assert any(j["state"] == "cancelled" and j["accepted_row_count"] > 0 for j in view["jobs"])
     exported = post(client, f"/runs/{cancelled['run_id']}/export")
     assert exported["status"] != "ready"
+    assert "answers.csv" not in exported["files"] and "verdicts.csv" not in exported["files"]
+    assert any("UNRESOLVED_VERDICT" in error for error in exported["errors"])
     return {"run": view, "export": exported, "downloads": download(client, exported, directory)}
 
 
@@ -305,11 +317,25 @@ def exercise(args, report):
             partial_source, partial_buyer = import_source(client, partial_files, "Actual deadline/unknown source")
             partial = request_run(client, partial_source, partial_buyer, partial=True)
             failed_view = poll_run(client, partial["run_id"], seconds=30)
+            dependency_end = time.monotonic() + 5
+            while time.monotonic() < dependency_end:
+                failed_view = client.get(f"/api/v1/runs/{partial['run_id']}").json()
+                dependency = next((j for j in failed_view["jobs"] if j["error_code"] == "CUTTING_NOT_COMPLETED"), None)
+                if dependency:
+                    break
+                time.sleep(.1)
+            assert dependency, "Terminal cutting dependency was not projected"
+            dependency_id = dependency["job_id"]
+            for _ in range(3):
+                time.sleep(.2)
+                check = client.get(f"/api/v1/runs/{partial['run_id']}").json()
+                assert next(j["job_id"] for j in check["jobs"] if j["error_code"] == "CUTTING_NOT_COMPLETED") == dependency_id
             partial_export = post(client, f"/runs/{partial['run_id']}/export")
             assert partial_export["status"] != "ready", (failed_view, partial_export)
             assert any(j["state"] in {"failed", "cancelled", "interrupted"} for j in failed_view["jobs"]) or partial_export["errors"]
             report["partial_failure"] = {"run": failed_view, "export": partial_export,
-                "downloads": download(client, partial_export, args.output / "partial-downloaded")}
+                "downloads": download(client, partial_export, args.output / "partial-downloaded"),
+                "stable_terminal_dependency_id": dependency_id}
             report["cancelled_partial"] = exercise_cancel(client, partial_source, partial_buyer,
                                                          args.output / "cancelled-downloaded")
             # Let the accepted run settle before restarting; preserving exact accepted refs is observable.
@@ -326,16 +352,19 @@ def exercise(args, report):
             client.get("/api/v1/session").raise_for_status()
             after = client.get(f"/api/v1/runs/{started['run_id']}/passport", params={"dataset_id": source["dataset_id"], "view": "accepted"}).json()
             assert after == before_restart
-            partial_after = client.get(f"/api/v1/runs/{partial['run_id']}").json()
             before_counts = {j["job_id"]: j["accepted_row_count"] for j in failed_view["jobs"]}
-            after_counts = {j["job_id"]: j["accepted_row_count"] for j in partial_after["jobs"]}
-            assert all(after_counts.get(job_id) == count for job_id, count in before_counts.items())
+            after_counts = {job_id: client.get(f"/api/v1/jobs/{job_id}").json()["accepted_row_count"]
+                            for job_id in before_counts}
+            assert before_counts == after_counts
+            after_view = client.get(f"/api/v1/runs/{partial['run_id']}").json()
+            assert next(j["job_id"] for j in after_view["jobs"] if j["error_code"] == "CUTTING_NOT_COMPLETED") == dependency_id
             for name, detail in report["downloads"].items():
                 response = client.get(detail["uri"])
                 response.raise_for_status()
                 assert digest(response.content) == detail["sha256"], name
             report["restart"] = {"same_accepted_passport": True, "old_download_bytes_preserved": True,
-                                 "accepted_export_id": after["export_id"], "durable_partial_row_counts": after_counts}
+                                 "accepted_export_id": after["export_id"], "durable_partial_row_counts": after_counts,
+                                 "host_stop": "owned_process_tree_after_API_coordinator_stop"}
             report["status"] = "blocked_product_issue" if report.get("product_issues") else "passed"
         finally:
             server.stop(client)
