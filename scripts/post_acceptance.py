@@ -313,7 +313,12 @@ def exercise(args, report):
             report["cancelled_partial"] = exercise_cancel(client, partial_source, partial_buyer,
                                                          args.output / "cancelled-downloaded")
             # Let the accepted run settle before restarting; preserving exact accepted refs is observable.
-            poll_run(client, started["run_id"], seconds=120)
+            settled = poll_run(client, started["run_id"], seconds=120)
+            improvement_id = (settled.get("budget") or {}).get("improvement_job_id")
+            assert improvement_id, "Configured enhancement did not run after accepted baseline"
+            improvement = client.get(f"/api/v1/jobs/{improvement_id}")
+            improvement.raise_for_status()
+            report["bounded_improvement_attempt"] = improvement.json()
             before_restart = client.get(f"/api/v1/runs/{started['run_id']}/passport", params={"dataset_id": source["dataset_id"], "view": "accepted"}).json()
             server.stop(client)
             server.start()
