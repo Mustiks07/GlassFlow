@@ -5,6 +5,7 @@ integrator-reviewed design assumptions, not evidence of demand or purchase inten
 """
 
 import argparse
+import csv
 import hashlib
 import importlib.util
 import json
@@ -18,26 +19,48 @@ REVIEWED = {
     "B02": "Собственное производство мебели в Астане; шкафы со стеклом и зеркалами, витрины и полки. Подтверждено на публичной странице Astana MG.",
     "B03": "Собственное производство корпусной мебели в Астане; шкафы, полки, журнальные столики и зеркала для прихожей. Подтверждено на публичной странице DalaSK.",
 }
+SOURCE_OVERRIDES = {
+    "B28": "https://sxodim.com/astana/place/nudu",
+    "B39": "https://all.accor.com/hotel/B1Q3/index.ru.shtml",
+    "B47": "https://sxodim.com/astana/place/khs-hub",
+}
+PUBLIC_REVIEW = {
+    "B05": "Студия дизайна жилых и коммерческих интерьеров в Астане; публичная страница Clever Design.",
+    "B28": "Nudu: заведение с лапшой и фастфудом в Астане; Достык16Б, публичная карточка sxodim.",
+    "B37": "OldBoy: сеть мужских парикмахерских в Астане; официальная страница города.",
+    "B39": "Rixos President Astana: отель с ресторанами и помещениями для мероприятий в Астане, Кунаева7; официальный Accor.",
+    "B40": "World Class Астана: фитнес-клуб с залами, бассейном и SPA; официальный сайт.",
+    "B50": "Hani Cakes & Coffee: торты, десерты и бранчи в Караганде; официальный сайт.",
+    "B47": "KHS HUB: IT-бар в Астане; публичная карточка sxodim. Домашняя страница меняет содержимое; использован профильный источник.",
+    "B08": "Sensata Group: строительные проекты, жилые комплексы в Астане; официальный сайт.",
+    "B13": "АстанаСтройДом: строительная компания в Астане; публичный профиль kn.kz.",
+    "B19": "Talan Towers: торговый комплекс в Астане, Достык16; публичная карточка sxodim.",
+    "B24": "Green Mall: торговый центр в Астане, Сыганак17П; публичная карточка sxodim.",
+    "B31": "Line Brew Reserve: ресторан в Астане, Кадыргали Жалайыри4; публичная карточка sxodim.",
+}
 
 
 def convert():
     original = BUYERS / "evidence.json"
     source = json.loads(original.read_text(encoding="utf-8"))
     records = []
+    csv_rows = list(csv.DictReader((BUYERS / "buyers_candidate.csv").open(encoding="utf-8-sig", newline="")))
     for buyer in source["buyers"]:
-        activity = REVIEWED.get(buyer["id"])
+        activity = REVIEWED.get(buyer["id"]) or PUBLIC_REVIEW.get(buyer["id"])
         checked = "2026-11-28" if activity else buyer["verified_at"][:10]
+        source_url = SOURCE_OVERRIDES.get(buyer["id"], buyer["source_url"])
+        next(r for r in csv_rows if r["name"] == buyer["name"])["source_url"] = source_url
         applications = []
-        if activity:
+        if buyer["id"] in REVIEWED:
             for application, materials in (("furniture_insert", ["clear-4", "clear-6", "clear-8"]),
                                             ("mirror_interior", ["mirror-4"])):
                 applications.append(dict(application=application, material_ids=materials,
                     min_dimensions=dict(length_mm=100, width_mm=100),
                     max_dimensions=dict(length_mm=2000, width_mm=1500), requires_cutting=True,
                     dimensions_basis="Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-                    activity=activity, source_url=buyer["source_url"], checked_at=checked))
+                    activity=activity, source_url=source_url, checked_at=checked))
         records.append(dict(name=buyer["name"], city=buyer["city"], profile=activity or buyer["category"],
-            source_url=buyer["source_url"], checked_at=checked,
+            source_url=source_url, checked_at=checked,
             reviewer="Mustiks07 / GPT Pro integration" if activity else source["reviewer"],
             confirmation=activity or f"C1 evidence: {buyer['page_title']}; city_confirmed={buyer['city_confirmed']}; profile_keyword={buyer['profile_keyword']}",
             entity_id=buyer["id"], applications=applications,
@@ -46,7 +69,11 @@ def convert():
         source_evidence_sha256=hashlib.sha256(original.read_bytes()).hexdigest(),
         source_csv_sha256=hashlib.sha256((BUYERS / "buyers_candidate.csv").read_bytes()).hexdigest(),
         transform_version="c1-platform-v1", application_policy="Explicit project assumptions; no confirmed interest",
-        integration_reviewed_ids=list(REVIEWED))
+        integration_reviewed_ids=[*REVIEWED, *PUBLIC_REVIEW])
+    with (BUYERS / "buyers.platform.csv").open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(csv_rows[0]), lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(csv_rows)
     destination = BUYERS / "evidence.platform.json"
     destination.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return payload

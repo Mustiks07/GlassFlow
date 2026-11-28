@@ -61,7 +61,7 @@ function Runs({ dataset }: { dataset: Dataset }) {
   const [jobId, setJobId] = useState<string | null>(null);
   const [confirm, setConfirm] = useState(false);
   const [runKey, setRunKey] = useState(newIdempotencyKey);
-  const [aiProfile, setAiProfile] = useState<'direct' | 'judge_gateway' | 'local_limited'>('direct');
+  const [aiProfile, setAiProfile] = useState<'direct' | 'judge_gateway' | 'local_limited'>('local_limited');
   const present = new Set(Object.keys(dataset.source_hashes));
   const missingInputs = REQUIRED_INPUTS.filter(input => !present.has(input.kind));
 

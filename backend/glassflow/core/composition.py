@@ -31,7 +31,7 @@ class SalesSource:
         from glassflow.modules.cutting.service import CuttingService
         service = CuttingService(session)
         plan = service.get_plan(dataset_id, plan_id)
-        plan.free_original_remnant_ids = service.free_remnants(dataset_id, plan_id).free_original_remnant_ids
+        plan.free_original_remnant_ids = [r.remnant_id for r in service.free_remnants(dataset_id, plan_id).free_original]
         return plan
 
     def validate_plan(self, session, dataset_id, plan):

@@ -290,6 +290,7 @@ class LocalEngine:
                 )
                 out.clarification = out.sentences[-1]
         self._trim(out)
+        out.facts.claim(out.answer, "local", f"renderer:local:{self.kb.version}")
         return out
 
     def _refine_with_context(self, text: str, product_id: str, ex: Extraction) -> MatchResult | None:

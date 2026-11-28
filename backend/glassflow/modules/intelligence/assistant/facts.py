@@ -23,9 +23,10 @@ class FactSet:
     # unit, quantity and source version. LLM may select a reference, never edit it.
     commercial_claims: dict[str, str] = field(default_factory=dict)
 
-    def claim(self, text: str, key: str | None = None) -> str:
+    def claim(self, text: str, key: str | None = None, source_ref: str = "renderer:domain") -> str:
         key = key or f"c{len(self.commercial_claims) + 1}"
         self.commercial_claims[key] = text
+        self.facts.append(Fact(f"f{len(self.facts) + 1}", "rendered_claim", text, None, source_ref))
         return f"[[{key}]]"
 
     def render(self, text: str) -> str:
@@ -39,6 +40,8 @@ class FactSet:
             numeric = Decimal(value)
         fact = Fact(f"f{len(self.facts) + 1}", kind, str(value), unit, source_ref, numeric)
         self.facts.append(fact)
+        if kind == "rendered_claim" and source_ref.startswith("renderer:"):
+            self.commercial_claims[f"restored{len(self.commercial_claims)}"] = str(value)
         return fact
 
     def numbers(self) -> set[Decimal]:

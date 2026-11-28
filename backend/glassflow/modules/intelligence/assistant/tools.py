@@ -149,7 +149,9 @@ def _remember_prices(ctx: ToolContext, product: Product) -> None:
     for price in product.prices:
         if price.amount is not None:
             ctx.facts.add("price", price.amount, price.unit, f"kb:{ctx.kb.version}:{product.product_id}:{price.source_field}")
-            ctx.facts.claim(f"{product.name}: {money_str(price.amount)} {price.unit}; источник {product.product_id}, версия {ctx.kb.version}.")
+            tier = f"при количестве от {price.minimum_quantity} шт." if price.minimum_quantity else price.price_type
+            ctx.facts.claim(f"{product.name}: {money_str(price.amount)} {price.unit}, {tier}.",
+                            source_ref=f"renderer:kb:{ctx.kb.version}:{product.product_id}:{price.source_field}")
         if price.minimum_quantity:
             ctx.facts.add("threshold", price.minimum_quantity, "шт", f"kb:{ctx.kb.version}:{product.product_id}:{price.source_field}")
 

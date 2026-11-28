@@ -19566,6 +19566,17 @@
             "type": "string",
             "title": "Schema Version",
             "default": "1"
+          },
+          "kb_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kb Version"
           }
         },
         "additionalProperties": false,

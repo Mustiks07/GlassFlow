@@ -93,7 +93,7 @@ def seed_facts(client, basket, *, partial=False, catalog_only=False):
     d, bid = basket["dataset_id"], basket["basket_id"]
     lines = [dict(line_id=line["line_id"], kind="catalog" if catalog_only or i == 2 else "glass",
         quote=dict(dataset_id=d, quote_id="quote-"+line["line_id"], revision=1, status="ready",
-                   components=[], total_tg=str((i+1)*1000), preliminary=False,
+                   components=[], total_tg=str((i+1)*1000), preliminary=False, customer_id="C-basket",
                    material_mapping_status="confirmed", material_id="clear-6" if i < 2 and not catalog_only else None),
         quote_customer_ref="C-basket", source_request_hash=canonical_hash(QuoteRequest.model_validate(line["request"]).model_dump(mode="json")),
         compatibility="confirmed" if i == 2 else "not_required") for i, line in enumerate(basket["lines"])]

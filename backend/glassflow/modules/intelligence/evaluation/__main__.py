@@ -22,6 +22,8 @@ CRITICAL = ["E026", "E027", "E028", "E031", "E038", "E053", "E054", "E065", "E06
 
 
 def main() -> None:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(prog="glassflow-intelligence-eval")
     parser.add_argument("command", choices=["open", "extended", "holdout", "perf", "live", "live-open"])
     parser.add_argument("--pack", type=Path, default=ROOT / "inputs" / "PACK_for_teams")

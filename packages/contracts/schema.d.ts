@@ -2910,6 +2910,8 @@ export interface components {
              * @default 1
              */
             schema_version?: string;
+            /** Kb Version */
+            kb_version?: string | null;
         };
         /** DecimalRange */
         DecimalRange: {

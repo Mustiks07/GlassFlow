@@ -59,7 +59,7 @@ def _runtime(script, model="gemini-3.5-flash-lite"):
 GOOD_E026 = [
     reply(tool_call("calculate_quote", {"catalog_product_id": "steklo-6-prozrachnoe", "length_mm": 450, "width_mm": 370,
                                         "processing": "euro_edge", "edge_sides": "all"}), model="gemini-3.5-flash-lite"),
-    reply(tool_call("submit_answer", {"answer_ru": "Стекло 6 мм прозрачное 450×370 мм — 1 332 ₸, евро-кромка — 656 ₸, итого 1 988 ₸."}),
+    reply(tool_call("submit_answer", {"answer_ru": "[[quote]]"}),
           model="gemini-3.5-flash-lite"),
 ]
 

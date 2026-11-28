@@ -7,6 +7,9 @@ import { CrmBlock } from './CrmBlock';
 import { QualityPanel } from './QualityPanel';
 import { QuotePanel } from './QuotePanel';
 import { MODE_LABEL } from '../shell/dataset';
+import { OrderFlowPanel } from './OrderFlowPanel';
+import { BasketPanel } from './BasketPanel';
+import { EconomicsPanel } from './EconomicsPanel';
 
 export function WorkplacePage() {
   return <RequireDataset>{dataset => <Workplace dataset={dataset} key={dataset.dataset_id} />}</RequireDataset>;
@@ -15,7 +18,7 @@ export function WorkplacePage() {
 function Workplace({ dataset }: { dataset: Dataset }) {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [quoteStale, setQuoteStale] = useState(false);
-  const [tab, setTab] = useState<'request' | 'quality'>('request');
+  const [tab, setTab] = useState<'request' | 'quality' | 'basket' | 'economics'>('request');
   return (
     <div className="page">
       <header className="page-head">
@@ -30,9 +33,11 @@ function Workplace({ dataset }: { dataset: Dataset }) {
           <button role="tab" aria-selected={tab === 'quality'} className={tab === 'quality' ? 'active' : ''} onClick={() => setTab('quality')}>
             Проверка ответа менеджера
           </button>
+          <button role="tab" aria-selected={tab === 'basket'} className={tab === 'basket' ? 'active' : ''} onClick={() => setTab('basket')}>Корзина и расход</button>
+          <button role="tab" aria-selected={tab === 'economics'} className={tab === 'economics' ? 'active' : ''} onClick={() => setTab('economics')}>Экономика</button>
         </div>
       </header>
-      {tab === 'quality' ? (
+      {tab === 'economics' ? <EconomicsPanel dataset={dataset} /> : tab === 'basket' ? <BasketPanel dataset={dataset} /> : tab === 'quality' ? (
         <QualityPanel dataset={dataset} />
       ) : (
         <div className="workplace-grid">
@@ -43,6 +48,7 @@ function Workplace({ dataset }: { dataset: Dataset }) {
           <div className="stack">
             <CandidatePanel dataset={dataset} quote={quote} quoteStale={quoteStale} onQuote={setQuote} />
             <CrmBlock dataset={dataset} quote={quote} />
+            <OrderFlowPanel dataset={dataset} quote={quote} />
           </div>
         </div>
       )}

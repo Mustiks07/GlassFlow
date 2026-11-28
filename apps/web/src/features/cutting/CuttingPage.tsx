@@ -208,7 +208,10 @@ function SolvePanel({
   });
   const ready = job.data?.state === 'completed' ? job.data.result_ref : job.data?.last_valid_result_ref;
   useEffect(() => {
-    if (job.data?.state === 'completed' && job.data.result_ref) onPlanReady(job.data.result_ref);
+    if (job.data?.state === 'completed') {
+      const planId = job.data.result?.plan_id;
+      if (typeof planId === 'string') onPlanReady(planId);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [job.data?.state, job.data?.result_ref]);
   return (

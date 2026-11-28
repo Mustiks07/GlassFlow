@@ -205,7 +205,7 @@ def test_verifier_flags_unsupported_negative_availability():
 
     for text in ["Свободных остатков под данный размер сейчас нет.", "Этого стекла нет в наличии.", "Остатков подходящего размера нет."]:
         assert "claim:availability" in verify_answer(text, FactSet()).unsupported, text
-    assert verify_answer("Остатков подходящего размера нет.", FactSet(), remnant_checked=True).status == "supported"
+    assert verify_answer("Остатков подходящего размера нет.", FactSet(), remnant_checked=True).status == "unsupported"  # A global flag cannot attest this material/size.
 
 
 def test_verifier_flags_unsupported_no_delivery_claim():

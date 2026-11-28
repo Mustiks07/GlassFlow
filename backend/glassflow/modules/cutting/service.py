@@ -90,7 +90,6 @@ from .metrics import compute_metrics, exact_value, money
 from .models import (
     CutAuditEvent,
     CutDataset,
-    CutIdempotency,
     CutMaterial,
     CutPart,
     CutPlacementRow,
@@ -601,24 +600,20 @@ class CuttingService:
         """Same key + same body -> stored result; same key + other body -> 409. Stored in the same transaction."""
         if not key:
             return action()
+        from glassflow.core.models import IdempotencyRow
         digest = _request_hash(payload)
-        stored = self.session.get(CutIdempotency, (dataset_id, operation, key))
+        scope = "cutting:" + operation
+        stored = self.session.get(IdempotencyRow, (dataset_id, scope, key))
         if stored is not None:
             if stored.request_hash != digest:
                 raise CuttingError(409, "IDEMPOTENCY_KEY_REUSED",
-                                   "Этот Idempotency-Key уже использован с другим телом запроса.",
-                                   conflict_objects=[key])
-            return json.loads(stored.response_json)
+                                   "Этот Idempotency-Key уже использован с другим телом запроса.")
+            return stored.result
         result = action()
         body = result.model_dump(mode="json") if hasattr(result, "model_dump") else result
-        self.session.add(CutIdempotency(dataset_id=dataset_id, operation=operation, key=key, request_hash=digest,
-                                        status_code=200, response_json=json.dumps(body, ensure_ascii=False),
-                                        created_at=now()))
-        try:
-            self.session.flush()
-        except IntegrityError as exc:
-            raise CuttingError(409, "IDEMPOTENCY_IN_PROGRESS", "Параллельный запрос с этим ключом; повторите.",
-                               retryable=True) from exc
+        self.session.add(IdempotencyRow(dataset_id=dataset_id, operation=scope, key=key,
+                                        request_hash=digest, result=body))
+        self.session.flush()
         return body
 
     # ================================================================== plans: storage and reading

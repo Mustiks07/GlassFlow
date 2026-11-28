@@ -174,14 +174,14 @@
     {
       "name": "Clever Design",
       "city": "Астана",
-      "profile": "дизайн-студия",
+      "profile": "Студия дизайна жилых и коммерческих интерьеров в Астане; публичная страница Clever Design.",
       "source_url": "https://cleverdesign.kz/",
-      "checked_at": "2026-11-27",
-      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
-      "confirmation": "C1 evidence: Дизайн интерьера в Астане | Студия дизайна Clever Design; city_confirmed=True; profile_keyword=дизайн",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "Студия дизайна жилых и коммерческих интерьеров в Астане; публичная страница Clever Design.",
       "entity_id": "B05",
       "applications": [],
-      "verification_scope": "C1_report_not_independently_accepted"
+      "verification_scope": "integration_public_page_review"
     },
     {
       "name": "Biar.kz",
@@ -210,14 +210,14 @@
     {
       "name": "SENSATA GROUP",
       "city": "Астана",
-      "profile": "строительная компания",
+      "profile": "Sensata Group: строительные проекты, жилые комплексы в Астане; официальный сайт.",
       "source_url": "https://sensata.kz/",
-      "checked_at": "2026-11-27",
-      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
-      "confirmation": "C1 evidence: SENSATA GROUP; city_confirmed=True; profile_keyword=ЖК",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "Sensata Group: строительные проекты, жилые комплексы в Астане; официальный сайт.",
       "entity_id": "B08",
       "applications": [],
-      "verification_scope": "C1_report_not_independently_accepted"
+      "verification_scope": "integration_public_page_review"
     },
     {
       "name": "SG Holding",
@@ -270,14 +270,14 @@
     {
       "name": "Строительная компания АстанаСтройДом",
       "city": "Астана",
-      "profile": "строительная компания",
+      "profile": "АстанаСтройДом: строительная компания в Астане; публичный профиль kn.kz.",
       "source_url": "https://www.kn.kz/companies/view/id/22789",
-      "checked_at": "2026-11-27",
-      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
-      "confirmation": "C1 evidence: Строительная компания АстанаСтройДом в Астане: адрес, номер телефона, сайт и контакты | kn.kz; city_confirmed=True; profile_keyword=Строительная компания",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "АстанаСтройДом: строительная компания в Астане; публичный профиль kn.kz.",
       "entity_id": "B13",
       "applications": [],
-      "verification_scope": "C1_report_not_independently_accepted"
+      "verification_scope": "integration_public_page_review"
     },
     {
       "name": "ТРЦ Хан Шатыр",
@@ -342,14 +342,14 @@
     {
       "name": "Talan Towers",
       "city": "Астана",
-      "profile": "торговый центр",
+      "profile": "Talan Towers: торговый комплекс в Астане, Достык16; публичная карточка sxodim.",
       "source_url": "https://sxodim.com/astana/place/talan-towers",
-      "checked_at": "2026-11-27",
-      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
-      "confirmation": "C1 evidence: Talan Towers - Торговый центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Talan",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "Talan Towers: торговый комплекс в Астане, Достык16; публичная карточка sxodim.",
       "entity_id": "B19",
       "applications": [],
-      "verification_scope": "C1_report_not_independently_accepted"
+      "verification_scope": "integration_public_page_review"
     },
     {
       "name": "ТРЦ «Сарыарка»",
@@ -402,14 +402,14 @@
     {
       "name": "Торговый центр Green Mall",
       "city": "Астана",
-      "profile": "торговый центр",
+      "profile": "Green Mall: торговый центр в Астане, Сыганак17П; публичная карточка sxodim.",
       "source_url": "https://sxodim.com/astana/place/green-mall",
-      "checked_at": "2026-11-27",
-      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
-      "confirmation": "C1 evidence: Торговый центр Green Mall - Торговый центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Торговый центр",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "Green Mall: торговый центр в Астане, Сыганак17П; публичная карточка sxodim.",
       "entity_id": "B24",
       "applications": [],
-      "verification_scope": "C1_report_not_independently_accepted"
+      "verification_scope": "integration_public_page_review"
     },
     {
       "name": "Qazaq Gourmet",
@@ -450,14 +450,14 @@
     {
       "name": "Nudu",
       "city": "Астана",
-      "profile": "кафе или ресторан",
-      "source_url": "https://nudu.kz/ru",
-      "checked_at": "2026-11-27",
-      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
-      "confirmation": "C1 evidence: Nudu Астана; city_confirmed=True; profile_keyword=Nudu",
+      "profile": "Nudu: заведение с лапшой и фастфудом в Астане; Достык16Б, публичная карточка sxodim.",
+      "source_url": "https://sxodim.com/astana/place/nudu",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "Nudu: заведение с лапшой и фастфудом в Астане; Достык16Б, публичная карточка sxodim.",
       "entity_id": "B28",
       "applications": [],
-      "verification_scope": "C1_report_not_independently_accepted"
+      "verification_scope": "integration_public_page_review"
     },
     {
       "name": "Starbucks Казахстан",
@@ -486,14 +486,14 @@
     {
       "name": "LINE BREW RESERVE",
       "city": "Астана",
-      "profile": "кафе или ресторан",
+      "profile": "Line Brew Reserve: ресторан в Астане, Кадыргали Жалайыри4; публичная карточка sxodim.",
       "source_url": "https://sxodim.com/astana/place/line-brew-reserve",
-      "checked_at": "2026-11-27",
-      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
-      "confirmation": "C1 evidence: LINE BREW RESERVE - Ресторан - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Ресторан",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "Line Brew Reserve: ресторан в Астане, Кадыргали Жалайыри4; публичная карточка sxodim.",
       "entity_id": "B31",
       "applications": [],
-      "verification_scope": "C1_report_not_independently_accepted"
+      "verification_scope": "integration_public_page_review"
     },
     {
       "name": "Ресторан Shafran",
@@ -558,14 +558,14 @@
     {
       "name": "OldBoy Barbershop (Астана)",
       "city": "Астана",
-      "profile": "салон",
+      "profile": "OldBoy: сеть мужских парикмахерских в Астане; официальная страница города.",
       "source_url": "https://oldboybarbershop.com/astana",
-      "checked_at": "2026-11-27",
-      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
-      "confirmation": "C1 evidence: Сеть барбершопов OldBoy в Астане | Barberbshop OldBoy; city_confirmed=True; profile_keyword=барбершоп",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "OldBoy: сеть мужских парикмахерских в Астане; официальная страница города.",
       "entity_id": "B37",
       "applications": [],
-      "verification_scope": "C1_report_not_independently_accepted"
+      "verification_scope": "integration_public_page_review"
     },
     {
       "name": "The Ritz-Carlton, Astana",
@@ -582,26 +582,26 @@
     {
       "name": "Rixos President Astana",
       "city": "Астана",
-      "profile": "другое",
-      "source_url": "https://www.rixos.com/hotel-resort/rixos-president-astana",
-      "checked_at": "2026-11-27",
-      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
-      "confirmation": "C1 evidence: Rixos President Astana - Luxury Resort in Astana | Rixos; city_confirmed=True; profile_keyword=hotel",
+      "profile": "Rixos President Astana: отель с ресторанами и помещениями для мероприятий в Астане, Кунаева7; официальный Accor.",
+      "source_url": "https://all.accor.com/hotel/B1Q3/index.ru.shtml",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "Rixos President Astana: отель с ресторанами и помещениями для мероприятий в Астане, Кунаева7; официальный Accor.",
       "entity_id": "B39",
       "applications": [],
-      "verification_scope": "C1_report_not_independently_accepted"
+      "verification_scope": "integration_public_page_review"
     },
     {
       "name": "World Class Астана",
       "city": "Астана",
-      "profile": "другое",
+      "profile": "World Class Астана: фитнес-клуб с залами, бассейном и SPA; официальный сайт.",
       "source_url": "https://worldclass.kz/",
-      "checked_at": "2026-11-27",
-      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
-      "confirmation": "C1 evidence: World Class Астана; city_confirmed=True; profile_keyword=фитнес",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "World Class Астана: фитнес-клуб с залами, бассейном и SPA; официальный сайт.",
       "entity_id": "B40",
       "applications": [],
-      "verification_scope": "C1_report_not_independently_accepted"
+      "verification_scope": "integration_public_page_review"
     },
     {
       "name": "Invictus Fitness",
@@ -678,14 +678,14 @@
     {
       "name": "KHS Hub — IT bar",
       "city": "Астана",
-      "profile": "кафе или ресторан",
-      "source_url": "https://khshub.kz/",
-      "checked_at": "2026-11-27",
-      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
-      "confirmation": "C1 evidence: Первый IT BAR в Казахстане; city_confirmed=True; profile_keyword=бар",
+      "profile": "KHS HUB: IT-бар в Астане; публичная карточка sxodim. Домашняя страница меняет содержимое; использован профильный источник.",
+      "source_url": "https://sxodim.com/astana/place/khs-hub",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "KHS HUB: IT-бар в Астане; публичная карточка sxodim. Домашняя страница меняет содержимое; использован профильный источник.",
       "entity_id": "B47",
       "applications": [],
-      "verification_scope": "C1_report_not_independently_accepted"
+      "verification_scope": "integration_public_page_review"
     },
     {
       "name": "Ресторан Tamaq",
@@ -714,14 +714,14 @@
     {
       "name": "Hani Cakes & Coffee",
       "city": "Караганда",
-      "profile": "кафе или ресторан",
+      "profile": "Hani Cakes & Coffee: торты, десерты и бранчи в Караганде; официальный сайт.",
       "source_url": "https://hanicc.kz/",
-      "checked_at": "2026-11-27",
-      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
-      "confirmation": "C1 evidence: Hani в Караганде | Торты, десерты и бранчи; city_confirmed=True; profile_keyword=Hani",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "Hani Cakes & Coffee: торты, десерты и бранчи в Караганде; официальный сайт.",
       "entity_id": "B50",
       "applications": [],
-      "verification_scope": "C1_report_not_independently_accepted"
+      "verification_scope": "integration_public_page_review"
     }
   ],
   "dedupe_policy": "Одна запись на организацию/бренд: филиалы, точки сети и залы одного бренда объединяются в одну запись; запись указывает город проверенного объекта. Разные юридические бренды одной группы считаются разными только при разных сайтах и профилях.",
@@ -732,6 +732,18 @@
   "integration_reviewed_ids": [
     "B01",
     "B02",
-    "B03"
+    "B03",
+    "B05",
+    "B28",
+    "B37",
+    "B39",
+    "B40",
+    "B50",
+    "B47",
+    "B08",
+    "B13",
+    "B19",
+    "B24",
+    "B31"
   ]
 }

@@ -162,7 +162,7 @@ def test_local_app_through_gateway_end_to_end(kb, mappings):
 
     script = [
         reply(tool_call("calculate_quote", {"catalog_product_id": "steklo-bronza", "length_mm": 1000, "width_mm": 500})),
-        reply(tool_call("submit_answer", {"answer_ru": "Стекло бронза 1000×500 мм — 6 000 ₸, цена предварительная."})),
+        reply(tool_call("submit_answer", {"answer_ru": "[[quote]]"})),
     ]
     provider = ScriptedProvider(script, model_id="gemini-3.8-flash")
     gateway = create_app(config(limits=GatewayLimits(per_session_rpm=100)), providers={"gemini:gemini-3.8-flash": provider})
