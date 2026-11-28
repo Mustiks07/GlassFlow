@@ -950,7 +950,7 @@
     "config": {
       "profile": "standard",
       "seed": 41,
-      "time_limit_seconds": 9,
+      "time_limit_seconds": 20,
       "workers": 1,
       "minimum_free_remnants": 5,
       "fixed_work": false,
