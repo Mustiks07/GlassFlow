@@ -63,7 +63,11 @@ def rank(session, dataset_id, policy="reference"):
 
 
 def metrics(session, dataset_id, filters):
-    source = records(session, dataset_id, "applications")
+    return metrics_from_records(records(session, dataset_id, "applications"), filters)
+
+
+def metrics_from_records(source, filters):
+    """One formula implementation for the original dashboard and comparable strata."""
     selected = []
     fields = {"product_group": "группа_товара", "channel": "канал", "client_type": "тип_клиента"}
     for record in source:
