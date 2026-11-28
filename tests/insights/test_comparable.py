@@ -98,3 +98,29 @@ def test_actual_api_reuses_the_original_metrics_on_the_imported_dataset(tmp_path
         )
         assert answer.status_code == 200 and answer.json()["status"] == "answered"
         assert answer.json()["origin"] == "deterministic_aggregates"
+        for question in ["Сравни средний чек М9", "Сравни средний чек за январь", "Сравни средний чек по филиалу Астана"]:
+            result = client.post("/api/v1/analytics/questions", json={"dataset_id": d, "question": question})
+            assert result.status_code == 200 and result.json()["status"] == "clarification"
+            assert result.json()["comparison"] is None
+
+
+@pytest.mark.parametrize("scope", ["М9", "M10", "менеджера Иван", "за январь", "с 01.11 по 20.11",
+    "за последние 7 дней", "по филиалу Астана", "по каналу факс", "кроме чата", "выше 10000 тенге",
+    "по каналу", "в Астане", "и число заявок"])
+def test_question_never_silently_broadens_unsupported_scope(monkeypatch, scope):
+    from glassflow.contracts.insights import AnalyticsQuestion
+    monkeypatch.setattr(comparable, "records", lambda *_: [row("A1", "M1", "glass", 10, 1, 100, "0")])
+    value = comparable.answer(None, AnalyticsQuestion(dataset_id="d", question=f"Сравни средний чек {scope}"))
+    assert value.status == "clarification" and value.comparison is None and value.resolved is None
+
+
+def test_question_applies_all_grouping_dimensions_and_complete_value_boundaries(monkeypatch):
+    from glassflow.contracts.insights import AnalyticsQuestion
+    rows = [row("A1", "M1", "glass", 10, 1, 100, "1"), row("A2", "M2", "glassfiber", 20, 1, 200, "0")]
+    monkeypatch.setattr(comparable, "records", lambda *_: rows)
+    answer = comparable.answer(None, AnalyticsQuestion(dataset_id="d",
+        question="Сравни средний чек M1 и M2 по каналам и типам клиентов"))
+    assert answer.status == "answered" and answer.resolved.dimensions == ["channel", "client_type"]
+    answer = comparable.answer(None, AnalyticsQuestion(dataset_id="d", question="Сравни средний чек по группе glassfiber"))
+    assert answer.status == "answered" and answer.resolved.product_group == "glassfiber"
+    assert answer.comparison.matched_application_count == 1

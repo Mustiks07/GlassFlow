@@ -148,3 +148,38 @@ strip bundle final-hook fence и truthful review categories. Ruff all PASS, diff
 Следующий точный шаг root: merge ветку, добавить route к enqueue_sale_readiness и assistant result hook,
 схемы/UI для явных plan refs; отдельно выполнить реальные browser/EXE проверки и live AI. Эти тесты не являются
 пройденными browser E2E/AI exam. EXE/final human economy этим продолжением не создавались/не заменялись.
+
+## Независимая проверка root N08/N09/N15 на f642c3b
+
+Переданы ownership insights/contracts.insights/tests.insights; root main/composition/frontend не менялись.
+Исходный insights suite11 PASS. Найдены и исправлены P1:
+
+- N08 неизвестные M9/M10/имена, даты, неподдерживаемые фильтры и отрицания раньше молча расширяли выборку.
+  Теперь finite parser требует уточнение при нераспознанных условиях; source values совпадают целыми словами,
+  overlapping values выбираются по полному значению, несколько группировок применяются все. Второй явный
+  показатель «число заявок» не игнорируется рядом со средним чеком; «сколько средний чек» остаётся полным вопросом.
+- N09 checked basket PDF не содержал кусков/мест. При create document новый snapshot фиксирует current_selection,
+  настоящие текущие Remnant DTO, версии, координаты и соответствующие детали. Повторный текущий capture и версии
+  проверяются в той же transaction. PDF показывает piece/version/material/dimensions/location/parts, состояние на русском.
+  Длинная строка разрешает перенос между страницами (splitInRow),180 частей не теряются.
+
+Не подтвердилось предположение о пустом warehouse_task у confirmed order: orders.project создаёт его на bind/confirm.
+Настоящий order → PDF содержит450×370,qty1,актуальный ID/место; после cancel immutable document сохраняется.
+Добавлен только безопасный facts fallback для старого document snapshot без task.
+Old label resolve возвращает текущую запись, а reserve с printed_version отвергается именно VERSION_CONFLICT;
+история/бирка immutable, label никогда не дает capability для мутации.
+Новый basket checked API test использует настоящие quote/worker/резерв/check, проверяет PDF/current places,
+отсутствие бизнес-перехода при печати, idempotency и отказ новой печати после изменения места; старый документ неизменен.
+
+N15 дефект не обнаружен: настоящий полный run → official validated export (5 result CSV + buyers_top50.csv),
+затем второй настоящий cutting worker в том же run. Current passport показывает новый job, accepted passport
+остаётся полностью равен прежнему (старые job IDs/metrics/history/refs/hashes/provenance), все скачанные bytes
+совпадают с pinned hashes. passports.py не менялся. Старые unit integrity/final-only проверки также PASS.
+
+`uv run pytest tests/insights -q -o addopts='' --basetemp=.qa/insights-acceptance
+--junitxml=.post-insights-final.xml` — **28 PASS**,26.60s. После уточнения одного test assertion до точного
+VERSION_CONFLICT — отдельный label test **1 PASS**,1.55s. Ruff all и foundation14/66/67/PDF PASS, diff-check PASS.
+JUnit: tests/insights/evidence/post-insights-final.xml. PDF skill прочитан, реальные PDFs визуально проверены
+через bundled Poppler PNG: .qa/order-final-1.png, .qa/label-final-1.png, .qa/basket-final-1.png;
+renderer stress2 pages: .qa/long-final-{1,2}.png. Кириллица/отступы/переносы без потерь; QR видим, аппаратный scanner NOT RUN.
+Это API/renderer acceptance на production composition, не browser/EXE/чистая Windows/human measurement acceptance.
