@@ -16,6 +16,7 @@ def main():
     parser.add_argument("--base", required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--candidate", required=True)
+    parser.add_argument("--poll-interval", type=float, default=0.1)
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     report = {
@@ -182,11 +183,35 @@ def main():
         rid = run["run_id"]
         report["run_id"] = rid
         deadline = time.monotonic() + 120
+        report["polling_transitions"] = []
+        pending_cards_observations = []
         while time.monotonic() < deadline:
             view = client.get(f"/api/v1/runs/{rid}").json()
+            observed = {
+                "status": view["status"],
+                "missing_modules": view["missing_modules"],
+                "states": [j["state"] for j in view["jobs"]],
+            }
+            if not report["polling_transitions"] or observed != report["polling_transitions"][-1]:
+                report["polling_transitions"].append(observed)
+            if (
+                view["missing_modules"] == ["cards"]
+                and len(view["jobs"]) == 4
+                and all(j["state"] == "completed" for j in view["jobs"])
+            ):
+                pending_cards_observations.append(observed)
             if view["status"] != "running":
                 break
-            time.sleep(0.5)
+            time.sleep(args.poll_interval)
+        record(
+            "N02_pending_cards_never_terminal",
+            all(o["status"] == "running" for o in pending_cards_observations),
+            {
+                "pending_card_windows_observed": len(pending_cards_observations),
+                "windows": pending_cards_observations,
+                "limitation": "No claim that the narrow window was observed if count is zero; terminal full-run result separately checked.",
+            },
+        )
         record("N02_full_real_run_terminal", view["status"] == "completed", view)
         exported = post(f"/runs/{rid}/export")
         expected = {"solution.csv", "answers.csv", "verdicts.csv", "picks.csv", "sale_cards.csv"}

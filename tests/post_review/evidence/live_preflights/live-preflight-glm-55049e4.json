@@ -1,0 +1,1397 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-28T10:21:28.736461+00:00",
+  "reviewer_code_commit": "00051d771bea8034f196f34fe70829f543f6e38a",
+  "oracle_sha256": "505301657dd8b68832c876dced667d6a87c784f0a27183438b8eecec4bb7d59b",
+  "mode": "live",
+  "rubric": "mechanical action+bound structured total+currency+completeness+refusal; manual semantic review still required",
+  "rubric_revision": "1.1-adjudicated-before-candidate",
+  "baseline_product_commit": "5648852d64189ffd7269c277002f6fbc40c8039a",
+  "candidate_product_commit": "55049e4",
+  "transport_preflight": true,
+  "results": [
+    {
+      "case_id": "WARM01",
+      "repeat": 0,
+      "family": "transport_preflight",
+      "latency_ms": 90037.54,
+      "ok": true,
+      "reasons": [],
+      "wrong_total": false,
+      "unnecessary_refusal": false,
+      "incomplete": false,
+      "fabrication": false,
+      "unnecessary_question": false,
+      "reply": {
+        "conversation_id": "9ce0f074-1dc2-482d-9117-45bcdae091c3",
+        "answer": "Стекло 6 мм прозрачное, 615×405 мм: 0,249075 м² × 8 000 ₸ = 1 992,60 ₸. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+        "clarification": null,
+        "quote": {
+          "dataset_id": "bddb1a4a-dfa9-4688-93b8-fd07ae3e11d2",
+          "origin": "assistant_deterministic",
+          "origin_conversation_id": "9ce0f074-1dc2-482d-9117-45bcdae091c3",
+          "origin_turn_index": 0,
+          "quote_id": "8e563a88-0bd1-4f66-9e02-9acb4671390a",
+          "revision": 1,
+          "status": "calculated",
+          "components": [
+            {
+              "label": "Стекло 6 мм прозрачное 615×405 мм",
+              "amount_tg": "1992.60",
+              "evidence": [
+                {
+                  "source": "ksm_knowledge_base.json",
+                  "source_version": "kb-f464c67fb8633008",
+                  "record_id": "steklo-6-prozrachnoe",
+                  "field": "цена_за_м2_тг"
+                }
+              ],
+              "component": "glass",
+              "quantity": 1,
+              "unit_price_tg": "8000.00",
+              "unit": "м²",
+              "measure_per_unit": "0.249075",
+              "exact_amount_tg": "1992.600000",
+              "formula": "0.249075 м² × 8000 ₸/м² × 1 шт"
+            }
+          ],
+          "total_tg": "1992.60",
+          "preliminary": true,
+          "clarification": null,
+          "material_mapping_status": "confirmed",
+          "material_id": "clear-6",
+          "catalog_product_id": "steklo-6-prozrachnoe",
+          "product_name": "Стекло 6 мм прозрачное",
+          "kb_version": "kb-f464c67fb8633008",
+          "customer_id": null,
+          "dimensions": {
+            "length_mm": 615,
+            "width_mm": 405
+          },
+          "quantity": 1,
+          "processing": {
+            "kind": "none",
+            "sides": "all",
+            "selected_sides": []
+          },
+          "price_basis": "per_m2",
+          "confirmed_parameters": {
+            "catalog_product_id": "steklo-6-prozrachnoe",
+            "product_name": "Стекло 6 мм прозрачное",
+            "length_mm": "615",
+            "width_mm": "405",
+            "quantity": "1",
+            "price_basis": "per_m2"
+          },
+          "assumptions": [],
+          "unknown_components": [],
+          "known_subtotal_tg": "1992.60",
+          "rounding_policy": "ROUND_HALF_UP to 0.01 per line; total equals the sum of displayed lines",
+          "source_versions": {
+            "kb": "kb-f464c67fb8633008",
+            "kb_sha256": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+            "pricing": "pricing-v1",
+            "materials": "materials-1391e1fa6600d028",
+            "mapping": "mapping-rules-v1:exact_normalized_name@0"
+          },
+          "inventory_status": "not_requested",
+          "candidate_refs": [],
+          "inventory_reason_codes": [],
+          "stale": false,
+          "created_at": "2026-11-28T10:23:01.377757+00:00",
+          "confirmed_at": null,
+          "confirmed_by": null,
+          "diff": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-6-prozrachnoe",
+              "field": "название"
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "steklo-6-prozrachnoe",
+            "field": "название"
+          },
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "steklo-6-prozrachnoe",
+            "field": "цена_за_м2_тг"
+          }
+        ],
+        "mode": "local_limited",
+        "provider": null,
+        "model_id": null,
+        "answer_path": "fallback",
+        "status": "answered",
+        "card": {
+          "intent": "quote",
+          "catalog_product_id": "steklo-6-prozrachnoe",
+          "product_name": "Стекло 6 мм прозрачное",
+          "confirmed_parameters": {
+            "product_id": "steklo-6-prozrachnoe",
+            "length_mm": "615",
+            "width_mm": "405",
+            "quantity": "1",
+            "processing": "none",
+            "price_basis": "auto"
+          },
+          "assumptions": [],
+          "missing_parameters": [],
+          "normalized_dimensions": "615×405 мм",
+          "facts": [
+            {
+              "fact_id": "f1",
+              "kind": "name",
+              "value": "6",
+              "unit": null,
+              "source_ref": "kb:kb-f464c67fb8633008:steklo-6-prozrachnoe:название",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f2",
+              "kind": "dimension",
+              "value": "615",
+              "unit": "мм",
+              "source_ref": "input:normalized",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f3",
+              "kind": "dimension",
+              "value": "405",
+              "unit": "мм",
+              "source_ref": "input:normalized",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f4",
+              "kind": "line",
+              "value": "1992.60",
+              "unit": "₸",
+              "source_ref": "pricing:glass",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f5",
+              "kind": "price",
+              "value": "8000",
+              "unit": "₸/м²",
+              "source_ref": "pricing:glass:rate",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f6",
+              "kind": "measure",
+              "value": "0.249075",
+              "unit": "м²",
+              "source_ref": "pricing:glass:measure",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f7",
+              "kind": "total",
+              "value": "1992.60",
+              "unit": "₸",
+              "source_ref": "pricing:total",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f8",
+              "kind": "total",
+              "value": "1992.60",
+              "unit": "₸",
+              "source_ref": "pricing:known_subtotal",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f9",
+              "kind": "dimension",
+              "value": "615",
+              "unit": "мм",
+              "source_ref": "context",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f10",
+              "kind": "dimension",
+              "value": "405",
+              "unit": "мм",
+              "source_ref": "context",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f11",
+              "kind": "quantity",
+              "value": "1",
+              "unit": "шт",
+              "source_ref": "context",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f12",
+              "kind": "rendered_claim",
+              "value": "Стекло 6 мм прозрачное, 615×405 мм: 0,249075 м² × 8 000 ₸ = 1 992,60 ₸. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+              "unit": null,
+              "source_ref": "renderer:local:kb-f464c67fb8633008",
+              "status": "supported"
+            }
+          ],
+          "alternatives": [
+            "Калёное стекло 6 мм"
+          ],
+          "needs_manager": false
+        },
+        "tool_calls": [
+          {
+            "tool": "search_catalog",
+            "status": "ok",
+            "arguments": {
+              "query_sha": "local"
+            },
+            "summary": "exact: ['steklo-6-prozrachnoe', 'kalenoe-steklo-6']",
+            "error_code": null
+          },
+          {
+            "tool": "calculate_quote",
+            "status": "ok",
+            "arguments": {
+              "catalog_product_id": "steklo-6-prozrachnoe",
+              "length_mm": 615,
+              "width_mm": 405,
+              "quantity": 1,
+              "processing": "none"
+            },
+            "summary": "total=1992.60 unknown=[]",
+            "error_code": null
+          }
+        ],
+        "verifier_status": "not_applicable",
+        "ai_unavailable_reason": "Истек общий срок ответа AI.",
+        "turn_index": 0,
+        "latency_ms": 90000,
+        "execution_mode": "model_first",
+        "origin": "fallback",
+        "cache_hit": false,
+        "model_call_count": 3,
+        "model_attempts": [
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          },
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          },
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "error",
+            "error_kind": "timeout"
+          }
+        ],
+        "selected_provider": "basisweb",
+        "selected_model_id": "glm-5.3-flash",
+        "verifier_reject_count": 0
+      },
+      "canonical_quote_control": {
+        "http_status": 200,
+        "reply": {
+          "dataset_id": "bddb1a4a-dfa9-4688-93b8-fd07ae3e11d2",
+          "origin": "explicit_request",
+          "origin_conversation_id": null,
+          "origin_turn_index": null,
+          "quote_id": "9bcac660-3b4b-453d-8e40-9bdba2cf79d8",
+          "revision": 1,
+          "status": "calculated",
+          "components": [
+            {
+              "label": "Стекло 6 мм прозрачное 615×405 мм",
+              "amount_tg": "1992.60",
+              "evidence": [
+                {
+                  "source": "ksm_knowledge_base.json",
+                  "source_version": "kb-f464c67fb8633008",
+                  "record_id": "steklo-6-prozrachnoe",
+                  "field": "цена_за_м2_тг"
+                }
+              ],
+              "component": "glass",
+              "quantity": 1,
+              "unit_price_tg": "8000.00",
+              "unit": "м²",
+              "measure_per_unit": "0.249075",
+              "exact_amount_tg": "1992.600000",
+              "formula": "0.249075 м² × 8000 ₸/м² × 1 шт"
+            }
+          ],
+          "total_tg": "1992.60",
+          "preliminary": true,
+          "clarification": null,
+          "material_mapping_status": "confirmed",
+          "material_id": "clear-6",
+          "catalog_product_id": "steklo-6-prozrachnoe",
+          "product_name": "Стекло 6 мм прозрачное",
+          "kb_version": "kb-f464c67fb8633008",
+          "customer_id": null,
+          "dimensions": {
+            "length_mm": 615,
+            "width_mm": 405
+          },
+          "quantity": 1,
+          "processing": {
+            "kind": "none",
+            "sides": "all",
+            "selected_sides": []
+          },
+          "price_basis": "per_m2",
+          "confirmed_parameters": {
+            "catalog_product_id": "steklo-6-prozrachnoe",
+            "product_name": "Стекло 6 мм прозрачное",
+            "length_mm": "615",
+            "width_mm": "405",
+            "quantity": "1",
+            "price_basis": "per_m2"
+          },
+          "assumptions": [],
+          "unknown_components": [],
+          "known_subtotal_tg": "1992.60",
+          "rounding_policy": "ROUND_HALF_UP to 0.01 per line; total equals the sum of displayed lines",
+          "source_versions": {
+            "kb": "kb-f464c67fb8633008",
+            "kb_sha256": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+            "pricing": "pricing-v1",
+            "materials": "materials-1391e1fa6600d028",
+            "mapping": "mapping-rules-v1:exact_normalized_name@0"
+          },
+          "inventory_status": "not_requested",
+          "candidate_refs": [],
+          "inventory_reason_codes": [],
+          "stale": false,
+          "created_at": "2026-11-28T10:21:31.342706+00:00",
+          "confirmed_at": null,
+          "confirmed_by": null,
+          "diff": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-6-prozrachnoe",
+              "field": "название"
+            }
+          ]
+        },
+        "independent_oracle_total_tg": "1992.60",
+        "ok": true
+      },
+      "provenance": {
+        "origin": "fallback",
+        "selected_model_answer_confirmed": false,
+        "selected_model_attempt_confirmed": true,
+        "provider_calls_delta": 3,
+        "ok_calls_delta": 2,
+        "selected_model_calls_delta": 2,
+        "verifier_rejected_attempt": false,
+        "provenance_consistent": true,
+        "cache_hit": false,
+        "model_call_count": 3,
+        "model_attempts": [
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          },
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          },
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "error",
+            "error_kind": "timeout"
+          }
+        ],
+        "declared_provenance": {
+          "selected_provider": "basisweb",
+          "selected_model_id": "glm-5.3-flash",
+          "verifier_reject_count": 0
+        }
+      }
+    },
+    {
+      "case_id": "WARM02",
+      "repeat": 0,
+      "family": "transport_preflight",
+      "latency_ms": 90034.63,
+      "ok": true,
+      "reasons": [],
+      "wrong_total": false,
+      "unnecessary_refusal": false,
+      "incomplete": false,
+      "fabrication": false,
+      "unnecessary_question": false,
+      "reply": {
+        "conversation_id": "3ef4eabc-3927-4499-8746-ea90afff6d00",
+        "answer": "Стекло 4 мм прозрачное, 615×405 мм, 3 шт: 0,249075 м² × 4 500 ₸ × 3 = 3 362,51 ₸. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+        "clarification": null,
+        "quote": {
+          "dataset_id": "bddb1a4a-dfa9-4688-93b8-fd07ae3e11d2",
+          "origin": "assistant_deterministic",
+          "origin_conversation_id": "3ef4eabc-3927-4499-8746-ea90afff6d00",
+          "origin_turn_index": 0,
+          "quote_id": "bdcd3d99-ea84-49c7-bd0d-fd86a8ece786",
+          "revision": 1,
+          "status": "calculated",
+          "components": [
+            {
+              "label": "Стекло 4 мм прозрачное 615×405 мм",
+              "amount_tg": "3362.51",
+              "evidence": [
+                {
+                  "source": "ksm_knowledge_base.json",
+                  "source_version": "kb-f464c67fb8633008",
+                  "record_id": "steklo-4-prozrachnoe",
+                  "field": "цена_за_м2_тг"
+                }
+              ],
+              "component": "glass",
+              "quantity": 3,
+              "unit_price_tg": "4500.00",
+              "unit": "м²",
+              "measure_per_unit": "0.249075",
+              "exact_amount_tg": "3362.512500",
+              "formula": "0.249075 м² × 4500 ₸/м² × 3 шт"
+            }
+          ],
+          "total_tg": "3362.51",
+          "preliminary": true,
+          "clarification": null,
+          "material_mapping_status": "confirmed",
+          "material_id": "clear-4",
+          "catalog_product_id": "steklo-4-prozrachnoe",
+          "product_name": "Стекло 4 мм прозрачное",
+          "kb_version": "kb-f464c67fb8633008",
+          "customer_id": null,
+          "dimensions": {
+            "length_mm": 615,
+            "width_mm": 405
+          },
+          "quantity": 3,
+          "processing": {
+            "kind": "none",
+            "sides": "all",
+            "selected_sides": []
+          },
+          "price_basis": "per_m2",
+          "confirmed_parameters": {
+            "catalog_product_id": "steklo-4-prozrachnoe",
+            "product_name": "Стекло 4 мм прозрачное",
+            "length_mm": "615",
+            "width_mm": "405",
+            "quantity": "3",
+            "price_basis": "per_m2"
+          },
+          "assumptions": [],
+          "unknown_components": [],
+          "known_subtotal_tg": "3362.51",
+          "rounding_policy": "ROUND_HALF_UP to 0.01 per line; total equals the sum of displayed lines",
+          "source_versions": {
+            "kb": "kb-f464c67fb8633008",
+            "kb_sha256": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+            "pricing": "pricing-v1",
+            "materials": "materials-1391e1fa6600d028",
+            "mapping": "mapping-rules-v1:exact_normalized_name@0"
+          },
+          "inventory_status": "not_requested",
+          "candidate_refs": [],
+          "inventory_reason_codes": [],
+          "stale": false,
+          "created_at": "2026-11-28T10:24:31.473326+00:00",
+          "confirmed_at": null,
+          "confirmed_by": null,
+          "diff": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-4-prozrachnoe",
+              "field": "название"
+            }
+          ]
+        },
+        "evidence": [
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "steklo-4-prozrachnoe",
+            "field": "название"
+          },
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "steklo-4-prozrachnoe",
+            "field": "цена_за_м2_тг"
+          }
+        ],
+        "mode": "local_limited",
+        "provider": null,
+        "model_id": null,
+        "answer_path": "fallback",
+        "status": "answered",
+        "card": {
+          "intent": "quote",
+          "catalog_product_id": "steklo-4-prozrachnoe",
+          "product_name": "Стекло 4 мм прозрачное",
+          "confirmed_parameters": {
+            "product_id": "steklo-4-prozrachnoe",
+            "length_mm": "615",
+            "width_mm": "405",
+            "quantity": "3",
+            "processing": "none",
+            "price_basis": "auto"
+          },
+          "assumptions": [],
+          "missing_parameters": [],
+          "normalized_dimensions": "615×405 мм",
+          "facts": [
+            {
+              "fact_id": "f1",
+              "kind": "name",
+              "value": "4",
+              "unit": null,
+              "source_ref": "kb:kb-f464c67fb8633008:steklo-4-prozrachnoe:название",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f2",
+              "kind": "dimension",
+              "value": "615",
+              "unit": "мм",
+              "source_ref": "input:normalized",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f3",
+              "kind": "dimension",
+              "value": "405",
+              "unit": "мм",
+              "source_ref": "input:normalized",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f4",
+              "kind": "line",
+              "value": "3362.51",
+              "unit": "₸",
+              "source_ref": "pricing:glass",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f5",
+              "kind": "price",
+              "value": "4500",
+              "unit": "₸/м²",
+              "source_ref": "pricing:glass:rate",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f6",
+              "kind": "measure",
+              "value": "0.249075",
+              "unit": "м²",
+              "source_ref": "pricing:glass:measure",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f7",
+              "kind": "total",
+              "value": "3362.51",
+              "unit": "₸",
+              "source_ref": "pricing:total",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f8",
+              "kind": "total",
+              "value": "3362.51",
+              "unit": "₸",
+              "source_ref": "pricing:known_subtotal",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f9",
+              "kind": "dimension",
+              "value": "615",
+              "unit": "мм",
+              "source_ref": "context",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f10",
+              "kind": "dimension",
+              "value": "405",
+              "unit": "мм",
+              "source_ref": "context",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f11",
+              "kind": "quantity",
+              "value": "3",
+              "unit": "шт",
+              "source_ref": "context",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f12",
+              "kind": "rendered_claim",
+              "value": "Стекло 4 мм прозрачное, 615×405 мм, 3 шт: 0,249075 м² × 4 500 ₸ × 3 = 3 362,51 ₸. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+              "unit": null,
+              "source_ref": "renderer:local:kb-f464c67fb8633008",
+              "status": "supported"
+            }
+          ],
+          "alternatives": [
+            "Калёное стекло 4 мм"
+          ],
+          "needs_manager": false
+        },
+        "tool_calls": [
+          {
+            "tool": "search_catalog",
+            "status": "ok",
+            "arguments": {
+              "query_sha": "local"
+            },
+            "summary": "exact: ['steklo-4-prozrachnoe', 'kalenoe-steklo-4']",
+            "error_code": null
+          },
+          {
+            "tool": "calculate_quote",
+            "status": "ok",
+            "arguments": {
+              "catalog_product_id": "steklo-4-prozrachnoe",
+              "length_mm": 615,
+              "width_mm": 405,
+              "quantity": 3,
+              "processing": "none"
+            },
+            "summary": "total=3362.51 unknown=[]",
+            "error_code": null
+          }
+        ],
+        "verifier_status": "not_applicable",
+        "ai_unavailable_reason": "Истек общий срок ответа AI.",
+        "turn_index": 0,
+        "latency_ms": 90015,
+        "execution_mode": "model_first",
+        "origin": "fallback",
+        "cache_hit": false,
+        "model_call_count": 2,
+        "model_attempts": [
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          },
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "error",
+            "error_kind": "timeout"
+          }
+        ],
+        "selected_provider": "basisweb",
+        "selected_model_id": "glm-5.3-flash",
+        "verifier_reject_count": 0
+      },
+      "canonical_quote_control": {
+        "http_status": 200,
+        "reply": {
+          "dataset_id": "bddb1a4a-dfa9-4688-93b8-fd07ae3e11d2",
+          "origin": "explicit_request",
+          "origin_conversation_id": null,
+          "origin_turn_index": null,
+          "quote_id": "034746a3-4fba-443e-a07a-8b53d00133c0",
+          "revision": 1,
+          "status": "calculated",
+          "components": [
+            {
+              "label": "Стекло 4 мм прозрачное 615×405 мм",
+              "amount_tg": "3362.51",
+              "evidence": [
+                {
+                  "source": "ksm_knowledge_base.json",
+                  "source_version": "kb-f464c67fb8633008",
+                  "record_id": "steklo-4-prozrachnoe",
+                  "field": "цена_за_м2_тг"
+                }
+              ],
+              "component": "glass",
+              "quantity": 3,
+              "unit_price_tg": "4500.00",
+              "unit": "м²",
+              "measure_per_unit": "0.249075",
+              "exact_amount_tg": "3362.512500",
+              "formula": "0.249075 м² × 4500 ₸/м² × 3 шт"
+            }
+          ],
+          "total_tg": "3362.51",
+          "preliminary": true,
+          "clarification": null,
+          "material_mapping_status": "confirmed",
+          "material_id": "clear-4",
+          "catalog_product_id": "steklo-4-prozrachnoe",
+          "product_name": "Стекло 4 мм прозрачное",
+          "kb_version": "kb-f464c67fb8633008",
+          "customer_id": null,
+          "dimensions": {
+            "length_mm": 615,
+            "width_mm": 405
+          },
+          "quantity": 3,
+          "processing": {
+            "kind": "none",
+            "sides": "all",
+            "selected_sides": []
+          },
+          "price_basis": "per_m2",
+          "confirmed_parameters": {
+            "catalog_product_id": "steklo-4-prozrachnoe",
+            "product_name": "Стекло 4 мм прозрачное",
+            "length_mm": "615",
+            "width_mm": "405",
+            "quantity": "3",
+            "price_basis": "per_m2"
+          },
+          "assumptions": [],
+          "unknown_components": [],
+          "known_subtotal_tg": "3362.51",
+          "rounding_policy": "ROUND_HALF_UP to 0.01 per line; total equals the sum of displayed lines",
+          "source_versions": {
+            "kb": "kb-f464c67fb8633008",
+            "kb_sha256": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+            "pricing": "pricing-v1",
+            "materials": "materials-1391e1fa6600d028",
+            "mapping": "mapping-rules-v1:exact_normalized_name@0"
+          },
+          "inventory_status": "not_requested",
+          "candidate_refs": [],
+          "inventory_reason_codes": [],
+          "stale": false,
+          "created_at": "2026-11-28T10:23:01.416767+00:00",
+          "confirmed_at": null,
+          "confirmed_by": null,
+          "diff": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-4-prozrachnoe",
+              "field": "название"
+            }
+          ]
+        },
+        "independent_oracle_total_tg": "3362.51",
+        "ok": true
+      },
+      "provenance": {
+        "origin": "fallback",
+        "selected_model_answer_confirmed": false,
+        "selected_model_attempt_confirmed": true,
+        "provider_calls_delta": 2,
+        "ok_calls_delta": 1,
+        "selected_model_calls_delta": 1,
+        "verifier_rejected_attempt": false,
+        "provenance_consistent": true,
+        "cache_hit": false,
+        "model_call_count": 2,
+        "model_attempts": [
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          },
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "error",
+            "error_kind": "timeout"
+          }
+        ],
+        "declared_provenance": {
+          "selected_provider": "basisweb",
+          "selected_model_id": "glm-5.3-flash",
+          "verifier_reject_count": 0
+        }
+      }
+    },
+    {
+      "case_id": "WARM03",
+      "repeat": 0,
+      "family": "transport_preflight",
+      "latency_ms": 32162.92,
+      "ok": true,
+      "reasons": [],
+      "wrong_total": false,
+      "unnecessary_refusal": false,
+      "incomplete": false,
+      "fabrication": false,
+      "unnecessary_question": false,
+      "reply": {
+        "conversation_id": "0447f1fc-6865-4baa-a020-3c0cc9fb16d4",
+        "answer": "Нет, монтаж компания не выполняет — мы поставляем стекло, зеркала, фурнитуру и профили.",
+        "clarification": "null",
+        "quote": null,
+        "evidence": [
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "r1",
+            "field": "правило"
+          }
+        ],
+        "mode": "online",
+        "provider": "basisweb",
+        "model_id": "glm-5.3-flash",
+        "answer_path": "llm_tools",
+        "status": "clarification",
+        "card": {
+          "intent": "rule:installation",
+          "catalog_product_id": null,
+          "product_name": null,
+          "confirmed_parameters": {
+            "processing": "none",
+            "price_basis": "auto"
+          },
+          "assumptions": [],
+          "missing_parameters": [],
+          "normalized_dimensions": null,
+          "facts": [
+            {
+              "fact_id": "f1",
+              "kind": "rule",
+              "value": "r1",
+              "unit": null,
+              "source_ref": "kb:kb-f464c67fb8633008:r1",
+              "status": "supported"
+            }
+          ],
+          "alternatives": [],
+          "needs_manager": false
+        },
+        "tool_calls": [
+          {
+            "tool": "get_rules",
+            "status": "ok",
+            "arguments": {
+              "topic": "installation"
+            },
+            "summary": "{\"rules\": [{\"rule_id\": \"r1\", \"text\": \"Монтаж компания не выполняет: только стекло, зеркала, фурнитура и профили.\"}], \"commercial_references\": {}}",
+            "error_code": null
+          },
+          {
+            "tool": "submit_answer",
+            "status": "ok",
+            "arguments": {
+              "answer_ru": "Нет, монтаж компания не выполняет — мы поставляем стекло, зеркала, фурнитуру и профили.",
+              "clarification": "null",
+              "needs_manager": false
+            },
+            "summary": "{\"status\": \"received\", \"commercial_references\": {}}",
+            "error_code": null
+          }
+        ],
+        "verifier_status": "supported",
+        "ai_unavailable_reason": null,
+        "turn_index": 0,
+        "latency_ms": 32140,
+        "execution_mode": "model_first",
+        "origin": "model",
+        "cache_hit": false,
+        "model_call_count": 2,
+        "model_attempts": [
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          },
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          }
+        ],
+        "selected_provider": "basisweb",
+        "selected_model_id": "glm-5.3-flash",
+        "verifier_reject_count": 0
+      },
+      "canonical_quote_control": null,
+      "provenance": {
+        "origin": "model",
+        "selected_model_answer_confirmed": true,
+        "selected_model_attempt_confirmed": true,
+        "provider_calls_delta": 2,
+        "ok_calls_delta": 2,
+        "selected_model_calls_delta": 2,
+        "verifier_rejected_attempt": false,
+        "provenance_consistent": true,
+        "cache_hit": false,
+        "model_call_count": 2,
+        "model_attempts": [
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          },
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          }
+        ],
+        "declared_provenance": {
+          "selected_provider": "basisweb",
+          "selected_model_id": "glm-5.3-flash",
+          "verifier_reject_count": 0
+        }
+      }
+    },
+    {
+      "case_id": "WARM04",
+      "repeat": 0,
+      "family": "transport_preflight",
+      "latency_ms": 84952.77,
+      "ok": true,
+      "reasons": [],
+      "wrong_total": false,
+      "unnecessary_refusal": false,
+      "incomplete": false,
+      "fabrication": false,
+      "unnecessary_question": false,
+      "reply": {
+        "conversation_id": "2387e9aa-1216-438f-8fb8-59201f29a4fc",
+        "answer": "Доставку согласует менеджер: он уточнит адрес, сроки и условия. Оплата на сайте не принимается — оплату и доставку менеджер согласует с вами напрямую.",
+        "clarification": "null",
+        "quote": null,
+        "evidence": [
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "r2",
+            "field": "правило"
+          }
+        ],
+        "mode": "online",
+        "provider": "basisweb",
+        "model_id": "glm-5.3-flash",
+        "answer_path": "llm_tools",
+        "status": "clarification",
+        "card": {
+          "intent": "rule:delivery",
+          "catalog_product_id": null,
+          "product_name": null,
+          "confirmed_parameters": {
+            "processing": "none",
+            "price_basis": "auto"
+          },
+          "assumptions": [],
+          "missing_parameters": [],
+          "normalized_dimensions": null,
+          "facts": [
+            {
+              "fact_id": "f1",
+              "kind": "rule",
+              "value": "r2",
+              "unit": null,
+              "source_ref": "kb:kb-f464c67fb8633008:r2",
+              "status": "supported"
+            }
+          ],
+          "alternatives": [],
+          "needs_manager": false
+        },
+        "tool_calls": [
+          {
+            "tool": "get_rules",
+            "status": "ok",
+            "arguments": {
+              "topic": "delivery"
+            },
+            "summary": "{\"rules\": [{\"rule_id\": \"r2\", \"text\": \"Оплата на сайте не принимается: оплату, Kaspi и доставку согласует менеджер.\"}], \"commercial_references\": {}}",
+            "error_code": null
+          },
+          {
+            "tool": "submit_answer",
+            "status": "ok",
+            "arguments": {
+              "answer_ru": "Доставку согласует менеджер: он уточнит адрес, сроки и условия. Оплата на сайте не принимается — оплату и доставку менеджер согласует с вами напрямую.",
+              "clarification": "null",
+              "needs_manager": false
+            },
+            "summary": "{\"status\": \"received\", \"commercial_references\": {}}",
+            "error_code": null
+          }
+        ],
+        "verifier_status": "supported",
+        "ai_unavailable_reason": null,
+        "turn_index": 0,
+        "latency_ms": 84937,
+        "execution_mode": "model_first",
+        "origin": "model",
+        "cache_hit": false,
+        "model_call_count": 2,
+        "model_attempts": [
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          },
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          }
+        ],
+        "selected_provider": "basisweb",
+        "selected_model_id": "glm-5.3-flash",
+        "verifier_reject_count": 0
+      },
+      "canonical_quote_control": null,
+      "provenance": {
+        "origin": "model",
+        "selected_model_answer_confirmed": true,
+        "selected_model_attempt_confirmed": true,
+        "provider_calls_delta": 2,
+        "ok_calls_delta": 2,
+        "selected_model_calls_delta": 2,
+        "verifier_rejected_attempt": false,
+        "provenance_consistent": true,
+        "cache_hit": false,
+        "model_call_count": 2,
+        "model_attempts": [
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          },
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          }
+        ],
+        "declared_provenance": {
+          "selected_provider": "basisweb",
+          "selected_model_id": "glm-5.3-flash",
+          "verifier_reject_count": 0
+        }
+      }
+    },
+    {
+      "case_id": "WARM05",
+      "repeat": 0,
+      "family": "transport_preflight",
+      "latency_ms": 60655.58,
+      "ok": true,
+      "reasons": [],
+      "wrong_total": false,
+      "unnecessary_refusal": false,
+      "incomplete": false,
+      "fabrication": false,
+      "unnecessary_question": false,
+      "reply": {
+        "conversation_id": "375489df-5bb3-44a3-95a0-f29618f52c0b",
+        "answer": "Цена этой модели зеркала в базе не указана — стоимость рассчитает менеджер. Передам указанные параметры менеджеру для индивидуального расчета.",
+        "clarification": null,
+        "quote": null,
+        "evidence": [
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "r6",
+            "field": "правило"
+          }
+        ],
+        "mode": "online",
+        "provider": null,
+        "model_id": null,
+        "answer_path": "fallback",
+        "status": "manager_handoff",
+        "card": {
+          "intent": "mirror_model",
+          "catalog_product_id": null,
+          "product_name": null,
+          "confirmed_parameters": {
+            "processing": "none",
+            "price_basis": "auto"
+          },
+          "assumptions": [],
+          "missing_parameters": [],
+          "normalized_dimensions": null,
+          "facts": [
+            {
+              "fact_id": "f1",
+              "kind": "rule",
+              "value": "no_price:AB1043",
+              "unit": null,
+              "source_ref": "kb:kb-f464c67fb8633008:r6:правило",
+              "status": "supported"
+            },
+            {
+              "fact_id": "f2",
+              "kind": "rendered_claim",
+              "value": "Цена этой модели зеркала в базе не указана — стоимость рассчитает менеджер. Передам указанные параметры менеджеру для индивидуального расчета.",
+              "unit": null,
+              "source_ref": "renderer:local:kb-f464c67fb8633008",
+              "status": "supported"
+            }
+          ],
+          "alternatives": [],
+          "needs_manager": true
+        },
+        "tool_calls": [
+          {
+            "tool": "get_rules",
+            "status": "ok",
+            "arguments": {
+              "topic": "mirror_models"
+            },
+            "summary": "{\"rules\": [{\"rule_id\": \"r6\", \"text\": \"Цены моделей зеркал AB1001–AB1044 в базе не указаны: стоимость рассчитывает менеджер. Модели AB1012 в каталоге нет.\"}], \"commercial_references\": {}}",
+            "error_code": null
+          },
+          {
+            "tool": "search_catalog",
+            "status": "ok",
+            "arguments": {
+              "query": "AB1043",
+              "kind": "any"
+            },
+            "summary": "{\"status\": \"not_found\", \"candidates\": [], \"commercial_references\": {}}",
+            "error_code": null
+          },
+          {
+            "tool": "submit_answer",
+            "status": "ok",
+            "arguments": {
+              "answer_ru": "Стоимость модели AB1043 в базе не указана — цену по этой модели рассчитает менеджер. Передаю ваш запрос менеджеру, он свяжется с вами с расчетом.",
+              "clarification": "Модель AB1043: цена в базе отсутствует, расчет стоимости — менеджер.",
+              "needs_manager": true
+            },
+            "summary": "{\"status\": \"received\", \"commercial_references\": {}}",
+            "error_code": null
+          }
+        ],
+        "verifier_status": "unsupported_replaced",
+        "ai_unavailable_reason": "Ответ AI не прошел предметную проверку фактов; показан проверенный локальный ответ.",
+        "turn_index": 0,
+        "latency_ms": 60641,
+        "execution_mode": "model_first",
+        "origin": "fallback",
+        "cache_hit": false,
+        "model_call_count": 2,
+        "model_attempts": [
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          },
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          }
+        ],
+        "selected_provider": "basisweb",
+        "selected_model_id": "glm-5.3-flash",
+        "verifier_reject_count": 1
+      },
+      "canonical_quote_control": null,
+      "provenance": {
+        "origin": "fallback",
+        "selected_model_answer_confirmed": false,
+        "selected_model_attempt_confirmed": true,
+        "provider_calls_delta": 2,
+        "ok_calls_delta": 2,
+        "selected_model_calls_delta": 2,
+        "verifier_rejected_attempt": true,
+        "provenance_consistent": true,
+        "cache_hit": false,
+        "model_call_count": 2,
+        "model_attempts": [
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          },
+          {
+            "provider": "basisweb",
+            "model_id": "glm-5.3-flash",
+            "status": "ok",
+            "error_kind": null
+          }
+        ],
+        "declared_provenance": {
+          "selected_provider": "basisweb",
+          "selected_model_id": "glm-5.3-flash",
+          "verifier_reject_count": 1
+        }
+      }
+    }
+  ],
+  "quality_results": [],
+  "live_acceptance": {
+    "status": "PREFLIGHT_FAILED",
+    "confirmed_model_answers": 2,
+    "model_attempts": 5,
+    "model_accuracy": 0.4,
+    "cache_fallback_deterministic_do_not_raise_model_score": true,
+    "manual_review_required": true
+  },
+  "planned_turns": 5,
+  "readiness": {
+    "status": "ready",
+    "database": true,
+    "business_modules_ready": true,
+    "schema": true,
+    "worker": true,
+    "ai": "unchecked",
+    "modules": {
+      "cutting": true,
+      "assistant": true,
+      "quality": true,
+      "crm": true,
+      "cards": true
+    }
+  },
+  "profile": {
+    "profile": "direct",
+    "provider": "basisweb",
+    "model_id": "glm-5.3-flash",
+    "mode": "free_only",
+    "fallback_models": [],
+    "key_configured": true,
+    "budget_limit_usd": "0",
+    "included_quota_enabled": true,
+    "quota_token_budget": 850000,
+    "quota_tokens_spent": 0,
+    "request_timeout_s": 90.0,
+    "turn_deadline_s": 90.0,
+    "limits": {
+      "rpm": 60,
+      "tpm": 1000000,
+      "rpd": 2000,
+      "max_tool_iterations": 6,
+      "max_retries": 0,
+      "max_concurrency": 1
+    }
+  },
+  "api_schema_sha256": "bfaf8efc27fda5d905a19be2d7834feba6dfe2b782ec3304386ad3ee4a0ef18f",
+  "safe_profile_sha256": "bfd294d071a816de0c72879a474c65507100ff91b3bc724a25ff97c919001c75",
+  "prompt_version": "assistant-v5-bound-claims-typed-handoff-2026-11-28",
+  "quota_start": {
+    "quota_token_budget": 850000,
+    "quota_tokens_spent": 0
+  },
+  "public_capabilities": {
+    "model_first": true,
+    "legacy_cache_hit_public": true,
+    "strict_provenance": true
+  },
+  "datasets": {
+    "base": {
+      "dataset_id": "bddb1a4a-dfa9-4688-93b8-fd07ae3e11d2",
+      "kb_version": "kb-f464c67fb8633008",
+      "source_hashes": {
+        "materials": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
+        "stock": "4e24ce0a917e506c803bcc1378da5504becaa5f733f05b1900ca2f8f0b8db547",
+        "orders": "9ac222565c2eb05e28137b312f412f3a05544dde0ffa051a694d00338bbcbb00",
+        "kb": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+        "applications": "7df1c35f78f2d83dabb0ff6fa6d564f4ba0553b13e4348da2179c8f037bf4363",
+        "questions": "e6742f9978b8eea28a034e887c63308051f3e32975b945b3dc412a3048c00498",
+        "dialogs": "c3b2209a6370ed7b19d527ad448b713d5e42385c8b0574119dff311b073146f3"
+      }
+    }
+  },
+  "usage_after": {
+    "calls": 11,
+    "ok": 9,
+    "errors": {
+      "timeout": 2
+    },
+    "by_purpose": {
+      "assistant_turn": 5,
+      "assistant_tool_followup": 6
+    },
+    "by_model": {
+      "basisweb:glm-5.3-flash": 11
+    },
+    "input_tokens": 17199,
+    "output_tokens": 463,
+    "thought_tokens": 112,
+    "calls_with_unknown_tokens": 0,
+    "latency_ms_p50": 36280,
+    "latency_ms_p95": 55719,
+    "cost_usd_known_sum": null,
+    "calls_with_unknown_cost": 11,
+    "prompt_versions": [
+      "assistant-v5-bound-claims-typed-handoff-2026-11-28"
+    ],
+    "current_prompt_version": "assistant-v5-bound-claims-typed-handoff-2026-11-28"
+  },
+  "provider_calls_during_exam": 11,
+  "quota_end": {
+    "quota_token_budget": 850000,
+    "quota_tokens_spent": 86904
+  },
+  "weighted_quota_debit": 86904,
+  "summary": {
+    "turns": 5,
+    "not_run_turns": 0,
+    "distinct_cases": 5,
+    "correct": 5,
+    "accuracy": 1.0,
+    "distinct_correct": 5,
+    "distinct_accuracy": 1.0,
+    "quality_correct": 0,
+    "quality_total": 0,
+    "failures_by_family": {},
+    "origins": {
+      "fallback": 3,
+      "model": 2
+    },
+    "latency_p50_ms": 84952.77,
+    "latency_p95_ms": 90037.54,
+    "fabrication_count": 0,
+    "unnecessary_refusal_count": 0,
+    "incomplete_count": 0,
+    "unnecessary_question_count": 0
+  }
+}
