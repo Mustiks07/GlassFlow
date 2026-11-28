@@ -88,3 +88,35 @@ scope Ruff PASS. The earlier whole suite95 PASS/1 SKIP predates only this small 
 Root handles remaining sales registry/queue bridge, OpenAPI/TS regeneration, frontend integration, actual
 service/browser E2E and clean-machine/human/packaging acceptance. Own algorithm queue N01/N03/N10/N13 and
 honest N11/N12/N14 decisions is complete. New root-authorized PlanInsights.tsx UI handoff follows separately.
+
+## Employee-language follow-up
+
+Root explicitly assigned read-only audit of all seven routes, then ownership of SystemSection/DataSection,
+Shell/RequireDataset, RunsPage, AssistantPanel, PlanInsights and scoped language tests. Merged299b256 first;
+no backend, dist, shared human.ts, parent CuttingPage or provided logo changed by this follow-up.
+
+Read-only actual build audit on http://127.0.0.1:18384 used a new isolated Playwright browser context with
+all non-GET/HEAD requests blocked, no storage state/keys and no AI calls. Visited seven routes plus all
+three settings tabs, saved screenshots and visible text in ignored .qa/employee-audit. No page errors.
+Confirmed main-view journal event codes/UUIDs, dataset UUIDs/header hashes, run source/check wording and
+conditional assistant parameter codes. Outside ownership findings (raw stock material codes, catalog KB
+hash/client_id labels, quality price meanings/verdict history, AI-profile machine hints) sent to root.
+
+Owned fixes: exact raw journal codes/details retained in closed support details; known observed actions
+translated, unknown event remains generic “Изменение записи”. Journal DTO has no participant, so display
+“Не указан в журнале”, never invented actor. Backup IDs/checksums and dataset IDs moved to closed details;
+readiness/shutdown/import/run wording translated. Missing inputs/modules show human labels. Assistant
+missing parameters and values become readable, structured/unknown values honestly require manager review;
+full originals/provenance remain in closed details. Original request/parameter application unchanged.
+PlanInsights accepts optional materialNames map; missing name is explicit, material codes remain support-only.
+Parent root supplies map; physical piece IDs and manager/business identifiers remain available.
+
+pnpm typecheck PASS; pnpm test25 PASS including unknown-event/no-invented-actor, exact support identity,
+structured assistant parameter, material-name projection regressions. Existing offline-status test wording
+updated to the same translated failure behavior, no checks disabled.
+
+Post-change visual check used own Vite source client at18487 with actual backend proxy18384, not fixtures
+and not claimed final packaged build. Fresh context, non-GET/HEAD blocked: system/data/runs show0 visible
+UUIDs, no machine journal events or worker labels in main view, support details expand, no page errors.
+One automatic CRM-rank POST was blocked, no mutation/AI call executed. Screens after-*.png and text saved
+separately in .qa/employee-audit. Root must rebuild final dist and rerun final integrated browser acceptance.

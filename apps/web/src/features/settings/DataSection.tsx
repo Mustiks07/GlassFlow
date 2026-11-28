@@ -4,7 +4,8 @@ import { useRef, useState } from 'react';
 import { newIdempotencyKey } from '../../api/client';
 import { useApi } from '../../api/context';
 import type { Dataset, ImportPreview } from '../../api/types';
-import { formatDateTime, formatInt, shortHash } from '../../lib/format';
+import { formatDateTime, formatInt } from '../../lib/format';
+import { fieldLabel, humanText } from '../../ui/human';
 import { navigate } from '../../state/router';
 import { useAppStore } from '../../state/store';
 import { Button, Details, EmptyState, ErrorState, Field, LoadingState, Panel, StatusBadge, TableWrap } from '../../ui/kit';
@@ -49,7 +50,7 @@ function DatasetList() {
                 <th scope="col">Режим</th>
                 <th scope="col">Создан</th>
                 <th scope="col">Строки</th>
-                <th scope="col">Хеши источников</th>
+                <th scope="col">Источники</th>
                 <th scope="col">Действия</th>
               </tr>
             </thead>
@@ -58,8 +59,8 @@ function DatasetList() {
                 <tr key={item.dataset_id} aria-current={item.dataset_id === current ? 'true' : undefined}>
                   <td>
                     <strong>{item.name}</strong>
-                    <div className="mono small">{item.dataset_id}</div>
-                    {item.parent_id && <div className="small muted">от {shortHash(item.parent_id, 8)}</div>}
+                    {item.parent_id && <div className="small muted">Источник: {datasets.data.find(source => source.dataset_id === item.parent_id)?.name ?? 'название исходного набора недоступно'}</div>}
+                    <Details summary="Сведения о наборе для поддержки"><p>Номер набора: {item.dataset_id}</p>{item.parent_id && <p>Номер источника: {item.parent_id}</p>}</Details>
                   </td>
                   <td>{MODE_LABEL[item.mode]}</td>
                   <td>{formatDateTime(item.created_at)}</td>
@@ -101,7 +102,7 @@ function RowCounts({ counts }: { counts: Record<string, number> }) {
   return (
     <span className="small">
       {Object.entries(counts)
-        .map(([kind, count]) => `${KIND_LABEL[kind] ?? kind}: ${formatInt(count)}`)
+        .map(([kind, count]) => `${KIND_LABEL[kind] ?? 'Другие записи'}: ${formatInt(count)}`)
         .join(' · ')}
     </span>
   );
@@ -164,7 +165,7 @@ function ImportWizard() {
 
       {stage === 'select' && (
         <div className="stack">
-          <Field label="ZIP-архив или CSV/JSON файлы" hint="materials, stock, orders, questions, dialogs, applications, KB JSON. Файлы *_KEY и скрипты исключаются из runtime автоматически.">
+          <Field label="ZIP-архив или CSV/JSON файлы" hint="Материалы, остатки, детали заказов, вопросы, диалоги, заявки и база знаний. Файлы с эталонными ответами и скрипты не включаются в рабочие данные.">
             {props => (
               <input
                 {...props}
@@ -199,7 +200,7 @@ function ImportWizard() {
           <div className="metrics-row">
             {Object.entries(preview.row_counts).map(([kind, count]) => (
               <div key={kind} className="metric">
-                <span className="metric-label">{KIND_LABEL[kind] ?? kind}</span>
+                <span className="metric-label">{KIND_LABEL[kind] ?? 'Другие записи'}</span>
                 <strong className="metric-value">{formatInt(count)}</strong>
               </div>
             ))}
@@ -210,7 +211,7 @@ function ImportWizard() {
                 <strong>Предупреждения ({preview.warnings.length})</strong>
                 <ul className="plain small">
                   {preview.warnings.map((warning, index) => (
-                    <li key={index}>{warning}</li>
+                    <li key={index}>{humanText(warning, 'Проверьте данные исходного файла перед импортом.')}<Details summary="Исходное сообщение для поддержки"><p>{warning}</p></Details></li>
                   ))}
                 </ul>
               </div>
@@ -235,9 +236,9 @@ function ImportWizard() {
                       <tr key={index}>
                         <td>{error.file}</td>
                         <td className="num">{error.row}</td>
-                        <td className="mono">{error.field}</td>
-                        <td className="mono">{error.raw === '' ? <em className="muted">пусто</em> : error.raw}</td>
-                        <td>{error.reason}</td>
+                        <td>{fieldLabel(error.field) === 'Поле формы' ? 'Колонка исходного файла' : fieldLabel(error.field)}</td>
+                        <td>{error.raw === '' ? <em className="muted">пусто</em> : <Details summary="Посмотреть значение"><span className="mono">{error.raw}</span></Details>}</td>
+                        <td>{humanText(error.reason, 'Проверьте формат и значение в этой строке исходного файла.')}<Details summary="Подробности ошибки для поддержки"><p>Колонка: {error.field}</p><p>{error.reason}</p></Details></td>
                       </tr>
                     ))}
                   </tbody>
@@ -289,11 +290,12 @@ function ImportWizard() {
             <div>
               <strong>{result.reused ? 'Такой снимок уже существует — открыт существующий' : 'Снимок создан'}</strong>
               <p>
-                {result.dataset.name} · {MODE_LABEL[result.dataset.mode]} · <span className="mono">{result.dataset.dataset_id}</span>
+                {result.dataset.name} · {MODE_LABEL[result.dataset.mode]}
               </p>
               {result.reused && <p className="muted">Задачи и резервы не дублируются. Чтобы получить независимую копию, повторите импорт с отметкой «явно создать копию».</p>}
             </div>
           </div>
+          <Details summary="Сведения о наборе для поддержки"><p>Номер набора: {result.dataset.dataset_id}</p></Details>
           <div className="row">
             <Button
               variant="primary"

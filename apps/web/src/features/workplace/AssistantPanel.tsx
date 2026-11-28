@@ -9,6 +9,7 @@ import { useAppStore, useQuoteDraft } from '../../state/store';
 import { Button, Details, ErrorState, Field, OfflineAiNotice, Panel, StatusBadge } from '../../ui/kit';
 import { kbVersionOf } from '../shell/dataset';
 import { EvidenceList } from './EvidenceList';
+import { fieldLabel, humanText } from '../../ui/human';
 
 interface Turn {
   role: 'user' | 'assistant';
@@ -31,7 +32,35 @@ const PARAM_LABEL: Record<string, string> = {
   sides: 'Стороны',
   thickness_mm: 'Толщина, мм',
   color: 'Цвет',
+  edge_sides: 'Стороны обработки',
+  selected_sides: 'Выбранные стороны обработки',
+  dimensions_unit: 'Единицы размеров: мм, см или м',
+  processing_price: 'Стоимость обработки — уточняет менеджер',
+  per_m2_price: 'Цена квадратного метра — уточняет менеджер',
+  product_id: 'Товар',
 };
+
+export function assistantParameterLabel(key: string): string {
+  if (/[{}[\]]/.test(key)) return 'Дополнительный параметр — уточнит менеджер';
+  const label = PARAM_LABEL[key] ?? fieldLabel(key);
+  return label === 'Поле формы' ? humanText(key, 'Дополнительный параметр — уточнит менеджер') : label;
+}
+
+export function assistantParameterValue(key: string, value: unknown, productName?: string | null): string {
+  if (key === 'catalog_product_id' || key === 'product_id') return productName || 'Название товара не передано';
+  if (typeof value === 'boolean') return value ? 'Да' : 'Нет';
+  if (typeof value === 'number') return Number.isFinite(value) ? String(value) : 'Требуется уточнение';
+  if (typeof value !== 'string' || !value.trim() || /[{}[\]]/.test(value)) return 'Параметр требует проверки менеджера';
+  const choices: Record<string, string> = {
+    euro_edge: 'Евро-кромка', bevel: 'Фацет', facet: 'Фацет', sandblast: 'Пескоструй',
+    all: 'По всем сторонам', selected: 'По выбранным сторонам', top: 'Верхняя', bottom: 'Нижняя',
+    left: 'Левая', right: 'Правая', unknown: 'Неизвестно — требуется уточнение',
+    true: 'Да', false: 'Нет', clear: 'Прозрачный', grey: 'Серый', bronze: 'Бронзовый', green: 'Зелёный',
+  };
+  if (value === 'none') return key === 'processing' ? 'Без обработки' : 'Не указано';
+  if (choices[value]) return choices[value];
+  return /_|^[a-f\d]{8}-[a-f\d-]{27,}$/i.test(value) ? 'Параметр требует проверки менеджера' : value;
+}
 
 export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote: (quote: Quote | null) => void }) {
   const { api } = useApi();
@@ -193,11 +222,6 @@ function ReplyDetails({ reply, onApply }: { reply: AssistantReply; onApply: () =
         {reply.status && reply.status !== 'answered' && <StatusBadge tone="warn">{REPLY_STATUS[reply.status]}</StatusBadge>}
         {reply.verifier_status === 'unsupported_replaced' && <StatusBadge tone="warn">Непроверенное утверждение заменено</StatusBadge>}
         {card?.needs_manager && <StatusBadge tone="warn">Нужен менеджер</StatusBadge>}
-        {reply.provider && (
-          <span className="muted">
-            {reply.provider} · {reply.model_id}
-          </span>
-        )}
       </div>
       {params.length > 0 && (
         <div className="confirmed-params">
@@ -205,7 +229,7 @@ function ReplyDetails({ reply, onApply }: { reply: AssistantReply; onApply: () =
           <ul className="chips">
             {params.map(([key, value]) => (
               <li key={key}>
-                {PARAM_LABEL[key] ?? key}: <b>{value}</b>
+                {assistantParameterLabel(key)}: <b>{assistantParameterValue(key, value, card?.product_name ?? reply.quote?.product_name)}</b>
               </li>
             ))}
           </ul>
@@ -216,15 +240,16 @@ function ReplyDetails({ reply, onApply }: { reply: AssistantReply; onApply: () =
       )}
       {assumptions.length > 0 && (
         <div className="assumptions small">
-          <strong>Предположения (не подтверждены):</strong> {assumptions.join('; ')}
+          <strong>Предположения (не подтверждены):</strong> {assumptions.map(text => humanText(text, 'Предположение требует подтверждения менеджера')).join('; ')}
         </div>
       )}
       {card && card.missing_parameters.length > 0 && (
         <div className="small">
-          <strong>Не хватает:</strong> {card.missing_parameters.join(', ')}
+          <strong>Не хватает:</strong> {card.missing_parameters.map(assistantParameterLabel).join('; ')}
         </div>
       )}
-      {card?.normalized_dimensions && <div className="small">Размеры после нормализации: {card.normalized_dimensions}</div>}
+      {card?.normalized_dimensions && <div className="small">Размеры после нормализации: {assistantParameterValue('dimensions', card.normalized_dimensions)}</div>}
+      {(params.length > 0 || Boolean(card?.missing_parameters.length) || Boolean(reply.provider)) && <Details summary="Исходные параметры и профиль для поддержки"><pre className="pre">{JSON.stringify({ confirmed_parameters: Object.fromEntries(params), missing_parameters: card?.missing_parameters ?? [], assumptions, provider: reply.provider, model: reply.model_id }, null, 2)}</pre></Details>}
       {(reply.evidence.length > 0 || Boolean(reply.tool_calls?.length) || Boolean(card?.facts.length)) && (
         <Details summary="Источники, проверенные факты и вызовы инструментов">
           <EvidenceList evidence={reply.evidence} />

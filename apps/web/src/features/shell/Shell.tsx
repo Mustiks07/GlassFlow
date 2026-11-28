@@ -17,9 +17,8 @@ import type { Dataset } from '../../api/types';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { SECTIONS, href, navigate, type Section, useRoute } from '../../state/router';
 import { useAppStore } from '../../state/store';
-import { Button, ConfirmDialog, StatusBadge } from '../../ui/kit';
+import { Button, ConfirmDialog, Details, StatusBadge } from '../../ui/kit';
 import { MODE_LABEL, MODE_SHORT, useCurrentDataset } from './dataset';
-import { shortHash } from '../../lib/format';
 
 const ICONS: Record<Section, typeof Boxes> = {
   workplace: LayoutDashboard,
@@ -100,10 +99,10 @@ function ReadinessFooter() {
   const { api } = useApi();
   const ready = useQuery({ queryKey: ['ready'], queryFn: ({ signal }) => api.ready(signal), refetchInterval: 30_000, retry: 0 });
   let tone: 'ok' | 'warn' | 'error' | 'pending' = 'pending';
-  let text = 'Проверка API…';
+  let text = 'Проверяем приложение…';
   if (ready.isError) {
     tone = 'error';
-    text = 'API недоступен';
+    text = 'Нет связи с приложением';
   } else if (ready.data) {
     tone = ready.data.status === 'ready' ? 'ok' : 'warn';
     text = ready.data.status === 'ready' ? 'Готово' : ready.data.status === 'degraded' ? 'Частично готово' : 'Каркас: модули не готовы';
@@ -113,9 +112,9 @@ function ReadinessFooter() {
       <StatusBadge tone={tone}>{text}</StatusBadge>
       {ready.data && (
         <small>
-          БД: {ready.data.database ? 'подключена' : 'не готова'}
-          {ready.data.worker !== undefined && ` · worker: ${ready.data.worker ? 'работает' : 'нет'}`}
-          {ready.data.ai !== undefined && ` · AI: ${ready.data.ai === 'available' ? 'доступен' : ready.data.ai === 'unchecked' ? 'не проверен' : 'ограничен'}`}
+          Данные: {ready.data.database ? 'доступны' : 'не готовы'}
+          {ready.data.worker !== undefined && ` · расчёты: ${ready.data.worker ? 'доступны' : 'недоступны'}`}
+          {ready.data.ai !== undefined && ` · ИИ: ${ready.data.ai === 'available' ? 'доступен' : ready.data.ai === 'unchecked' ? 'не проверен' : 'ограничен'}`}
         </small>
       )}
       {ready.isError && (
@@ -156,9 +155,8 @@ function DatasetSwitcher() {
 
 export function ModeBadge({ dataset }: { dataset: Dataset }) {
   return (
-    <span className={`mode-badge mode-${dataset.mode}`} title={`dataset_id ${dataset.dataset_id}`}>
+    <span className={`mode-badge mode-${dataset.mode}`}>
       {MODE_LABEL[dataset.mode]}
-      <span className="mono"> · {shortHash(dataset.dataset_id, 8)}</span>
     </span>
   );
 }
@@ -195,7 +193,7 @@ export function WorkingCopyButton({ dataset, label = 'Рабочая копия'
         affected={[
           { label: 'Источник', value: dataset.name },
           { label: 'Режим источника', value: MODE_LABEL[dataset.mode] },
-          { label: 'dataset_id', value: <span className="mono">{dataset.dataset_id}</span> },
+          { label: 'Сведения для поддержки', value: <Details summary="Номер исходного набора"><span className="mono">{dataset.dataset_id}</span></Details> },
         ]}
         confirmLabel="Создать рабочую копию"
         onConfirm={() => mutation.mutate()}
