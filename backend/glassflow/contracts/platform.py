@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from .common import DTO, DatasetRequest, Identifier
 from .cutting import SolverConfig
@@ -45,6 +45,7 @@ class Job(DTO):
     created_at: str | None = None
     started_at: str | None = None
     finished_at: str | None = None
+    accepted_row_count: int = 0
 
 
 class RunRequest(DatasetRequest):
@@ -55,6 +56,26 @@ class RunRequest(DatasetRequest):
     solver_config: SolverConfig = Field(default_factory=SolverConfig)
     ai_profile: Literal["direct", "judge_gateway", "local_limited"] = "local_limited"
     buyer_registry_version: str | None = None
+    total_budget_seconds: int | None = Field(default=None, ge=10, le=7200, strict=True)
+    export_reserve_seconds: int = Field(default=30, ge=1, le=600, strict=True)
+
+    @model_validator(mode="after")
+    def budget_reserve(self):
+        if self.total_budget_seconds is not None and self.total_budget_seconds <= self.export_reserve_seconds + 5:
+            raise ValueError("Whole-run budget must leave at least five working seconds besides export reserve")
+        return self
+
+
+class RunBudgetRenew(DatasetRequest):
+    expected_version: int = Field(ge=0, strict=True)
+    total_budget_seconds: int = Field(ge=10, le=7200, strict=True)
+    export_reserve_seconds: int = Field(default=30, ge=1, le=600, strict=True)
+
+    @model_validator(mode="after")
+    def budget_reserve(self):
+        if self.total_budget_seconds <= self.export_reserve_seconds + 5:
+            raise ValueError("Whole-run budget must leave working time besides export reserve")
+        return self
 
 
 class ExportResult(DTO):
@@ -81,7 +102,9 @@ class VersionAction(DatasetRequest):
 class AISettings(DTO):
     version: int = Field(default=0, ge=0, strict=True)
     profile: Literal["direct", "judge_gateway", "local_limited"] = "local_limited"
-    provider: Literal["gemini", "openrouter"] = "gemini"
+    provider: Literal["gemini", "openrouter", "basisweb"] = "gemini"
+    included_quota_enabled: bool = False
+    quota_token_budget: int = Field(default=1_000_000, ge=1, le=5_000_000, strict=True)
     model_id: str = Field(default="", max_length=200)
     mode: Literal["free_only", "paid_enabled"] = "free_only"
     paid_enabled: bool = False
@@ -123,3 +146,5 @@ class RunView(DTO):
     status: Literal["running", "completed", "partial", "blocked"]
     jobs: list[Job]
     missing_modules: list[str]
+    version: int = 0
+    budget: dict | None = None

@@ -15,6 +15,7 @@ from glassflow.contracts.platform import (
     KbHead,
     LocalSession,
     RestoreRequest,
+    RunBudgetRenew,
     RunRequest,
     RunView,
     SettingsUpdate,
@@ -193,6 +194,7 @@ def owner_check(request: Request):
 @router.post("/runs", response_model=Job, status_code=202)
 def create_run(body: RunRequest, request: Request, idempotency_key: str | None = Header(None)):
     from glassflow.modules.platform.runs import create_run as start
+    request.app.state.coordinator.configure_export_context(request.app.state.data_dir, request.app.state.services)
 
     with write_transaction(request.app.state.session_factory) as session:
         return idempotent(
@@ -211,6 +213,16 @@ def get_run(run_id: str, request: Request):
 
     with request.app.state.session_factory() as session:
         return run_view(session, run_id)
+
+
+@router.post("/runs/{run_id}/budget", response_model=RunView)
+def renew_run_budget(run_id: str, body: RunBudgetRenew, request: Request,
+                     idempotency_key: str | None = Header(None)):
+    from glassflow.modules.platform.runs import renew_budget
+    request.app.state.coordinator.configure_export_context(request.app.state.data_dir, request.app.state.services)
+    with write_transaction(request.app.state.session_factory) as session:
+        return idempotent(session, body.dataset_id, f"run.budget:{run_id}", idempotency_key, body.model_dump(),
+                          lambda: renew_budget(session, run_id, body, request.state.correlation_id))
 
 
 @router.get("/jobs/{job_id}", response_model=Job)
@@ -304,7 +316,10 @@ def settings(request: Request):
 @router.post("/jobs/{job_id}/retry", response_model=Job, status_code=202)
 def retry_job(job_id: str, dataset_id: str, request: Request, idempotency_key: str | None = Header(None)):
     from glassflow.core.jobs import enqueue, get_job, job_dto
+    from glassflow.core.uow import get_object
+    from glassflow.modules.platform.budgets import require_work_time
     from glassflow.modules.platform.runs import latest_jobs
+    request.app.state.coordinator.configure_export_context(request.app.state.data_dir, request.app.state.services)
 
     with write_transaction(request.app.state.session_factory) as session:
 
@@ -315,6 +330,22 @@ def retry_job(job_id: str, dataset_id: str, request: Request, idempotency_key: s
                     409, "JOB_NOT_RETRYABLE", "Повтор доступен только после сбоя, отмены или прерывания."
                 )
             snapshot = dict(original.input)
+            if original.run_id:
+                current_run = get_object(session, dataset_id, "run", original.run_id)
+                budget = current_run.data.get("budget")
+                require_work_time(budget)
+                if budget:
+                    snapshot["run_budget"] = budget
+                    if original.kind == "cutting":
+                        from glassflow.modules.platform.budgets import bound_solver
+                        selected = latest_jobs(session, original.run_id).get("cutting")
+                        if selected and selected.state == "completed":
+                            snapshot["phase"] = "improvement"
+                            snapshot["baseline_metrics"] = selected.result.get("metrics", {})
+                        solver = bound_solver(budget["requested_solver"], budget,
+                                              baseline=snapshot.get("phase") != "improvement")
+                        snapshot["solver_config"] = solver
+                        snapshot["cutting_snapshot"] = {**snapshot["cutting_snapshot"], "config": solver}
             if original.kind == "cards" and original.run_id:
                 cutting = latest_jobs(session, original.run_id).get("cutting")
                 if not cutting or cutting.state != "completed":
@@ -428,6 +459,7 @@ def restore(body: RestoreRequest, request: Request):
             tick=coordinator.tick,
             result_hooks=coordinator.result_hooks,
             private_context=coordinator.private_context,
+            export_context=coordinator.export_context,
         )
         request.app.state.coordinator = replacement
         replacement.start()

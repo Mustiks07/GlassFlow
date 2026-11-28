@@ -86,6 +86,8 @@ class LaborStudyView(LaborStudyCreate):
     pairs: list[LaborPairStatus]
     ready_pair_count: int
     export_ready: bool
+    order_counts: dict[str, int] = Field(default_factory=dict)
+    protocol_warnings: list[str] = Field(default_factory=list)
     human_attestation_is_not_independent_verification: Literal[True] = True
 
 
@@ -98,6 +100,7 @@ class LaborStudyExport(DTO):
     negative_saving_pairs: int
     median_saved_active_seconds: str
     source_ref: str
+    order_counts: dict[str, int]
 
 
 class WorkflowItem(DTO):

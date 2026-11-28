@@ -110,7 +110,7 @@ def validate_rows(session, dataset_id, name, rows, plan_used=None):
     return rows
 
 
-def official_cutting(staging, source_files, solution):
+def official_cutting(staging, source_files, solution, *, timeout_seconds=60):
     from glassflow.core.resources import resource_root
 
     organizer = resource_root() / "inputs" / "PACK_for_teams" / "1_ostatki" / "validate.py"
@@ -143,7 +143,7 @@ def official_cutting(staging, source_files, solution):
         encoding="utf8",
         errors="replace",
         env=environment,
-        timeout=60,
+        timeout=timeout_seconds,
         creationflags=0x08000000 if os.name == "nt" else 0,
     )
     output = result.stdout
@@ -232,7 +232,9 @@ def prepare_export(session, run_id, services, correlation):
     )
 
 
-def export_run(factory, run_id, data_dir, services, correlation):
+def export_run(factory, run_id, data_dir, services, correlation, *, expected_budget_version=None,
+               budget_attempt_id=None, cancel_check=None):
+    from glassflow.modules.platform.budgets import remaining
     # Recheck + capture in a short writer transaction; external validator holds no DB lock.
     with write_transaction(factory) as session:
         dataset_id, run_data, sources, prepared, errors, validators, result_refs, provenance = prepare_export(
@@ -257,16 +259,36 @@ def export_run(factory, run_id, data_dir, services, correlation):
                 raise AppError(409, "EXPORT_WRITE_FAILED", "Повторное чтение файла не совпало.")
         if "solution.csv" in prepared:
             try:
-                validators["cutting_official"] = official_cutting(staging, sources, staging / "solution.csv")
+                budget = run_data.get("budget")
+                if budget:
+                    available = remaining(budget)
+                    if available <= 0:
+                        raise AppError(409, "RUN_DEADLINE_EXCEEDED", "Истек полный бюджет прогона.")
+                    validators["cutting_official"] = official_cutting(staging, sources, staging / "solution.csv",
+                        timeout_seconds=max(.001, min(8, available)))
+                else:
+                    validators["cutting_official"] = official_cutting(staging, sources, staging / "solution.csv")
                 if not validators["cutting_official"]["passed"]:
                     raise AppError(409, "OFFICIAL_VALIDATION_FAILED", "Официальная проверка не пройдена.")
-            except AppError as exc:
-                errors.append(f"cutting: {exc.code}")
+            except (AppError, subprocess.TimeoutExpired) as exc:
+                errors.append(f"cutting: {exc.code if isinstance(exc, AppError) else 'VALIDATOR_BUDGET_EXCEEDED'}")
                 prepared.pop("solution.csv")
                 (staging / "solution.csv").unlink()
                 if "sale_cards.csv" in prepared:
                     prepared.pop("sale_cards.csv")
                     (staging / "sale_cards.csv").unlink()
+        if run_data.get("budget") and remaining(run_data["budget"]) <= 0:
+            errors.append("budget: RUN_DEADLINE_EXCEEDED")
+        if cancel_check and cancel_check():
+            errors.append("budget: EXPORT_CANCELLED")
+        # Fence a previous budget generation while its external validator was running.
+        with factory() as session:
+            current = get_object(session, dataset_id, "run", run_id)
+            current_budget = current.data.get("budget", {})
+            if expected_budget_version is not None and current_budget.get("version") != expected_budget_version:
+                errors.append("budget: RUN_BUDGET_CHANGED")
+            if budget_attempt_id and current_budget.get("export_attempt_id") != budget_attempt_id:
+                errors.append("budget: EXPORT_ATTEMPT_CHANGED")
         status = (
             "ready" if set(prepared) == set(SCHEMAS) and not errors else "partial" if prepared else "blocked"
         )
@@ -291,7 +313,29 @@ def export_run(factory, run_id, data_dir, services, correlation):
             run = get_object(session, dataset_id, "run", run_id)
             run.data = {**run.data, "last_export_id": export_id, "files": hashes, "validators": validators}
             if status == "ready":
-                run.data = {**run.data, "accepted_export_id": export_id, "accepted_files": hashes}
+                # Recheck the fence in the same transaction that publishes accepted refs.
+                current_budget = run.data.get("budget")
+                permitted = (not current_budget or remaining(current_budget) > 0) and not (cancel_check and cancel_check())
+                permitted = permitted and (expected_budget_version is None or current_budget.get("version") == expected_budget_version)
+                permitted = permitted and (not budget_attempt_id or current_budget.get("export_attempt_id") == budget_attempt_id)
+                if not permitted:
+                    errors.append("budget: EXPORT_ACCEPTANCE_EXPIRED")
+                    status = "partial" if prepared else "blocked"
+                    manifest.update(status=status, errors=errors,
+                                    accepted_export_id=run.data.get("accepted_export_id"),
+                                    accepted_files=run.data.get("accepted_files", {}))
+                    (final / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+                                                          encoding="utf8")
+                else:
+                    run.data = {**run.data, "accepted_export_id": export_id, "accepted_files": hashes,
+                                "accepted_result_refs": result_refs}
+            if run.data.get("budget") and (not budget_attempt_id or
+                    run.data["budget"].get("export_attempt_id") == budget_attempt_id):
+                budget = {**run.data["budget"], "export_status": status}
+                if status == "ready" and not budget.get("baseline_accepted_at"):
+                    from glassflow.core.models import now
+                    budget["baseline_accepted_at"] = now()
+                run.data = {**run.data, "budget": budget}
         return {
             "run_id": run_id,
             "status": status,

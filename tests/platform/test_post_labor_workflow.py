@@ -52,21 +52,25 @@ def test_elapsed_pause_active_attestation_and_real_pair_export(runtime, monkeypa
     monkeypatch.setattr(labor, 'moment', lambda: clock[0])
     s = study(client, working['dataset_id'])
     for number in range(10):
-        s = start(client, s, f'task-{number}')
-        clock[0] += timedelta(seconds=4)
-        s = action(client, s, 'pause')
-        clock[0] += timedelta(seconds=6)
-        s = action(client, s, 'resume')
-        clock[0] += timedelta(seconds=6)
-        s = action(client, s, 'finish', result_ref=f'manual-result:{number}', error_count=1, rework_seconds='2')
-        m = s['measurements'][-1]
-        assert m['elapsed_seconds'] == '16.000' and m['recorded_running_seconds'] == '10.000'
-        assert m['attested_active_seconds'] is None and not m['human_confirmed']
-        s = action(client, s, 'attest', active_seconds='10', human_confirmed=True)
-        s = start(client, s, f'task-{number}', 'app')
-        clock[0] += timedelta(seconds=14)
-        s = action(client, s, 'finish', result_ref=f'app-result:{number}', rework_seconds='3')
-        s = action(client, s, 'attest', active_seconds='12', human_confirmed=True)
+        methods = ['manual', 'app'] if number % 2 == 0 else ['app', 'manual']
+        planned = methods[0] + '_first'
+        for method in methods:
+            s = start(client, s, f'task-{number}', method, planned_order=planned)
+            if method == 'manual':
+                clock[0] += timedelta(seconds=4)
+                s = action(client, s, 'pause')
+                clock[0] += timedelta(seconds=6)
+                s = action(client, s, 'resume')
+                clock[0] += timedelta(seconds=6)
+                s = action(client, s, 'finish', result_ref=f'manual-result:{number}', error_count=1, rework_seconds='2')
+                m = s['measurements'][-1]
+                assert m['elapsed_seconds'] == '16.000' and m['recorded_running_seconds'] == '10.000'
+                assert m['attested_active_seconds'] is None and not m['human_confirmed']
+                s = action(client, s, 'attest', active_seconds='10', human_confirmed=True)
+            else:
+                clock[0] += timedelta(seconds=14)
+                s = action(client, s, 'finish', result_ref=f'app-result:{number}', rework_seconds='3')
+                s = action(client, s, 'attest', active_seconds='12', human_confirmed=True)
         clock[0] += timedelta(seconds=1)
     assert s['export_ready'] and s['ready_pair_count'] == 10
     result = client.get(f"/api/v1/labor-studies/{s['study_id']}/export", params={'dataset_id': s['dataset_id']})
@@ -74,6 +78,7 @@ def test_elapsed_pause_active_attestation_and_real_pair_export(runtime, monkeypa
     exported = result.json()
     assert exported['negative_saving_pairs'] == 10 and exported['median_saved_active_seconds'] == '-2.000'
     assert len(exported['labor_studies']) == 10 and exported['measurement_status'] == 'supplied_measurements'
+    assert exported['order_counts'] == {'manual_first':5,'app_first':5}
     # Existing U07 canonical DTO accepts the export without rewriting numbers.
     from glassflow.contracts.economics import LaborStudy
     assert LaborStudy.model_validate(exported['labor_studies'][0]).manual_active_seconds == '10'
