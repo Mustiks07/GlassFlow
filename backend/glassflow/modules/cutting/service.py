@@ -1180,6 +1180,37 @@ class CuttingService:
                                  plan_free_original_remnant_ids=historical, no_longer_free_remnant_ids=gone)
 
     # ================================================================== fast candidate search
+    def new_requirements(self, dataset_id: str, plan_id: str, revision: int | None = None):
+        from .insights import new_requirements
+
+        exported = self.export(dataset_id, plan_id, revision)
+        row = self._plan_row(dataset_id, plan_id, revision)
+        active = self._active_plan_row(dataset_id)
+        return new_requirements(self.load_snapshot(dataset_id), self._assignments(row), exported.metrics.new_reasons,
+            plan_id=row.plan_id, revision=row.revision, plan_status=row.status,
+            is_active=active is not None and active.id == row.id, inventory_version=exported.inventory_version)
+
+    def scarcity(self, request):
+        from .scarcity import analyze_scarcity
+
+        baseline = self.find_candidates(request)
+        snapshot = self.load_snapshot(request.dataset_id)
+        base = self._plan_row(request.dataset_id, request.base_plan_id) if request.base_plan_id else self._active_plan_row(request.dataset_id)
+        assignments = self._assignments(base) if base else []
+        pending = [a.part_id for a in assignments if a.remnant_id == NEW] if base else list(snapshot.parts)
+        occupied = {a.remnant_id for a in assignments if a.remnant_id != NEW}
+        return analyze_scarcity(snapshot, request, baseline, pending, occupied,
+            inventory_version=baseline.inventory_version, plan_id=base.plan_id if base else None,
+            plan_revision=base.revision if base else None)
+
+    def geometry_margins(self, dataset_id: str, plan_id: str, revision: int | None = None):
+        from .insights import geometry_margins
+
+        exported = self.export(dataset_id, plan_id, revision)
+        row = self._plan_row(dataset_id, plan_id, revision)
+        return geometry_margins(self.load_snapshot(dataset_id), self._assignments(row), plan_id=row.plan_id,
+            revision=row.revision, inventory_version=exported.inventory_version)
+
     def find_candidates(self, request: FindRequest) -> Candidates:
         """Fast single-part (or joint quantity) placement without rebuilding the plan. Read-only."""
         snapshot = self.load_snapshot(request.dataset_id)

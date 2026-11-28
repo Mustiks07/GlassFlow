@@ -510,3 +510,95 @@ class AuditEvent(DTO):
     correlation_id: str
     created_at: str
     details: dict[str, str | int | float | bool | None | list[str]] = Field(default_factory=dict)
+
+
+class NewRequirement(DTO):
+    material_id: str
+    dimensions: Dimensions
+    quantity: NonnegativeInt
+    part_ids: list[str]
+    order_ids: list[str]
+    area_mm2: NonnegativeInt
+    reason_code: str
+    reason_ru: str
+
+
+class NewRequirements(DatasetRequest):
+    plan_id: str
+    revision: NonnegativeInt
+    plan_status: str
+    is_active: bool
+    scope: Literal['active', 'proposal', 'historical']
+    inventory_version: str
+    rows: list[NewRequirement]
+    total_area_mm2: NonnegativeInt
+    total_quantity: NonnegativeInt
+    disclaimer_ru: str = 'Потребность в деталях NEW; число новых листов и закупочная цена не определены.'
+
+
+class PlacementMargin(DTO):
+    part_id: str
+    remnant_id: str
+    tempered: bool
+    margin_kind: Literal['cut_geometry', 'whole_piece_tolerance']
+    edge_clearance_mm: int | None = None
+    neighbor_clearance_mm: int | None = None
+    minimum_excess_mm: int
+    dimension_deviation_mm: int | None = None
+
+
+class PlanMargins(DatasetRequest):
+    plan_id: str
+    revision: NonnegativeInt
+    inventory_version: str
+    placements: list[PlacementMargin]
+    trim_mm: int = 5
+    gap_mm: int = 3
+    tempered_tolerance_mm: int = 2
+    note_ru: str = 'Геометрический запас по текущему замеру, не вероятность брака. Конкурсные допуски не изменены.'
+
+
+class SaleReadiness(DatasetRequest):
+    status: Literal['ready_unchanged', 'ready_alternative', 'tradeoff_available', 'evidence_shortage', 'limited', 'cancelled', 'stale']
+    baseline: CutPlan
+    alternative: CutPlan | None = None
+    tradeoff: CutPlan | None = None
+    eligible_original_ids: list[str]
+    baseline_free_eligible_ids: list[str]
+    candidate_free_eligible_ids: list[str] = Field(default_factory=list)
+    registry_version: str
+    input_fingerprint: str
+    inventory_fingerprint: str
+    registry_fingerprint: str
+    minimum_free: int = 5
+    delta_area_mm2: int | None = None
+    search_performed: bool = False
+    elapsed_seconds: float = 0
+    reason_ru: str
+
+
+class ScarcityRequest(FindRequest):
+    budget_ms: int = Field(default=300, ge=1, le=3000)
+
+
+class ScarcityExplanation(DTO):
+    preserve_remnant_id: str
+    alternative_remnant_id: str
+    known_order_id: str
+    pending_part_ids: list[str]
+    joint_witness: list[Placement]
+    request_part_ids: list[str] = Field(default_factory=list)
+    reason_ru: str
+
+
+class ScarcityResult(DatasetRequest):
+    baseline: Candidates
+    status: Literal['proved', 'no_proof', 'limited', 'not_applicable']
+    recommended_remnant_id: str | None = None
+    explanations: list[ScarcityExplanation] = Field(default_factory=list)
+    elapsed_ms: float
+    inventory_version: str
+    plan_id: str | None = None
+    plan_revision: int | None = None
+    baseline_order_preserved: bool = True
+    pending_basis: str = 'uncovered_parts_of_selected_plan_or_imported_orders_without_plan'
