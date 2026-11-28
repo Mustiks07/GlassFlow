@@ -22,6 +22,7 @@ from ..catalog.kb import KnowledgeBase
 from ..catalog.mapping import MappingDecision
 from ..catalog.text import normalize
 from ..ports_consumed import CrmPort, InventoryPort, ScenarioPort
+from ..providers.policy import capture_attempts
 from ..providers.settings import AIRuntime
 from .llm import LlmOutcome, run_llm_turn
 from .local import MAX_SENTENCES, LocalEngine, LocalOutcome, TurnContext
@@ -89,6 +90,7 @@ class TurnResult:
     cache_hit: bool = False
     tool_records: list[dict] = field(default_factory=list)
     tool_context: ToolContext | None = None
+    model_attempts: list[dict] = field(default_factory=list)
 
 
 def _limit_sentences(text: str) -> str:
@@ -160,15 +162,18 @@ class AssistantEngine:
                 latency_ms=int((time.monotonic() - started) * 1000),
                 local=local,
                 ai_unavailable_reason=why,
+                model_attempts=llm.model_attempts if llm else [],
             )
 
+        if not ai_ready and strategy == "ai_first":
+            return deterministic("fallback", "not_applicable", mode_value="local_limited")
         if not ai_ready or (strategy != "ai_first" and not self._needs_ai(local)):
             return deterministic()
 
         assert runtime is not None and runtime.client is not None
         chain = runtime.client.chain()
         key = cache_key(text, self.kb.version, chain, (context or TurnContext()).to_dict())
-        cached = self.cache.get(key)
+        cached = self.cache.get(key) if strategy != "ai_first" else None
         if cached is not None:
             return TurnResult(
                 answer=cached["answer"], clarification=cached.get("clarification"), status=cached["status"],
@@ -181,16 +186,27 @@ class AssistantEngine:
         )
         deadline = time.monotonic() + runtime.profile.turn_deadline_s
         tool_names = [name for name in ASSISTANT_TOOLSET if not (name == "find_remnants" and inventory_mode == "none")]
-        llm = await run_llm_turn(
-            runtime.client, ctx, text, (context or TurnContext()).to_dict(), deadline=deadline,
-            correlation_id=correlation_id, tool_names=tool_names,
-        )
+        attempts: list[dict] = []
+        with capture_attempts(attempts):
+            llm = await run_llm_turn(
+                runtime.client, ctx, text, (context or TurnContext()).to_dict(), deadline=deadline,
+                correlation_id=correlation_id, tool_names=tool_names,
+            )
+        llm.model_attempts = attempts
+        llm.model_calls = len(attempts)
         if llm.status == "provider_error":
             why = llm.error.args[0] if llm.error else "AI недоступен."
             return deterministic("fallback", "not_applicable", llm, "local_limited", why)
         if llm.status != "final" or not llm.answer:
             verifier = "unsupported_replaced" if llm.status == "verifier_rejected" else "not_applicable"
             return deterministic("fallback", verifier, llm)
+        # Model tools cannot turn a user's unresolved product/processing choice
+        # into a final offer. The same mandatory-domain gate applies in both modes.
+        if local.status == "clarification" and local.missing_parameters and (
+            not llm.clarification or ctx.last_quote is not None
+        ):
+            llm.status = "verifier_rejected"
+            return deterministic("fallback", "unsupported_replaced", llm)
         answer = _limit_sentences(llm.answer)
         status = "manager_handoff" if llm.needs_manager else ("clarification" if llm.clarification else "answered")
         result = TurnResult(
@@ -205,6 +221,7 @@ class AssistantEngine:
             llm=llm,
             latency_ms=int((time.monotonic() - started) * 1000),
             tool_context=ctx,
+            model_attempts=attempts,
             **base,
         )
         result.ai_unavailable_reason = None

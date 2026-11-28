@@ -13,6 +13,7 @@ from decimal import Decimal
 from typing import Mapping, Protocol
 
 from .base import AIProvider
+from .basisweb import BasisWebProvider
 from .gateway_client import GatewayProvider
 from .gemini import GeminiProvider
 from .openrouter import OpenRouterProvider
@@ -24,7 +25,8 @@ from .policy import AIProfile, MemoryLedger, ModelRef, ResilientClient, UsageLed
 DEFAULT_GEMINI_PRIMARY = "gemini-3.5-flash-lite"
 DEFAULT_GEMINI_FALLBACK = "gemini-3.8-flash"
 DEFAULT_OPENROUTER_FREE = "nvidia/nemotron-3.5-super-vl:free"
-SECRET_NAMES = {"gemini": "GEMINI_API_KEY", "openrouter": "OPENROUTER_API_KEY", "judge_gateway": "GLASSFLOW_GATEWAY_TOKEN"}
+SECRET_NAMES = {"gemini": "GEMINI_API_KEY", "openrouter": "OPENROUTER_API_KEY", "judge_gateway": "GLASSFLOW_GATEWAY_TOKEN",
+                "basisweb": "BASISWEB_API_KEY"}
 
 
 class SecretProvider(Protocol):
@@ -60,8 +62,8 @@ def profile_from_env(env: Mapping[str, str] | None = None, secrets: SecretProvid
         primary = None
     elif provider == "judge_gateway":
         primary = ModelRef(provider="judge_gateway", model_id="gateway-pinned")
-    elif provider in {"gemini", "openrouter"}:
-        default = DEFAULT_GEMINI_PRIMARY if provider == "gemini" else DEFAULT_OPENROUTER_FREE
+    elif provider in {"gemini", "openrouter", "basisweb"}:
+        default = {"gemini": DEFAULT_GEMINI_PRIMARY, "openrouter": DEFAULT_OPENROUTER_FREE, "basisweb": "gpt-6-luna"}[provider]
         primary = ModelRef(provider=provider, model_id=model or default)
     else:  # auto: first provider with a configured key
         if secrets.get(SECRET_NAMES["gemini"]):
@@ -86,6 +88,10 @@ def profile_from_env(env: Mapping[str, str] | None = None, secrets: SecretProvid
         primary=primary,
         fallbacks=[f for f in fallbacks if primary is None or f.label != primary.label],
         budget_usd=Decimal(env.get("GLASSFLOW_AI_BUDGET_USD", "0")),
+        included_quota_enabled=env.get("GLASSFLOW_AI_INCLUDED_QUOTA_ENABLED", "false").lower() == "true",
+        quota_token_budget=_int("GLASSFLOW_AI_QUOTA_TOKEN_BUDGET", 1_000_000),
+        max_concurrency=_int("GLASSFLOW_AI_MAX_CONCURRENCY", 1 if provider == "basisweb" else 2),
+        max_output_tokens=_int("GLASSFLOW_AI_MAX_OUTPUT_TOKENS", 512 if provider == "basisweb" else 1024),
         rpm=_int("GLASSFLOW_AI_RPM", 10),
         tpm=_int("GLASSFLOW_AI_TPM", 200_000),
         rpd=_int("GLASSFLOW_AI_RPD", 200),
@@ -135,6 +141,8 @@ def build_runtime(
                 providers[ref.label] = GeminiProvider(ref.model_id, secret)
             elif ref.provider == "openrouter":
                 providers[ref.label] = OpenRouterProvider(ref.model_id, secret)
+            elif ref.provider == "basisweb":
+                providers[ref.label] = BasisWebProvider(ref.model_id, secret)
             elif ref.provider == "judge_gateway":
                 url = env.get("GLASSFLOW_GATEWAY_URL")
                 if url:
