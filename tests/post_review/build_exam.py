@@ -6,7 +6,7 @@ Run once before candidate exposure; the resulting JSON is the frozen exam.
 
 import hashlib
 import json
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
