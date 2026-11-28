@@ -66,6 +66,7 @@ def create_app(
                 tick=lambda: schedule_cards(factory),
                 result_hooks=app.state.services.result_hooks,
                 private_context={"network": private_network_context},
+                export_context={"data_dir": app.state.data_dir, "services": app.state.services},
             )
             try:
                 app.state.coordinator.start()
