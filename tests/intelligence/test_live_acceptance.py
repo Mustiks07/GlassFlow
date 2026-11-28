@@ -133,3 +133,12 @@ def test_not_run_cases_prevent_pass():
     online_ok = {"answer_path": "llm_tools", "selected_model": True, "cache_hit": False, "ok": True}
     result = acceptance([online_ok], ok_calls=1, unsupported_shown=0, not_run=5, stop_reason="daily quota")
     assert result["status"] == "PARTIAL" and result["not_run"] == 5
+
+
+def test_verifier_rejected_model_answer_counts_as_failed_online_run():
+    online_ok = {"answer_path": "llm_tools", "selected_model": True, "cache_hit": False, "ok": True}
+    rejected = {"answer_path": "fallback", "selected_model": False, "cache_hit": False, "ok": True,
+                "llm_status": "verifier_rejected", "model_answered": True}
+    result = acceptance([online_ok, rejected], ok_calls=4, unsupported_shown=0)
+    assert result["status"] == "FAIL" and result["online_runs"] == 2 and result["online_ok"] == 1
+    assert result["verifier_rejected_model_answers"] == 1

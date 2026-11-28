@@ -16,9 +16,23 @@ class Fact:
     numeric: Decimal | None = None
 
 
+@dataclass(frozen=True)
+class QuoteTotal:
+    """A calculated quote with several lines: naming a line without the total is incomplete."""
+
+    lines: tuple[Decimal, ...]
+    total: Decimal
+
+
 @dataclass
 class FactSet:
     facts: list[Fact] = field(default_factory=list)
+    quotes: list[QuoteTotal] = field(default_factory=list)
+
+    def add_quote(self, lines, total: Decimal) -> None:
+        amounts = tuple(Decimal(amount) for amount in lines)
+        if len(amounts) > 1:
+            self.quotes.append(QuoteTotal(amounts, Decimal(total)))
 
     def add(self, kind: str, value, unit: str | None, source_ref: str) -> Fact:
         numeric = value if isinstance(value, Decimal) else None
@@ -34,3 +48,4 @@ class FactSet:
     def extend(self, other: "FactSet") -> None:
         for fact in other.facts:
             self.add(fact.kind, fact.numeric if fact.numeric is not None else fact.value, fact.unit, fact.source_ref)
+        self.quotes.extend(other.quotes)

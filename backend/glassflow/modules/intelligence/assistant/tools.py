@@ -207,6 +207,7 @@ def _quote(ctx: ToolContext, args: CalculateQuoteArgs) -> dict[str, Any]:
             ctx.facts.add("measure", line.measure_per_unit, line.unit, f"pricing:{line.component}:measure")
     if result.total is not None:
         ctx.facts.add("total", result.total, "₸", "pricing:total")
+        ctx.facts.add_quote([line.amount for line in result.lines], result.total)
     if result.known_subtotal is not None:
         ctx.facts.add("total", result.known_subtotal, "₸", "pricing:known_subtotal")
     if args.length_mm:
@@ -330,7 +331,10 @@ def _scenario(ctx: ToolContext, args: CompareScenarioArgs) -> dict[str, Any]:
 
 def _verify(ctx: ToolContext, args: VerifyAnswerArgs) -> dict[str, Any]:
     result = verify_answer(args.answer_ru, ctx.facts, ctx.user_text, remnant_checked=ctx.remnant_checked)
-    return {"status": result.status, "unsupported": result.unsupported}
+    payload: dict[str, Any] = {"status": result.status, "unsupported": result.unsupported}
+    if any(item.startswith("claim:incomplete_total") for item in result.unsupported):
+        payload["hint_ru"] = "Назовите итог расчета calculate_quote (total_tg) вместе с позициями."
+    return payload
 
 
 def _submit(ctx: ToolContext, args: SubmitAnswerArgs) -> dict[str, Any]:

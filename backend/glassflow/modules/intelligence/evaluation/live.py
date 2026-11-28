@@ -88,13 +88,19 @@ def _selected_models(runtime: AIRuntime) -> set[str]:
 
 def acceptance(runs: list[dict], ok_calls: int, unsupported_shown: int, *, not_run: int = 0,
                stop_reason: str | None = None) -> dict[str, object]:
-    """Live acceptance only counts answers that really came from the selected model."""
-    online = [r for r in runs if r["answer_path"] == "llm_tools" and not r.get("cache_hit") and r.get("selected_model")]
+    """Live acceptance only counts answers that really came from the selected model.
+
+    A model answer rejected by the verifier is an online attempt that failed: the client saw the
+    deterministic fallback, but the model's accuracy must not benefit from it."""
+    online = [r for r in runs if not r.get("cache_hit") and (
+        (r["answer_path"] == "llm_tools" and r.get("selected_model"))
+        or (r.get("llm_status") == "verifier_rejected" and r.get("model_answered")))]
     reasons: list[str] = []
     if ok_calls == 0 or not online:
         blocked = ["no confirmed call of the selected model"] + ([stop_reason] if stop_reason else [])
         return {"status": "BLOCKED", "reasons": blocked, "online_runs": 0, "online_accuracy": None, "not_run": not_run}
-    online_ok = sum(r["ok"] for r in online)
+    online_ok = sum(r["ok"] and r.get("llm_status") != "verifier_rejected" for r in online)
+    rejected = sum(r.get("llm_status") == "verifier_rejected" for r in online)
     accuracy = online_ok / len(online)
     if any(r.get("cache_hit") for r in runs):
         reasons.append("cache hits in a live run")
@@ -103,6 +109,8 @@ def acceptance(runs: list[dict], ok_calls: int, unsupported_shown: int, *, not_r
     if accuracy < ACCEPTANCE_ACCURACY:
         reasons.append(f"online accuracy {accuracy:.3f} < {ACCEPTANCE_ACCURACY}")
     not_online = len(runs) - len(online)
+    if rejected:
+        reasons.append(f"{rejected} model answers rejected by the verifier (deterministic fallback shown)")
     if reasons:
         status = "FAIL"
     elif not_online or not_run:
@@ -114,7 +122,7 @@ def acceptance(runs: list[dict], ok_calls: int, unsupported_shown: int, *, not_r
     else:
         status = "PASS"
     return {"status": status, "reasons": reasons, "online_runs": len(online), "online_ok": online_ok,
-            "online_accuracy": round(accuracy, 4), "not_run": not_run}
+            "online_accuracy": round(accuracy, 4), "verifier_rejected_model_answers": rejected, "not_run": not_run}
 
 
 def selected_cooldown_s(runtime: AIRuntime, selected: set[str]) -> float:
@@ -256,6 +264,9 @@ def evaluate_live(
             "fallback_model_used": bool(llm and llm.fallback_used),
             "cache_hit": bool(result.cache_hit),
             "selected_model": bool(result.model_id) and any(m in (result.model_id or "") for m in selected),
+            "llm_model_id": llm.model_id if llm else None,
+            "model_answered": bool(llm and llm.status in {"final", "verifier_rejected"} and llm.model_id
+                                   and any(m in llm.model_id for m in selected)),
         })
         with progress.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(runs[-1], ensure_ascii=False) + "\n")
