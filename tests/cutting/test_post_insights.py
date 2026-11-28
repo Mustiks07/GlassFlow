@@ -1,5 +1,12 @@
 from glassflow.contracts.common import Dimensions
-from glassflow.contracts.cutting import CommitPlan, Placement, ScarcityRequest
+from glassflow.contracts.cutting import (
+    CommitPlan,
+    DraftEdit,
+    DraftRequest,
+    Placement,
+    ReserveRequest,
+    ScarcityRequest,
+)
 from glassflow.modules.cutting.service import CuttingService
 from glassflow.modules.cutting.uow import read_session, write_transaction
 
@@ -102,3 +109,33 @@ def test_scarcity_low_budget_has_no_invented_advice(app_client):
     assert result.status in {'limited', 'proved'}
     if result.status == 'limited':
         assert result.recommended_remnant_id is None and not result.explanations
+
+
+def test_invalid_plan_does_not_become_new_procurement(app_client):
+    app, client = app_client
+    register(app, 'bad-new', make_snapshot([('piece','clear-4',200,200,False)],
+        [('part','order','clear-4',100,100,False)]))
+    plan = imported(app,'bad-new',[Placement(part_id='part',remnant_id='piece',x_mm=5,y_mm=5,rot=0)])
+    with write_transaction(app.state.session_factory) as session:
+        invalid = CuttingService(session).draft(plan.plan_id, DraftRequest(dataset_id='bad-new',
+            base_revision=plan.revision, edits=[DraftEdit(part_id='part',x_mm=1,y_mm=5,rot=0,remnant_id='piece')]))
+    result = client.get(f'/api/v1/plans/{invalid.plan.plan_id}/new-requirements',params={'dataset_id':'bad-new'})
+    assert result.status_code == 409 and result.json()['code']=='PLAN_INVALID'
+
+
+def test_reserved_alternative_invalidates_scarcity_advice(app_client):
+    app, _ = app_client
+    request = scarcity_case(app)
+    with read_session(app.state.session_factory) as session:
+        service = CuttingService(session)
+        before = service.scarcity(request)
+        if before.status == 'limited':
+            before = service.scarcity(request)
+    assert before.status=='proved'
+    with write_transaction(app.state.session_factory) as session:
+        CuttingService(session).reserve('square', ReserveRequest(dataset_id='scarce',expected_version=0,
+            owner_context='another-manager',material_id='clear-4',dimensions=Dimensions(length_mm=80,width_mm=40)))
+    with read_session(app.state.session_factory) as session:
+        after = CuttingService(session).scarcity(request)
+    assert after.status=='no_proof' and after.recommended_remnant_id is None
+    assert after.inventory_version != before.inventory_version

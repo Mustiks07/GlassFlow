@@ -35,9 +35,20 @@ def write_transaction(factory) -> Iterator[Session]:
 
 @contextmanager
 def read_session(factory) -> Iterator[Session]:
-    session: Session = factory()
+    # Passing an existing Session is an explicit borrowed scope: its caller
+    # retains commit/rollback/close ownership, including BEGIN IMMEDIATE.
+    borrowed = isinstance(factory, Session)
+    session: Session = factory if borrowed else factory()
     try:
+        connection = session.connection()
+        if connection.dialect.name == 'sqlite':
+            driver = connection.connection.driver_connection
+            # Session autobegin does not imply a DBAPI transaction in sqlite's
+            # legacy mode. SELECTs need an actual BEGIN for one WAL snapshot.
+            if not driver.in_transaction:
+                connection.exec_driver_sql('BEGIN')
         yield session
-        session.rollback()
     finally:
-        session.close()
+        if not borrowed:
+            session.rollback()
+            session.close()

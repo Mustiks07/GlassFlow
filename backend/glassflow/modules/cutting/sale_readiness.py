@@ -32,12 +32,14 @@ def inventory_fingerprint(data: SolveInput) -> str:
                   'unavailable': sorted(data.unavailable_remnant_ids), 'occupied': sorted(data.occupied_remnant_ids)})
 
 
-def _direct_repair(full, task, baseline, eligible, minimum_free, unavailable, deadline):
+def _direct_repair(full, task, baseline, eligible, minimum_free, unavailable, deadline, context):
     """Try complete per-piece relocations with the ordinary C2 packer, no native startup."""
     assignments = {p.part_id: to_assignment(p) for p in baseline.placements}
     locked = {p.part_id for p in task.locks if p.lock_kind != 'none'}
     used = {p.remnant_id for p in assignments.values() if p.remnant_id != NEW}
     for rid in sorted(used & eligible):
+        if context is not None and context.cancelled():
+            return None
         if time.perf_counter() >= deadline or len(eligible-used) >= minimum_free:
             break
         group = [p for p in assignments.values() if p.remnant_id == rid]
@@ -190,7 +192,9 @@ def ensure_sale_readiness(snapshot: SolveInput, baseline: CutPlan, eligible_orig
     if context is not None and context.cancelled():
         return SaleReadiness(**args, status='cancelled', reason_ru='Отмена; исходный план сохранен.')
     repaired = _direct_repair(full, task, baseline, eligible, minimum_free, unavailable,
-                              started+budget_seconds*.25)
+                              started+budget_seconds*.25, context)
+    if context is not None and context.cancelled():
+        return SaleReadiness(**args, status='cancelled', reason_ru='Отмена; исходный план сохранен.')
     if repaired is not None:
         checked = validate_plan(full, repaired, unavailable_remnant_ids=unavailable,
                                 locks=[to_assignment(p) for p in task.locks])

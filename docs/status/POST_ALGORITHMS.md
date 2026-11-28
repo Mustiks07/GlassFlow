@@ -30,3 +30,8 @@ Complete further stale/ID/lock/invalid/persistence boundaries and full C2 suite;
 comparison in docs/experiments/post_cutting/PROTOCOL.md, then run all trials and decide promotion. Baseline remains
 production until criteria pass. Root independently integrates functional UI/actual E2E/packaging.
 Pending architecture approval: explicit BEGIN for C2 read_session to guarantee multi-query read snapshot.
+
+## Snapshot and boundaries checkpoint
+
+Root approved explicit SQLite BEGIN only when driver transaction is absent. C2 read_session now uses one WAL read snapshot; borrowed Session read_session(existing_session) retains caller commit/rollback/close ownership. Interleaved-writer and borrowed BEGIN IMMEDIATE rollback regressions PASS.
+Added boundaries for nonoriginal/unknown eligibility, preserved requested locks, changed IDs/order, invalid budgets, invalid NEW projection and reserved scarcity alternatives. Full `uv run pytest tests/cutting -q -o addopts=''`:89 PASS/1 SKIP in114.24s; skipped600s profile not claimed run. Scope Ruff PASS. Timing copied separately; original C2 evidence restored.
