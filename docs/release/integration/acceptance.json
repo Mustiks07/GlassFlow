@@ -1,7 +1,7 @@
 {
   "updated": "2026-11-28",
   "team": "Vtiposhniki",
-  "runtime_code_commit": "ba32194be5575c513ab7b3fd89cffcad1a5a6a1b",
+  "runtime_code_commit": "3f83310a052c58f0bc2d6b0ca8709e8b83768be8",
   "release_status": "working_integrated_version_not_full_contest_acceptance",
   "status_semantics": {
     "automated_evidence": "Автоматические свидетельства, не заявление о полном ручном прохождении T",
@@ -1434,5 +1434,7 @@
       "status": "automated_evidence",
       "note": "См. исходное ТЗ; F07 требует репетиции, F08 реальной квоты. Автоматическая проверка не заменяет полную приемку."
     }
-  ]
+  ],
+  "current_evidence_root": "v4",
+  "incoming_C3_live": "prompt v2, critical x3:27/36=75%, FAIL; fresh merged v4 not_run"
 }

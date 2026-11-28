@@ -1,3 +1,17 @@
+# Окончательный checkpoint интеграции
+
+Код **3f83310**, включая последний C3 **8a81dff1c15ee7b0c2bc0990cf561682a821f9fc**. Текущие результаты — [v4](v4/summary.json), предыдущие отчеты ниже сохранены как история.
+
+Свежий единый run `170f50c2-9c42-4bf1-a82c-e2e30fcb1224`: покрытие59,1219631%, invalid=missing=0, 200/298 деталей, материальная оценка1 020 090,75 ₸. Пять CSV+buyers/manifest в [v4/open-run](v4/open-run/integration-report.json), точные байты/хеши проверены. Local deterministic selfcheck36/36,8/8,20/25; не live AI. Пять карточек по3 покупателей из свободных исходных кусков проверены через API.
+
+Полный pytest487 PASS/4 SKIP, Ruff/foundation/contracts PASS. [CI кода3f83310](https://github.com/Mustiks07/GlassFlow/actions/runs/46126201073): Linux и Windows SUCCESS. Production UI не менялся, Node24 typecheck/Vitest20/build/bundle и fixture59 сохраняют силу; после свежего backend заново пройдены10+2 browser E2E именно на EXE. На этом же EXE отдельные быстрый полный прогон и новые ID/размеры дали все пять ready CSV. Native smoke/scanner/backup/restore/отмена и abrupt restart/retry проверены повторно. Пакет и relocated check — [v4/package.json](v4/package.json), [v4/portable-check.json](v4/portable-check.json).
+
+Входящий live C3 (prompt v2)27/36=75%, FAIL,0 provider errors. Объединенный prompt v4 добавляет bound claims и completeness; fresh live NOT RUN, paid=false. Чистая Windows11 и10 пар человеческих замеров отсутствуют; финальные PDF/презентация/подача не объявляются принятыми.
+
+---
+
+## История предыдущего объединенного checkpoint
+
 # GlassFlow — общая рабочая версия Vtiposhniki
 
 28 ноября 2026. Это проверка объединенного продукта, не подтверждение полной конкурсной приемки.
@@ -52,7 +66,7 @@ Native: после стабильного production build выполнить `u
 `uv run python scripts/scan_release.py dist/GlassFlow`. Smoke проверяет именно EXE и его process worker,
 реальные C2/C3 quote/reserve/handover/consume, отмену поиска с сохраненным incumbent, restart и restore.
 Переносится вся папка `dist/GlassFlow`, а не один EXE. Отчет относится к машине сборки, не к чистой Windows11.
-Окончательный EXE: build_commit `ba32194`, SHA256 `785ec45a662d9d5e201d97a24709da9e15dad4a3b9cb54a0185e896647d8385d`.
+EXE предыдущего checkpoint: build_commit `ba32194`, SHA256 `785ec45a662d9d5e201d97a24709da9e15dad4a3b9cb54a0185e896647d8385d`.
 На нем отдельно прошли10+2 настоящих browser E2E, затем принудительный kill/restart/retry
 ([native-recovery](native-recovery.json)). После переноса в версионную папку снова проверены старт,
 импорт исходного пакета и реальный frozen C2 solver ([portable-check](portable-check.json)).

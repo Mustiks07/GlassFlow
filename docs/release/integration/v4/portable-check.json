@@ -1,0 +1,9 @@
+{
+  "status": "passed_relocated_portable_executable",
+  "exe_sha256": "c2a8cc29bdd88b63a3abc86a4082cd002580d981efd05a954ab87a7248fb1292",
+  "startup_ms": 2327.999999979511,
+  "all_business_modules_ready": true,
+  "original_pack_import": "passed",
+  "actual_frozen_c2_solver": "completed_validated",
+  "clean_windows": "not_run"
+}

@@ -1,0 +1,14 @@
+{
+  "code_commit": "3f83310a052c58f0bc2d6b0ca8709e8b83768be8",
+  "run_id": "170f50c2-9c42-4bf1-a82c-e2e30fcb1224",
+  "coverage_percent": "59.1219631",
+  "material_value_tg": "1020090.75",
+  "invalid": 0,
+  "missing": 0,
+  "pytest_passed": 487,
+  "pytest_skipped": 4,
+  "all_five_csv_ready": true,
+  "cards": 5,
+  "buyers_per_card": 3,
+  "status": "working_integrated_not_full_contest_release"
+}

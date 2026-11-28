@@ -1,0 +1,159 @@
+{
+  "code_commit": "3f83310a052c58f0bc2d6b0ca8709e8b83768be8",
+  "url": "https://github.com/Mustiks07/GlassFlow/actions/runs/46126201073",
+  "status": "success",
+  "jobs": [
+    {
+      "name": "verify",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run python -m pip install uv==0.8.17",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run uv sync --locked --all-groups",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run uv run ruff check backend tests scripts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run uv run pytest",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run uv run python scripts/check_foundation.py",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm install --global pnpm@11.25.0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm typecheck && pnpm test && pnpm build",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm contracts:generate && git diff --exit-code packages/contracts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "windows-platform",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run python -m pip install uv==0.8.17",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run uv sync --locked --all-groups",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm install --global pnpm@11.25.0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run pnpm build",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run uv run pytest",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run uv run pyinstaller --noconfirm packaging/GlassFlow.spec",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run uv run python scripts/smoke_frozen.py --report docs/release/integration/frozen-smoke.json",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run uv run python scripts/scan_release.py dist/GlassFlow",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}

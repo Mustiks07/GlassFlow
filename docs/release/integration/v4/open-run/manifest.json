@@ -1,0 +1,530 @@
+{
+  "run_id": "170f50c2-9c42-4bf1-a82c-e2e30fcb1224",
+  "dataset_id": "14105bb1-b8b5-469c-9ab1-048f2f4bf649",
+  "source_dataset_id": "c9dedcf2-596f-4616-8679-ca4bf1bd97a2",
+  "source_hashes": {
+    "materials": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
+    "stock": "4e24ce0a917e506c803bcc1378da5504becaa5f733f05b1900ca2f8f0b8db547",
+    "orders": "9ac222565c2eb05e28137b312f412f3a05544dde0ffa051a694d00338bbcbb00",
+    "kb": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+    "applications": "7df1c35f78f2d83dabb0ff6fa6d564f4ba0553b13e4348da2179c8f037bf4363",
+    "questions": "e6742f9978b8eea28a034e887c63308051f3e32975b945b3dc412a3048c00498",
+    "dialogs": "c3b2209a6370ed7b19d527ad448b713d5e42385c8b0574119dff311b073146f3"
+  },
+  "input_hash": "8750aa8916d9c4700434e67f5513c939426af6c94bf6fbe96d6772e71773812a",
+  "schema_version": "0005_execution_history",
+  "build": "0.1.0",
+  "build_info": {
+    "commit": "3f83310a052c58f0bc2d6b0ca8709e8b83768be8",
+    "source_digest": "4d1a26348cd2d2d36c54031595f714f7e874fdfbd40c889ea9b17c8ad1230261",
+    "frozen": false
+  },
+  "config_version": "integrated-v1",
+  "python": "3.12.11",
+  "libraries": {
+    "sqlalchemy": "2.1.9",
+    "pydantic": "2.14.4",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1",
+    "ortools": "9.15.6755"
+  },
+  "crm_policy": "reference-v1",
+  "created_at": "2026-11-28T08:32:31.450981+00:00",
+  "modules": [
+    "cutting",
+    "assistant",
+    "quality",
+    "crm",
+    "cards"
+  ],
+  "solver": {
+    "profile": "extended",
+    "seed": 42,
+    "time_limit_seconds": 600,
+    "workers": 7,
+    "minimum_free_remnants": 5,
+    "fixed_work": false,
+    "max_pool_patterns": 80000
+  },
+  "provider": "local_limited",
+  "ai_settings": {
+    "version": 0,
+    "profile": "local_limited",
+    "provider": "gemini",
+    "model_id": "",
+    "mode": "free_only",
+    "paid_enabled": false,
+    "monthly_budget_tg": "0",
+    "rpm": 1,
+    "tpm": 1000,
+    "rpd": 100,
+    "max_parallel": 1,
+    "timeout_seconds": 30,
+    "max_retries": 2,
+    "max_tool_iterations": 6,
+    "max_output_tokens": 2048,
+    "fallback_models": [],
+    "gateway_url": null
+  },
+  "buyer_registry_version": "a630ad99dc206e706afe83a95ab83d9c33f95e2560f705f0e0660ede43ea355f",
+  "files": {
+    "solution.csv": "f67e301e7c62965539d6067f3a4377a26e42832bfee99a153bb4f7b048688399",
+    "answers.csv": "e533b2fe6975ba288decca4c4410e956fb04983009310adb34e63eac5b512c97",
+    "picks.csv": "b01cd1035793666d1c7d25db66e087d77c7b59a4c752606148bec311dcd02482",
+    "verdicts.csv": "db946f3f29b9cb661d81281dc46c475e833504d2cbe4032d658c4daa3dac9f1b",
+    "sale_cards.csv": "f0cb6896d909134b7ab80a44c2ed903be937919793377c57b79e62fd0b9215fd",
+    "buyers_top50.csv": "e4da10c47dfe13d291b266826a13682510614802fcf1335c2c430d9d32297878"
+  },
+  "validators": {
+    "cutting_official": {
+      "script": "validate.py",
+      "script_sha256": "0d2760772d128ce0724f0a7090eff474667fc5e376a1fc753f03ddb8b73dac4a",
+      "exit_code": 0,
+      "stdout": "деталей всего: 298; из остатков: 200; ошибок: 0; не указано в решении: 0\nплощадь деталей: 187.87 м²; закрыто остатками: 111.07 м²; ДОЛЯ = 59.12 %\nне пришлось резать нового стекла на 1 020 091 тг\nRESULT coverage=0.591220 invalid=0 money=1020091\n",
+      "stderr": "",
+      "passed": true
+    }
+  },
+  "official_accuracy": {
+    "assistant": null,
+    "crm": null,
+    "quality": null
+  },
+  "validation_note": "Без evaluation KEY официальные закрытые баллы неизвестны",
+  "export_id": "457791aa-e289-4b3d-8651-9e17d46dc4ae",
+  "status": "ready",
+  "errors": [],
+  "result_refs": {
+    "cutting": {
+      "job_id": "01366b67-9c3a-4a8d-8faf-736e761de8a7",
+      "state": "completed"
+    },
+    "assistant": {
+      "job_id": "f9aeca79-f9a0-4467-ad09-73a1db209d23",
+      "state": "completed"
+    },
+    "quality": {
+      "job_id": "430b29ec-0a3a-4430-94cc-9ff0750ceec9",
+      "state": "completed"
+    },
+    "crm": {
+      "job_id": "4d8764be-91cc-42c0-8df2-bcd7b23f6a9f",
+      "state": "completed"
+    },
+    "cards": {
+      "job_id": "61086f62-a055-4cdb-9194-2d4245596405",
+      "state": "completed"
+    }
+  },
+  "module_provenance": {
+    "cutting": {
+      "plan_id": "plan-6e99bc14f942",
+      "revision": 1,
+      "config": {
+        "profile": "extended",
+        "seed": 42,
+        "time_limit_seconds": 600,
+        "workers": 7,
+        "minimum_free_remnants": 5,
+        "fixed_work": false,
+        "max_pool_patterns": 80000
+      },
+      "evidence": {
+        "engine": "cutting-engine/1.0",
+        "input_sha256": "6b19e8a9d420eebe97da4f6c5f2f0c3be50af23dcf76ac4378f323b0d2e6d9b1",
+        "python": "3.12.11",
+        "machine": "AMD64",
+        "cpu_count": 12,
+        "kept_parts": 0,
+        "occupied_remnants": 0,
+        "base_plan_id": null,
+        "base_revision": null,
+        "incumbents": 11,
+        "greedy_runs": 800,
+        "pool_after_fills": 8096,
+        "milp_rounds": 43,
+        "lp_bound_pool_mm2": 111210997.32142854,
+        "cpsat_calls": 305,
+        "cpsat_optimal": 255,
+        "lns_moves": 123,
+        "columns_added": 21,
+        "pool_patterns": 8117,
+        "pool_full": false,
+        "elapsed_seconds": 600.355,
+        "profile": "extended",
+        "seed": 42,
+        "workers": 7,
+        "fixed_work": false,
+        "time_limit_seconds": 600.0,
+        "minimum_free_remnants": 5,
+        "interim": false,
+        "unconstrained_best_area_mm2": 111071900,
+        "unconstrained_best_free_original": 61,
+        "five_free_area_loss_mm2": 0,
+        "wall_seconds": 600.388,
+        "stage": "milp"
+      }
+    },
+    "assistant": {
+      "kb_version": "kb-f464c67fb8633008",
+      "answer_paths": [
+        {
+          "id": "Q01",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q02",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q03",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q04",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q05",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q06",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q07",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q08",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q09",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q10",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q11",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q12",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q13",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q14",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q15",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q16",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q17",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        },
+        {
+          "id": "Q18",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported"
+        }
+      ]
+    },
+    "quality": {
+      "kb_version": "kb-f464c67fb8633008",
+      "verdicts": [
+        {
+          "id": "D01",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "kalenoe-steklo-seroe",
+              "field": "цена_за_м2_тг"
+            }
+          ],
+          "catalog_product_id": "kalenoe-steklo-seroe",
+          "reference_tg": null,
+          "reference_meaning": "per_m2",
+          "mentions": [
+            {
+              "raw": "15 500 тг",
+              "amount_tg": "15500",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "5b1f2b37a9578b4becc77a4cc3a016749141b5f287dd01c049e4a8cc674737a7"
+        },
+        {
+          "id": "D02",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "naves-alyuminievyh-fasadov-chernyy",
+              "field": "цена_розница_тг"
+            }
+          ],
+          "catalog_product_id": "naves-alyuminievyh-fasadov-chernyy",
+          "reference_tg": null,
+          "reference_meaning": "retail_unit",
+          "mentions": [
+            {
+              "raw": "500 тг",
+              "amount_tg": "500",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "bb16c987475ff08c3f12bde984d1242cb6c956504e881c1e402b8603806098d0"
+        },
+        {
+          "id": "D03",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-4-prozrachnoe",
+              "field": "цена_за_м2_тг"
+            }
+          ],
+          "catalog_product_id": "steklo-4-prozrachnoe",
+          "reference_tg": null,
+          "reference_meaning": "per_m2",
+          "mentions": [
+            {
+              "raw": "4 500 тг",
+              "amount_tg": "4500",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "3380def2224df54b936cc8a0692aa5045ef78876350042ca4f0b08bb9f8e9bdd"
+        },
+        {
+          "id": "D04",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "blok-pitaniya-ds-100-12",
+              "field": "цена_розница_тг"
+            }
+          ],
+          "catalog_product_id": "blok-pitaniya-ds-100-12",
+          "reference_tg": null,
+          "reference_meaning": "retail_unit",
+          "mentions": [
+            {
+              "raw": "2 500 тг",
+              "amount_tg": "2500",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "e21219fd3a7d793f6a131b75e72ee182ae95f8d3c18b27f2b7aebe57753144dd"
+        },
+        {
+          "id": "D05",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-seroe-komfort",
+              "field": "цена_за_м2_тг"
+            }
+          ],
+          "catalog_product_id": "steklo-seroe-komfort",
+          "reference_tg": null,
+          "reference_meaning": "per_m2",
+          "mentions": [
+            {
+              "raw": "15 000 тг",
+              "amount_tg": "15000",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "46b8627dab55bd1756d272dc2cb3727b722e1e21cbfb8b92752b4885f427c71d"
+        },
+        {
+          "id": "D06",
+          "verdict": "ERROR",
+          "correct": "10000",
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "bluetooth-dinamik-odinarnyy-yzkj-y2-24ble",
+              "field": "цена_розница_тг"
+            }
+          ],
+          "catalog_product_id": "bluetooth-dinamik-odinarnyy-yzkj-y2-24ble",
+          "reference_tg": "10000",
+          "reference_meaning": "retail_unit",
+          "mentions": [
+            {
+              "raw": "10 050 тг",
+              "amount_tg": "10050",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_mismatch",
+          "explanation_ru": "Цена в ответе не совпадает с базой: правильно 10000 ₸ (retail_unit).",
+          "input_sha256": "8e66cb36570966cd1c88abebd79888fc8ba5c1b75b3918b561f6fd33422d6326"
+        },
+        {
+          "id": "D07",
+          "verdict": "ERROR",
+          "correct": "10000",
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-seroe",
+              "field": "цена_за_м2_тг"
+            }
+          ],
+          "catalog_product_id": "steklo-seroe",
+          "reference_tg": "10000",
+          "reference_meaning": "per_m2",
+          "mentions": [
+            {
+              "raw": "13 000 тг",
+              "amount_tg": "13000",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_mismatch",
+          "explanation_ru": "Цена в ответе не совпадает с базой: правильно 10000 ₸ (per_m2).",
+          "input_sha256": "59a856357ca55b9adebf9ff568f322b0785b723aaca363f300a291fde7479546"
+        },
+        {
+          "id": "D08",
+          "verdict": "ERROR",
+          "correct": "400",
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "podves-skrytogo-krepleniya-zerkala",
+              "field": "цена_розница_тг"
+            }
+          ],
+          "catalog_product_id": "podves-skrytogo-krepleniya-zerkala",
+          "reference_tg": "400",
+          "reference_meaning": "retail_unit",
+          "mentions": [
+            {
+              "raw": "700 тг",
+              "amount_tg": "700",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_mismatch",
+          "explanation_ru": "Цена в ответе не совпадает с базой: правильно 400 ₸ (retail_unit).",
+          "input_sha256": "439835c910b93f915a17b499b46b4c43cfbc6d5da0ee518db0f408c2391704b6"
+        }
+      ]
+    },
+    "crm": {
+      "policy_version": "reference-v1",
+      "feature_version": "crm-v1",
+      "model_hash": null
+    },
+    "cards": {
+      "matching_policy": "evidence-v1"
+    }
+  },
+  "accepted_export_id": "457791aa-e289-4b3d-8651-9e17d46dc4ae",
+  "accepted_files": {
+    "solution.csv": "f67e301e7c62965539d6067f3a4377a26e42832bfee99a153bb4f7b048688399",
+    "answers.csv": "e533b2fe6975ba288decca4c4410e956fb04983009310adb34e63eac5b512c97",
+    "picks.csv": "b01cd1035793666d1c7d25db66e087d77c7b59a4c752606148bec311dcd02482",
+    "verdicts.csv": "db946f3f29b9cb661d81281dc46c475e833504d2cbe4032d658c4daa3dac9f1b",
+    "sale_cards.csv": "f0cb6896d909134b7ab80a44c2ed903be937919793377c57b79e62fd0b9215fd",
+    "buyers_top50.csv": "e4da10c47dfe13d291b266826a13682510614802fcf1335c2c430d9d32297878"
+  }
+}

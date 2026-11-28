@@ -1,3 +1,19 @@
+# Статус GPT_PRO_INTEGRATOR — окончательный checkpoint
+
+Команда Vtiposhniki,28 ноября2026. Код3f83310a052c58f0bc2d6b0ca8709e8b83768be8. После финального fetch включен новый C38a81dff1c15ee7b0c2bc0990cf561682a821f9fc с сохранением авторской истории; семантически совмещены completeness и строгий C3-F5. Prompt v4 инвалидирует предыдущий cache. Новые23 targeted C3 tests PASS; полный объединенный pytest487 PASS/4 SKIP, включая все предыдущие регрессии. Ruff/foundation14/contracts PASS.
+
+Финальный фактический run170f50c2-9c42-4bf1-a82c-e2e30fcb1224, 612.625 с,600с/7workers/seed42: 59,1219631%, invalid=missing=0; 200/298 деталей; материальная оценка1 020 090,75 ₸. Все5 CSV одного run и buyers проверены побайтно и штатным validator; постпроверка assistant36/36,dialogs8/8,CRM20/25. Никаких runtime KEY. Две дополнительные полные проверки через EXE — quick и измененные ID/геометрия без CRM labels — ready. Пять свободных исходных кусков/по3 объясненных покупателя подтверждены через текущий API.
+
+Окончательный EXE имеет build_commit3f83310; actual native smoke, backup/restore, cancel/incumbent,10+2 actual browser E2E повторены на нем. Abrupt kill/restart/retry также повторен. Перенесенный пакет, CRC и scanner проверяются отдельно; итоговый путь `C:/Users/User/Documents/ChatGPT/Genezis/dist/GlassFlow-integrated-3f83310/GlassFlow.exe`, ZIP рядом. Точные hashes в docs/release/integration/v4/package.json. Первый пакет ba32194 сохранен отдельно, не заменен.
+
+Свежий входящий live C3 имеет prompt v2,27/36=75%,FAIL (153 model calls,p95=1,181с,0 provider errors). Это не оценка объединенного v4. Для v4 свежая live приемка NOT RUN из-за отсутствия ключа/квоты команды; paid выключен. Ни81,4%, ни75% не объявляются PASS. Отсутствующие чистая Windows11, human10pairs, финальные PDF/слайды/репетиция/подача и ограничения buyer источников остаются как ниже.
+
+CI кода3f83310: Linux verify и Windows full tests/build/native/scanner SUCCESS, run46126201073 (https://github.com/Mustiks07/GlassFlow/actions/runs/46126201073). Native package CRC и relocated import/solver/scanner PASS; startup перенесенного EXE2,328с на build host.
+
+Текущие отчеты docs/release/integration/v4, summary.json, pytest.xml, frozen-smoke/exe-browser/native-recovery/portable/package, actual open/baseline/changed runs. Backend/production frontend после3f83310 не менялись. Следующий шаг — обычный fast-forward сохраненного main и push, проверка remote SHA; затем внешняя приемка. Исторические checkpoints ниже относятся к своим SHA.
+
+---
+
 # Статус GPT_PRO_INTEGRATOR
 
 28 ноября2026, Asia/Qyzylorda. Команда **Vtiposhniki**. Общая рабочая версия интегрирована; полная конкурсная приемка не объявлена.
