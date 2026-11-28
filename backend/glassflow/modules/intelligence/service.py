@@ -644,6 +644,19 @@ class IntelligenceService:
         if target.kb_version != catalog.kb.version:
             raise IntelligenceError(409, "STALE_KB_VERSION", "Прайс изменился после расчета; сначала пересчитайте.", conflict_objects=[catalog.kb.version])
         quote = self._view(target, catalog.kb.version)
+        # Also protect persisted assistant drafts from before the completeness
+        # guard: their linked turn may contain an unresolved mandatory parameter.
+        with self.session_factory() as session:
+            turns = session.scalars(
+                select(TurnRow).join(ConversationRow, TurnRow.conversation_id == ConversationRow.conversation_id)
+                .where(ConversationRow.dataset_id == request.dataset_id)
+            ).all()
+            for row in turns:
+                reply = json.loads(row.reply_json)
+                draft = reply.get("quote") or {}
+                if (draft.get("quote_id"), draft.get("revision")) == (quote_id, request.expected_revision):
+                    if (reply.get("card") or {}).get("missing_parameters"):
+                        raise IntelligenceError(409, "QUOTE_NOT_CONFIRMABLE", "Сначала ответьте на уточнение по параметрам расчета.")
         reasons = list(quote.inventory_reason_codes)
         if quote.candidate_refs:
             stored_request = QuoteRequest.model_validate_json(target.request_json)
@@ -714,6 +727,7 @@ class IntelligenceService:
             turn.text, context, inventory_mode=turn.inventory_mode, allow_ai=turn.allow_ai, correlation_id=correlation_id
         )
         local = result.local
+        conversation_id = conversation_id or str(uuid.uuid4())
         pricing = None
         if result.answer_path == "llm_tools" and result.tool_context is not None:
             pricing = result.tool_context.last_quote
@@ -721,7 +735,7 @@ class IntelligenceService:
             pricing = local.pricing
         quote_dto = None
         new_context = local.context  # deterministic understanding of the turn is the stored context
-        if pricing is not None and pricing.lines or (pricing is not None and pricing.unknowns and pricing.product):
+        if pricing is not None and not local.missing_parameters and (pricing.lines or (pricing.unknowns and pricing.product)):
             request = QuoteRequest(
                 dataset_id=turn.dataset_id,
                 catalog_product_id=pricing.product.product_id,
@@ -748,6 +762,9 @@ class IntelligenceService:
                 catalog, request, pricing.product, pricing, mapping, quote_id=quote_id, revision=quote_revision,
                 created_at=self.clock(), inventory=inventory,
             )
+            quote_dto.origin = "assistant_model" if result.answer_path == "llm_tools" else "assistant_deterministic"
+            quote_dto.origin_conversation_id = conversation_id
+            quote_dto.origin_turn_index = turn_index
         card = WorkingCard(
             intent=local.intent,
             catalog_product_id=local.product.product_id if local.product else None,
@@ -779,7 +796,6 @@ class IntelligenceService:
                 )
         evidence = list({(e.source, e.source_version, e.record_id, e.field): e for e in local.evidence}.values())[:30]
         created = self.clock()
-        conversation_id = conversation_id or str(uuid.uuid4())
         reply = AssistantReply(
             conversation_id=conversation_id,
             answer=result.answer,
@@ -826,6 +842,13 @@ class IntelligenceService:
                 for old in previous:
                     old.status = "superseded"
                 self._store_revision(session, quote_dto, request)
+            elif quote_id is not None and local.missing_parameters:
+                for old in session.scalars(select(QuoteRevisionRow).where(
+                    QuoteRevisionRow.dataset_id == turn.dataset_id,
+                    QuoteRevisionRow.quote_id == quote_id,
+                    QuoteRevisionRow.status.in_(["calculated", "needs_review"]),
+                )).all():
+                    old.status = "superseded"
         return reply
 
     def get_conversation(self, conversation_id: str, dataset_id: str) -> Conversation:
