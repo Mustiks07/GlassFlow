@@ -199,6 +199,33 @@ def test_actual_c2_mutation_rolls_back_if_platform_completion_fails(runtime):
     assert action(client, sheet, "reserve")["reservation"]["state"] == "active"
 
 
+def test_actual_platform_price_and_quote_owner_changes_block_old_order(runtime):
+    import json
+    from pathlib import Path
+    client, _, workspace = runtime
+    d = workspace["dataset_id"]
+    q, _ = quote(client, d)
+    sheet = action(client, order(client, d, q, q["candidate_refs"][0]["remnant_id"]), "confirm")
+    path = Path(__file__).resolve().parents[2] / "inputs/PACK_for_teams/2_assistant_crm/ksm_knowledge_base.json"
+    kb = json.loads(path.read_text(encoding="utf-8"))
+    next(p for p in kb["товары"] if p["id"] == "steklo-6-prozrachnoe")["цена_за_м2_тг"] = 8100
+    response = client.post(f"/api/v1/datasets/{d}/kb", data={"expected_version": "0"},
+        files={"file": ("new-price.json", json.dumps(kb, ensure_ascii=False).encode("utf-8"), "application/json")},
+        headers={"Idempotency-Key": "actual-price-change"})
+    assert response.status_code == 200, response.text
+    stale = client.get(f"/api/v1/order-sheets/{sheet['order_id']}", params={"dataset_id": d}).json()
+    assert stale["quote_state"] == "stale"
+    changed = post(client, f"/quotes/{q['quote_id']}/revise", dict(dataset_id=d, expected_revision=1,
+        changes={}, reprice_current_kb=True))
+    assert changed["total_tg"] == "2004.65"
+    ready, _ = quote(client, d)
+    other = action(client, order(client, d, ready, ready["candidate_refs"][0]["remnant_id"]), "confirm")
+    post(client, f"/quotes/{ready['quote_id']}/revise", dict(dataset_id=d, expected_revision=1,
+        changes={"customer_id": "C-another"}))
+    stale = client.get(f"/api/v1/order-sheets/{other['order_id']}", params={"dataset_id": d}).json()
+    assert stale["stale_code"] == "QUOTE_CUSTOMER_MISMATCH" and stale["offer"] is None
+
+
 def test_new_ids_changed_input_without_labels_and_real_partial_export(runtime):
     import csv
     import io

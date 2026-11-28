@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "dev:fixture": "VITE_GLASSFLOW_TRANSPORT=fixture vite --host 127.0.0.1 --port 5174",
+    "dev:fixture": "node scripts/fixture.mjs dev",
     "build": "tsc -b && vite build",
-    "build:fixture": "tsc -b && VITE_GLASSFLOW_TRANSPORT=fixture vite build --outDir dist-fixture",
+    "build:fixture": "tsc -b && node scripts/fixture.mjs build",
     "typecheck": "tsc -b",
     "test": "vitest run",
     "check:bundle": "node scripts/check-bundle.mjs dist",

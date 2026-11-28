@@ -10,6 +10,11 @@ import { formatMoney } from '../../lib/format';
 type Sheet = components['schemas']['OrderSheet'];
 type Part = components['schemas']['Part'];
 type Placement = components['schemas']['Placement'];
+export const flowLabel = (state?: string) => ({ draft: 'Черновик', needs_review: 'Нужно уточнение',
+  ready: 'Проверено', confirmed: 'Подтверждено', reserved: 'В резерве', checked: 'Склад проверен',
+  handed_over: 'Передано в работу', completed: 'Расход подтвержден', stale: 'Нужна перепроверка',
+  cancelled: 'Отменено', open: 'Открыт', missing: 'Нет расчета', unchecked: 'Не проверен',
+} as Record<string, string>)[state ?? ''] ?? 'Состояние не определено';
 
 export function ActualUse({ dataset, subject, kind, onDone }: {
   dataset: Dataset; subject: { version?: number; order_id?: string; basket_id?: string };
@@ -36,8 +41,9 @@ export function ActualUse({ dataset, subject, kind, onDone }: {
     if (!template || !checked || !note.trim()) return;
     setBusy(true); setError(null);
     try {
-      const ref = execution ?? await client.post<{ execution_ref: string; execution_version: number }>('/cutting/executions',
+      const recorded = execution ?? await client.post<{ execution_ref: string; execution_version: number }>('/cutting/executions',
         { ...body, ...template }, { idempotencyKey: `${key}:execution` });
+      const ref = { execution_ref: recorded.execution_ref, execution_version: recorded.execution_version };
       setExecution(ref);
       await client.post('/material-use', { ...body, ...ref }, { idempotencyKey: `${key}:use` });
       onDone();
@@ -108,11 +114,11 @@ export function OrderFlowPanel({ dataset, quote }: { dataset: Dataset; quote: Qu
         <Button onClick={create} busy={busy} disabled={!quote?.customer_id || quote.status !== 'confirmed'}>Создать лист из подтвержденного расчета</Button>
         {!quote?.customer_id && <p className="small muted">Сначала укажите заказчика в расчете. Анонимный расчет не назначается клиенту автоматически.</p>}
         <label>Сохраненные заказы <select value={selected?.order_id ?? ''} onChange={e => setSelected(list.data?.find(s => s.order_id === e.target.value) ?? null)}>
-          <option value="">Выберите заказ</option>{list.data?.map(s => <option key={s.order_id} value={s.order_id}>{s.customer_ref} · {s.quote_state} · {s.lifecycle}</option>)}
+          <option value="">Выберите заказ</option>{list.data?.map(s => <option key={s.order_id} value={s.order_id}>{s.customer_ref} · {flowLabel(s.quote_state)} · {flowLabel(s.lifecycle)}</option>)}
         </select></label>
       </>}
       {selected && <>
-        <p>Клиент: {selected.customer_ref} · версия {selected.version} · {selected.quote_state} / {selected.warehouse_state} / {selected.lifecycle}</p>
+        <p>Клиент: {selected.customer_ref} · версия {selected.version} · {flowLabel(selected.quote_state)} / {flowLabel(selected.warehouse_state)} / {flowLabel(selected.lifecycle)}</p>
         {selected.stale_reason && <p role="alert">{selected.stale_reason}</p>}
         {selected.offer && <div className="metric"><span>Предложение клиенту</span><strong>{formatMoney(selected.offer.quote.total_tg)}</strong><span>{selected.offer.quote.product_name}</span></div>}
         {selected.warehouse_task && <div><strong>Задание складу</strong><p>{selected.warehouse_task.remnant.remnant_id} · {selected.warehouse_task.remnant.location_raw} · {selected.warehouse_task.requested_dimensions.length_mm}×{selected.warehouse_task.requested_dimensions.width_mm} мм · {selected.warehouse_task.quantity} шт.</p></div>}

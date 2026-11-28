@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import platform
+import re
 import shutil
 import struct
 import subprocess
@@ -106,10 +107,29 @@ def actual_domain_checks(client, dataset_id):
         time.sleep(.1)
     assert result['state'] == 'completed', result
     assert result['result']['validated'] and result['result']['plan_id'] != 'unsaved'
+    cancelled = post('/cutting/solve', {'dataset_id': d, 'config': {'profile': 'extended', 'time_limit_seconds': 60}})
+    deadline = time.monotonic() + 45
+    while time.monotonic() < deadline:
+        incumbent = client.get(f"/api/v1/jobs/{cancelled['job_id']}").json()
+        if incumbent.get('last_valid_result'):
+            break
+        assert incumbent['state'] in {'queued', 'running'}, incumbent
+        time.sleep(.1)
+    assert incumbent.get('last_valid_result'), incumbent
+    response = client.post(f"/api/v1/jobs/{cancelled['job_id']}/cancel", params={'dataset_id': d})
+    assert response.status_code == 200
+    deadline = time.monotonic() + 15
+    while time.monotonic() < deadline:
+        incumbent = client.get(f"/api/v1/jobs/{cancelled['job_id']}").json()
+        if incumbent['stopped']:
+            break
+        time.sleep(.1)
+    assert incumbent['state'] == 'cancelled' and incumbent['last_valid_result']
     return {'dataset_id': d, 'order_id': sheet['order_id'], 'usage_id': use['usage_id'],
             'confirmed_actual_area_mm2': use['receipt']['assessment']['actual_area_mm2'],
             'confirmed_actual_material_value_tg': use['receipt']['assessment']['actual_material_value_tg'],
-            'solver_plan_id': result['result']['plan_id'], 'status': 'passed_actual_ports'}
+            'solver_plan_id': result['result']['plan_id'], 'cancelled_job_id': cancelled['job_id'],
+            'cancel_kept_valid_incumbent': True, 'status': 'passed_actual_ports'}
 
 
 def upgrade_checks(client, dataset_id):
@@ -177,6 +197,10 @@ def upgrade_checks(client, dataset_id):
 
 
 def smoke(exe):
+    web = exe.parent / "_internal/apps/web/dist"
+    html = (web / "index.html").read_text(encoding="utf-8")
+    assets = {url for url in re.findall(r'(?:src|href)="([^"]+)"', html) if url.startswith("/assets/")}
+    assert assets and all((web / url.lstrip("/")).is_file() for url in assets), "Frozen frontend references missing assets"
     diagnostics = exe.with_name("GlassFlowDiagnostics.exe")
     assert diagnostics.is_file(), "Missing diagnostics executable in onedir bundle"
 
@@ -206,6 +230,7 @@ def smoke(exe):
         "pe_subsystem": {"main": subsystem(exe), "diagnostics": subsystem(diagnostics)},
         "clean_windows": "not_run",
         "ui_flow": "browser E2E recorded separately; this smoke drives actual EXE HTTP API",
+        "frozen_web_assets": {url: hashlib.sha256((web / url.lstrip('/')).read_bytes()).hexdigest() for url in sorted(assets)},
     }
     stamp = exe.parent / "_internal/glassflow/build-info.json"
     if stamp.is_file():

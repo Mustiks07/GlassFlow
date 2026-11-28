@@ -42,7 +42,7 @@ export function EconomicsPanel({ dataset }: { dataset: Dataset }) {
         try { const value = JSON.parse(await file.text()); setInputs(value.inputs ?? value); setScenario(null); setKey(newIdempotencyKey()); setError(null); }
         catch (err) { setError(err); }
       }} /></label>
-      <p className="small muted">Формат протокола: docs/economics/README.md. Неполные измерения проверяет сервер; отсутствующие значения не заменяются нулями.</p>
+      <p className="small muted">В протоколе укажите начало и конец каждой операции, активное время, ошибки, оператора и ссылки на результаты. Неполные измерения будут отклонены; отсутствующие значения не заменяются нулями.</p>
       <label>Открыть сохраненный сценарий <input value={scenarioId} onChange={e => setScenarioId(e.target.value)} /></label>
       <Button disabled={!scenarioId} onClick={async () => {
         try { const value = await client.get<Scenario>(`/economics/scenarios/${scenarioId}`, { query: { dataset_id: dataset.dataset_id } }); setScenario(value); setInputs(value.inputs); setName(value.name); }

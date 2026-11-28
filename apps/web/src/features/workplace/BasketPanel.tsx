@@ -6,7 +6,7 @@ import { newIdempotencyKey } from '../../api/client';
 import type { Dataset, Job } from '../../api/types';
 import { Button, ErrorState, Panel } from '../../ui/kit';
 import { formatMoney } from '../../lib/format';
-import { ActualUse } from './OrderFlowPanel';
+import { ActualUse, flowLabel } from './OrderFlowPanel';
 
 type Basket = components['schemas']['Basket'];
 type Line = components['schemas']['BasketLineDraft'];
@@ -95,14 +95,14 @@ export function BasketPanel({ dataset }: { dataset: Dataset }) {
       {dataset.mode !== 'workspace' ? <p>Для корзины откройте рабочую копию.</p> : <>
         <label>Сохраненная корзина <select value={basket?.basket_id ?? ''} onChange={e => {
           const value = list.data?.find(v => v.basket_id === e.target.value) ?? null; setBasket(value); setLines(value?.lines ?? []); setRetryKey(newIdempotencyKey());
-        }}><option value="">Новая заявка</option>{list.data?.map(v => <option key={v.basket_id} value={v.basket_id}>{v.customer_ref} · {v.state} · {v.request_text.slice(0, 45)}</option>)}</select></label>
+        }}><option value="">Новая заявка</option>{list.data?.map(v => <option key={v.basket_id} value={v.basket_id}>{v.customer_ref} · {flowLabel(v.state)} · {v.request_text.slice(0, 45)}</option>)}</select></label>
         {!basket && <>
           <label>Заказчик корзины <input value={customer} onChange={e => setCustomer(e.target.value)} /></label>
           <label>Позиции заявки, каждая с новой строки <textarea rows={4} value={text} onChange={e => setText(e.target.value)} placeholder="2 детали стекло прозрачное 6 мм 450×370 мм с кромкой по всем сторонам; 3 шт AB1001" /></label>
           <Button busy={busy} disabled={!customer.trim() || !text.trim()} onClick={() => run(parse)}>Разобрать все позиции</Button>
         </>}
         {basket && <>
-          <p>Клиент {basket.customer_ref} · {basket.state} · версия {basket.version}</p>
+          <p>Клиент {basket.customer_ref} · {flowLabel(basket.state)} · версия {basket.version}</p>
           {basket.state === 'draft' || basket.state === 'needs_review' || basket.state === 'ready' || basket.state === 'stale' ? <>
             {lines.map((line, index) => <fieldset className="stack" key={line.line_id}><legend>{line.text}</legend>
               {line.clarification && <p role="status">Уточнение: {line.clarification}</p>}
@@ -115,7 +115,7 @@ export function BasketPanel({ dataset }: { dataset: Dataset }) {
           {['draft', 'needs_review', 'ready', 'stale'].includes(basket.state ?? "") && <Button busy={busy} disabled={!note.trim() || !lines.length} onClick={() => run(calculate)}>Проверил строки — рассчитать и подобрать совместно</Button>}
           <div className="metric"><span>Итог всей корзины</span><strong>{basket.total_tg == null ? 'Требуется уточнение' : formatMoney(basket.total_tg)}</strong></div>
           {basket.total_tg == null && basket.known_subtotal_tg && <p>Известная часть: {formatMoney(basket.known_subtotal_tg)}. Это не сумма заказа.</p>}
-          {basket.issues?.map(issue => <p role="status" key={issue}>{issue}</p>)}
+          {basket.issues?.map(issue => <p role="status" key={issue}>{issue.startsWith('line:') ? 'Уточните параметры, цену или совместимость указанной позиции.' : issue === 'joint_stock_validation_required' ? 'Требуется совместная проверка размещения всех стеклянных позиций.' : issue}</p>)}
           <div className="row wrap">{([
             ['confirm', 'Подтвердить всю корзину', basket.state === 'ready'],
             ['reserve', 'Резерв всей корзины', basket.state === 'confirmed'],
