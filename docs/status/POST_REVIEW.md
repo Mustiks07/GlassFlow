@@ -1,5 +1,15 @@
 # POST_REVIEW — независимый экзамен и baseline
 
+## Final artifact gate — 2fc1d83
+
+Read-only final artifact review PASS for working hybrid publication; not full contest/live acceptance. Report: docs/reviews/POST_INTEGRATION_FINAL_ARTIFACT_GATE_2026-11-28.md. Actual relocated folder/ZIP `C:/Users/User/Documents/ChatGPT/Genezis/dist/GlassFlow-post-2fc1d83`; ZIP SHA89ffa59e672fd9b488bff7521106d2c318434264f18eb2838af5b8986783deae. Evidence: tests/post_review/evidence/final_artifacts_2fc1d83/manifest.json.
+
+Actual build stamp2fc matches152 source entries/digest, required native imports and16 ReportLab barcode modules present in both EXE/PYZ, evaluation module absent; concrete scanner PASS. Relocated1405 files exactly match1404 manifest hashes+self, ZIP CRC and all members byte-match;7 training inputs byte-identical, no KEY. Final index/JS/CSS fetched from actual native servers matches bundle. Correct export host19284/PID14948: four snapshots/two ready+two partial, exact SHA/header/UTF8/ID/membership/card/price30–70% checks PASS. Initial18884 different browser dataset404 correctly classified as wrong observer host, not product defect. No POST/provider/config/runtime mutation occurred.
+
+Protected25 input/spec/presentation files equal5648852 bytes;24049e1/2cff2d0 ancestry preserved. Old verified3f EXE and ZIP match old package hashes. PDF first/final pages rendered/viewed; presentation remains unchanged draft with placeholders, no final human/economy materials fabricated. Updated README current/historical/657+15/16browser/P2/live and team checked. Root JUnit661=657pass+4skip/0failure/errors independently parsed. Nested post/.gitattributes preserves exact CRLF byte evidence; no Git normalization issue. Three public preflights checked in root publication tree: credential fields/patterns0, absolute URLs0, capability URLs0, hashes match. Closed oracle untouched.
+
+Root still completes its explicit relocated launcher/training-ZIP import and staged Git blob/final main push checks. No new artifact P1 blocker. Clean Windows, stable blinded live exam/95%, actual judge gateway/hosting/load, human10pairs and first-operator observation remain open external acceptance, as previously documented. Reviewer made no code or runtime changes.
+
 ## Final independent API conclusion — 3e6638a
 
 Immutable root archive 3e6638a3ffa40df09f787b3bfb94a7bb3f4d1dd5 independently tested via real uvicorn/TCP/SQLite/child workers. No observed P1 API blocker remains for publication as a working hybrid release, subject to root final native/browser/EXE/package checks. Full contest/live model acceptance remains NOT_ACCEPTED. Final conclusion: docs/reviews/POST_INTEGRATION_FINAL_INDEPENDENT_2026-11-28.md; evidence/portable hashes: tests/post_review/evidence/final_candidate_3e6638a/manifest.json.

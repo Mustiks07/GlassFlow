@@ -1,0 +1,18 @@
+{
+  "xml_sha256": "ac2a3a69df8e49a4f549d8adecbe4752508c11b5f6ab86c9eae4aedcd16bf12d",
+  "counts": {
+    "tests": 661,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 4,
+    "passed": 657
+  },
+  "scope": "Read-only authoritative root JUnit; not rerun by this artifact gate",
+  "README_sha256": "6eb62cea2873e8ca02e5dc7d54adc94cbbda95b1305a0234355e07b9539f111c",
+  "README_checked_team": "Vtiposhniki",
+  "README_current_build": "2fc1d83",
+  "README_historical_v4_explicit": true,
+  "README_live_not_accepted_explicit": true,
+  "presentation_draft_explicit": true,
+  "post_byte_attributes_present": "# Acceptance inputs/downloads are byte evidence: preserve original LF/CRLF as received.\n* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol\n"
+}

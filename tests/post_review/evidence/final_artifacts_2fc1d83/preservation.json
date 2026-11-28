@@ -1,0 +1,189 @@
+{
+  "baseline": "5648852",
+  "current_build": "2fc1d83",
+  "protected_count": 25,
+  "all_byte_identical": true,
+  "preserved_ancestry": {
+    "24049e1": true,
+    "2cff2d0": true,
+    "5648852": true
+  },
+  "records": [
+    {
+      "path": "docs/presentation/GlassFlow_pitch.pdf",
+      "bytes": 466228,
+      "sha256": "5bea15570970dee0a58345ec5ccaf20a50aed38935bd9593bc1a664d99348ebd",
+      "baseline_sha256": "5bea15570970dee0a58345ec5ccaf20a50aed38935bd9593bc1a664d99348ebd",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/presentation/GlassFlow_pitch.pptx",
+      "bytes": 498165,
+      "sha256": "292aa08c5668313aa5d8322329b9854096b6014a0abcea79545fa73b42418501",
+      "baseline_sha256": "292aa08c5668313aa5d8322329b9854096b6014a0abcea79545fa73b42418501",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/presentation/PITCH_SCRIPT.md",
+      "bytes": 5804,
+      "sha256": "248e81fd7a4427d663ca946ce7f5a6570572da2e468623701ebe2051c543fa63",
+      "baseline_sha256": "248e81fd7a4427d663ca946ce7f5a6570572da2e468623701ebe2051c543fa63",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/presentation/README.md",
+      "bytes": 1483,
+      "sha256": "c15ab9b813e49de0660445f8218bff37bfa20483a7e0f07d331a2ba346daab9c",
+      "baseline_sha256": "c15ab9b813e49de0660445f8218bff37bfa20483a7e0f07d331a2ba346daab9c",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/presentation/TIME_MEASUREMENT_PLAN.md",
+      "bytes": 3497,
+      "sha256": "7d4f7a4fc6aac8779a5ec9bec61e2ec03d44e3a1f17786e2d854d5cc81d2f655",
+      "baseline_sha256": "7d4f7a4fc6aac8779a5ec9bec61e2ec03d44e3a1f17786e2d854d5cc81d2f655",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/presentation/build_deck.py",
+      "bytes": 17343,
+      "sha256": "abef0bfc3e6e82845120aefa7f253ae8189d3fa201c9b3a3722ea2d53872979a",
+      "baseline_sha256": "abef0bfc3e6e82845120aefa7f253ae8189d3fa201c9b3a3722ea2d53872979a",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/specification/GlassFlow_Development_Specification_v1.pdf",
+      "bytes": 271262,
+      "sha256": "8c12555bb82f906dab1d83413f5569a2d4abeacb0f8f00dd254763683cc8cd3f",
+      "baseline_sha256": "8c12555bb82f906dab1d83413f5569a2d4abeacb0f8f00dd254763683cc8cd3f",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/specification/GlassFlow_Development_Specification_v1.txt",
+      "bytes": 158103,
+      "sha256": "48669154ca32bb21392b8273d8d6ef2a5fa35f6420f461af3c4a703bfef0559c",
+      "baseline_sha256": "48669154ca32bb21392b8273d8d6ef2a5fa35f6420f461af3c4a703bfef0559c",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/specification/PROVENANCE.md",
+      "bytes": 2260,
+      "sha256": "02f77ba34af77bd2da4bec11f91b9d92f486c69788ba81b3d55ca01c7379441a",
+      "baseline_sha256": "02f77ba34af77bd2da4bec11f91b9d92f486c69788ba81b3d55ca01c7379441a",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/specification/input_manifest.json",
+      "bytes": 2328,
+      "sha256": "6d8015710d196dab09a0a1ac257964248f4491a1bf7aa05481d4771d60ea208d",
+      "baseline_sha256": "6d8015710d196dab09a0a1ac257964248f4491a1bf7aa05481d4771d60ea208d",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/specification/specification_structure.json",
+      "bytes": 225188,
+      "sha256": "b1faae365be107717711f2128d88facb7d4ecea3ecdc664f814d7f60ea637b08",
+      "baseline_sha256": "b1faae365be107717711f2128d88facb7d4ecea3ecdc664f814d7f60ea637b08",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/Case_KSM_Steklo_dengi_klient.pdf",
+      "bytes": 760665,
+      "sha256": "7a1e1b2cf3f0b88738f5a04c69a936691b2f2305ae6bcaf320e5effa8ae04d03",
+      "baseline_sha256": "7a1e1b2cf3f0b88738f5a04c69a936691b2f2305ae6bcaf320e5effa8ae04d03",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/1_ostatki/materials.csv",
+      "bytes": 547,
+      "sha256": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
+      "baseline_sha256": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/1_ostatki/orders_open.csv",
+      "bytes": 13773,
+      "sha256": "9ac222565c2eb05e28137b312f412f3a05544dde0ffa051a694d00338bbcbb00",
+      "baseline_sha256": "9ac222565c2eb05e28137b312f412f3a05544dde0ffa051a694d00338bbcbb00",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/1_ostatki/solution_example.csv",
+      "bytes": 86,
+      "sha256": "df22786760d0224e3da73a12c37833c6a0e2e2aa8c604a63b425fb7b8544a448",
+      "baseline_sha256": "df22786760d0224e3da73a12c37833c6a0e2e2aa8c604a63b425fb7b8544a448",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/1_ostatki/stock_open.csv",
+      "bytes": 12984,
+      "sha256": "4e24ce0a917e506c803bcc1378da5504becaa5f733f05b1900ca2f8f0b8db547",
+      "baseline_sha256": "4e24ce0a917e506c803bcc1378da5504becaa5f733f05b1900ca2f8f0b8db547",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/1_ostatki/validate.py",
+      "bytes": 4781,
+      "sha256": "0d2760772d128ce0724f0a7090eff474667fc5e376a1fc753f03ddb8b73dac4a",
+      "baseline_sha256": "0d2760772d128ce0724f0a7090eff474667fc5e376a1fc753f03ddb8b73dac4a",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/2_assistant_crm/applications_open.csv",
+      "bytes": 63544,
+      "sha256": "7df1c35f78f2d83dabb0ff6fa6d564f4ba0553b13e4348da2179c8f037bf4363",
+      "baseline_sha256": "7df1c35f78f2d83dabb0ff6fa6d564f4ba0553b13e4348da2179c8f037bf4363",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/2_assistant_crm/dialogs_open.csv",
+      "bytes": 1367,
+      "sha256": "c3b2209a6370ed7b19d527ad448b713d5e42385c8b0574119dff311b073146f3",
+      "baseline_sha256": "c3b2209a6370ed7b19d527ad448b713d5e42385c8b0574119dff311b073146f3",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/2_assistant_crm/dialogs_open_KEY.csv",
+      "bytes": 1883,
+      "sha256": "bb0927ab8826e53715ae1fae59fb5e599e13a9b764510efef64d9b1011bbdd01",
+      "baseline_sha256": "bb0927ab8826e53715ae1fae59fb5e599e13a9b764510efef64d9b1011bbdd01",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/2_assistant_crm/ksm_knowledge_base.json",
+      "bytes": 12315,
+      "sha256": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+      "baseline_sha256": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/2_assistant_crm/questions_open.csv",
+      "bytes": 1962,
+      "sha256": "e6742f9978b8eea28a034e887c63308051f3e32975b945b3dc412a3048c00498",
+      "baseline_sha256": "e6742f9978b8eea28a034e887c63308051f3e32975b945b3dc412a3048c00498",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/2_assistant_crm/questions_open_KEY.csv",
+      "bytes": 2646,
+      "sha256": "e1e791f2047197619f0ec1d883715ff79a94aac86a5777227c9a5f329ac08542",
+      "baseline_sha256": "e1e791f2047197619f0ec1d883715ff79a94aac86a5777227c9a5f329ac08542",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/2_assistant_crm/selfcheck.py",
+      "bytes": 3798,
+      "sha256": "dc3118a6638df0de072decea3e94adc2d9edad9650d88ce29150cb51c7582b6e",
+      "baseline_sha256": "dc3118a6638df0de072decea3e94adc2d9edad9650d88ce29150cb51c7582b6e",
+      "byte_identical": true
+    },
+    {
+      "path": "inputs/PACK_for_teams/README.txt",
+      "bytes": 571,
+      "sha256": "d74ed6df88ee44c2f53ac1b9156c346ab69ae40d6c0f9dfff127f1f6106abf47",
+      "baseline_sha256": "d74ed6df88ee44c2f53ac1b9156c346ab69ae40d6c0f9dfff127f1f6106abf47",
+      "byte_identical": true
+    }
+  ],
+  "presentation_visual_scope": "Existing unchanged six-page draft; title and final economy page rendered with Poppler and inspected. Clear final-run/human-labor placeholders; not final contest presentation. No material regenerated or replaced."
+}
