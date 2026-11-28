@@ -97,6 +97,9 @@ def wire_app(app):
         from glassflow.contracts.intelligence import AICheckRequest
         service = refresh_runtime()
         result = await service.check_ai(AICheckRequest(live=settings.profile != "local_limited"))
+        if settings.profile != "local_limited" and result.status != "available":
+            from glassflow.core.errors import AppError
+            raise AppError(503, "AI_PROFILE_UNAVAILABLE", "Выбранный AI-профиль недоступен; локальное ядро работает.")
         from glassflow.core.models import now
         return {"available": result.status == "available", "provider": settings.provider,
                 "model_id": settings.model_id, "capabilities": result.capabilities, "checked_at": now()}

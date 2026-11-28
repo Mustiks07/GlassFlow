@@ -268,6 +268,12 @@ function SaleCardView({ dataset, card, buyerByName }: { dataset: Dataset; card: 
                     · {buyer.category}, {buyer.city}
                     <Details summary="Почему этот покупатель">
                       <p>{buyer.why}</p>
+                      {card.buyer_matches?.filter(match => match.name === name).map(match => <div key={match.buyer_id}>
+                        <p>{match.explanation}</p><p>{match.activity}</p>
+                        <p>{match.dimensions_basis}</p>
+                        <p>Материал {match.material_id} · {match.dimensions.length_mm}×{match.dimensions.width_mm} мм · версия куска {match.remnant_version} · проверено {match.checked_at}</p>
+                        <p>Интерес покупателя не подтвержден. {match.constraints?.join('; ')}</p>
+                      </div>)}
                       <a href={buyer.source_url} target="_blank" rel="noreferrer noopener">
                         Источник <ExternalLink size={11} aria-hidden="true" />
                       </a>

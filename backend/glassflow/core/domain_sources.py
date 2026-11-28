@@ -12,7 +12,7 @@ from glassflow.core.uow import canonical_hash
 from glassflow.modules.cutting.domain import PartSpec
 from glassflow.modules.cutting.models import CutRemnant
 from glassflow.modules.cutting.service import CuttingError, CuttingService
-from glassflow.modules.intelligence.service import IntelligenceService
+from glassflow.modules.intelligence.service import IntelligenceError, IntelligenceService
 
 
 class BoundFactory:
@@ -33,6 +33,10 @@ def intelligence(session):
 
 
 def quote_facts(session, dataset_id, quote_id):
+    return domain_error(lambda: _quote_facts(session, dataset_id, quote_id))
+
+
+def _quote_facts(session, dataset_id, quote_id):
     service = intelligence(session)
     catalog = service.catalog_for(dataset_id)
     row = service._rows(session, dataset_id, quote_id)[-1]
@@ -49,7 +53,7 @@ def quote_facts(session, dataset_id, quote_id):
 def domain_error(fn):
     try:
         return fn()
-    except CuttingError as exc:
+    except (CuttingError, IntelligenceError) as exc:
         raise AppError(exc.status, exc.code, exc.message_ru, conflicts=exc.conflict_objects) from None
 
 

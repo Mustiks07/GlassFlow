@@ -62,6 +62,56 @@ def stop(process, client):
     client.close()
 
 
+def actual_domain_checks(client, dataset_id):
+    """Drive the EXE's actual C2/C3 ports; no substitute domain adapters."""
+    def post(path, body):
+        response = client.post('/api/v1' + path, json=body,
+            headers={'Idempotency-Key': f'frozen-actual:{time.time_ns()}'})
+        assert response.status_code in {200, 202}, response.text
+        return response.json()
+
+    d = post(f'/datasets/{dataset_id}/working-copy', {'name': 'Frozen actual domain acceptance'})['dataset_id']
+    kb = client.get(f'/api/v1/datasets/{d}').json()['kb_version']
+    q = post('/quotes', dict(dataset_id=d, catalog_product_id='steklo-6-prozrachnoe', kb_version=kb,
+        dimensions=dict(length_mm=450, width_mm=370), quantity=1, customer_id='FROZEN-OPERATOR',
+        processing=dict(kind='euro_edge', sides='all'), inventory_mode='free_whole_remnants'))
+    assert q['total_tg'] == '1988.00'
+    q = post(f"/quotes/{q['quote_id']}/confirm", dict(dataset_id=d, expected_revision=1, confirmed_by='operator'))
+    sheet = post('/order-sheets', dict(dataset_id=d, customer_ref='FROZEN-OPERATOR', request_text='Actual native quote and reserve'))
+    rid = q['candidate_refs'][0]['remnant_id']
+    def command(operation, **extra):
+        nonlocal sheet
+        sheet = post(f"/order-sheets/{sheet['order_id']}/{operation}", dict(dataset_id=d,
+            expected_version=sheet['version'], operator='operator', note='Operator checked actual piece and result', **extra))
+    command('bind', quote_id=q['quote_id'], quote_revision=1, remnant_id=rid, remnant_version=0)
+    for operation in ('confirm', 'reserve', 'warehouse-check', 'handover'):
+        command(operation)
+    body = dict(dataset_id=d, subject_type='order', subject_id=sheet['order_id'], expected_version=sheet['version'],
+        execution_ref='new', execution_version=1, operator='operator', note='Measured physical dimensions match', discrepancy_reason='')
+    template = post('/cutting/execution-template', body)
+    execution = post('/cutting/executions', {**body, **{k: template[k] for k in ('parts', 'placements')}})
+    body.update({k: execution[k] for k in ('execution_ref', 'execution_version')})
+    use = post('/material-use', body)
+    replay = post('/material-use', body)
+    assert use['usage_id'] == replay['usage_id']
+    assert client.get('/api/v1/material-use/summary', params={'dataset_id': d}).json()['confirmation_count'] == 1
+    assert client.get(f'/api/v1/remnants/{rid}', params={'dataset_id': d}).json()['status'] == 'consumed'
+    # A real process solver through the same onedir package.
+    job = post('/cutting/solve', {'dataset_id': d, 'config': {'profile': 'quick', 'time_limit_seconds': 5}})
+    deadline = time.monotonic() + 45
+    while time.monotonic() < deadline:
+        result = client.get(f"/api/v1/jobs/{job['job_id']}").json()
+        if result['state'] not in {'running', 'queued'}:
+            break
+        time.sleep(.1)
+    assert result['state'] == 'completed', result
+    assert result['result']['validated'] and result['result']['plan_id'] != 'unsaved'
+    return {'dataset_id': d, 'order_id': sheet['order_id'], 'usage_id': use['usage_id'],
+            'confirmed_actual_area_mm2': use['receipt']['assessment']['actual_area_mm2'],
+            'confirmed_actual_material_value_tg': use['receipt']['assessment']['actual_material_value_tg'],
+            'solver_plan_id': result['result']['plan_id'], 'status': 'passed_actual_ports'}
+
+
 def upgrade_checks(client, dataset_id):
     """Native packaging seams only. Explicit synthetic economics, no C2/C3 replacement."""
     workspace = client.post(f"/api/v1/datasets/{dataset_id}/working-copy", json={},
@@ -75,7 +125,7 @@ def upgrade_checks(client, dataset_id):
         "dataset_id": workspace, "expected_version": 0, "operator": "synthetic-smoke",
         "quote_id": "unregistered", "quote_revision": 0, "remnant_id": "unregistered", "remnant_version": 0,
     }, headers={"Idempotency-Key": "u01-smoke-no-source"})
-    assert missing.status_code == 503 and missing.json()["code"] == "ORDER_SOURCE_UNAVAILABLE"
+    assert missing.status_code == 404 and missing.json()["code"] == "QUOTE_NOT_FOUND"
     basket = client.post("/api/v1/baskets", json={"dataset_id": workspace, "customer_ref": "SYNTHETIC",
         "request_text": "Synthetic basket requiring clarification",
         "lines": [{"line_id": "unresolved", "text": "Synthetic unknown item"}]},
@@ -86,7 +136,8 @@ def upgrade_checks(client, dataset_id):
     unavailable = client.post(f"/api/v1/baskets/{basket['basket_id']}/bind", json={
         "dataset_id": workspace, "expected_version": 0, "operator": "synthetic-smoke",
         "lines": [{"line_id": "unresolved"}]}, headers={"Idempotency-Key": "u04-smoke-no-source"})
-    assert unavailable.status_code == 503 and unavailable.json()["code"] == "BASKET_SOURCE_UNAVAILABLE"
+    assert unavailable.status_code == 200 and unavailable.json()["state"] == "needs_review"
+    basket = unavailable.json()
     usage = client.get("/api/v1/material-use/summary", params={"dataset_id": workspace})
     assert usage.status_code == 200 and usage.json()["confirmation_count"] == 0
     assert usage.json()["actual_material_value_tg"] == "0"
@@ -117,10 +168,10 @@ def upgrade_checks(client, dataset_id):
     assert pdf.status_code == 200 and pdf.content.startswith(b"%PDF"), pdf.text[:300]
     assert pdf.headers["X-GlassFlow-Result-Hash"] == scenario["result_hash"]
     return workspace, order, scenario, basket, {
-        "u01": "draft+missing source503+restart; actual C2/C3 reservation not_run",
+        "u01": "draft+canonical missing quote404+restart; actual domain check reported separately",
         "u07": "synthetic scenario+native PDF+same hash+restart; human labor not_run",
-        "u04": "draft+unknown total null+missing source503+restart; actual domain basket not_run",
-        "u06": "schema3+empty actual ledger; actual C2 consumption not_run",
+        "u04": "unknown total null+canonical unresolved lines+restart; actual domain check separately",
+        "u06": "schema5+empty actual ledger before confirmation; actual domain check separately",
         "pdf_sha256": hashlib.sha256(pdf.content).hexdigest(), "result_hash": scenario["result_hash"],
     }
 
@@ -154,7 +205,7 @@ def smoke(exe):
         "native_worker": result,
         "pe_subsystem": {"main": subsystem(exe), "diagnostics": subsystem(diagnostics)},
         "clean_windows": "not_run",
-        "ui_flow": "not_run; C1 integration required",
+        "ui_flow": "browser E2E recorded separately; this smoke drives actual EXE HTTP API",
     }
     stamp = exe.parent / "_internal/glassflow/build-info.json"
     if stamp.is_file():
@@ -278,6 +329,7 @@ def smoke(exe):
             report["crm_rows"] = len(progress["result"]["rows"])
             upgrade_dataset, order_sheet, scenario, basket, upgrade_report = upgrade_checks(client, dataset_id)
             report["upgrade_checks"] = upgrade_report
+            report["actual_domain_checks"] = actual_domain_checks(client, dataset_id)
             backup = client.post("/api/v1/system/backup", headers={"X-GlassFlow-Session": token})
             assert backup.status_code == 200
             backup_id = backup.json()["backup_id"]

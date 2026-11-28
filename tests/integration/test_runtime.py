@@ -136,3 +136,128 @@ def test_actual_basket_joint_worker_reserve_and_use(runtime):
     for operation in ("confirm", "reserve", "warehouse-check", "handover"):
         basket = action(client, basket, operation, kind="baskets")
     complete_use(client, basket, "basket")
+
+
+def test_actual_parser_preserves_unknown_items_and_quantities(runtime):
+    client, _, workspace = runtime
+    d = workspace["dataset_id"]
+    basket = post(client, "/baskets", dict(dataset_id=d, customer_ref="C-runtime",
+        request_text="2 шт стекло 6 мм прозрачное 450×370 мм; неизвестная ручка XYZ без цены"))
+    job = post(client, f"/baskets/{basket['basket_id']}/parse", dict(dataset_id=d,
+        expected_version=0, operator="manager", note="Разобрать исходную заявку"))
+    wait_job(client, job)
+    basket = post(client, f"/baskets/{basket['basket_id']}/apply-parse", dict(dataset_id=d,
+        expected_version=0, operator="manager", job_id=job["job_id"]))
+    assert len(basket["lines"]) == 2 and basket["total_tg"] is None
+    assert basket["lines"][0]["request"]["quantity"] == 2
+    assert basket["lines"][1]["request"] is None and basket["lines"][1]["clarification"]
+
+
+def test_actual_revision_and_measurement_make_order_stale(runtime):
+    client, _, workspace = runtime
+    d = workspace["dataset_id"]
+    q, _ = quote(client, d)
+    rid = q["candidate_refs"][0]["remnant_id"]
+    sheet = action(client, order(client, d, q, rid), "confirm")
+    revised = post(client, f"/quotes/{q['quote_id']}/revise", dict(dataset_id=d,
+        expected_revision=q["revision"], changes=dict(dimensions=dict(length_mm=451, width_mm=370))))
+    assert revised["total_tg"] == "1991.76" and revised["revision"] == q["revision"] + 1
+    stale = client.get(f"/api/v1/order-sheets/{sheet['order_id']}", params={"dataset_id": d}).json()
+    assert stale["quote_state"] == "stale" and stale["offer"] is None
+    old = client.get(f"/api/v1/quotes/{q['quote_id']}", params={"dataset_id": d, "revision": 1}).json()
+    assert old["total_tg"] == "1988.00"
+    second, _ = quote(client, d)
+    bound = action(client, order(client, d, second, rid), "confirm")
+    r = client.get(f"/api/v1/remnants/{rid}", params={"dataset_id": d}).json()
+    response = client.patch(f"/api/v1/remnants/{rid}/measurement", json=dict(dataset_id=d,
+        expected_version=r["version"], dimensions=dict(length_mm=r["dimensions"]["length_mm"] - 1,
+        width_mm=r["dimensions"]["width_mm"]), reason="Повторный замер"))
+    assert response.status_code == 200, response.text
+    assert client.get(f"/api/v1/order-sheets/{bound['order_id']}", params={"dataset_id": d}).json()["quote_state"] == "stale"
+
+
+def test_actual_c2_mutation_rolls_back_if_platform_completion_fails(runtime):
+    from glassflow.core.domain_sources import OrderSource
+    from glassflow.core.errors import AppError
+    client, _, workspace = runtime
+    d = workspace["dataset_id"]
+    q, _ = quote(client, d)
+    rid = q["candidate_refs"][0]["remnant_id"]
+    sheet = action(client, order(client, d, q, rid), "confirm")
+    class InjectFailureAfterActualC2Reserve(OrderSource):
+        def reserve(self, *args, **kwargs):
+            super().reserve(*args, **kwargs)
+            raise AppError(409, "INJECTED_AFTER_REAL_RESERVE", "Fault injection for rollback proof")
+    client.app.state.services.order_source = InjectFailureAfterActualC2Reserve()
+    response = client.post(f"/api/v1/order-sheets/{sheet['order_id']}/reserve", json=dict(dataset_id=d,
+        expected_version=sheet["version"], operator="manager"), headers={"Idempotency-Key": "rollback"})
+    assert response.status_code == 409
+    r = client.get(f"/api/v1/remnants/{rid}", params={"dataset_id": d}).json()
+    assert r["status"] == "available" and r["version"] == 0
+    client.app.state.services.order_source = OrderSource()
+    assert action(client, sheet, "reserve")["reservation"]["state"] == "active"
+
+
+def test_new_ids_changed_input_without_labels_and_real_partial_export(runtime):
+    import csv
+    import io
+    from pathlib import Path
+    client, _, _ = runtime
+    root = Path(__file__).resolve().parents[2]
+    pack = root / "inputs/PACK_for_teams"
+    files = []
+    for relative, prefix, columns in (
+        ("1_ostatki/stock_open.csv", "ALT-R-", ["remnant_id"]),
+        ("1_ostatki/orders_open.csv", "ALT-P-", ["part_id", "order_id"]),
+        ("2_assistant_crm/applications_open.csv", "ALT-A-", ["app_id", "client_id"]),
+        ("2_assistant_crm/questions_open.csv", "ALT-Q-", ["id"]),
+        ("2_assistant_crm/dialogs_open.csv", "ALT-D-", ["id"]),
+    ):
+        reader = csv.DictReader(io.StringIO((pack / relative).read_text(encoding="utf-8-sig")))
+        headers = [c for c in reader.fieldnames if c != "вернулся_за_60_дней"]
+        rows = list(reader)
+        for row in rows:
+            for column in columns:
+                row[column] = prefix + row[column]
+            row.pop("вернулся_за_60_дней", None)
+            if "длина_мм" in row:
+                row["длина_мм"] = str(int(row["длина_мм"]) + (7 if "stock" in relative else 1))
+        if "questions" in relative:
+            rows[0]["question"] = "Сколько стоит стекло 6 мм прозрачное 451×370 мм с кромкой по всем сторонам?"
+        if "dialogs" in relative:
+            rows[0]["client"], rows[0]["manager"] = "Почём зеркало 4 мм?", "Цена 99999 тг."
+        stream = io.StringIO(newline="")
+        writer = csv.DictWriter(stream, fieldnames=headers)
+        writer.writeheader()
+        writer.writerows(reversed(rows))
+        files.append(("files", (Path(relative).name, stream.getvalue().encode("utf-8"))))
+    files.extend(("files", (Path(relative).name, (pack / relative).read_bytes())) for relative in (
+        "1_ostatki/materials.csv", "2_assistant_crm/ksm_knowledge_base.json"))
+    preview = client.post("/api/v1/imports/preview", files=files).json()
+    assert not preview["errors"], preview
+    source = post(client, f"/imports/{preview['import_id']}/commit", dict(name="Changed inputs without labels"))
+    d = source["dataset_id"]
+    buyer = client.post("/api/v1/buyers/import", params={"dataset_id": d}, files={
+        "file": ("buyers.csv", (root / "data/buyers/buyers.platform.csv").read_bytes()),
+        "evidence": ("evidence.json", (root / "data/buyers/evidence.platform.json").read_bytes())},
+        headers={"Idempotency-Key": "new-source-buyers"}).json()
+    assert buyer["status"] == "verified", buyer
+    job = post(client, "/runs", dict(dataset_id=d, config_version="changed-input-test",
+        buyer_registry_version=buyer["version"], ai_profile="local_limited",
+        solver_config=dict(profile="quick", time_limit_seconds=5, workers=1)))
+    deadline = time.monotonic() + 90
+    while time.monotonic() < deadline:
+        run = client.get(f"/api/v1/runs/{job['run_id']}").json()
+        if run["status"] != "running":
+            break
+        time.sleep(.1)
+    assert run["status"] == "completed", run
+    exported = post(client, f"/runs/{job['run_id']}/export")
+    assert exported["status"] == "partial" and "verdicts.csv" not in exported["files"]
+    assert all(name in exported["files"] for name in ("solution.csv", "answers.csv", "picks.csv", "sale_cards.csv"))
+    answers = list(csv.DictReader(io.StringIO(client.get(exported["files"]["answers.csv"]).text)))
+    assert all(row["id"].startswith("ALT-Q-") for row in answers)
+    assert "1 991" in next(r["answer"] for r in answers if r["id"] == "ALT-Q-Q01")
+    manifest = client.get(exported["files"]["manifest.json"]).json()
+    assert manifest["official_accuracy"] == {"assistant": None, "crm": None, "quality": None}
+    assert manifest["validators"]["cutting_official"]["passed"]

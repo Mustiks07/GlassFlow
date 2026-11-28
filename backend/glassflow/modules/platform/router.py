@@ -385,6 +385,29 @@ def backup(request: Request):
     return create_backup(request.app.state.data_dir)
 
 
+@router.get("/system/backups")
+def list_backups(request: Request):
+    import hashlib
+    from datetime import UTC, datetime
+
+    from glassflow.modules.platform.system import backup_path
+    result = []
+    for file in (request.app.state.data_dir / "backups").glob("*.db"):
+        path = backup_path(request.app.state.data_dir, file.stem)
+        result.append({"backup_id": path.stem, "created_at": datetime.fromtimestamp(path.stat().st_mtime, UTC).isoformat(),
+                       "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "size_bytes": path.stat().st_size})
+    return sorted(result, key=lambda item: item["created_at"], reverse=True)
+
+
+@router.get("/system/journal")
+def journal(request: Request, limit: int = Query(50, ge=1, le=200)):
+    from glassflow.core.models import AuditRow
+    with request.app.state.session_factory() as session:
+        return [{"at": row.created_at, "level": "info", "event": row.action,
+                 "detail": row.object_id, "correlation_id": row.correlation_id}
+                for row in session.scalars(select(AuditRow).order_by(AuditRow.id.desc()).limit(limit))]
+
+
 @router.post("/system/restore")
 def restore(body: RestoreRequest, request: Request):
     from glassflow.modules.platform.system import request_restore

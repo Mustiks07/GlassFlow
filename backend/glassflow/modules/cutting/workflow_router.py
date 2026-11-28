@@ -44,6 +44,24 @@ def record_execution(body: ExecutionCreate, request: Request, idempotency_key: s
     with write_transaction(request.app.state.session_factory) as session:
         def action():
             subject, scope = scope_for(session, body)
+            # A final execution must account for every ordered copy. Dimensions
+            # may differ with an explicit discrepancy reason at confirmation;
+            # omitted copies or downgraded premium/material cannot disappear.
+            if scope.subject_type == "order":
+                from glassflow.core.domain_sources import quote_facts
+                _, original, _ = quote_facts(session, scope.dataset_id, subject.facts.quote.quote_id)
+                if (len(body.parts) != subject.facts.quantity or any(
+                        p.material_id != subject.facts.quote.material_id or (original.premium and not p.premium)
+                        for p in body.parts)):
+                    raise AppError(409, "EXECUTION_PARTS_MISMATCH", "Исполнение должно включать все детали заказа с исходным материалом и качеством.")
+            else:
+                from glassflow.core.uow import get_object
+                data = get_object(session, scope.dataset_id, "cut_selection", subject.facts.stock.selection_ref).data
+                expected = {p["part_id"]: p for p in data["cutting_snapshot"]["parts"]}
+                if set(expected) != {p.part_id for p in body.parts} or any(
+                    p.material_id != expected[p.part_id]["material_id"] or (expected[p.part_id]["premium"] and not p.premium)
+                    for p in body.parts):
+                    raise AppError(409, "EXECUTION_PARTS_MISMATCH", "Исполнение должно включать все детали совместного плана.")
             parts = {p.part_id: PartSpec(p.part_id, scope.subject_id, p.material_id,
                 p.dimensions.length_mm, p.dimensions.width_mm, p.premium) for p in body.parts}
             if len(parts) != len(body.parts):
@@ -91,8 +109,10 @@ def execution_template(body: MaterialUseRequest, request: Request):
             placements = data["plan"]["placements"]
         else:
             facts = subject.facts
+            from glassflow.core.domain_sources import quote_facts
+            _, original, _ = quote_facts(session, scope.dataset_id, facts.quote.quote_id)
             parts = [Part(part_id=f"actual:{i}", order_id=scope.subject_id, material_id=facts.quote.material_id,
-                dimensions=facts.requested_dimensions, premium=False).model_dump(mode="json") for i in range(facts.quantity)]
+                dimensions=facts.requested_dimensions, premium=original.premium).model_dump(mode="json") for i in range(facts.quantity)]
             snapshot = physical_snapshot(session, scope, {p["part_id"]: PartSpec(p["part_id"], scope.subject_id,
                 p["material_id"], p["dimensions"]["length_mm"], p["dimensions"]["width_mm"], False) for p in parts})
             remnant = snapshot.remnants[facts.remnant.remnant_id]

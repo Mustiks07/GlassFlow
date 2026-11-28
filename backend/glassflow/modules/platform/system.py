@@ -98,6 +98,8 @@ def validate_backup(path):
             if backup_version not in {
                 ("0001_platform",),
                 ("0002_immutable_history",),
+                ("0003_material_use",),
+                ("0004_domains",),
                 (SCHEMA_HEAD,),
             }:
                 raise ValueError()
