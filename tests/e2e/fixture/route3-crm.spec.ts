@@ -15,9 +15,9 @@ test('route 3: 25 rows, grouped clients, reminder draft → confirm without outb
   const form = page.locator('form').filter({ hasText: 'Создать черновик напоминания' });
   await form.getByLabel('Ответственный').fill('M2');
   await form.getByLabel('Товарная группа').fill('зеркала');
-  await form.getByLabel('Срок (Asia/Qyzylorda)').fill('2026-12-01T10:00');
+  await form.getByLabel('Срок по местному времени').fill('2026-12-01T10:00');
   await form.getByRole('button', { name: 'Создать черновик напоминания' }).click();
-  await expect(page.getByText(/Черновик создан: REM-/)).toBeVisible();
+  await expect(page.getByText(/Черновик создан\./)).toBeVisible();
   const row = page.getByRole('region', { name: 'Напоминания' }).locator('tbody tr').first();
   await expect(row.getByText('Черновик')).toBeVisible();
   await row.getByRole('button', { name: 'Подтвердить' }).click();
@@ -42,9 +42,9 @@ test('T44: a reminder for a specific remnant becomes stale when the remnant is t
   await page.getByRole('radio').first().check();
   const form = page.locator('form').filter({ hasText: 'Создать черновик напоминания' });
   await form.getByLabel('Тип предмета').selectOption('specific_remnant');
-  await form.getByLabel('ID свободного остатка').fill('R006');
+  await form.getByLabel('Номер свободного куска').fill('R006');
   await form.getByLabel('Ответственный').fill('M1');
-  await form.getByLabel('Срок (Asia/Qyzylorda)').fill('2026-12-02T09:30');
+  await form.getByLabel('Срок по местному времени').fill('2026-12-02T09:30');
   await form.getByRole('button', { name: 'Создать черновик напоминания' }).click();
   await expect(page.getByText(/Черновик создан/)).toBeVisible();
   await fixture(page, c => c.takeRemnant('R006'));

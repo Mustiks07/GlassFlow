@@ -224,7 +224,7 @@ function RemindersList({ dataset }: { dataset: Dataset }) {
                   <td className="mono">{item.recipient_client_id}</td>
                   <td>
                     {SUBJECT_LABEL[item.subject_type]}
-                    {item.subject_ref && <div className="mono small">{item.subject_ref}</div>}
+                    {item.subject_ref && (item.subject_type === 'quote_example' ? <Details summary="Номер расчета-примера для поддержки">{item.subject_ref}</Details> : <div className="small">{item.subject_ref}</div>)}
                     <Details summary={`Основание: ${item.source_app_ids.length} заявок`}>
                       <span className="mono small">{item.source_app_ids.join(', ')}</span>
                       {item.text && <p className="small">{item.text}</p>}

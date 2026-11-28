@@ -7,7 +7,8 @@ import { asApiError } from '../../api/errors';
 import type { Dataset, Reminder } from '../../api/types';
 import { formatDateTime } from '../../lib/format';
 import { useAppStore, useReminderDraft, type ReminderDraft } from '../../state/store';
-import { Button, ConfirmDialog, ErrorState, Field, StatusBadge, type Tone } from '../../ui/kit';
+import { Button, ConfirmDialog, Details, ErrorState, Field, StatusBadge, type Tone } from '../../ui/kit';
+import { humanText } from '../../ui/human';
 
 export const REMINDER_STATE: Record<Reminder['state'], { label: string; tone: Tone }> = {
   draft: { label: 'Черновик', tone: 'neutral' },
@@ -67,7 +68,7 @@ export function ReminderEditor({
   if (draft.sourceAppIds.length === 0) errors.apps = 'Отметьте хотя бы одну исходную заявку — основание выбора';
   if (!draft.owner.trim()) errors.owner = 'Укажите ответственного';
   if (!draft.dueAt) errors.due = 'Срок вводит менеджер (учебный день_года не превращается в дату)';
-  if (draft.subjectType !== 'interest' && !draft.subjectRef.trim()) errors.subject = 'Укажите предмет: ID расчета или остатка';
+  if (draft.subjectType !== 'interest' && !draft.subjectRef.trim()) errors.subject = 'Укажите номер расчета или куска';
   if (draft.subjectType === 'interest' && !draft.subjectRef.trim()) errors.subject = 'Укажите товарную группу';
 
   const create = useMutation({
@@ -114,7 +115,7 @@ export function ReminderEditor({
         </p>
       )}
       <div className="form-grid">
-        <Field label="Адресат (client_id)" required error={show('recipient') ?? server('recipient_client_id')}>
+        <Field label="Код клиента — адресата напоминания" required error={show('recipient') ?? server('recipient_client_id')}>
           {props => <input {...props} value={draft.recipientClientId} onChange={event => patch({ recipientClientId: event.target.value, sourceAppIds: [] })} />}
         </Field>
         <Field label="Ответственный" required error={show('owner') ?? server('owner')}>
@@ -164,7 +165,7 @@ export function ReminderEditor({
           )}
         </Field>
         <Field
-          label={draft.subjectType === 'interest' ? 'Товарная группа' : draft.subjectType === 'quote_example' ? 'ID расчета-примера' : 'ID свободного остатка'}
+          label={draft.subjectType === 'interest' ? 'Товарная группа' : draft.subjectType === 'quote_example' ? 'Номер расчета-примера' : 'Номер свободного куска'}
           required
           hint={
             draft.subjectType === 'quote_example'
@@ -177,7 +178,7 @@ export function ReminderEditor({
         >
           {props => <input {...props} value={draft.subjectRef} onChange={event => patch({ subjectRef: event.target.value })} />}
         </Field>
-        <Field label="Срок (Asia/Qyzylorda)" required error={show('due') ?? server('due_at')}>
+        <Field label="Срок по местному времени" required hint="Время Астаны, UTC+5" error={show('due') ?? server('due_at')}>
           {props => <input {...props} type="datetime-local" value={draft.dueAt} onChange={event => patch({ dueAt: event.target.value })} />}
         </Field>
         {draft.subjectType !== 'interest' && (
@@ -196,7 +197,7 @@ export function ReminderEditor({
             <ul className="plain small">
               {duplicates.map(item => (
                 <li key={item.reminder_id}>
-                  {SUBJECT_LABEL[item.subject_type]} · {item.subject_ref ?? '—'} · {REMINDER_STATE[item.state].label} · до {formatDateTime(item.due_at)}
+                  {SUBJECT_LABEL[item.subject_type]} · {item.subject_type === 'quote_example' ? 'сохранённый расчёт' : item.subject_ref ?? '—'} · {REMINDER_STATE[item.state].label} · до {formatDateTime(item.due_at)}
                 </li>
               ))}
             </ul>
@@ -211,7 +212,7 @@ export function ReminderEditor({
         <small className="muted">Локальная задача. Сообщения клиенту не отправляются.</small>
       </div>
       {create.error && <ErrorState error={create.error} context="Создание напоминания" />}
-      {create.isSuccess && <StatusBadge tone="info">Черновик создан: {create.data.reminder_id}. Подтвердите его в списке задач.</StatusBadge>}
+      {create.isSuccess && <><StatusBadge tone="info">Черновик создан. Подтвердите его в списке задач.</StatusBadge><Details summary="Номер напоминания для поддержки">{create.data.reminder_id}</Details></>}
     </form>
   );
 }
@@ -249,7 +250,7 @@ export function ReminderActions({ dataset, reminder }: { dataset: Dataset; remin
   const canCancel = reminder.state !== 'done' && reminder.state !== 'cancelled';
   return (
     <div className="row wrap">
-      {reminder.state === 'stale' && <span className="small text-warn">{reminder.stale_reason ?? 'Предмет изменился'} — подтверждение заблокировано</span>}
+      {reminder.state === 'stale' && <span className="small text-warn">{humanText(reminder.stale_reason, 'Предмет изменился. Обновите его и проверьте заново.')} — подтверждение заблокировано<Details summary="Причина изменения для поддержки">{reminder.stale_reason}</Details></span>}
       {canConfirm && (
         <Button variant="primary" icon={<CheckCircle2 size={14} aria-hidden="true" />} onClick={() => setAction('confirm')}>
           Подтвердить
@@ -273,9 +274,9 @@ export function ReminderActions({ dataset, reminder }: { dataset: Dataset; remin
           title={labels[action].title}
           action={labels[action].text}
           affected={[
-            { label: 'Задача', value: <span className="mono">{reminder.reminder_id}</span> },
+            { label: 'Задача', value: <span>{reminder.text || SUBJECT_LABEL[reminder.subject_type]}<Details summary="Номер задачи для поддержки">{reminder.reminder_id}</Details></span> },
             { label: 'Адресат', value: reminder.recipient_client_id },
-            { label: 'Предмет', value: `${SUBJECT_LABEL[reminder.subject_type]}${reminder.subject_ref ? ` · ${reminder.subject_ref}` : ''}` },
+            { label: 'Предмет', value: <span>{SUBJECT_LABEL[reminder.subject_type]}{reminder.subject_ref && (reminder.subject_type === 'quote_example' ? <Details summary="Номер расчета-примера для поддержки">{reminder.subject_ref}</Details> : ` · ${reminder.subject_ref}`)}</span> },
             { label: 'Ожидаемая версия', value: String(reminder.version) },
           ]}
           confirmLabel={labels[action].button}

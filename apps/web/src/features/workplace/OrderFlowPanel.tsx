@@ -5,9 +5,10 @@ import type { components } from '../../../../../packages/contracts/schema';
 import { useApi } from '../../api/context';
 import { newIdempotencyKey } from '../../api/client';
 import type { Dataset, Quote } from '../../api/types';
-import { Button, ErrorState, Panel } from '../../ui/kit';
+import { Button, Details, ErrorState, Panel } from '../../ui/kit';
 import { formatMoney } from '../../lib/format';
 import { useRoute } from '../../state/router';
+import { humanText } from '../../ui/human';
 
 type Sheet = components['schemas']['OrderSheet'];
 type Part = components['schemas']['Part'];
@@ -56,7 +57,7 @@ export function ActualUse({ dataset, subject, kind, onDone }: {
     {template && <>
       <p className="small">Показано плановое размещение. Сверьте каждую деталь с фактическим результатом и исправьте размеры при расхождении.</p>
       {template.parts.map((part, index) => <div className="row wrap" key={part.part_id}>
-        <span>{part.part_id} · {part.material_id}</span>
+        <span>Деталь {index + 1}<Details summary="Номера детали и материала для поддержки">{part.part_id} · {part.material_id}</Details></span>
         <label>Фактическая длина, мм <input type="number" min="1" value={part.dimensions.length_mm} onChange={e => {
           const parts = structuredClone(template.parts); parts[index].dimensions.length_mm = Number(e.target.value);
           setTemplate({ ...template, parts }); setChecked(false);
@@ -65,7 +66,7 @@ export function ActualUse({ dataset, subject, kind, onDone }: {
           const parts = structuredClone(template.parts); parts[index].dimensions.width_mm = Number(e.target.value);
           setTemplate({ ...template, parts }); setChecked(false);
         }} /></label>
-        <span>{template.placements[index]?.remnant_id} · x={template.placements[index]?.x_mm}, y={template.placements[index]?.y_mm}</span>
+        <span>{template.placements[index]?.remnant_id === 'NEW' ? 'Новый материал' : `Кусок ${template.placements[index]?.remnant_id ?? 'не указан'}`} · отступ слева {template.placements[index]?.x_mm ?? 'не задан'} мм, снизу {template.placements[index]?.y_mm ?? 'не задан'} мм</span>
       </div>)}
       <label>Результат проверки / причина расхождения <input value={note} onChange={e => setNote(e.target.value)} /></label>
       <label><input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)} /> Я сверил фактические детали и подтверждаю расход материала</label>
@@ -129,7 +130,7 @@ export function OrderFlowPanel({ dataset, quote }: { dataset: Dataset; quote: Qu
       </>}
       {selected && <>
         <p>Клиент: {selected.customer_ref} · версия {selected.version} · {flowLabel(selected.quote_state)} / {flowLabel(selected.warehouse_state)} / {flowLabel(selected.lifecycle)}</p>
-        {selected.stale_reason && <p role="alert">{selected.stale_reason}</p>}
+        {selected.stale_reason && <><p role="alert">{humanText(selected.stale_reason, 'Данные заказа изменились. Обновите расчёт и повторно проверьте кусок перед резервом.')}</p><Details summary="Причина изменения для поддержки">{selected.stale_reason}</Details></>}
         {selected.offer && <div className="metric"><span>Предложение клиенту</span><strong>{formatMoney(selected.offer.quote.total_tg)}</strong><span>{selected.offer.quote.product_name}</span></div>}
         {selected.warehouse_task && <div><strong>Задание складу</strong><p>{selected.warehouse_task.remnant.remnant_id} · {selected.warehouse_task.remnant.location_raw} · {selected.warehouse_task.requested_dimensions.length_mm}×{selected.warehouse_task.requested_dimensions.width_mm} мм · {selected.warehouse_task.quantity} шт.</p></div>}
         {selected.lifecycle === 'open' && <>
@@ -148,7 +149,7 @@ export function OrderFlowPanel({ dataset, quote }: { dataset: Dataset; quote: Qu
         {selected.lifecycle === 'handed_over' && <ActualUse dataset={dataset} subject={selected} kind="order" onDone={async () => {
           setSelected(await client.get<Sheet>(`/order-sheets/${selected.order_id}`, { query: { dataset_id: dataset.dataset_id } })); await list.refetch();
         }} />}
-        {selected.material_use_id && <p role="status">Фактический расход записан: {selected.material_use_id}. Повторного списания нет.</p>}
+        {selected.material_use_id && <><p role="status">Фактический расход записан. Повторного списания нет.</p><Details summary="Запись расхода для поддержки">{selected.material_use_id}</Details></>}
         {dataset.mode === 'workspace' && selected.quote_state === 'confirmed' && selected.lifecycle !== 'completed' && selected.lifecycle !== 'cancelled' && selected.version != null && <OperationalDocument datasetId={dataset.dataset_id} kind="order" subjectId={selected.order_id} version={selected.version} />}
       </>}
       {error != null && <ErrorState error={error} />}

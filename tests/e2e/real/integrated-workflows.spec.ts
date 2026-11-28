@@ -40,7 +40,8 @@ test('actual U01 → warehouse → U06 via the visible production UI', async ({ 
   await flow.getByLabel('Результат проверки / причина расхождения').fill('Фактический размер совпадает с заданием');
   await flow.getByRole('checkbox', { name: /Я сверил фактические/ }).check();
   await flow.getByRole('button', { name: 'Подтвердить фактический расход один раз' }).click();
-  await expect(flow.getByRole('status')).toContainText('Фактический расход записан');
+  await expect(flow.getByRole('status')).toHaveText('Фактический расход записан. Повторного списания нет.');
+  await expect(flow.getByText('Запись расхода для поддержки').locator('..')).toHaveJSProperty('open', false);
   await page.screenshot({ path: path.resolve(__dirname, '../evidence/real/U01-U06-actual.png') });
 });
 
@@ -65,7 +66,8 @@ test('actual U04: several lines, joint reserve and actual use', async ({ page })
   await page.getByLabel('Результат проверки / причина расхождения').fill('Все три фактические детали совпадают с заданием');
   await page.getByRole('checkbox', { name: /Я сверил фактические/ }).check();
   await page.getByRole('button', { name: 'Подтвердить фактический расход один раз' }).click();
-  await expect(page.getByText(/Фактический расход сохранен/)).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: 'Фактический расход сохранен' })).toHaveText('Фактический расход сохранен. Повторного списания нет.');
+  await expect(page.getByText('Запись расхода для поддержки').locator('..')).toHaveJSProperty('open', false);
   for (const [width, height, zoom] of [[1366, 768, 1], [1920, 1080, 1], [1366, 768, 1.25]]) {
     await page.setViewportSize({ width, height });
     await page.evaluate(z => { document.body.style.zoom = String(z); }, zoom);

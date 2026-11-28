@@ -12,6 +12,7 @@ import { Button, ConfirmDialog, Details, EmptyState, ErrorState, Field, LoadingS
 import { isMutable } from '../shell/dataset';
 import { RequireDataset } from '../shell/RequireDataset';
 import { PLAN_STATUS_LABEL } from '../cutting/labels';
+import { humanText } from '../../ui/human';
 
 export function SalesPage() {
   return <RequireDataset>{dataset => <Sales dataset={dataset} key={dataset.dataset_id} />}</RequireDataset>;
@@ -130,7 +131,7 @@ function Sales({ dataset }: { dataset: Dataset }) {
               tone={free.data?.minimum_free_remnants_met ? 'ok' : 'warn'}
               detail={free.data?.no_longer_free_remnant_ids.length ? `заняты после плана: ${free.data.no_longer_free_remnant_ids.join(', ')}` : 'живая перепроверка склада'}
             />
-            <Metric label="Версия реестра" value={version ? version.slice(0, 8) : 'нет'} />
+            <Metric label="Реестр покупателей" value={version ? 'Подключён' : 'Не выбран'} />
             <Field label="Коэффициент" error={factorProblem ?? undefined} hint="0,50 — проектное значение, не оценка рынка">
               {props => <input {...props} value={factor} onChange={event => setFactor(event.target.value)} style={{ width: 110 }} />}
             </Field>
@@ -181,10 +182,10 @@ function Sales({ dataset }: { dataset: Dataset }) {
           title="Сгенерировать карточки"
           action="Сервер выберет пять разных полностью неиспользованных исходных кусков выбранной ревизии плана и подберет по три покупателя из реестра по профилю применения."
           affected={[
-            { label: 'План', value: `${chosenPlan.plan_id} · ревизия ${chosenPlan.revision}` },
+            { label: 'План', value: <span>Ревизия {chosenPlan.revision}<Details summary="Номер плана для поддержки">{chosenPlan.plan_id}</Details></span> },
             { label: 'Свободных кусков сейчас', value: String(freeCount) },
             { label: 'Коэффициент', value: factor.replace('.', ',') },
-            { label: 'Версия реестра покупателей', value: <span className="mono">{version}</span> },
+            { label: 'Реестр покупателей', value: <span>Выбранный реестр<Details summary="Версия для поддержки">{version}</Details></span> },
           ]}
           confirmLabel="Сгенерировать"
           onConfirm={() => generate.mutate(chosenPlan)}
@@ -243,7 +244,7 @@ function SaleCardView({ dataset, card, buyerByName }: { dataset: Dataset; card: 
           <div className="kv-row">
             <dt>План</dt>
             <dd className="mono">
-              {card.plan_id} · ревизия {card.plan_revision}
+              Ревизия {card.plan_revision}<Details summary="Номер плана для поддержки">{card.plan_id}</Details>
             </dd>
           </div>
         )}
@@ -288,7 +289,7 @@ function SaleCardView({ dataset, card, buyerByName }: { dataset: Dataset; card: 
           })}
         </ol>
       </div>
-      {card.stale_reason && <p className="small text-warn">{card.stale_reason}</p>}
+      {card.stale_reason && <><p className="small text-warn">{humanText(card.stale_reason, 'Данные карточки изменились. Проверьте свободный кусок и создайте актуальную карточку.')}</p><Details summary="Причина изменения для поддержки">{card.stale_reason}</Details></>}
       {card.card_id && card.status !== 'stale' && isMutable(dataset) && (
         <form
           className="row align-end"

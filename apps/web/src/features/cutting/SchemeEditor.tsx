@@ -2,13 +2,14 @@ import { Grid3x3, Lock, LockOpen, Minus, Plus, RotateCw } from 'lucide-react';
 import { useMemo, useRef, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent } from 'react';
 import type { Part, Placement, Remnant } from '../../api/types';
 import { formatDims } from '../../lib/format';
-import { Button, StatusBadge, TableWrap } from '../../ui/kit';
+import { Button, Details, StatusBadge, TableWrap } from '../../ui/kit';
 import { RemnantSvg, footprint, previewViolations, type SvgPart } from './RemnantSvg';
 import { parseLocation } from './labels';
 import { useCuttingStore } from './draftStore';
 
 interface Props {
   remnant: Remnant;
+  materialName?: string;
   tempered: boolean;
   placements: Placement[];
   parts: Map<string, Part>;
@@ -19,7 +20,7 @@ interface Props {
   onChange: (placement: Placement) => void;
 }
 
-export function SchemeEditor({ remnant, tempered, placements, parts, invalidPartIds, editable, candidateRemnants, onChange }: Props) {
+export function SchemeEditor({ remnant, materialName, tempered, placements, parts, invalidPartIds, editable, candidateRemnants, onChange }: Props) {
   const { zoom, setZoom, showGap, toggleGap, selectedPartId, selectPart } = useCuttingStore();
   const svgRef = useRef<SVGSVGElement>(null);
   const [drag, setDrag] = useState<{ partId: string; dx: number; dy: number; x: number; y: number } | null>(null);
@@ -121,7 +122,7 @@ export function SchemeEditor({ remnant, tempered, placements, parts, invalidPart
     <div className="scheme-editor">
       <div className="scheme-head">
         <div>
-          <strong className="mono">{remnant.remnant_id}</strong> · {formatDims(remnant.dimensions)} · <span className="mono">{remnant.material_id}</span>
+          <strong className="mono">{remnant.remnant_id}</strong> · {formatDims(remnant.dimensions)} · {materialName ?? 'Материал уточняется'}<Details summary="Код материала для поддержки">{remnant.material_id}</Details>
           {tempered && <StatusBadge tone="info">Калёное</StatusBadge>}
           {remnant.defect && <StatusBadge tone="warn">Дефект (геометрия неизвестна)</StatusBadge>}
           <div className="small muted">
@@ -334,7 +335,7 @@ function PlacementTable({
                           {item.remnant_id} ({item.dimensions.length_mm}×{item.dimensions.width_mm})
                         </option>
                       ))}
-                    <option value="NEW">NEW (не размещать)</option>
+                    <option value="NEW">Новый материал (не размещать на остатке)</option>
                   </select>
                 </td>
                 <td className="small">

@@ -4,7 +4,7 @@ import type { components } from '../../../../../packages/contracts/schema';
 import { useApi } from '../../api/context';
 import { newIdempotencyKey } from '../../api/client';
 import type { Dataset, Job } from '../../api/types';
-import { Button, ErrorState, Panel } from '../../ui/kit';
+import { Button, Details, ErrorState, Panel } from '../../ui/kit';
 import { formatMoney } from '../../lib/format';
 import { ActualUse, flowLabel } from './OrderFlowPanel';
 import { useRoute } from '../../state/router';
@@ -136,7 +136,7 @@ export function BasketPanel({ dataset }: { dataset: Dataset }) {
             ['cancel', 'Отменить корзину', !['completed', 'handed_over', 'cancelled'].includes(basket.state ?? "")],
           ] as const).map(([operation, label, enabled]) => <Button key={operation} busy={busy} disabled={!enabled} onClick={() => run(() => command(operation))}>{label}</Button>)}</div>
           {basket.state === 'handed_over' && <ActualUse dataset={dataset} subject={basket} kind="basket" onDone={async () => { setBasket(await client.get<Basket>(`/baskets/${basket.basket_id}`, { query: { dataset_id: dataset.dataset_id } })); await list.refetch(); }} />}
-          {basket.material_use_id && <p role="status">Фактический расход сохранен: {basket.material_use_id}</p>}
+          {basket.material_use_id && <><p role="status">Фактический расход сохранен. Повторного списания нет.</p><Details summary="Запись расхода для поддержки">{basket.material_use_id}</Details></>}
           {dataset.mode === 'workspace' && basket.state && basket.version != null && ['confirmed', 'reserved', 'checked', 'handed_over'].includes(basket.state) && <OperationalDocument datasetId={dataset.dataset_id} kind="basket" subjectId={basket.basket_id} version={basket.version} />}
         </>}
         {stage && <p role="status">{stage}</p>}

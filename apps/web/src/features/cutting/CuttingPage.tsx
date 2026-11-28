@@ -660,6 +660,7 @@ function EditorPanel({ dataset, plan, remnants, parts, materials }: { dataset: D
         <EmptyState title="Выберите остаток в таблице">Откроется схема с размерами, краем 5 мм и табличной альтернативой.</EmptyState>
       ) : (
         <SchemeEditor
+          materialName={materials.get(remnant.material_id)?.name}
           remnant={remnant}
           tempered={Boolean(materials.get(remnant.material_id)?.tempered ?? remnant.tempered)}
           placements={onRemnant}

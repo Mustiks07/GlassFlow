@@ -73,7 +73,7 @@ export function AddRemnantDialog({ dataset, materials, open, onOpenChange }: { d
               <option value="">Выберите</option>
               {materials.map(material => (
                 <option key={material.material_id} value={material.material_id}>
-                  {material.material_id} · {material.name}
+                  {material.name}
                 </option>
               ))}
             </select>

@@ -102,7 +102,7 @@ test.describe('real backend', () => {
     const form = page.locator('form').filter({ hasText: 'Создать черновик напоминания' });
     await form.getByLabel('Ответственный').fill('M2');
     await form.getByLabel('Товарная группа').fill('зеркала');
-    await form.getByLabel('Срок (Asia/Qyzylorda)').fill('2026-12-01T10:00');
+    await form.getByLabel('Срок по местному времени').fill('2026-12-01T10:00');
     await form.getByRole('button', { name: 'Создать черновик напоминания' }).click();
     await expect(page.getByText(/Черновик создан/)).toBeVisible();
     const row = page.getByRole('region', { name: 'Напоминания' }).locator('tbody tr').first();

@@ -80,7 +80,7 @@ export function AiSection() {
             </Field>
             <Field
               label="Модель"
-              hint={form.allowed_models?.length ? 'Только из проверенного профиля' : 'Список разрешенных моделей сервер пока не передает — введите проверенный model_id'}
+              hint={form.allowed_models?.length ? 'Только из проверенного профиля' : 'Введите точное название модели из инструкции выбранного сервиса'}
               error={fieldError('model_id')}
             >
               {props =>
