@@ -66,3 +66,25 @@ command `uv run python -` with `pytest.main(['tests/cutting','-q','-o','addopts=
 test process constrained to CPU0 to leave comparison CPU11 available. No test checks disabled; optional600s
 profile remains skipped by its existing explicit flag. Scope Ruff PASS. Actual candidate timing saved separately;
 tracked original evidence restored byte-for-byte. Logs/JUnit are in ignored .qa for root audit.
+
+## Completed research queue and final metric boundary
+
+All24 preregistered v2 trials completed.24/24 selected incumbents independently valid and free>=5; no
+variant promoted. N11 deltas [0,0,0,26300,0,0]mm², median0, dense wins0/3; N12 no area change and location
+improvements0/6, with mixed7 native-memory guard failure184.93MiB vs baseline150.46MiB (>15%); N14 deltas
+[0,0,0,-4500,-11800,2200]mm², two regressions. Every row and actual stop reason retained in comparison.json,
+full table/limitations/decisions RESULTS.md, reproducible rendering summarize.py. Experimental prototypes
+are never imported by production. First complete1.6–4.4ms here is pure solver callback, not HTTP/product latency.
+Actual diagnostics show N11 phase reached4/6 cases; no benefit claimed for unexercised cases. Scalar report
+does not retain placement coordinates; every chosen plan was validated during run. Original interrupted
+pilot remains preserved separately. No hidden exam or heavy600s run claimed.
+
+After all trials ended (runtime sources held fixed throughout study), fixed one displayed-metric boundary:
+SolveInput unavailable/occupied IDs are excluded from free_original count/list even if raw row status is
+still available. compute_metrics accepts optional excluded set; engine and direct N01 repair pass it.
+Existing no-false-publication guard remains. Regressions+N01+review fixes+inventory API40 PASS in10.00s;
+scope Ruff PASS. The earlier whole suite95 PASS/1 SKIP predates only this small metric exclusion correction.
+
+Root handles remaining sales registry/queue bridge, OpenAPI/TS regeneration, frontend integration, actual
+service/browser E2E and clean-machine/human/packaging acceptance. Own algorithm queue N01/N03/N10/N13 and
+honest N11/N12/N14 decisions is complete. New root-authorized PlanInsights.tsx UI handoff follows separately.

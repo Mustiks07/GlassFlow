@@ -38,7 +38,8 @@ def exact_value(snapshot: Snapshot, covered: dict[str, str]) -> tuple[Decimal, d
     return total, detail
 
 
-def compute_metrics(snapshot: Snapshot, report: ValidationReport, new_reasons: dict[str, str] | None = None
+def compute_metrics(snapshot: Snapshot, report: ValidationReport, new_reasons: dict[str, str] | None = None,
+                    *, excluded_remnant_ids: set[str] | None = None
                     ) -> tuple[CutMetrics, list[str]]:
     covered = report.ok_part_ids if report.valid else {
         pid: rid for pid, rid in report.ok_part_ids.items() if pid not in set(report.invalid_part_ids)
@@ -53,7 +54,9 @@ def compute_metrics(snapshot: Snapshot, report: ValidationReport, new_reasons: d
     used = set(covered.values())
     originals = [rid for rid in snapshot.remnant_order if snapshot.remnants[rid].original]
     # A reserved/consumed/withdrawn piece is not free even if this plan does not use it.
-    free_original = [rid for rid in originals if rid not in used and snapshot.remnants[rid].status == "available"]
+    excluded = excluded_remnant_ids or set()
+    free_original = [rid for rid in originals if rid not in used and rid not in excluded
+                     and snapshot.remnants[rid].status == "available"]
     coverage = covered_area / total_area if total_area else 0.0
     invalid = len(set(report.invalid_part_ids)) + sum(1 for i in report.issues if i.part_id is None)
     percent = (Decimal(covered_area) * 100 / Decimal(total_area)) if total_area else Decimal(0)

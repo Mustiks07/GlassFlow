@@ -133,7 +133,8 @@ class CuttingEngine:
         # i.e. a proposal for the manager, never a validated solution of the requested task.
         report = validate_plan(full, rows, unavailable_remnant_ids=unavailable,
                                locks=requested + [a for a in rows if a.lock_kind != "none"])
-        metrics, free = compute_metrics(full, report, outcome.new_reasons)
+        metrics, free = compute_metrics(full, report, outcome.new_reasons,
+            excluded_remnant_ids=set(data.unavailable_remnant_ids) | set(data.occupied_remnant_ids))
         status = "validated" if report.valid else "invalid"
         evidence = dict(meta)
         evidence.update({k: v for k, v in outcome.stats.items() if isinstance(v, (str, int, float, bool)) or v is None})
