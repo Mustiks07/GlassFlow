@@ -47,7 +47,10 @@ test.describe('real backend', () => {
     for (const [label, value] of [['Остатки', '200'], ['Детали заказов', '298'], ['Заказы', '110'], ['Заявки CRM', '700'], ['Вопросы', '18'], ['Диалоги', '8']]) {
       await expect(page.locator('.metric').filter({ hasText: label }).first()).toContainText(value);
     }
+    await expect(page.getByText('Файл с эталонными ответами исключён из рабочих данных.', { exact: true })).toBeVisible();
+    await page.getByText('Исходное сообщение для поддержки', { exact: true }).click();
     await expect(page.getByText(/KEY\.csv: evaluation\/служебный файл исключен из runtime/)).toBeVisible();
+    await page.getByText('Исходное сообщение для поддержки', { exact: true }).click();
     await shot(page, 'T01-import-preview');
     await page.getByLabel('Название снимка').fill('Пакет организаторов');
     await page.getByRole('button', { name: /Создать снимок/ }).click();

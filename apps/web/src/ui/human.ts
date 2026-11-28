@@ -15,6 +15,7 @@ export const FIELD_LABELS: Record<string, string> = {
 export function fieldLabel(name: string): string { return FIELD_LABELS[name] ?? 'Поле формы'; }
 
 export function humanText(text: string | null | undefined, fallback = 'Требуется проверка данных.'): string {
+  if (text && /evaluation\/служебный файл исключен из runtime/.test(text)) return 'Файл с эталонными ответами исключён из рабочих данных.';
   if (!text || !/[А-Яа-яЁё]/.test(text) || /[{}]|Traceback|\b(?:SELECT|INSERT|TypeError|KeyError|AssertionError)\b/.test(text)) return fallback;
   return text;
 }
