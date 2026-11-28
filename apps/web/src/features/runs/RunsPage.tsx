@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { newIdempotencyKey } from '../../api/client';
 import { useApi } from '../../api/context';
 import type { Dataset, ExportResult, Job, RunModule, RunView } from '../../api/types';
-import { formatInt, shortHash } from '../../lib/format';
+import { formatInt } from '../../lib/format';
 import { href } from '../../state/router';
 import { useAppStore } from '../../state/store';
 import { Button, ConfirmDialog, Details, EmptyState, ErrorState, LoadingState, Panel, StatusBadge, TableWrap, type Tone } from '../../ui/kit';
@@ -13,27 +13,27 @@ import { JobPanel } from '../shell/JobPanel';
 import { RequireDataset } from '../shell/RequireDataset';
 import { TERMINAL, useJob } from '../shell/useJob';
 import { PassportPanel } from './PassportPanel';
-import { errorAction, stageLabel } from '../../ui/human';
+import { errorAction, humanText, stageLabel } from '../../ui/human';
 
 export function RunsPage() {
   return <RequireDataset>{dataset => <Runs dataset={dataset} key={dataset.dataset_id} />}</RequireDataset>;
 }
 
 const REQUIRED_INPUTS: { kind: string; label: string; origin: 'new' | 'original' }[] = [
-  { kind: 'stock', label: 'Остатки (stock)', origin: 'new' },
-  { kind: 'orders', label: 'Детали заказов (orders)', origin: 'new' },
-  { kind: 'questions', label: 'Вопросы (questions)', origin: 'new' },
-  { kind: 'applications', label: 'Заявки CRM (applications)', origin: 'new' },
-  { kind: 'dialogs', label: 'Диалоги (dialogs)', origin: 'new' },
-  { kind: 'materials', label: 'materials.csv', origin: 'original' },
-  { kind: 'kb', label: 'База знаний (KB JSON)', origin: 'original' },
+  { kind: 'stock', label: 'Остатки', origin: 'new' },
+  { kind: 'orders', label: 'Детали заказов', origin: 'new' },
+  { kind: 'questions', label: 'Вопросы', origin: 'new' },
+  { kind: 'applications', label: 'Заявки клиентов', origin: 'new' },
+  { kind: 'dialogs', label: 'Диалоги', origin: 'new' },
+  { kind: 'materials', label: 'Материалы', origin: 'original' },
+  { kind: 'kb', label: 'База знаний', origin: 'original' },
 ];
 
 const MODULES: { id: RunModule; label: string; output: string; keyless: string }[] = [
-  { id: 'cutting', label: 'Раскрой', output: 'solution.csv', keyless: 'coverage, invalid, missing считаются локально' },
-  { id: 'assistant', label: 'Ассистент', output: 'answers.csv', keyless: 'официальной точности нет без KEY' },
-  { id: 'crm', label: 'Отбор CRM', output: 'picks.csv', keyless: 'Precision@25 неизвестен без меток' },
-  { id: 'quality', label: 'Контроль диалогов', output: 'verdicts.csv', keyless: 'официальной точности нет без KEY' },
+  { id: 'cutting', label: 'Раскрой', output: 'solution.csv', keyless: 'Площадь, допустимость и полнота проверяются локально' },
+  { id: 'assistant', label: 'Ассистент', output: 'answers.csv', keyless: 'Точность неизвестна без эталонных ответов организаторов' },
+  { id: 'crm', label: 'Отбор CRM', output: 'picks.csv', keyless: 'Точность отбора 25 заявок неизвестна без эталонных ответов' },
+  { id: 'quality', label: 'Контроль диалогов', output: 'verdicts.csv', keyless: 'Точность неизвестна без эталонных ответов организаторов' },
   { id: 'cards', label: 'Карточки остатков', output: 'sale_cards.csv', keyless: 'зависят от финального раскроя и реестра' },
 ];
 
@@ -97,7 +97,7 @@ function Runs({ dataset }: { dataset: Dataset }) {
         <div>
           <p className="eyebrow">Прогоны</p>
           <h1>Конкурсный запуск: пять входов → проверка → пять файлов</h1>
-          <p className="lead">Один неизменный снимок, независимые модули, собственная проверка и официальный validator. Неизвестные результаты не изображаются готовыми.</p>
+          <p className="lead">Один неизменный снимок, независимые модули, собственная проверка и проверка по правилам организаторов. Неизвестные результаты не изображаются готовыми.</p>
         </div>
       </header>
 
@@ -128,7 +128,7 @@ function Runs({ dataset }: { dataset: Dataset }) {
                 <th scope="col">Вход</th>
                 <th scope="col">Происхождение</th>
                 <th scope="col">Строк</th>
-                <th scope="col">SHA-256</th>
+                <th scope="col">Сведения о файле</th>
                 <th scope="col">Состояние</th>
               </tr>
             </thead>
@@ -138,7 +138,7 @@ function Runs({ dataset }: { dataset: Dataset }) {
                   <td>{input.label}</td>
                   <td>{input.origin === 'new' ? 'новый вход' : 'исходный файл организаторов'}</td>
                   <td className="num">{dataset.row_counts[input.kind] !== undefined ? formatInt(dataset.row_counts[input.kind]) : '—'}</td>
-                  <td className="mono small">{shortHash(dataset.source_hashes[input.kind], 16)}</td>
+                  <td><Details summary="Для поддержки"><p>Тип источника: {input.kind}</p><p>Контрольная сумма: {dataset.source_hashes[input.kind] ?? 'файл отсутствует'}</p></Details></td>
                   <td>{present.has(input.kind) ? <StatusBadge tone="ok">есть</StatusBadge> : <StatusBadge tone="error">отсутствует</StatusBadge>}</td>
                 </tr>
               ))}
@@ -170,7 +170,7 @@ function Runs({ dataset }: { dataset: Dataset }) {
           AI-профиль прогона
           <select value={aiProfile} onChange={event => setAiProfile(event.target.value as typeof aiProfile)}>
             <option value="direct">Прямой проверенный ключ команды</option>
-            <option value="judge_gateway">Шлюз judge_gateway</option>
+            <option value="judge_gateway">Шлюз жюри</option>
             <option value="local_limited">Только локальный режим (ассистент может быть неполным)</option>
           </select>
         </label>
@@ -180,7 +180,7 @@ function Runs({ dataset }: { dataset: Dataset }) {
           <Button variant="primary" icon={<Play size={14} aria-hidden="true" />} disabled={!modules.length || missingInputs.length > 0} onClick={() => setConfirm(true)}>
             Запустить прогон
           </Button>
-          {missingInputs.length > 0 && <small className="text-warn">Не хватает входов: {missingInputs.map(input => input.kind).join(', ')}</small>}
+          {missingInputs.length > 0 && <small className="text-warn">Не хватает входов: {missingInputs.map(input => input.label).join(', ')}</small>}
         </div>
         {jobId && <JobPanel jobId={jobId} title="Задание прогона" />}
       </Panel>
@@ -234,10 +234,10 @@ function RunStatus({ run }: { run: RunView }) {
     <div className="stack">
       <div className="row wrap">
         <StatusBadge tone={status.tone}>{status.label}</StatusBadge>
-        <StatusBadge tone="neutral">Официальные баллы ассистента, CRM и диалогов неизвестны без KEY</StatusBadge>
+        <StatusBadge tone="neutral">Официальные баллы ассистента, отбора заявок и диалогов неизвестны без эталонных ответов организаторов</StatusBadge>
       </div>
       {run.missing_modules.length > 0 && run.status !== 'running' && (
-        <p className="small text-warn">Не завершены: {run.missing_modules.join(', ')}. Готовые части доступны с частичным статусом; чужие ответы не подставляются.</p>
+        <p className="small text-warn">Не завершены: {run.missing_modules.map(id => MODULES.find(module => module.id === id)?.label ?? 'неизвестный модуль — требуется проверка').join(', ')}. Готовые части доступны с частичным статусом; чужие ответы не подставляются.</p>
       )}
       <TableWrap label="Модули прогона">
         <table className="table">
@@ -247,7 +247,7 @@ function RunStatus({ run }: { run: RunView }) {
               <th scope="col">Состояние</th>
               <th scope="col">Этап</th>
               <th scope="col">Файл</th>
-              <th scope="col">Проверка без KEY</th>
+              <th scope="col">Что проверяется</th>
               <th scope="col">Ошибка</th>
             </tr>
           </thead>
@@ -302,12 +302,12 @@ function ExportPanel({ run, runId }: { run: RunView; runId: string }) {
       {result && (
         <div className="stack">
           <StatusBadge tone={result.status === 'ready' ? 'ok' : result.status === 'partial' ? 'warn' : 'error'}>
-            {result.status === 'ready' ? 'Пакет готов: выходы одного run прошли проверки' : result.status === 'partial' ? 'Частичный пакет — не выдавайте за полный' : 'Экспорт заблокирован'}
+            {result.status === 'ready' ? 'Пакет готов: результаты одного прогона прошли проверки' : result.status === 'partial' ? 'Частичный пакет — не выдавайте за полный' : 'Экспорт заблокирован'}
           </StatusBadge>
           {result.errors.length > 0 && (
             <ul className="plain small text-error">
               {result.errors.map((error, index) => (
-                <li key={index}>{error}</li>
+                <li key={index}>{humanText(error, 'Файл не прошёл проверку. Посмотрите подробности и повторите подготовку.')}<Details summary="Подробности проверки для поддержки"><p>{error}</p></Details></li>
               ))}
             </ul>
           )}
@@ -320,7 +320,7 @@ function ExportPanel({ run, runId }: { run: RunView; runId: string }) {
                     <Download size={14} aria-hidden="true" /> <span>Скачать</span>
                   </a>
                 ) : (
-                  <span className="small muted">{target}</span>
+                  <span className="small muted">Скачивание пока недоступно<Details summary="Путь файла для поддержки"><span>{target}</span></Details></span>
                 )}
               </li>
             ))}
@@ -334,9 +334,9 @@ function ExportPanel({ run, runId }: { run: RunView; runId: string }) {
           if (!value) exportRun.reset();
         }}
         title="Подготовить файлы прогона"
-        action="Сервер запишет файлы во временные пути, перечитает их, проверит заголовки/ID/числа, запустит официальные validate.py и selfcheck.py и только затем заменит готовые артефакты."
+        action="Приложение подготовит файлы, проверит заголовки, номера записей и числа по правилам организаторов. Готовые файлы будут доступны после успешной проверки."
         affected={[
-          { label: 'run_id', value: <span className="mono">{runId}</span> },
+          { label: 'Сведения для поддержки', value: <Details summary="Номер прогона"><span className="mono">{runId}</span></Details> },
           { label: 'Статус прогона', value: RUN_STATUS[run.status].label },
         ]}
         confirmLabel="Проверить и подготовить"

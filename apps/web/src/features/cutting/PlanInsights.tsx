@@ -57,7 +57,7 @@ function finite(value: unknown): value is number {
 }
 
 /** Read-only projections for this exact dataset/plan/revision, never cached fixture answers. */
-export function PlanInsights({ datasetId, planId, revision }: { datasetId: string; planId: string; revision: number }) {
+export function PlanInsights({ datasetId, planId, revision, materialNames = {} }: { datasetId: string; planId: string; revision: number; materialNames?: Record<string, string> }) {
   const { client } = useApi();
   const [open, setOpen] = useState(false);
   const path = `/plans/${encodeURIComponent(planId)}`;
@@ -103,28 +103,28 @@ export function PlanInsights({ datasetId, planId, revision }: { datasetId: strin
 
   return (
     <details className="details" onToggle={event => setOpen(event.currentTarget.open)}>
-      <summary>Детали NEW и геометрический запас · версия {revision}</summary>
+      <summary>Требуется новый материал и геометрический запас · версия {revision}</summary>
       {open && <div className="details-body">
         <div className="row">
           <Button busy={requirements.isFetching || margins.isFetching}
             onClick={() => { void requirements.refetch(); void margins.refetch(); }}>Обновить данные склада</Button>
         </div>
-        <h3>Неразмещённые детали NEW</h3>
+        <h3>Детали, для которых требуется новый материал</h3>
         {requirements.isPending && <LoadingState label="Проверяем потребность плана…" />}
-        {requirements.isError && <ErrorState error={requirements.error} context="Детали NEW"
+        {requirements.isError && <ErrorState error={requirements.error} context="Неразмещённые детали"
           onRetry={() => { void requirements.refetch(); }} />}
         {newData && <>
           <StatusBadge tone={newData.is_active ? 'info' : 'neutral'}>
             {newData.is_active ? 'Потребность действующего плана'
               : newData.scope === 'historical' ? 'Историческая потребность' : 'Предложение плана, ещё не действует'}
           </StatusBadge>
-          <p>{newData.disclaimer_ru}</p>
+          <p>Эти детали пока не размещены на остатках. Число новых листов и стоимость закупки не определены.</p>
           <p>Всего: {formatInt(newData.total_quantity)} деталей · {formatAreaM2(newData.total_area_mm2, 6)}.</p>
-          {newData.rows.length === 0 ? <EmptyState title="Деталей NEW нет" /> :
-            <TableWrap label="Потребность в деталях NEW" maxHeight={320}>
+          {newData.rows.length === 0 ? <EmptyState title="Неразмещённых деталей нет" /> :
+            <TableWrap label="Детали, для которых требуется новый материал" maxHeight={320}>
               <table><thead><tr><th>Материал</th><th>Размер</th><th>Количество</th><th>Площадь</th><th>Причина</th></tr></thead>
                 <tbody>{newData.rows.map((row, index) => <tr key={`${row.material_id}-${index}`}>
-                  <td>{row.material_id}</td><td>{formatDims(row.dimensions)}</td><td>{formatInt(row.quantity)}</td>
+                  <td>{materialNames[row.material_id] ?? 'Название материала не передано'}<details><summary>Служебный номер материала</summary>{row.material_id}</details></td><td>{formatDims(row.dimensions)}</td><td>{formatInt(row.quantity)}</td>
                   <td>{formatAreaM2(row.area_mm2, 6)}</td><td>{row.reason_ru}
                     <details><summary>Детали: {row.part_ids.length}</summary>{row.part_ids.join(', ')}</details>
                   </td>

@@ -23,7 +23,7 @@ describe('honest states without backend', () => {
   it('shows a recoverable error instead of invented data when the API is down', async () => {
     const down: Transport = { kind: 'http', request: async () => { throw new TransportFailure('x', 'offline'); } };
     renderWith(down);
-    expect(await screen.findByText('API недоступен', {}, { timeout: 4000 })).toBeInTheDocument();
+    expect(await screen.findByText('Нет связи с приложением', {}, { timeout: 4000 })).toBeInTheDocument();
     expect((await screen.findAllByText(/Нет связи/, {}, { timeout: 8000 })).length).toBeGreaterThan(0);
     expect(screen.queryByText(/ТЕСТОВЫЙ РЕЖИМ/)).not.toBeInTheDocument();
   }, 15000);
