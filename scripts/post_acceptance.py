@@ -232,6 +232,20 @@ def exercise_cancel(client, source, buyer, directory):
     return {"run": view, "export": exported, "downloads": download(client, exported, directory)}
 
 
+def unknown_product_issues(reply):
+    issues = []
+    if reply["status"] not in {"clarification", "manager_handoff", "limited"}:
+        issues.append("UNKNOWN_SKU_MATCHED_GENERIC_HARDWARE")
+    if reply.get("quote") and reply["quote"]["status"] == "ready":
+        issues.append("UNKNOWN_SKU_READY_QUOTE")
+    if any(f.get("kind") == "price" for f in (reply.get("card") or {}).get("facts", [])):
+        issues.append("UNKNOWN_SKU_HAS_PRODUCT_PRICE_FACTS")
+    if re.search(r"\d[\d\s.,]*\s*(?:₸|тг|тенге)(?!\w)", reply["answer"], re.I):
+        issues.append("UNKNOWN_SKU_ASSERTS_PRODUCT_PRICE")
+    return [{"severity": "P1", "code": code,
+             "expected": "clarification_or_manager_handoff_without_unrelated_price"} for code in issues]
+
+
 def exercise(args, report):
     files, changes = changed_inputs(args.output / "inputs")
     report.update(input_changes=changes, input_hashes={name: digest(value) for name, value in files.items()})
@@ -285,12 +299,7 @@ def exercise(args, report):
                 "text": "Сколько стоит неизвестное крепление ZETA-POST-18484, модель и параметры неизвестны?",
                 "inventory_mode": "none", "allow_ai": False})
             report["unknown_request"] = unknown
-            if unknown["status"] not in {"clarification", "manager_handoff", "limited"}:
-                report.setdefault("product_issues", []).append({"severity": "P1", "code": "UNKNOWN_SKU_MATCHED_GENERIC_HARDWARE",
-                    "expected": "clarification_or_manager_handoff", "actual_status": unknown["status"],
-                    "request": "Сколько стоит неизвестное крепление ZETA-POST-18484, модель и параметры неизвестны?"})
-            if unknown.get("quote") and unknown["quote"]["status"] == "ready":
-                report.setdefault("product_issues", []).append({"severity": "P1", "code": "UNKNOWN_SKU_READY_QUOTE"})
+            report.setdefault("product_issues", []).extend(unknown_product_issues(unknown))
             assert unknown["model_call_count"] == 0
             partial_files, _ = changed_inputs(args.output / "partial-inputs", partial=True)
             partial_source, partial_buyer = import_source(client, partial_files, "Actual deadline/unknown source")
