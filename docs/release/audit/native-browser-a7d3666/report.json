@@ -1,0 +1,40 @@
+{
+  "transport": "actual_windows_exe_browser",
+  "status": "passed",
+  "human_labor": "not_run",
+  "clean_windows": "not_run",
+  "suites": {
+    "audit": {
+      "startTime": "2026-11-28T14:01:24.058Z",
+      "duration": 13663.511,
+      "expected": 4,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "real": {
+      "startTime": "2026-11-28T14:01:44.080Z",
+      "duration": 14605.813,
+      "expected": 10,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "integrated": {
+      "startTime": "2026-11-28T14:02:04.156Z",
+      "duration": 11597.678,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "post": {
+      "startTime": "2026-11-28T14:02:21.200Z",
+      "duration": 7294.272999999999,
+      "expected": 4,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  }
+}

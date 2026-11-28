@@ -169,3 +169,13 @@ selected sides подписаны по-русски.25Vitest/typecheckPASS. Back
 Новыйbrowserloop ждёткаждыйAPIresponse+historyturn и проверяет quoteNone,
 а не староеDOMсостояние. Финальныйruntime включаеттолькоэтотdisplay/testchange
 поверхпроверенногоcore; native/fingerprint regressionиCIповторяются.
+
+
+## Итог дополнительной проверки числовых токенов — runtime ab5b44a
+
+Финальный runtime ab5b44af42d8822647f5758077874029765e58a1, digest e48c0f5984636d43834172eae3599541c3d162f81cdd9de3fc79fd0918fad995.
+Подтверждённые выражения 1 / 2шт, 1 , 5шт, 2 3шт отклоняются целиком; обычная пунктуация, скобки и запятая после единиц поддержаны. Промежуточный a7d3666 дал148/149 и не принят. Итоговые native EXE149/149, QA10/10, все deterministic,0provider calls; это регрессия раскрытого набора, не live/независимый экзамен.
+Полный backend f156708:736 PASS/4 прежних SKIP419.29с; после него backend не менялся. Итоговый UI:25Vitest/typecheck/build PASS, служебные флаги скрыты, стороны обработки по-русски. Fixture59 PASS отдельно. Native20+portable GUI1+actual ZIP1=22 PASS; protocol67.594с PASS, пять CSV, partial/cancel/deadline/restart. Build и доставленная папка: smoke/backup/restore/scanner PASS. Git153 и runtime/assets156 совпали. Runtime CI46153967081:Linux+Windows success. Ruff/foundation14 и регенерация Python DTO→OpenAPI→TS без diff PASS.
+Новая серия на тех же исходных байтах/seed42/minfree5:quick5с/1worker против extended600с/7workers. Покрытие 55.8080067% → 59.1766821%; детали 165→202, заказы 28→43, оценка замещения 960645.25→1020962.65₸, errors/missing0/0. Официальный неизменённый валидатор PASS. Это оценка материала, не прибыль. PDF examples выпущен отдельно из этих результатов,6 страниц просмотрены.
+Поставка Genezis/dist/GlassFlow-audit-ab5b44a.zip, SHA256 28c400e713ebb3f050bf08188617cd2aaa3637cb833b574d4b4a91fd278770cf; EXE 3ad617d40686265d0d0ac643ee7b8584d95d6ff64b02b698b695a3abd4e5fe53. Прежние пакеты, исходники, ТЗ и дека сохранены.
+Внешние условия:стабильный live AI (ключ предоставлен;503/тайм-ауты,paidfalse),новый сотрудник/другой ноутбук,10 настоящих пар труда/допущения и economics.pdf,HTTPS judge gateway/токен,согласованные презентация/видео/репетиция,официальные закрытые входы/KEY/сдача. Другие ноутбуки доступны, человеческий прогон не наблюдался. Полная конкурсная приёмка не присвоена. Следующий шаг после публикации:пройти протокол сокомандника и ввести настоящие пары в мастер экономики.

@@ -1,0 +1,12 @@
+{
+  "directory": "C:\\Users\\User\\Documents\\ChatGPT\\Genezis\\dist\\GlassFlow-audit-ab5b44a",
+  "archive": "C:\\Users\\User\\Documents\\ChatGPT\\Genezis\\dist\\GlassFlow-audit-ab5b44a.zip",
+  "archive_sha256": "28c400e713ebb3f050bf08188617cd2aaa3637cb833b574d4b4a91fd278770cf",
+  "archive_bytes": 151701116,
+  "exe_sha256": "3ad617d40686265d0d0ac643ee7b8584d95d6ff64b02b698b695a3abd4e5fe53",
+  "runtime_commit": "ab5b44af42d8822647f5758077874029765e58a1",
+  "source_digest": "e48c0f5984636d43834172eae3599541c3d162f81cdd9de3fc79fd0918fad995",
+  "files": 1406,
+  "scan": "passed",
+  "zip_crc": "passed"
+}

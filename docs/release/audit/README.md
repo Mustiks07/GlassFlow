@@ -1,7 +1,7 @@
 # Проверенная рабочая версия после аудита c6b4b02
 
-Runtime **a0afb4b39cb185a3f13aed570b4b89c2b73e7dff**, source digest
-`7e981d206ea2fc63d72e44d68909ea7cd58e27f4f2beb349d421c11541a119cf`.
+Runtime **ab5b44af42d8822647f5758077874029765e58a1**, source digest
+`e48c0f5984636d43834172eae3599541c3d162f81cdd9de3fc79fd0918fad995`.
 Общая рабочая версия проверена. Полная конкурсная приёмка не присваивается.
 
 Исправлены три воспроизведённых дефекта: независимые единицы сторон; нулевые,
@@ -19,58 +19,56 @@ Runtime **a0afb4b39cb185a3f13aed570b4b89c2b73e7dff**, source digest
 
 ## Согласованная серия на неизменённых исходных данных
 
-Все семь исходных файлов и конфигурации закреплены в [series.json](final-series-a0afb4b-v2/series.json).
+Все семь исходных файлов и конфигурации закреплены в [series.json](final-series-ab5b44a/series.json).
 Обе версии используют seed42 и минимум5 свободных исходных кусков. Быстрый режим:
 5с,1worker, общий бюджет45с. Расширенный:600с,7workers, бюджет660с. Машина сборки:
 Windows10,12 logical CPU; это не эталонный четырёхъядерный ноутбук Windows11.
 
 | Показатель | Быстрый | Расширенный принятый |
 |---|---:|---:|
-| Покрытие площади, % | 55,8080067 | 59,1256891 |
-| Деталей из остатков | 165/298 | 201/298 |
-| Полностью закрытых заказов | 28/110 | 42/110 |
-| Оценка замещения материала, ₸ | 960 645,25 | 1 020 157,25 |
-| Свободных исходных кусков | 61 | 57 |
+| Покрытие площади, % | 55,8080067 | 59,1766821 |
+| Деталей из остатков | 165/298 | 202/298 |
+| Полностью закрытых заказов | 28/110 | 43/110 |
+| Оценка замещения материала, ₸ | 960 645,25 | 1 020 962,65 |
+| Свободных исходных кусков | 61 | 54 |
 | Ошибок / пропусков | 0/0 | 0/0 |
 
-Разница оценки материала **59 512,00 ₸ на этот набор**, не прибыль и не подтверждённая
+Разница оценки материала **60 317,40 ₸ на этот набор**, не прибыль и не подтверждённая
 продажа. Неизменённый официальный validate.py проверил оба решения. Первый полный
-комплект расширенного запуска готов10,407с; улучшение принято617,5с от старта прогона.
+комплект расширенного запуска готов9,672с; улучшение принято488,765с от старта прогона.
 Исторические59,1219631% не смешиваются с этой парой.
 
-[Baseline и официальный stdout](final-series-a0afb4b-v2/baseline/report.json),
-[принятый расширенный результат](final-series-a0afb4b-v2/selected/report.json),
-[точные CSV и manifest](final-series-a0afb4b-v2/selected/downloaded/manifest.json).
+[Baseline и официальный stdout](final-series-ab5b44a/baseline/report.json),
+[принятый расширенный результат](final-series-ab5b44a/selected/report.json),
+[точные CSV и manifest](final-series-ab5b44a/selected/downloaded/manifest.json).
 Каждый из5 CSV принят вместе с остальными;5 карточек используют3 подходящих покупателя.
-Реестр50 — дополнительный файл. Более ранний observer run сохранён в
-`final-series-a0afb4b`: прерван из-за ошибочного поля логирования `kind`, не является
-результатом сравнения. V2 использует ту же заранее объявленную конфигурацию.
+Реестр50 — дополнительный файл. Старые серии a0afb4b сохранены как история; их числа не смешиваются с текущим runtime. Прерванный observer run и промежуточная регрессия a7d3666 (148/149, отклонение обычной пунктуации) сохранены, но не приняты итоговыми. После исправления f156708/ab5b44a:149/149. Полный числовой токен проверяется до нормализации: дроби, операторы и неверная группировка не становятся целым количеством. Последовательные браузерные уточнения ждут каждый ответ API.
 
 ## Артефакты и проверки
 
-[examples.pdf](final-series-a0afb4b-v2/reports/examples.pdf) выпущен отдельно:6 просмотренных
+[examples.pdf](final-series-ab5b44a/reports/examples.pdf) выпущен отдельно:6 просмотренных
 страниц, по3 настоящих примера раскроя, ответов, локальных напоминаний и QA.
-[Evidence и происхождение](final-series-a0afb4b-v2/reports/report-evidence.json),
-[хеши и просмотр](final-series-a0afb4b-v2/reports/report-build.json).
+[Evidence и происхождение](final-series-ab5b44a/reports/report-evidence.json),
+[хеши и просмотр](final-series-ab5b44a/reports/report-build.json).
 Русские подписи QA/списки оснований преобразованы проверяемо; сырые значения сохранены.
 Напоминания — реальные локальные черновики, внешних сообщений не было. Экономика отсутствует:
 автоматические тестовые интервалы не подменяют человеческий труд.
 
-- [Полный Python](python-a0afb4b.xml):725 PASS,4 прежних SKIP,406,20с.
+- [Полный Python](python-f156708.xml):736 PASS,4 прежних SKIP,419,29с; core f156708, backend после него не менялся.
 - Ruff/foundation14 оригиналов и точное ТЗ, OpenAPI/TS generation, typecheck/build,25 Vitest PASS.
-- 59 fixture E2E отдельно; [20 настоящих EXE E2E](native-browser-a0afb4b/report.json).
-- [Новые ID/размеры/тексты, пять CSV, partial/cancel/deadline/restart](native-protocol-a0afb4b/report.json):PASS63,609с.
-- [Build smoke](smoke-a0afb4b.json), [smoke именно переносимой папки](portable-a0afb4b.json):PASS, backup/restore.
-- [Комплектный учебный ZIP через GUI конечного EXE](portable-browser-a0afb4b.json):PASS.
-- [Настоящий ZIP через GUI](actual-bundle-a0afb4b/browser-report.json):PASS; исходники/CSV/examples готовы,
+- 59 fixture E2E отдельно; [20 настоящих EXE E2E](native-browser-ab5b44a/report.json).
+- [Новые ID/размеры/тексты, пять CSV, partial/cancel/deadline/restart](native-protocol-ab5b44a/report.json):PASS67,594с.
+- [Build smoke](smoke-ab5b44a.json), [smoke именно переносимой папки](portable-ab5b44a.json):PASS, backup/restore.
+- [Комплектный учебный ZIP через GUI конечного EXE](portable-browser-ab5b44a.json):PASS.
+- [Настоящий ZIP через GUI](actual-bundle-ab5b44a/browser-report.json):PASS; исходники/CSV/examples готовы,
   экономика missing; намеренно изменённый CSV mismatch. Итого22 настоящих browser scenarios.
-- [153 Git blobs и156 runtime/assets hashes совпали](build-parity-a0afb4b.json).
-- [Runtime CI Linux+Windows PASS](https://github.com/Mustiks07/GlassFlow/actions/runs/46148987983).
+- [153 Git blobs и156 runtime/assets hashes совпали](build-parity-ab5b44a.json).
+- [Runtime CI Linux+Windows PASS](https://github.com/Mustiks07/GlassFlow/actions/runs/46153967081).
   Финальный main с документацией проверяется отдельным CI.
 
-Папка/ZIP: `Genezis/dist/GlassFlow-audit-a0afb4b`,
-[метаданные поставки, SHA256/CRC/scanner](package-a0afb4b.json).
-ZIP SHA256 `f49b085fa0fb75e00652a416203b0fe8e336a15a1932d2841b5cc015725f7d76`.
+Папка/ZIP: `Genezis/dist/GlassFlow-audit-ab5b44a`,
+[метаданные поставки, SHA256/CRC/scanner](package-ab5b44a.json).
+ZIP SHA256 `28c400e713ebb3f050bf08188617cd2aaa3637cb833b574d4b4a91fd278770cf`.
 Внутри инструкция, [протокол сокомандника](../TEAMMATE_ACCEPTANCE_RU.md), семь исходных учебных файлов.
 Старые сборки и пользовательские материалы сохранены. Локальные review/tamper ZIP
 не являются конкурсной сдачей, не входят в Git; воспроизводятся `scripts/audit_open_bundle.py`.
@@ -82,7 +80,7 @@ ZIP SHA256 `f49b085fa0fb75e00652a416203b0fe8e336a15a1932d2841b5cc015725f7d76`.
    с прежними199311 и резервом5000 получается346523, меньше1млн первого цикла.
    Фактический usage ошибок неизвестен. Ключ предоставлен и не сохранился в трёх закрытых
    базах/файлах, paidfalse. Полный live149 не запускался после неуспешного preflight.
-   Локальные149/149,79/79 иQA10/10 — [регрессия раскрытого набора](local-exam-a0afb4b/report.json),
+   Локальные149/149,79/79 иQA10/10 — [регрессия раскрытого набора](local-exam-ab5b44a/report.json),
    не новый независимый экзамен и не приёмка модели.
 2. Другой ноутбук/новый сотрудник: самостоятельный запуск по инструкции<=5мин,
    эталон Windows11/4CPU/8GB/SSD. Ноутбуки сокомандников доступны, наблюдение ещё не проведено.

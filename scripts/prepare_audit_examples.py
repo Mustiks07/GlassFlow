@@ -5,6 +5,7 @@ import csv
 import hashlib
 import io
 import json
+from collections import defaultdict
 from decimal import Decimal
 from pathlib import Path
 
@@ -24,10 +25,33 @@ def main():
     for name, digest in manifest['files'].items():
         assert hashlib.sha256((directory / name).read_bytes()).hexdigest() == digest, name
     tables = {}
-    for role, filename, key in [('stock', 'stock_open.csv', 'remnant_id'), ('materials', 'materials.csv', 'material_id')]:
+    for role, filename, key in [('stock', 'stock_open.csv', 'remnant_id'), ('materials', 'materials.csv', 'material_id'), ('orders', 'orders_open.csv', 'part_id')]:
         raw_source = (PACK / '1_ostatki' / filename).read_bytes()
         assert hashlib.sha256(raw_source).hexdigest() == manifest['source_hashes'][role]
         tables[role] = {r[key]: r for r in csv.DictReader(io.StringIO(raw_source.decode('utf-8-sig')))}
+    series = json.loads((args.series / 'series.json').read_text('utf-8'))
+    plan = series['selected']['accepted_cutting']['result']
+    allocated = defaultdict(list)
+    for placement in plan['placements']:
+        if placement['remnant_id'] != 'NEW':
+            allocated[placement['remnant_id']].append(placement)
+    chosen_pieces = []
+    for count in (1, 2):
+        matching = sorted(r for r in allocated if len(allocated[r]) == count)
+        if matching:
+            chosen_pieces.append(matching[0])
+    remaining = sorted((r for r in allocated if r not in chosen_pieces), key=lambda r: (-min(len(allocated[r]), 6), r))
+    chosen_pieces += [r for r in remaining if len(allocated[r]) <= 6][:3-len(chosen_pieces)]
+    assert len(chosen_pieces) == 3
+    evidence['examples']['cutting'] = []
+    for rid in chosen_pieces:
+        stock = tables['stock'][rid]
+        placements = [{**p, 'length_mm': int(tables['orders'][p['part_id']]['длина_мм']),
+            'width_mm': int(tables['orders'][p['part_id']]['ширина_мм'])} for p in allocated[rid]]
+        evidence['examples']['cutting'].append(dict(dataset_id=manifest['dataset_id'], run_id=manifest['run_id'],
+            source_ref=f"plan:{plan['plan_id']}@{plan['revision']}#{rid}", remnant_id=rid,
+            length_mm=int(stock['длина_мм']), width_mm=int(stock['ширина_мм']), placements=placements,
+            description=f"Открытый набор организаторов. {stock['место']}. Деталей: {len(placements)}; координаты приняты официальным валидатором. Поворот: 0 — без поворота, 1 — на 90°."))
     for item in evidence['examples']['cutting']:
         stock = tables['stock'][item['remnant_id']]
         material = tables['materials'][stock['material_id']]
@@ -56,6 +80,7 @@ def main():
         'Вердикты показаны по-русски; raw_verdict/raw_correct сохраняют точные значения CSV.',
         'Основания напоминаний перечислены через запятую; исходный список сохранён.',
         'Выбраны первый OK и первые два ERROR для иллюстрации; точность по этим трём примерам не оценивается.',
+        'Схемы показывают одночастный, двухчастный и наиболее плотный вариант до шести деталей; полный результат сохранён в CSV.',
     ]
     write_json(output, evidence)
     print(output)

@@ -1,6 +1,6 @@
 {
-  "runtime_commit": "a0afb4b39cb185a3f13aed570b4b89c2b73e7dff",
-  "runtime_digest": "7e981d206ea2fc63d72e44d68909ea7cd58e27f4f2beb349d421c11541a119cf",
+  "runtime_commit": "ab5b44af42d8822647f5758077874029765e58a1",
+  "runtime_digest": "e48c0f5984636d43834172eae3599541c3d162f81cdd9de3fc79fd0918fad995",
   "base": "c6b4b02cfac0eee0836b24ef947defc0864c4202",
   "working_version": "passed",
   "contest_release": "not_accepted_external_conditions",
@@ -16,19 +16,22 @@
       "coverage_percent": "55.8080067"
     },
     "selected": {
-      "replacement_value_tg": "1020157.25",
+      "replacement_value_tg": "1020962.65",
       "invalid": 0,
       "missing": 0,
-      "fully_covered_orders": 42,
-      "covered_parts": 201,
-      "free_original_remnants": 57,
-      "score": 12.167585,
-      "coverage_percent": "59.1256891"
+      "fully_covered_orders": 43,
+      "covered_parts": 202,
+      "free_original_remnants": 54,
+      "score": 12.235576,
+      "coverage_percent": "59.1766821"
     }
   },
   "python": {
-    "passed": 725,
-    "skipped": 4
+    "passed": 736,
+    "skipped": 4,
+    "core_commit": "f156708ea016dfd2d1bdfa7a869b7ac8fbf0a06e",
+    "seconds": 419.29,
+    "scope": "No backend changes since this full run; final runtime CI also passed Linux and Windows"
   },
   "frontend_tests": 25,
   "fixture_browser": 59,
@@ -41,13 +44,13 @@
     "scope": "regression on disclosed cases, not a new blind exam"
   },
   "package": {
-    "directory": "C:\\Users\\User\\Documents\\ChatGPT\\Genezis\\dist\\GlassFlow-audit-a0afb4b",
-    "archive": "C:\\Users\\User\\Documents\\ChatGPT\\Genezis\\dist\\GlassFlow-audit-a0afb4b.zip",
-    "archive_sha256": "f49b085fa0fb75e00652a416203b0fe8e336a15a1932d2841b5cc015725f7d76",
-    "archive_bytes": 151700045,
-    "exe_sha256": "4658ab7957f9d9846d08a56c887ca8bb613c6ec2520e46f778c5c16db4ac218b",
-    "runtime_commit": "a0afb4b39cb185a3f13aed570b4b89c2b73e7dff",
-    "source_digest": "7e981d206ea2fc63d72e44d68909ea7cd58e27f4f2beb349d421c11541a119cf",
+    "directory": "C:\\Users\\User\\Documents\\ChatGPT\\Genezis\\dist\\GlassFlow-audit-ab5b44a",
+    "archive": "C:\\Users\\User\\Documents\\ChatGPT\\Genezis\\dist\\GlassFlow-audit-ab5b44a.zip",
+    "archive_sha256": "28c400e713ebb3f050bf08188617cd2aaa3637cb833b574d4b4a91fd278770cf",
+    "archive_bytes": 151701116,
+    "exe_sha256": "3ad617d40686265d0d0ac643ee7b8584d95d6ff64b02b698b695a3abd4e5fe53",
+    "runtime_commit": "ab5b44af42d8822647f5758077874029765e58a1",
+    "source_digest": "e48c0f5984636d43834172eae3599541c3d162f81cdd9de3fc79fd0918fad995",
     "files": 1406,
     "scan": "passed",
     "zip_crc": "passed"
@@ -60,7 +63,7 @@
       "reminders": 3,
       "quality": 3
     },
-    "source": "final-series-a0afb4b-v2/reports/examples.pdf",
+    "source": "final-series-ab5b44a/reports/examples.pdf",
     "human_labor": "not_supplied"
   },
   "external": [
@@ -70,5 +73,13 @@
     "HTTPS judge gateway and revocable token",
     "Final agreed presentation/video and human rehearsal",
     "Official closed input/KEY, submission and guest access"
-  ]
+  ],
+  "runtime_ci": {
+    "run": 46153967081,
+    "conclusion": "success",
+    "jobs": [
+      "verify",
+      "windows-platform"
+    ]
+  }
 }
