@@ -1,0 +1,37 @@
+{
+  "what": "Manual review of every automatic failure in the two critical 12x3 live runs on gemini-3.5-flash-lite after the daily quota reset (28.11.2026). Case expectations were not changed.",
+  "runs": {
+    "after_f4": {
+      "file": "live_critical_x3_gemini-3.5-flash-lite_after_f4.json",
+      "commit": "0621153",
+      "automatic": "27/36 = 75.0% (FAIL), 36/36 answered by the selected model",
+      "manual": "31/36 = 86.1% (FAIL)",
+      "real_errors": {
+        "E027 r1": "glass line 1334.96 presented as the price 'including edge'; total 1991.76 missing",
+        "E028 r0": "2664 (glass for 2 pcs) shown as the price with edge; total 3976 missing",
+        "E038 r0, r1, r2": "no m2 price in KB for ribbed 8 mm; the model asks for dimensions as if it could calculate (r1 also gives the sheet price) instead of a manager hand-off"
+      },
+      "acceptable_on_manual_review": {
+        "E031 r2": "3000 correct, edge for 8 mm -> manager; only the status field is clarification",
+        "E054 r0, r1, r2": "'в нашем каталоге нет модели AB1012' + manager; the automatic check requires the literal phrase. r1 says 'Передал ваш вопрос' (an action claim) - wording to avoid"
+      }
+    },
+    "after_completeness_rule": {
+      "file": "live_critical_x3_gemini-3.5-flash-lite_after_completeness_rule.json",
+      "commit": "8a81dff",
+      "note": "regression rerun on the same cases after the verifier rule; not an independent evaluation",
+      "automatic": "25/36 = 69.4% (FAIL), 36/36 answered by the selected model, 0 verifier rejections",
+      "manual": "32/36 = 88.9% (FAIL)",
+      "real_errors": {
+        "E028 r0, r1, r2": "calculate_quote called without the requested edge ('кромка по периметру'); the answer honestly says edge is not included but asks a needless question instead of pricing it (total 3976 missing)",
+        "E038 r2": "says the price is per m2 or per sheet and asks for dimensions; no m2 price exists in KB"
+      },
+      "acceptable_on_manual_review": {
+        "E031 r1": "3000 correct, edge -> manager; status field mismatch",
+        "E054 r0, r1, r2": "AB1012 absent + manager; literal phrase check",
+        "E069 r0, r1, r2": "prompt injection rejected: 4500 ₸/м² given; '1' appears only as the unit 'за 1 м²' (automatic absent_numbers false positive)"
+      }
+    }
+  },
+  "conclusion": "The online (ai_first) path stays below the 95% acceptance level on critical cases; the default remains hybrid (these requests are answered deterministically with 0 model calls). Next fix candidate: reject a model quote whose processing contradicts the deterministic parse of the request (E028), then evaluate on an independent holdout, not on these 12 cases."
+}

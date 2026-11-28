@@ -5,8 +5,8 @@
 - Ветка: `codex/claude-3-mustafa-ai` (опубликована в origin). В main не сливалась.
 - Foundation commit: `16d63c6`. Проверенный ревьюером commit: `e83c211`.
 - Последний проверенный код-коммит: см. раздел «Итоговый handoff» (этот статус — в том же или следующем коммите, см. `git log`).
-- Последнее обновление: 28.11.2026 (ночь, Asia/Qyzylorda).
-- Общий статус: **READY FOR INTEGRATION** для детерминированного ядра (каталог, расчеты, диалог, контроль диалогов, шлюз-engine) и исправлений независимой проверки F1–F4. Живые проверки выполнены с тестовыми бесплатными ключами владельца: онлайн-путь на 18 открытых вопросах — **PASS**, на расширенных 24 кейсах ×3 — **FAIL** (81,4% < 95%), повтор критических ×3 на выбранной модели после F4 — **BLOCKED** (дневная квота 500 запросов исчерпана). По умолчанию работает гибрид (детерминированный путь, модель только для нераспознанных запросов). Развертывание шлюза по HTTPS не выполнялось (нет хостинга). Полная приемка продукта не выполнялась (это задача интегратора).
+- Последнее обновление: 28.11.2026, 08:40 UTC.
+- Общий статус: **READY FOR INTEGRATION** для детерминированного ядра (каталог, расчеты, диалог, контроль диалогов, шлюз-engine) и исправлений независимой проверки F1–F4. Живые проверки выполнены с тестовыми бесплатными ключами владельца: онлайн-путь на 18 открытых вопросах — **PASS**; на расширенных 24 кейсах ×3 — **FAIL** (81,4% < 95%); критические 12 ×3 после F4 и сброса квоты — **FAIL**: все 36 ответов от выбранной модели, автомат 75,0%, ручная проверка 86,1%; регрессионный повтор с правилом полноты итога — автомат 69,4%, ручная 88,9%. По умолчанию работает гибрид (детерминированный путь, модель только для нераспознанных запросов). Развертывание шлюза по HTTPS не выполнялось (нет хостинга). Полная приемка продукта не выполнялась (это задача интегратора).
 - Миссия: [../agents/CLAUDE_3_MUSTAFA.md](../agents/CLAUDE_3_MUSTAFA.md). Подробности: [docs/ai/README.md](../ai/README.md), [EVALUATION.md](../ai/EVALUATION.md), [MODEL_SELECTION.md](../ai/MODEL_SELECTION.md), [ECONOMICS.md](../ai/ECONOMICS.md).
 
 ## Исправления независимой проверки (docs/reviews/CLAUDE_3_REVIEW_2026-11-27.md)
@@ -26,7 +26,7 @@
 
 | ID / команда | Фактический результат | Статус | Evidence |
 |---|---|---|---|
-| `env -u GEMINI_API_KEY -u OPENROUTER_API_KEY uv run pytest` | 296 passed, 3 skipped (было 249 на e83c211) | PASS | — |
+| `env -u GEMINI_API_KEY -u OPENROUTER_API_KEY uv run pytest` | 302 passed, 3 skipped (было 249 на e83c211) | PASS | — |
 | `uv run ruff check backend tests scripts infra/ai-gateway` | All checks passed | PASS | — |
 | `uv run python scripts/check_foundation.py` | PASS | PASS | — |
 | evaluation `open` — официальный неизмененный `selfcheck.py` | ассистент 36/36, **15.0 из 15**, выдумок 0; диалоги 8/8, **5.0 из 5**; exit 0 | PASS | evidence/open/report.json |
@@ -35,7 +35,9 @@
 | `evaluation perf` | расчет p95 ≈ 6 мс, детерминированный ход p95 ≈ 25 мс | PASS локально; эталонный Windows — NOT RUN | evidence/perf/performance.json |
 | `live-open --model gemini:gemini-3.5-flash-lite` | 18/18 ответов от выбранной модели, официальный selfcheck 15.0 из 15, 0 выдумок | **PASS** | evidence/live/open_live_gemini-3.5-flash-lite_v2.json |
 | `live --cases broad --repeats 3` (24 кейса ×3, `ai_first`) | 70/72 от модели, 57/70 = 81,4%; критические 31/36 = 86,1%; 0 неподтвержденных утверждений по верификатору; ручная проверка — 3 реальные ошибки | **FAIL** (< 95%) → онлайн-путь не основной | evidence/live/live_primary_gemini-3.5-flash-lite_v2.json |
-| `live --cases critical --repeats 3` после F4 | все ответы — детерминированный резерв: 429 `GenerateRequestsPerDayPerProjectPerModel-FreeTier`, limit 500; повторная проверка 28.11 02:36 — квота все еще исчерпана (retryDelay ≈ 10,4 ч, сброс в полночь по тихоокеанскому времени ≈ 13:00 Asia/Qyzylorda) | **BLOCKED** | evidence/live/live_critical_x3_after_f4_quota_exhausted.json |
+| `live --cases critical --repeats 3` после F4, 27.11 | все ответы — детерминированный резерв: 429 дневной квоты (limit 500); 28.11 02:36 — квота еще исчерпана (сброс в полночь по тихоокеанскому времени) | BLOCKED (исторический) | evidence/live/live_critical_x3_after_f4_quota_exhausted.json |
+| `live --cases critical --repeats 3` после сброса квоты, 28.11 08:10 UTC | 36/36 от `gemini-3.5-flash-lite`, 0 ошибок провайдера; автомат 27/36 = 75,0%; ручная 31/36 = 86,1% (итог без кромки E027/E028, E038 ×3 без передачи менеджеру); вызов модели p95 1,18 с, ход без очереди p95 7,1 с | **FAIL** (exit 3) | evidence/live/live_critical_x3_gemini-3.5-flash-lite_after_f4.json |
+| то же после правила `incomplete_total` (регрессионный повтор) | 36/36 от модели; автомат 25/36 = 69,4%; ручная 32/36 = 88,9% (E028 ×3 без запрошенной кромки, E038 r2); 0 отклонений верификатора | **FAIL** (exit 3) | …_after_completeness_rule.json; разбор: live_critical_x3_manual_review_2026-11-28.json |
 | Сравнение `gemini-3.6-flash`, критические ×3 | 1 ответ модели верный (E026 1988), затем 429: дневной лимит бесплатного уровня **20 запросов** | PARTIAL; модель непригодна для free tier | evidence/live/live_compare_gemini-3.6-flash_before_pacing.json |
 | Ранняя остановка live-оценщика (после доработки) на реальной квоте | первый 429 дневной квоты → остановка, 35/36 `not_run`, лишних запросов нет, exit 2 | BLOCKED (ожидаемо) | evidence/live/live_gemini-3.6-flash_daily_quota_early_stop.json |
 | Сравнение OpenRouter `nvidia/nemotron-3.5-super-vl:free` | 4/6 автомат, 6/6 по ручной проверке смысла; в 3–4 раза больше токенов | наблюдение | evidence/live/live_compare_openrouter_nemotron_v2.json |
@@ -52,7 +54,7 @@
 | T24 | PASS локальным путем (selfcheck 15/15) и онлайн-путем (`live-open` 15/15, все 18 от модели); UI-часть — C1 | evidence/open, evidence/live/open_live_… |
 | T25, T26, T27, T29, T30, T31 | PASS | test_local_engine, test_pricing, test_api, test_dialog_quality |
 | T28 | PASS (расчет/ревизии/количество, выбранные стороны после F2); подбор R006 на реальном плане — ожидает C2 | test_pricing, test_review_regressions |
-| T32 | детерминированно PASS; онлайн-путь 24×3 — FAIL 81,4%; повтор критических ×3 — BLOCKED квотой | EVALUATION.md |
+| T32 | детерминированно PASS; онлайн-путь: 24×3 — FAIL 81,4%; критические 12×3 — FAIL (ручная 86,1% и 88,9%) | EVALUATION.md, evidence/live |
 | T33 | PASS локально; живой LLM: навязанные цены не приняты, prompt не раскрыт (ручная проверка) | EVALUATION.md |
 | T34 | PASS (mock + живые режимы отказа) | test_ai_resilience.py, failure_modes_live.jsonl |
 | T35 | PASS (живой Gemini ↔ OpenRouter и через judge_gateway на localhost) | MODEL_SELECTION.md |
@@ -67,11 +69,11 @@ Support tests (моя часть): T03, T04, T05, T10, T23 (с тестовым 
 | C3-01 Каталог, цены, mappings | реализовано, проверено | `3d370c1`, `5912e6b` | Pro: реальный `IntelligenceSources`, регистрация snippet миграции в Alembic |
 | C3-02 Единый точный Pricing | реализовано, проверено; единый `pricing_input_for()` (F2) | `762b52c`, `97caa0f` | — |
 | C3-03 AI-инструменты | реализовано, проверено; `find_remnants` не выдается модели при `inventory_mode=none` | `6e585f6` | реальные порты C2/Pro |
-| C3-04 Диалог и проверка фактов | реализовано, проверено; верификатор отклоняет ложное «нет остатков» и «не выполняет доставку» | `6e585f6`, `5c67b40` | — |
+| C3-04 Диалог и проверка фактов | реализовано, проверено; верификатор отклоняет ложное «нет остатков», «не выполняет доставку» и строку расчета без известного итога (`incomplete_total`) | `6e585f6`, `5c67b40`, `8a81dff` | онлайн-путь: проверка согласованности расчета модели с разбором запроса |
 | C3-05 Gemini и OpenRouter | реализовано, проверено вживую; цепочка `gemini-3.5-flash-lite` → `nemotron-3.5-super-vl:free` (при ключе) → `gemini-3.8-flash`; предохранитель 60 с, доля срока на модель, мгновенный переход в local при дневной квоте | `6cc73b9`, `762b52c`, `33ba311` | ключ проекта команды, повтор `check_ai(live=True)` |
 | C3-06 Контроль диалогов и batch | реализовано, проверено; F1–F3 исправлены | `97caa0f` | Pro: run jobs, CSV-экспорт |
 | C3-07 judge_gateway engine | реализовано, проверено локально; серверные профили инструментов | `91757d3`, `6cc73b9` | **BLOCKED**: HTTPS-хостинг, проверка с компьютера жюри; Dockerfile не собран |
-| C3-08 Полная оценка | реализовано; live-приемка по F4 | `781980b`, `33ba311` | **BLOCKED**: повтор критических ×3 после сброса квоты; онлайн-путь FAIL на расширенных — нужны правила полноты итога |
+| C3-08 Полная оценка | реализовано; live-приемка по F4; критические ×3 выполнены после сброса квоты | `781980b`, `33ba311`, `0621153`, `8a81dff` | онлайн-путь FAIL (< 95%) — по умолчанию гибрид; итоговый прогон на ключе команды и новом независимом holdout |
 | C3-09 Экономика и передача | реализовано, фактический расход живых прогонов | `5c67b40` | итоговые числа — прогон на ключе команды (Pro) |
 
 ## Контракты и интеграция
@@ -89,14 +91,14 @@ Support tests (моя часть): T03, T04, T05, T10, T23 (с тестовым 
 ## Артефакты
 
 - `docs/ai/evidence/review/{f1_f3_before_after.json,f4_live_acceptance_before_after.json}` — до/после по F1–F4.
-- `docs/ai/evidence/live/` — `open_live_gemini-3.5-flash-lite_v2.json` (PASS), `live_primary_gemini-3.5-flash-lite_v2.json` (FAIL по правилам F4, пересчет в поле `acceptance_recomputed_with_f4_rules`), `live_compare_openrouter_nemotron_v2.json`, `live_chain_3.8-flash_to_flash-lite_before_breaker.json`, `live_critical_x3_after_f4_quota_exhausted.json` (BLOCKED), `failure_modes_live.jsonl`, `answers_live_gemini-3.5-flash-lite.csv`. Ключей и текстов запросов с ключами нет; прежний `live_status.json` (отсутствие ключа) удален как устаревший.
+- `docs/ai/evidence/live/` — `open_live_gemini-3.5-flash-lite_v2.json` (PASS), `live_primary_gemini-3.5-flash-lite_v2.json` (FAIL по правилам F4, пересчет в поле `acceptance_recomputed_with_f4_rules`), `live_compare_openrouter_nemotron_v2.json`, `live_chain_3.8-flash_to_flash-lite_before_breaker.json`, `live_critical_x3_after_f4_quota_exhausted.json` (BLOCKED), `live_critical_x3_gemini-3.5-flash-lite_after_f4.json` (FAIL), `live_critical_x3_gemini-3.5-flash-lite_after_completeness_rule.json` (FAIL), `live_critical_x3_manual_review_2026-11-28.json` (ручной разбор каждого провала), `live_compare_gemini-3.6-flash_before_pacing.json`, `live_gemini-3.6-flash_daily_quota_early_stop.json`, `failure_modes_live.jsonl`, `answers_live_gemini-3.5-flash-lite.csv`. Ключей и текстов запросов с ключами нет; прежний `live_status.json` (отсутствие ключа) удален как устаревший.
 - `docs/ai/evidence/{open,extended,holdout,perf,gateway}/`.
 
 ## Внешние блокеры
 
 | Блокер | Затронуто | Требуемое действие |
 |---|---|---|
-| Дневная квота free tier исчерпана: `gemini-3.5-flash-lite` 500/день, `gemini-3.6-flash` 20/день (тестовый проект); сброс ≈ 08:00 UTC | повтор `live --cases critical --repeats 3` на `gemini-3.5-flash-lite` | повтор после 08:00 UTC 28.11 (назначен; см. «Следующий шаг») или на ключе команды |
+| Квота free tier: `gemini-3.5-flash-lite` 500/день, `gemini-3.6-flash` 20/день (тестовый проект); сброс ≈ 08:00 UTC; 28.11 израсходовано ≈ 315 | дальнейшие live-прогоны в этот день | ключ проекта команды; не запускать оценочные прогоны в день конкурсного |
 | Тестовые ключи владельца не релизные | итоговый model_id, economics.pdf | ключ бесплатного проекта команды в хранилище настроек → `check_ai(live=True)` → `evaluation live` |
 | Нет хостинга для judge_gateway | C3-07 live, T54/T59/T62 по шлюзу | HTTPS-хостинг + секреты → `judge_gateway smoke` с нового компьютера |
 | Нет docker daemon | Dockerfile шлюза | собрать образ на машине с Docker |
@@ -104,14 +106,15 @@ Support tests (моя часть): T03, T04, T05, T10, T23 (с тестовым 
 
 ## Следующий шаг
 
-1. После сброса квоты (напоминание на 28.11 08:10 UTC): `uv run python -m glassflow.modules.intelligence.evaluation live --model gemini:gemini-3.5-flash-lite --cases critical --repeats 3` → обновить EVALUATION.md и этот статус. Без ключа/квоты статус остается BLOCKED.
-2. Онлайн-путь (`ai_first`) остается FAIL на расширенных кейсах; чтобы сделать его основным, нужны правила верификатора на полноту итога (H016 — итог без кромки) и на ложное отсутствие позиции (E074), затем повторная оценка. До этого по умолчанию — гибрид.
+1. Критические ×3 выполнены (28.11): онлайн-путь FAIL. По умолчанию — гибрид (распознанные запросы, включая все 12 критических, отвечаются детерминированно без вызовов модели).
+2. Чтобы сделать онлайн-путь основным: отклонять расчет модели, противоречащий детерминированному разбору запроса (обработка/стороны — E028), требовать передачу менеджеру при неизвестной запрошенной цене (E038), затем оценить на **новом независимом** holdout (12 критических кейсов уже использованы для исправлений).
 3. Интегратор: сквозные шаги INTEGRATION.md 1–5, HTTPS-шлюз с компьютера жюри.
 
 ## Итоговый handoff
 
 - Коммиты основной работы: `3d370c1`, `5912e6b`, `4616645`, `c97719b`, `91757d3`, `5004ba3`, `eca6013`, `1e6ad7a`, `803f7f8`, `e83c211` (проверен ревьюером).
 - Живые проверки и исправления по ним: `6e585f6` (утверждения о наличии, gating `find_remnants`, клиент Gemini на вызов, тайм-ауты), `6cc73b9` (цепочка моделей по живым данным, профили инструментов шлюза), `762b52c` (предохранитель и доля срока, единый `pricing_input_for`).
-- Исправления ревью: `97caa0f` F1–F3, `781980b` F4, `5c67b40` правило доставки верификатора и документы, `33ba311` fail-fast при дневной квоте и EVALUATION, затем коммит со статусом, batch-регрессией F1 и выжиданием/ранней остановкой live-оценщика (SHA сообщается в отчете).
+- Исправления ревью: `97caa0f` F1–F3, `781980b` F4, `5c67b40` правило доставки верификатора и документы, `33ba311` fail-fast при дневной квоте и EVALUATION, `0621153` статус, batch-регрессия F1, выжидание/ранняя остановка live-оценщика.
+- После сброса квоты: `8a81dff` критические ×3 (evidence), правило `incomplete_total`, отклоненный верификатором ответ модели = неуспешный онлайн-прогон; затем коммит с повтором, ручным разбором и документами (SHA в отчете).
 - Воспроизведение: `uv sync --locked --all-groups`; `uv run pytest tests/intelligence`; `uv run python -m glassflow.modules.intelligence.evaluation open|extended|holdout|perf`; live — с ключом в окружении, см. EVALUATION.md; шлюз — `infra/ai-gateway/DEPLOYMENT.md`.
-- НЕ выполнено: повтор критических ×3 после F4 (квота), развертывание шлюза по HTTPS, сборка Docker-образа, полная приемка продукта.
+- НЕ выполнено: онлайн-путь не достигает 95% (FAIL, задокументировано), развертывание шлюза по HTTPS, сборка Docker-образа, полная приемка продукта.
