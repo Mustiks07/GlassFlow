@@ -74,7 +74,7 @@ export function LaborPanel({ dataset, onExport }: { dataset: Dataset; onExport: 
       </select></label>
       {writable && <details><summary>Новый протокол</summary><div className="stack">
         <label>Название протокола <input value={name} onChange={e => setName(e.target.value)} /></label>
-        <label>Наблюдатель <input value={observer} onChange={e => setObserver(e.target.value)} placeholder="Код наблюдателя" /></label>
+        <label>Наблюдатель <input value={observer} onChange={e => setObserver(e.target.value)} placeholder="Имя или учётная запись" /></label>
         <label>Порядок и правила измерения <textarea value={protocol} onChange={e => setProtocol(e.target.value)} /></label>
         <label>Что считается началом <input value={start} onChange={e => setStart(e.target.value)} /></label>
         <label>Что считается завершением <input value={end} onChange={e => setEnd(e.target.value)} /></label>
@@ -87,7 +87,7 @@ export function LaborPanel({ dataset, onExport }: { dataset: Dataset; onExport: 
         <p className="small">{study.start_definition} → {study.end_definition}</p>
         <Button onClick={() => refresh()} busy={busy}>Обновить измерения</Button>
         {writable && <details><summary>Начать ручное или автоматизированное выполнение</summary><div className="stack">
-          <label>Оператор <input value={operator} onChange={e => setOperator(e.target.value)} placeholder="Код оператора" /></label>
+          <label>Оператор <input value={operator} onChange={e => setOperator(e.target.value)} placeholder="Имя или учётная запись сотрудника" /></label>
           <div className="row wrap"><label>Идентификатор пары <input value={pair} onChange={e => setPair(e.target.value)} /></label>
             <label>Идентификатор задачи <input value={task} onChange={e => setTask(e.target.value)} /></label></div>
           <label>Ссылка на входные данные задачи <input value={inputRef} onChange={e => setInputRef(e.target.value)} placeholder="Сохранённый запрос, документ или расчёт" /></label>

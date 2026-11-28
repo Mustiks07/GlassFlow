@@ -191,7 +191,7 @@ def upgrade_checks(client, dataset_id):
         "u01": "draft+canonical missing quote404+restart; actual domain check reported separately",
         "u07": "synthetic scenario+native PDF+same hash+restart; human labor not_run",
         "u04": "unknown total null+canonical unresolved lines+restart; actual domain check separately",
-        "u06": "schema5+empty actual ledger before confirmation; actual domain check separately",
+        "u06": "migrated shared database+empty actual ledger before confirmation; actual domain check separately",
         "pdf_sha256": hashlib.sha256(pdf.content).hexdigest(), "result_hash": scenario["result_hash"],
     }
 

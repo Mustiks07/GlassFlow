@@ -33,12 +33,12 @@ for relative in sources:
     datas.append((str(root / "inputs/PACK_for_teams" / relative), "inputs/PACK_for_teams/" + str(Path(relative).parent)))
 for package in ("sqlalchemy", "pydantic", "scikit-learn", "scipy", "ortools"):
     datas.extend(copy_metadata(package))
-hidden = collect_submodules("glassflow") + ["scipy.optimize", "ortools.sat.python.cp_model",
+hidden = collect_submodules("glassflow", filter=lambda name: not name.startswith("glassflow.modules.intelligence.evaluation")) + ["scipy.optimize", "ortools.sat.python.cp_model",
     "sklearn.linear_model", "sklearn.compose", "sklearn.preprocessing", "sklearn.pipeline", "sklearn.model_selection",
     "alembic.ddl.sqlite", "sqlalchemy.dialects.sqlite"]
 a = Analysis([str(root / "packaging/entrypoint.py")], pathex=[str(root / "backend")],
              binaries=collect_dynamic_libs("ortools"), datas=datas, hiddenimports=hidden,
-             excludes=["tkinter", "matplotlib", "pytest", "IPython", "notebook"], noarchive=False)
+             excludes=["tkinter", "matplotlib", "pytest", "IPython", "notebook", "glassflow.modules.intelligence.evaluation"], noarchive=False)
 pyz = PYZ(a.pure)
 exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name="GlassFlow", debug=False,
           bootloader_ignore_signals=False, strip=False, upx=False, console=False)

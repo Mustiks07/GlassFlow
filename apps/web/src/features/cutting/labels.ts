@@ -25,7 +25,7 @@ export const REASON_LABEL: Record<string, string> = {
 };
 
 export function reasonLabel(code: string | UnplacedReason): string {
-  return REASON_LABEL[code] ?? code;
+  return REASON_LABEL[code] ?? 'Нужна дополнительная проверка возможности размещения';
 }
 
 export const REMNANT_STATUS_LABEL: Record<string, string> = {

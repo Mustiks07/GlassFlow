@@ -2,6 +2,7 @@
 
 import io
 import json
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -14,6 +15,7 @@ from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+from sqlalchemy import select
 
 from glassflow.contracts.baskets import Basket
 from glassflow.contracts.cutting import CutPlan, SolveInput
@@ -22,6 +24,7 @@ from glassflow.contracts.orders import OrderSheet
 from glassflow.core.errors import AppError
 from glassflow.core.models import ObjectRow, now, uid
 from glassflow.core.uow import audit, canonical_hash, get_object
+from glassflow.modules.cutting.models import CutMaterial
 from glassflow.modules.cutting.service import CuttingError, CuttingService
 from glassflow.modules.platform import baskets, orders
 from glassflow.modules.platform.imports import dataset
@@ -39,6 +42,21 @@ def workspace(session, dataset_id):
         raise AppError(
             409, "WORKSPACE_REQUIRED", "Физические бирки и выдачу оформляйте в рабочей копии склада."
         )
+
+
+def material_names(session, dataset_id):
+    return {
+        m.material_id: m.name
+        for m in session.scalars(select(CutMaterial).where(CutMaterial.dataset_id == dataset_id))
+    }
+
+
+def printed_time(value):
+    return (
+        datetime.fromisoformat(value)
+        .astimezone(timezone(timedelta(hours=5)))
+        .strftime("%d.%m.%Y %H:%M (UTC+5)")
+    )
 
 
 def create_label(session, body, correlation):
@@ -66,6 +84,7 @@ def create_label(session, body, correlation):
         created_at=now(),
         printed_version=remnant.version,
         snapshot=remnant,
+        material_name=material_names(session, body.dataset_id).get(remnant.material_id),
         snapshot_hash=canonical_hash(remnant.model_dump(mode="json")),
         scan_payload=payload,
     )
@@ -126,20 +145,31 @@ def create_issue_sheet(session, body, services, correlation):
     if canonical_hash(facts.model_dump(mode="json")) != subject.facts_hash:
         raise AppError(409, "ISSUE_SOURCE_STALE", "Расчёт или склад изменились; обновите задание.")
     snapshot = subject.model_dump(mode="json")
+    snapshot["material_names"] = material_names(session, body.dataset_id)
     if body.subject_type == "basket" and facts.stock:
         from glassflow.modules.cutting.workflows import current_selection
+
         value, _, _, _, versions = current_selection(session, subject, facts.stock.selection_ref)
         plan = CutPlan.model_validate(value["plan"])
         parts = {p.part_id: p for p in SolveInput.model_validate(value["cutting_snapshot"]).parts}
         snapshot["warehouse_pieces"] = []
+        snapshot["part_labels"] = {
+            f"{line.line_id}:{copy}": f"Позиция {index}, экземпляр {copy + 1}"
+            for index, line in enumerate(subject.lines, 1)
+            for copy in range(line.request.quantity if line.request and line.request.quantity else 0)
+        }
         for remnant_id, expected in sorted(versions.items()):
             piece = current_piece(session, body.dataset_id, remnant_id)
             if piece.version != expected or facts.stock.remnant_versions.get(remnant_id) != expected:
                 raise AppError(409, "ISSUE_SOURCE_STALE", "Кусок изменился; обновите складское задание.")
             placements = [p for p in plan.placements if p.remnant_id == remnant_id]
-            snapshot["warehouse_pieces"].append({"remnant": piece.model_dump(mode="json"),
-                "placements": [p.model_dump(mode="json") for p in placements],
-                "parts": [parts[p.part_id].model_dump(mode="json") for p in placements]})
+            snapshot["warehouse_pieces"].append(
+                {
+                    "remnant": piece.model_dump(mode="json"),
+                    "placements": [p.model_dump(mode="json") for p in placements],
+                    "parts": [parts[p.part_id].model_dump(mode="json") for p in placements],
+                }
+            )
     document = WarehouseDocument(
         dataset_id=body.dataset_id,
         document_id=uid(),
@@ -227,6 +257,7 @@ def pdf_document(title, lines, *, qr_payload=None, small=False):
         topMargin=12 * mm,
         bottomMargin=12 * mm,
         title=title,
+        invariant=1,
     ).build(story)
     return output.getvalue()
 
@@ -237,13 +268,20 @@ def label_pdf(value):
         "Бирка остатка",
         [
             ("Кусок", piece.remnant_id),
-            ("Материал", piece.material_id),
+            ("Материал", value.material_name or "Уточните материал в карточке куска"),
             ("Размер, мм", f"{piece.dimensions.length_mm} × {piece.dimensions.width_mm}"),
             ("Место", piece.location_raw or "Неизвестно"),
             ("Версия", value.printed_version),
-            ("Состояние при печати", piece.status),
-            ("Набор", value.dataset_id),
-            ("Создана", value.created_at),
+            (
+                "Состояние при печати",
+                {
+                    "available": "Свободен",
+                    "reserved": "В резерве",
+                    "consumed": "Израсходован",
+                    "withdrawn": "Исключён",
+                }.get(piece.status, "Требует проверки"),
+            ),
+            ("Создана", printed_time(value.created_at)),
             ("Оператор", value.operator),
             ("Проверка", "Личная проверка и выдача фиксируются в отдельном задании склада."),
             ("Важно", value.confirmation_note_ru),
@@ -256,15 +294,24 @@ def label_pdf(value):
 def issue_pdf(value):
     s = value.snapshot
     state = s.get("warehouse_state", s.get("state", ""))
-    state_ru = {"unchecked": "Не сверено", "checked": "Сверено оператором", "handed_over": "Передано в работу",
-                "confirmed": "Заказ подтвержден", "reserved": "Зарезервировано", "stale": "Требует обновления"}
+    state_ru = {
+        "unchecked": "Не сверено",
+        "checked": "Сверено оператором",
+        "handed_over": "Передано в работу",
+        "confirmed": "Заказ подтвержден",
+        "reserved": "Зарезервировано",
+        "stale": "Требует обновления",
+    }
     lines = [
-        ("Тип/ID", f"{value.subject_type} / {value.subject_id}"),
+        (
+            "Задание",
+            f"{'Заказ' if value.subject_type == 'order' else 'Корзина'}, лист № {value.document_id[:8].upper()}",
+        ),
         ("Версия задания", value.subject_version),
-        ("Создан", value.created_at),
+        ("Создан", printed_time(value.created_at)),
         ("Оператор", value.operator),
         ("Клиент", s.get("customer_ref", "")),
-        ("Состояние склада", state_ru.get(state, state)),
+        ("Состояние склада", state_ru.get(state, "Откройте актуальное задание")),
     ]
     if value.subject_type == "order":
         task = s.get("warehouse_task") or {}
@@ -272,34 +319,49 @@ def issue_pdf(value):
         piece = task.get("remnant") or facts.get("remnant") or {}
         dims = task.get("requested_dimensions") or facts.get("requested_dimensions") or {}
         lines += [
-            ("Материал", task.get("material_id") or piece.get("material_id", "")),
+            (
+                "Материал",
+                s.get("material_names", {}).get(
+                    task.get("material_id") or piece.get("material_id"), "Уточните материал в приложении"
+                ),
+            ),
             ("Деталь, мм", f"{dims.get('length_mm', '?')} × {dims.get('width_mm', '?')}"),
             ("Количество", task.get("quantity", facts.get("quantity", ""))),
             ("Кусок / версия", f"{piece.get('remnant_id', '')} / {piece.get('version', '')}"),
             ("Место", piece.get("location_raw") or "Неизвестно"),
         ]
     else:
-        for item in s.get("lines", []):
+        for index, item in enumerate(s.get("lines", []), 1):
             request = item.get("request") or {}
             dims = request.get("dimensions") or {}
             lines.append(
                 (
-                    item.get("line_id", "Позиция"),
+                    f"Позиция {index}",
                     f"{item.get('text', '')}; {dims.get('length_mm', '?')} × {dims.get('width_mm', '?')} мм; количество {request.get('quantity', 'неизвестно')}",
                 )
             )
-        lines.append(("Совместный подбор", str(s.get("binding", {}).get("selection_ref", ""))))
+        lines.append(("Совместный подбор", "Проверен для всех указанных позиций"))
         for item in s.get("warehouse_pieces", []):
             piece = item["remnant"]
             dims = piece["dimensions"]
             lines += [
                 ("Кусок / версия", f"{piece['remnant_id']} / {piece['version']}"),
-                ("Материал / размер", f"{piece['material_id']} / {dims['length_mm']} × {dims['width_mm']} мм"),
+                (
+                    "Материал / размер",
+                    f"{s.get('material_names', {}).get(piece['material_id'], 'Уточните материал в приложении')} / {dims['length_mm']} × {dims['width_mm']} мм",
+                ),
                 ("Место", piece.get("location_raw") or "Неизвестно"),
-                ("Детали из куска", "; ".join(f"{p['part_id']}: {p['dimensions']['length_mm']} × {p['dimensions']['width_mm']} мм"
-                                             for p in item["parts"])),
+                (
+                    "Детали из куска",
+                    "; ".join(
+                        f"{s.get('part_labels', {}).get(p['part_id'], 'Деталь')}: {p['dimensions']['length_mm']} × {p['dimensions']['width_mm']} мм"
+                        for p in item["parts"]
+                    ),
+                ),
             ]
         if not s.get("warehouse_pieces") and (s.get("facts") or {}).get("stock"):
-            lines.append(("Места выдачи", "В старом снимке отсутствуют. Откройте актуальное задание в приложении."))
+            lines.append(
+                ("Места выдачи", "В старом снимке отсутствуют. Откройте актуальное задание в приложении.")
+            )
     lines.append(("Важно", value.notice_ru))
     return pdf_document("Лист задания складу", lines)

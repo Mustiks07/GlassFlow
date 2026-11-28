@@ -13,6 +13,7 @@ import { JobPanel } from '../shell/JobPanel';
 import { RequireDataset } from '../shell/RequireDataset';
 import { TERMINAL, useJob } from '../shell/useJob';
 import { PassportPanel } from './PassportPanel';
+import { errorAction, stageLabel } from '../../ui/human';
 
 export function RunsPage() {
   return <RequireDataset>{dataset => <Runs dataset={dataset} key={dataset.dataset_id} />}</RequireDataset>;
@@ -184,12 +185,12 @@ function Runs({ dataset }: { dataset: Dataset }) {
         {jobId && <JobPanel jobId={jobId} title="Задание прогона" />}
       </Panel>
 
-      <Panel title="3. Готовность и проверка" subtitle={runId ? `run_id ${runId}` : undefined}>
+      <Panel title="3. Готовность и проверка">
         {!runId && <EmptyState title="Прогон еще не запускался" />}
         {runId && run.isLoading && <LoadingState label="Получаем состояние прогона…" />}
         {run.isError && <ErrorState error={run.error} onRetry={() => run.refetch()} context="Прогон" />}
         {run.data && <RunStatus run={run.data} />}
-        {run.data?.budget && <p className="small">Бюджет прогона: {JSON.stringify(run.data.budget)}</p>}
+        {run.data?.budget && <p className="small">Осталось на весь прогон: {typeof run.data.budget.remaining_seconds === 'number' ? `${Math.ceil(run.data.budget.remaining_seconds)} с` : 'уточняется'}. Резерв на проверку и экспорт: {String(run.data.budget.export_reserve_seconds ?? 'уточняется')} с.</p>}
         {runId && <PassportPanel datasetId={dataset.dataset_id} runId={runId} />}
       </Panel>
 
@@ -260,17 +261,17 @@ function RunStatus({ run }: { run: RunView }) {
                   <td>
                     <StatusBadge tone={state.tone}>{state.label}</StatusBadge>
                   </td>
-                  <td className="small">{job?.stage ?? '—'}</td>
+                  <td className="small">{job ? stageLabel(job.stage) : '—'}</td>
                   <td className="mono">{module.output}</td>
                   <td className="small">{module.keyless}</td>
-                  <td className="small">{job?.error_code ?? '—'}</td>
+                  <td className="small">{errorAction(job?.error_code)}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </TableWrap>
-      <Details summary="Паспорт воспроизводимости (RunManifest)">
+      <Details summary="Технические сведения о запуске для поддержки">
         <pre className="pre small">{JSON.stringify(run.manifest, null, 2)}</pre>
       </Details>
     </div>

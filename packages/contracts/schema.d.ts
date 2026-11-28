@@ -1859,6 +1859,23 @@ export interface paths {
         patch: operations["edit_card_api_v1_sale_cards__card_id__patch"];
         trace?: never;
     };
+    "/api/v1/sale-readiness/{job_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Readiness Result */
+        get: operations["readiness_result_api_v1_sale_readiness__job_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/sale-readiness": {
         parameters: {
             query?: never;
@@ -5310,6 +5327,8 @@ export interface components {
             /** Operator */
             operator: string;
             snapshot: components["schemas"]["Remnant"];
+            /** Material Name */
+            material_name?: string | null;
             /** Snapshot Hash */
             snapshot_hash: string;
             /** Scan Payload */
@@ -6350,6 +6369,52 @@ export interface components {
             matching_policy?: string;
             /** Match Snapshot Hash */
             match_snapshot_hash?: string | null;
+        };
+        /** SaleReadiness */
+        SaleReadiness: {
+            /** Dataset Id */
+            dataset_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ready_unchanged" | "ready_alternative" | "tradeoff_available" | "evidence_shortage" | "limited" | "cancelled" | "stale";
+            baseline: components["schemas"]["CutPlan"];
+            alternative?: components["schemas"]["CutPlan"] | null;
+            tradeoff?: components["schemas"]["CutPlan"] | null;
+            /** Eligible Original Ids */
+            eligible_original_ids: string[];
+            /** Baseline Free Eligible Ids */
+            baseline_free_eligible_ids: string[];
+            /** Candidate Free Eligible Ids */
+            candidate_free_eligible_ids?: string[];
+            /** Registry Version */
+            registry_version: string;
+            /** Input Fingerprint */
+            input_fingerprint: string;
+            /** Inventory Fingerprint */
+            inventory_fingerprint: string;
+            /** Registry Fingerprint */
+            registry_fingerprint: string;
+            /**
+             * Minimum Free
+             * @default 5
+             */
+            minimum_free?: number;
+            /** Delta Area Mm2 */
+            delta_area_mm2?: number | null;
+            /**
+             * Search Performed
+             * @default false
+             */
+            search_performed?: boolean;
+            /**
+             * Elapsed Seconds
+             * @default 0
+             */
+            elapsed_seconds?: number;
+            /** Reason Ru */
+            reason_ru: string;
         };
         /** SaleReadinessRequest */
         SaleReadinessRequest: {
@@ -19309,6 +19374,111 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SaleCard"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    readiness_result_api_v1_sale_readiness__job_id__get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SaleReadiness"];
                 };
             };
             /** @description Bad Request */

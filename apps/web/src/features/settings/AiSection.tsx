@@ -139,11 +139,11 @@ export function AiSection() {
             <legend>Режим оплаты</legend>
             <label className="check">
               <input type="radio" name="ai-mode" checked={!paid} onChange={() => update({ mode: 'free_only', paid_enabled: false })} />
-              free_only — только бесплатные модели; платный вызов отклоняется до сети
+              Без денежных списаний. Расход включённой квоты разрешается отдельно.
             </label>
             <label className="check">
               <input type="radio" name="ai-mode" checked={paid} onChange={() => update({ mode: 'paid_enabled', paid_enabled: true })} />
-              paid_enabled — платный профиль
+              Разрешить платный профиль
             </label>
             {paid && (
               <div className="state state-warn">
@@ -186,7 +186,7 @@ export function AiSection() {
           items={[
             ['Профиль', PROFILE_LABEL[settings.data!.profile]],
             ['Провайдер / модель', `${settings.data!.provider} / ${settings.data!.model_id || 'не выбрана'}`],
-            ['Режим', settings.data!.mode === 'free_only' ? 'free_only (бесплатный)' : 'paid_enabled (платный)'],
+            ['Режим', settings.data!.mode === 'free_only' ? 'Без денежных списаний' : 'Платный профиль разрешён'],
             ['Бюджет', `${settings.data!.monthly_budget_tg} ₸ в месяц`],
             ['Ключ', settings.data!.secret_present ? <StatusBadge tone="ok">сохранен на сервере</StatusBadge> : <StatusBadge tone="neutral">не задан</StatusBadge>],
             ['Повторы / параллельность', `${settings.data!.max_retries} / ${settings.data!.max_parallel}`],

@@ -2,7 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Square } from 'lucide-react';
 import { useApi } from '../../api/context';
 import type { Job } from '../../api/types';
-import { Button, ErrorState, KeyValue, LoadingState, StatusBadge, type Tone } from '../../ui/kit';
+import { Button, Details, ErrorState, KeyValue, LoadingState, StatusBadge, type Tone } from '../../ui/kit';
+import { errorAction, stageLabel } from '../../ui/human';
 import { JOB_STATE_LABEL, TERMINAL, jobCancelLabel, useJob } from './useJob';
 
 const TONE: Record<Job['state'], Tone> = {
@@ -49,17 +50,17 @@ export function JobPanel({ jobId, title = 'Задание' }: { jobId: string; t
       </div>
       <KeyValue
         items={[
-          ['Этап', data.stage || 'не сообщен'],
+          ['Этап', stageLabel(data.stage)],
           ['Прогресс', data.total ? `${data.completed ?? 0} из ${data.total}` : data.completed ? `${data.completed} шагов` : 'сервер не сообщает объем'],
           ['Время / бюджет', `${seconds(data.elapsed_seconds)} / ${seconds(data.budget_seconds)}`],
-          ['Последний валидный результат', data.last_valid_result_ref ? <span className="mono">{data.last_valid_result_ref}</span> : 'пока нет'],
-          ['job_id', <span className="mono">{data.job_id}</span>],
+          ['Последний проверенный результат', data.last_valid_result_ref ? 'Сохранён' : 'пока нет'],
         ]}
       />
       {data.state === 'interrupted' && (
         <p className="muted">Задание прервано перезапуском приложения. Подтвержденные данные сохранены; запустите расчет заново.</p>
       )}
-      {data.error_code && <p className="text-error">Код ошибки: {data.error_code}</p>}
+      {data.error_code && <p className="text-error">{errorAction(data.error_code)}</p>}
+      <Details summary="Подробности задания для поддержки"><p>Номер задания: {data.job_id}</p><p>Этап сервера: {data.stage}</p>{data.error_code && <p>Код ошибки: {data.error_code}</p>}{data.last_valid_result_ref && <p>Сохранённый результат: {data.last_valid_result_ref}</p>}</Details>
       {cancel.error && <ErrorState error={cancel.error} />}
     </div>
   );

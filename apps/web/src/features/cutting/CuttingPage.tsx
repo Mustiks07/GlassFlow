@@ -80,6 +80,7 @@ function Cutting({ dataset }: { dataset: Dataset }) {
         }}
       />
 
+      <LabelLookup datasetId={dataset.dataset_id} />
       {plans.isLoading && <LoadingState label="Загружаем планы раскроя…" />}
       {plans.isError && <ErrorState error={plans.error} onRetry={() => plans.refetch()} context="Планы" />}
       {plans.data && plans.data.length === 0 && <EmptyState title="Планов раскроя пока нет">Запустите расчет выше: первый допустимый план появится до завершения полного поиска.</EmptyState>}
@@ -92,7 +93,7 @@ function Cutting({ dataset }: { dataset: Dataset }) {
               <select aria-label="Версия плана" value={planSummary.plan_id} onChange={event => setActivePlan(dataset.dataset_id, event.target.value)}>
                 {plans.data.map(item => (
                   <option key={item.plan_id} value={item.plan_id}>
-                    {item.plan_id} · рев. {item.revision} · {PLAN_STATUS_LABEL[item.status] ?? item.status} · {formatPercent(item.coverage, 2)}
+                    План · рев. {item.revision} · {PLAN_STATUS_LABEL[item.status] ?? 'Состояние требует проверки'} · {formatPercent(item.coverage, 2)}
                   </option>
                 ))}
               </select>
@@ -101,7 +102,6 @@ function Cutting({ dataset }: { dataset: Dataset }) {
         >
           {plan.isLoading && <LoadingState label="Загружаем размещения…" />}
           {plan.isError && <ErrorState error={plan.error} onRetry={() => plan.refetch()} context="План" />}
-          <LabelLookup datasetId={dataset.dataset_id} />
           {plan.data && <PlanMetrics plan={plan.data} />}
           {plan.data && <PlanInsights datasetId={dataset.dataset_id} planId={plan.data.plan_id} revision={plan.data.revision} />}
           {plan.data && <SaleReadinessPanel datasetId={dataset.dataset_id} planId={plan.data.plan_id} revision={plan.data.revision} key={`${dataset.dataset_id}:${plan.data.plan_id}:${plan.data.revision}`} />}

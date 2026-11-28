@@ -6,6 +6,7 @@ import { formatMoney, formatPercent } from '../../lib/format';
 
 type View = components['schemas']['ComparableView'];
 type Answer = components['schemas']['AnalyticsAnswer'];
+const METRIC_NAME: Record<string, string> = { application_count: 'число заявок', mean_response_minutes: 'время ответа', conversion: 'конверсия', returns: 'возвраты', mean_sale_tg: 'чек по продажам', complaints: 'жалобы', discounts: 'скидки' };
 export function ComparablePanel({ datasetId }: { datasetId: string }) {
   const { client } = useApi();
   const [dimension, setDimension] = useState<'product_group' | 'channel' | 'client_type'>('product_group');
@@ -38,7 +39,7 @@ export function ComparablePanel({ datasetId }: { datasetId: string }) {
         <TableWrap label="Менеджеры в сопоставимой группе"><table className="table compact"><thead><tr><th>Менеджер</th><th>Заявок</th><th>Ответ, мин</th><th>Конверсия</th><th>Возвраты</th><th>Чек по продажам</th></tr></thead><tbody>
           {group.managers.map(m => <tr key={m.manager}><td>{m.manager}</td><td>{m.application_count}</td><td>{m.mean_response_minutes?.toFixed(1) ?? 'Нет данных'}<small> · n={m.evidence?.mean_response_minutes?.denominator ?? 0}</small></td><td>{m.conversion.value == null ? 'Нет данных' : formatPercent(m.conversion.value)} · {m.conversion.numerator}/{m.conversion.denominator}</td><td>{m.returns.value == null ? 'Нет данных' : formatPercent(m.returns.value)} · {m.returns.numerator}/{m.returns.denominator}</td><td>{m.mean_sale_tg == null ? 'Нет продаж' : formatMoney(m.mean_sale_tg)} · n={m.evidence?.mean_sale_tg?.denominator ?? 0}</td></tr>)}
         </tbody></table></TableWrap>
-        {group.warnings.length > 0 && <p className="small text-warn">Малая группа или неполные данные: {group.warnings.map(w => `${w.manager}, ${w.metric}: ${w.known_count}/${w.total_count}`).join('; ')}</p>}
+        {group.warnings.length > 0 && <p className="small text-warn">Малая группа или неполные данные: {group.warnings.map(w => `${w.manager}, ${METRIC_NAME[w.metric] ?? 'показатель'}: известно ${w.known_count} из ${w.total_count}`).join('; ')}</p>}
       </Details>)}<p className="small muted">{view.caveat_ru}</p></>}
   </Details>;
 }

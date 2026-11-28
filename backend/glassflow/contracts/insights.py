@@ -93,6 +93,7 @@ class PieceLabel(DatasetRequest):
     printed_version: int
     operator: str
     snapshot: Remnant
+    material_name: str | None = None
     snapshot_hash: str
     scan_payload: str
     confirmation_note_ru: str = (

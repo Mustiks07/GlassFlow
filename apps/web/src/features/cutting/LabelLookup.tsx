@@ -3,6 +3,7 @@ import type { components } from '../../../../../packages/contracts/schema';
 import { useApi } from '../../api/context';
 import { Button, ErrorState } from '../../ui/kit';
 import { useCuttingStore } from './draftStore';
+import { REMNANT_STATUS_LABEL } from './labels';
 
 type Resolved = components['schemas']['PieceLabelResolved'];
 export function LabelLookup({ datasetId }: { datasetId: string }) {
@@ -26,6 +27,6 @@ export function LabelLookup({ datasetId }: { datasetId: string }) {
     } catch (e) { setError(e); } finally { setBusy(false); }
   }
   return <details><summary>Открыть кусок по старой бирке / QR</summary><form className="stack" onSubmit={e => { e.preventDefault(); void resolve(); }}><label>Содержимое QR или ID бирки<textarea rows={2} value={text} onChange={e => setText(e.target.value)} /></label><Button type="submit" disabled={!text.trim() || busy}>Открыть актуальную запись</Button></form>
-    {error != null && <ErrorState error={error} />}{value && <div role="status"><strong>{value.current.remnant_id} · текущая версия {value.current.version}</strong><p>{value.current.dimensions.length_mm} × {value.current.dimensions.width_mm} мм · {value.current.location_raw || 'Место неизвестно'} · {value.current.status}</p>{value.changed && <p className="text-warn">Запись изменилась после печати версии {value.label.printed_version}. Действия требуют актуальной проверки версии.</p>}<p className="small">Бирка не разрешает резерв или списание.</p></div>}
+    {error != null && <ErrorState error={error} />}{value && <div role="status"><strong>{value.current.remnant_id} · текущая версия {value.current.version}</strong><p>{value.current.dimensions.length_mm} × {value.current.dimensions.width_mm} мм · {value.current.location_raw || 'Место неизвестно'} · {REMNANT_STATUS_LABEL[value.current.status ?? ''] ?? 'Требуется проверка состояния'}</p>{value.changed && <p className="text-warn">Запись изменилась после печати версии {value.label.printed_version}. Действия требуют актуальной проверки версии.</p>}<p className="small">Бирка не разрешает резерв или списание.</p></div>}
   </details>;
 }
