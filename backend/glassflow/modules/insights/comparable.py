@@ -24,6 +24,21 @@ METRICS = {
     "application_count": r"сколько|количеств|число",
 }
 
+# A finite parser may narrow only by recognized source values. Unknown text is
+# not discarded: it might be a date, a negation, a city, or another requested scope.
+SAFE_WORDS = set("сравни сравните сравнить сравнение сравнения покажи покажите показать выведи выведите дай дайте "
+    "сколько какое какая какой какие как у кого кого по в во на для от из с со до и или между всех все всем "
+    "менеджер менеджера менеджеров менеджерам менеджеры менеджере группе группы групп группам товар товара "
+    "товаров товарной товарным каналу канале каналы каналам канал каналов тип типу типам типа клиента "
+    "клиентов средний среднее средняя среднюю средние чек чека чеки время времени ответа ответ ответов "
+    "скорость скорости конверсия конверсии конверсию доля долю продаж продажи возврат возвраты возвратов "
+    "вернувшихся жалобы жалоб жалобам скидки скидок скидкам заявка заявки заявок число количество "
+    "заявкам заявке аналитика аналитику пожалуйста".split())
+
+
+def clarify(text):
+    return AnalyticsAnswer(status="clarification", answer_ru=text)
+
 
 def manager_of(row):
     return row["manager"] if row["manager"] in {"M1", "M2", "M3", "M4", "M5"} else "unknown"
@@ -98,6 +113,11 @@ def compare(session, body):
 def answer(session, body):
     source = records(session, body.dataset_id, "applications")
     text = body.question.casefold().replace("ё", "е")
+    explicit_managers = re.findall(r"(?<!\w)[mм]\s*(\d+)(?!\w)", text)
+    if any(value not in {"1", "2", "3", "4", "5"} for value in explicit_managers):
+        return clarify("Доступны менеджеры M1–M5. Уточните менеджера; неизвестное имя не заменяется всеми.")
+    if re.search(r"почему|причин|влия[ею]|из-за", text):
+        return clarify("По этим данным можно сравнить показатели и состав заявок, но нельзя установить причины. Какой показатель показать?")
     if not re.search(r"сравн|покаж|сколько|како|у кого|доля|средн|аналит|чек|возврат|почему", text):
         return AnalyticsAnswer(
             status="clarification",
@@ -106,6 +126,8 @@ def answer(session, body):
     metric_names = [
         name for name, pattern in METRICS.items() if name != "application_count" and re.search(pattern, text)
     ]
+    if metric_names and re.search(r"\b(?:число|количеств\w*)\b|сколько\s+заявок", text):
+        metric_names.append("application_count")
     if not metric_names and re.search(METRICS["application_count"], text):
         metric_names = ["application_count"]
     if len(metric_names) != 1:
@@ -113,7 +135,7 @@ def answer(session, body):
             status="clarification",
             answer_ru="Какой один показатель сравнить: время ответа, средний чек, возвраты, конверсию, жалобы, скидки или число заявок?",
         )
-    managers = sorted({f"M{x}" for x in re.findall(r"(?<!\w)[mм]([1-5])(?!\d)", text)}) or [
+    managers = sorted({f"M{x}" for x in explicit_managers}) or [
         "M1",
         "M2",
         "M3",
@@ -121,9 +143,18 @@ def answer(session, body):
         "M5",
     ]
     filters = {}
+    residual = re.sub(r"(?<!\w)[mм]\s*[1-5](?!\w)", " ", text)
     for field, column in FIELDS.items():
         candidates = {r.data[column] for r in source if isinstance(r.data[column], str) and r.data[column]}
-        found = [v for v in candidates if v.casefold().replace("ё", "е") in text]
+        spans = sorted([(match.start(), match.end(), value) for value in candidates
+            for match in re.finditer(r"(?<!\w)" + re.escape(value.casefold().replace("ё", "е")) + r"(?!\w)", text)],
+            key=lambda item: (item[0], item[0] - item[1]))
+        found, end = [], -1
+        for start, stop, value in spans:
+            if start >= end:
+                found.append(value)
+                end = stop
+        found = list(dict.fromkeys(found))
         if len(found) > 1:
             return AnalyticsAnswer(
                 status="clarification",
@@ -131,13 +162,19 @@ def answer(session, body):
             )
         if found:
             filters[field] = found[0]
-    dimensions = (
-        ["channel"]
-        if re.search(r"по канал|каналам", text)
-        else ["client_type"]
-        if "типам клиент" in text
-        else ["product_group"]
-    )
+            residual = re.sub(r"(?<!\w)" + re.escape(found[0].casefold().replace("ё", "е")) + r"(?!\w)", " ", residual)
+    tokens = re.findall(r"\w+", residual)
+    unparsed = [token for token in tokens if token not in SAFE_WORDS]
+    if unparsed:
+        return clarify("Не могу применить указанное условие или период без уточнения: " +
+                       ", ".join(dict.fromkeys(unparsed[:12])) +
+                       ". Поддерживаются M1–M5 и точные значения группы товара, канала и типа клиента; период задайте явными границами дня года в фильтрах.")
+    for field, marker in {"channel": r"\bканал[уеа]\b", "product_group": r"\bгрупп[еу]\b",
+                           "client_type": r"\bтип[уеа] клиент"}.items():
+        if field not in filters and re.search(marker, text):
+            return clarify("Уточните точное значение фильтра или запросите сравнение по всем группам, каналам или типам клиентов.")
+    dimensions = [field for field, marker in {"product_group": r"группам", "channel": r"каналам",
+                  "client_type": r"типам клиент"}.items() if re.search(marker, text)] or ["product_group"]
     query = ComparableRequest(dataset_id=body.dataset_id, managers=managers, dimensions=dimensions, **filters)
     value = compare(session, query)
     return AnalyticsAnswer(

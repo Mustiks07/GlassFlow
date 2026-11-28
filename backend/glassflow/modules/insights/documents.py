@@ -16,6 +16,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
 from glassflow.contracts.baskets import Basket
+from glassflow.contracts.cutting import CutPlan, SolveInput
 from glassflow.contracts.insights import PieceLabel, PieceLabelResolved, WarehouseDocument
 from glassflow.contracts.orders import OrderSheet
 from glassflow.core.errors import AppError
@@ -124,6 +125,21 @@ def create_issue_sheet(session, body, services, correlation):
         facts = baskets.capture(session, subject, subject.binding, services)
     if canonical_hash(facts.model_dump(mode="json")) != subject.facts_hash:
         raise AppError(409, "ISSUE_SOURCE_STALE", "Расчёт или склад изменились; обновите задание.")
+    snapshot = subject.model_dump(mode="json")
+    if body.subject_type == "basket" and facts.stock:
+        from glassflow.modules.cutting.workflows import current_selection
+        value, _, _, _, versions = current_selection(session, subject, facts.stock.selection_ref)
+        plan = CutPlan.model_validate(value["plan"])
+        parts = {p.part_id: p for p in SolveInput.model_validate(value["cutting_snapshot"]).parts}
+        snapshot["warehouse_pieces"] = []
+        for remnant_id, expected in sorted(versions.items()):
+            piece = current_piece(session, body.dataset_id, remnant_id)
+            if piece.version != expected or facts.stock.remnant_versions.get(remnant_id) != expected:
+                raise AppError(409, "ISSUE_SOURCE_STALE", "Кусок изменился; обновите складское задание.")
+            placements = [p for p in plan.placements if p.remnant_id == remnant_id]
+            snapshot["warehouse_pieces"].append({"remnant": piece.model_dump(mode="json"),
+                "placements": [p.model_dump(mode="json") for p in placements],
+                "parts": [parts[p.part_id].model_dump(mode="json") for p in placements]})
     document = WarehouseDocument(
         dataset_id=body.dataset_id,
         document_id=uid(),
@@ -132,8 +148,8 @@ def create_issue_sheet(session, body, services, correlation):
         subject_version=subject.version,
         created_at=now(),
         operator=body.operator,
-        snapshot=subject.model_dump(mode="json"),
-        snapshot_hash=canonical_hash(subject.model_dump(mode="json")),
+        snapshot=snapshot,
+        snapshot_hash=canonical_hash(snapshot),
     )
     session.add(
         ObjectRow(
@@ -192,7 +208,7 @@ def pdf_document(title, lines, *, qr_payload=None, small=False):
         drawing.add(qr)
         story.extend([drawing, Spacer(1, 4 * mm)])
     cells = [[Paragraph(escape(str(k)), style), Paragraph(escape(str(v)), style)] for k, v in lines]
-    table = Table(cells, colWidths=[width * 0.31, width * 0.69], hAlign="LEFT")
+    table = Table(cells, colWidths=[width * 0.31, width * 0.69], hAlign="LEFT", splitInRow=1)
     table.setStyle(
         TableStyle(
             [
@@ -239,22 +255,26 @@ def label_pdf(value):
 
 def issue_pdf(value):
     s = value.snapshot
+    state = s.get("warehouse_state", s.get("state", ""))
+    state_ru = {"unchecked": "Не сверено", "checked": "Сверено оператором", "handed_over": "Передано в работу",
+                "confirmed": "Заказ подтвержден", "reserved": "Зарезервировано", "stale": "Требует обновления"}
     lines = [
         ("Тип/ID", f"{value.subject_type} / {value.subject_id}"),
         ("Версия задания", value.subject_version),
         ("Создан", value.created_at),
         ("Оператор", value.operator),
         ("Клиент", s.get("customer_ref", "")),
-        ("Состояние склада", s.get("warehouse_state", s.get("state", ""))),
+        ("Состояние склада", state_ru.get(state, state)),
     ]
     if value.subject_type == "order":
         task = s.get("warehouse_task") or {}
-        piece = task.get("remnant") or (s.get("facts") or {}).get("remnant") or {}
-        dims = task.get("requested_dimensions") or {}
+        facts = s.get("facts") or {}
+        piece = task.get("remnant") or facts.get("remnant") or {}
+        dims = task.get("requested_dimensions") or facts.get("requested_dimensions") or {}
         lines += [
-            ("Материал", task.get("material_id", "")),
+            ("Материал", task.get("material_id") or piece.get("material_id", "")),
             ("Деталь, мм", f"{dims.get('length_mm', '?')} × {dims.get('width_mm', '?')}"),
-            ("Количество", task.get("quantity", "")),
+            ("Количество", task.get("quantity", facts.get("quantity", ""))),
             ("Кусок / версия", f"{piece.get('remnant_id', '')} / {piece.get('version', '')}"),
             ("Место", piece.get("location_raw") or "Неизвестно"),
         ]
@@ -269,5 +289,17 @@ def issue_pdf(value):
                 )
             )
         lines.append(("Совместный подбор", str(s.get("binding", {}).get("selection_ref", ""))))
+        for item in s.get("warehouse_pieces", []):
+            piece = item["remnant"]
+            dims = piece["dimensions"]
+            lines += [
+                ("Кусок / версия", f"{piece['remnant_id']} / {piece['version']}"),
+                ("Материал / размер", f"{piece['material_id']} / {dims['length_mm']} × {dims['width_mm']} мм"),
+                ("Место", piece.get("location_raw") or "Неизвестно"),
+                ("Детали из куска", "; ".join(f"{p['part_id']}: {p['dimensions']['length_mm']} × {p['dimensions']['width_mm']} мм"
+                                             for p in item["parts"])),
+            ]
+        if not s.get("warehouse_pieces") and (s.get("facts") or {}).get("stock"):
+            lines.append(("Места выдачи", "В старом снимке отсутствуют. Откройте актуальное задание в приложении."))
     lines.append(("Важно", value.notice_ru))
     return pdf_document("Лист задания складу", lines)

@@ -99,3 +99,62 @@ def test_no_accepted_bundle_is_not_claimed_ready(runtime):
     assert response.status_code == 409
     current = client.get("/api/v1/runs/partial-run/passport", params={"dataset_id": source}).json()
     assert current["status"] == "blocked" and not current["history_available"]
+
+
+def test_actual_full_export_passport_remains_pinned_after_another_real_cutting_job(runtime):
+    import time
+    from copy import deepcopy
+    from pathlib import Path
+
+    from glassflow.core.jobs import enqueue
+    from glassflow.core.uow import write_transaction
+    client, source, _ = runtime
+    root = Path(__file__).resolve().parents[2]
+    imported = client.post("/api/v1/buyers/import", params={"dataset_id": source},
+        files={"file": ("buyers.csv", (root / "data/buyers/buyers.platform.csv").read_bytes()),
+               "evidence": ("evidence.json", (root / "data/buyers/evidence.platform.json").read_bytes())},
+        headers={"Idempotency-Key": "actual-passport-buyers"})
+    assert imported.status_code == 200, imported.text
+    started = client.post("/api/v1/runs", json={"dataset_id": source, "config_version": "actual-passport-check",
+        "buyer_registry_version": imported.json()["version"], "solver_config": {"profile": "quick", "time_limit_seconds": 2}},
+        headers={"Idempotency-Key": "actual-passport-run"})
+    assert started.status_code == 202, started.text
+    run_id = started.json()["run_id"]
+    deadline = time.monotonic() + 60
+    while time.monotonic() < deadline:
+        view = client.get(f"/api/v1/runs/{run_id}").json()
+        if view["status"] != "running":
+            break
+        time.sleep(.1)
+    assert view["status"] == "completed", view
+    exported = client.post(f"/api/v1/runs/{run_id}/export", headers={"Idempotency-Key": "actual-passport-export"})
+    assert exported.status_code == 200 and exported.json()["status"] == "ready", exported.text
+    url = f"/api/v1/runs/{run_id}/passport"
+    before = client.get(url, params={"dataset_id": source, "view": "accepted"}).json()
+    assert set(before["files"]) == {"solution.csv", "answers.csv", "picks.csv", "verdicts.csv",
+                                    "sale_cards.csv", "buyers_top50.csv"}
+    old_cut = next(m for m in before["modules"] if m["module"] == "cutting")
+    factory = client.app.state.session_factory
+    with write_transaction(factory) as session:
+        job = session.get(JobRow, old_cut["job_id"])
+        copied = deepcopy(job.input)
+        copied.pop("attempt_id", None)
+        new = enqueue(session, job.dataset_id, "cutting", copied, run_id)
+        new_id = new.id
+    deadline = time.monotonic() + 30
+    while time.monotonic() < deadline:
+        value = client.get(f"/api/v1/jobs/{new_id}").json()
+        if value["state"] not in {"running", "queued"}:
+            break
+        time.sleep(.1)
+    assert value["state"] == "completed", value
+    current = client.get(url, params={"dataset_id": source, "view": "current"}).json()
+    after = client.get(url, params={"dataset_id": source, "view": "accepted"}).json()
+    assert next(m for m in current["modules"] if m["module"] == "cutting")["job_id"] == new_id
+    assert after == before  # Includes pinned metrics, histories, refs, hashes and provenance.
+    for name, uri in exported.json()["files"].items():
+        if name == "manifest.json":
+            continue
+        response = client.get(uri)
+        assert response.status_code == 200
+        assert hashlib.sha256(response.content).hexdigest() == after["files"][name]
