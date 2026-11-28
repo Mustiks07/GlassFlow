@@ -22,7 +22,7 @@ from glassflow.contracts.intelligence import (
 from .catalog.kb import KnowledgeBaseError, parse_knowledge_base
 from .catalog.mapping import derive_all
 from .models import IntelligenceReviewRow, ManagerCorrectionRow, QuoteRevisionRow
-from .quality.dialogs import _references, check_dialog, money_string
+from .quality.dialogs import _references, bulk_price_scope, check_dialog, money_string
 
 
 def _error(status, code, message):
@@ -213,7 +213,16 @@ class IntelligenceReviews:
             source = refs.evidence.get(meaning)
             units = {"per_m2": "за м²", "per_sheet": "за лист", "retail_unit": "за шт.",
                      "bulk_unit": "за шт. при оптовом пороге", "total": "за заказ"}
-            if canonical is not None and source is not None and money_string(canonical) == verdict.correct and meaning in units:
+            applicable = True
+            if meaning == "bulk_unit":
+                bulk = product.price("bulk_unit")
+                threshold = bulk.minimum_quantity if bulk else None
+                applicable = bool(threshold and bulk_price_scope(product, request.client, request.manager) in {"eligible", "conditional"})
+                if threshold:
+                    units["bulk_unit"] = f"за шт. при количестве от {threshold} шт."
+                if not applicable:
+                    draft.reason_code = "bulk_threshold_not_confirmed"
+            if applicable and canonical is not None and source is not None and money_string(canonical) == verdict.correct and meaning in units:
                 draft.status = "DRAFT_VERIFIED"
                 draft.catalog_product_id, draft.applicable_price_tg = product.product_id, money_string(canonical)
                 draft.price_meaning, draft.unit = meaning, units[meaning]
