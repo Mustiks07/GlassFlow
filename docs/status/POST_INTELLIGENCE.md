@@ -45,3 +45,10 @@ Worktree: `GlassFlow-post-intelligence`, branch `codex/post-intelligence`, base 
 ## N19 final applicability guard
 
 - A self-review reproduction found that legacy dialog quality can return a canonical bulk rate when the manager labels a 3-unit order as wholesale. N19 now checks the source quantity threshold independently: an unconfirmed/ineligible bulk threshold yields NEEDS_REVIEW without applicable price/text. An eligible threshold is rendered explicitly from KB. This isolated draft guard does not change the assistant engine, prompt, provider or independent model exam inputs.
+
+## Shared QA applicability correction (root requested)
+
+- Root requested repairing the underlying dialog QA defect, not merely leaving a draft guard. Shared `bulk_price_scope` now checks canonical per-product quantity thresholds and claim-local conditions. Known 3/99-unit orders receive ERROR with retail-unit correction 150; known 100+ orders use bulk 100; unknown quantity with an unqualified bulk claim is NEEDS_REVIEW. Same-clause conditional «от 100 шт» remains a valid rate fact for a smaller order, but cannot make its wrong total valid. An unsupported stated threshold below the catalogue minimum remains NEEDS_REVIEW.
+- N19 reuses that shared applicability rule: known eligible retail correction can now produce a verified draft; unknown applicability stays review-only; explicit conditional bulk correction preserves its canonical threshold in the text.
+- `uv run pytest tests/intelligence/test_post_bulk_applicability.py tests/intelligence/test_post_reviews.py tests/intelligence/test_dialog_quality.py tests/intelligence/test_review_regressions.py tests/intelligence/test_commercial_binding.py tests/intelligence/test_verifier_completeness.py -q --junitxml=docs/ai/post/bulk-qa-regressions.xml`: 77 passed. Existing verifier/commercial completeness rules unchanged and passed. Ruff passed.
+- Full suite on the source freeze before this isolated shared QA change: 340 tests, 337 passed, 3 skipped. Full final suite will follow; the independent live assistant exam uses unchanged assistant/prompt/provider code.

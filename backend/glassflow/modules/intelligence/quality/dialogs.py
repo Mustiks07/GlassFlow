@@ -42,6 +42,7 @@ class _Mention:
     raw: str
     meaning: str
     start: int
+    clause: str = ""
 
 
 def money_string(value: Decimal) -> str:
@@ -106,7 +107,8 @@ def extract_price_mentions(manager_text: str, product: Product | None) -> list[_
     for match in _MONEY.finditer(text):
         whole = re.sub(r"[ \u00a0\u202f]", "", match.group(1))
         amount = Decimal(whole + ("." + match.group(2) if match.group(2) else ""))
-        mentions.append(_Mention(amount, match.group(0).strip(), _meaning(_clause(text, match.start(), match.end())), match.start()))
+        clause = _clause(text, match.start(), match.end())
+        mentions.append(_Mention(amount, match.group(0).strip(), _meaning(clause), match.start(), clause))
         spans.append(match.span())
     strict = bool(mentions)  # with currency-marked prices present, bare numbers need a price word nearby
     cleaned = re.sub(r"\d+(?:[.,]\d+)?\s*x\s*\d+(?:[.,]\d+)?(?:\s*x\s*\d+)?", _blank, text)  # keeps offsets
@@ -123,7 +125,8 @@ def extract_price_mentions(manager_text: str, product: Product | None) -> list[_
             continue
         whole = re.sub(r"[ \u00a0\u202f]", "", match.group(1))
         amount = Decimal(whole + ("." + match.group(2) if match.group(2) else ""))
-        mentions.append(_Mention(amount, match.group(0).strip(), _meaning(_clause(cleaned, start, end)), start))
+        clause = _clause(cleaned, start, end)
+        mentions.append(_Mention(amount, match.group(0).strip(), _meaning(clause), start, clause))
     mentions.sort(key=lambda m: m.start)
     return mentions
 
@@ -186,6 +189,31 @@ class _Evaluation:
     key: str | None
     evidence: list[Evidence]
     mentions: list[_Mention]
+    reason_code: str | None = None
+
+
+def bulk_price_scope(product: Product, client: str, claim: str) -> str:
+    """Eligible order / explicitly conditional tariff / retail order / unknown.
+
+    A catalogue number alone never proves its tariff applies. A threshold bound
+    to the same claim is a conditional rate, independently of the current order.
+    """
+    entry = product.price("bulk_unit")
+    threshold = entry.minimum_quantity if entry else None
+    if not product.is_hardware or threshold is None:
+        return "unknown"
+    condition = re.compile(r"\b(?:от|не менее|при)\s*(\d+)\s*(?:шт|штук|единиц)")
+    stated = [int(match.group(1)) for match in condition.finditer(normalize(claim))]
+    if stated:
+        return "conditional" if all(value >= threshold for value in stated) else "unsupported_condition"
+    # The customer may explicitly be asking about that tariff, rather than
+    # placing an order at their currently mentioned quantity.
+    if any(int(match.group(1)) >= threshold for match in condition.finditer(normalize(client))):
+        return "conditional"
+    quantity = extract(client).quantity
+    if quantity is None:
+        return "unknown"
+    return "eligible" if quantity >= threshold else "retail"
 
 
 def _candidates_for(mention: _Mention, refs: _Refs, product: Product) -> tuple[list[str], str | None]:
@@ -208,9 +236,28 @@ def _evaluate(kb: KnowledgeBase, product: Product, client: str, manager: str) ->
     mentions = extract_price_mentions(manager, product)
     evidence: list[Evidence] = []
     error: tuple[Decimal, str] | None = None
+    error_reason = None
     unresolved = False
+    unresolved_reason = None
     for mention in mentions:
         keys, correction_key = _candidates_for(mention, refs, product)
+        if "bulk_unit" in keys:
+            scope = bulk_price_scope(product, client, mention.clause)
+            if mention.meaning == "bulk_unit" and scope == "retail":
+                retail = refs.values.get("retail_unit")
+                if retail is not None:
+                    evidence.append(refs.evidence["retail_unit"])
+                    if error is None:
+                        error, error_reason = (retail, "retail_unit"), "bulk_threshold_not_met"
+                else:
+                    unresolved, unresolved_reason = True, "bulk_threshold_unconfirmed"
+                continue
+            if mention.meaning == "bulk_unit" and scope in {"unknown", "unsupported_condition"}:
+                unresolved, unresolved_reason = True, ("bulk_condition_not_supported" if scope == "unsupported_condition"
+                                                       else "bulk_threshold_unconfirmed")
+                continue
+            if scope not in {"eligible", "conditional"}:
+                keys = [key for key in keys if key != "bulk_unit"]
         known = [(k, refs.values[k]) for k in keys if refs.values.get(k) is not None]
         hit = next((k for k, value in known if _close(mention.amount, value)), None)
         if hit is not None:
@@ -224,9 +271,9 @@ def _evaluate(kb: KnowledgeBase, product: Product, client: str, manager: str) ->
         if error is None:
             error = (correct, correction_key)
     if error is not None:
-        return _Evaluation("ERROR", error[0], error[1], evidence, mentions)
+        return _Evaluation("ERROR", error[0], error[1], evidence, mentions, error_reason)
     if unresolved:
-        return _Evaluation("UNRESOLVED", None, None, evidence, mentions)
+        return _Evaluation("UNRESOLVED", None, None, evidence, mentions, unresolved_reason)
     key = None
     if mentions:
         for k in ("retail_unit", "per_m2", "total", "per_sheet", "bulk_unit"):
@@ -249,13 +296,17 @@ def _from_evaluation(dialog_id: str, product: Product, evaluation: _Evaluation, 
         correct = money_string(evaluation.correct)
         return DialogVerdict(
             verdict="ERROR", correct=correct, evidence=evaluation.evidence, reference_tg=correct,
-            reference_meaning=evaluation.key, reason_code="price_mismatch",
-            explanation_ru=f"Цена в ответе не совпадает с базой: правильно {correct} ₸ ({evaluation.key}).", **base,
+            reference_meaning=evaluation.key, reason_code=evaluation.reason_code or "price_mismatch",
+            explanation_ru=(f"Оптовый порог не достигнут: применима розничная цена {correct} ₸ за шт."
+                            if evaluation.reason_code == "bulk_threshold_not_met" else
+                            f"Цена в ответе не совпадает с базой: правильно {correct} ₸ ({evaluation.key})."), **base,
         )
     if evaluation.verdict == "UNRESOLVED":
         return DialogVerdict(
-            verdict="NEEDS_REVIEW", evidence=evaluation.evidence, reason_code="price_not_in_kb",
-            explanation_ru="Цены для этого смысла числа нет в базе; проверить может только менеджер.", **base,
+            verdict="NEEDS_REVIEW", evidence=evaluation.evidence, reason_code=evaluation.reason_code or "price_not_in_kb",
+            explanation_ru=("Не подтверждено количество или условие оптового порога; уточните применимость тарифа."
+                            if evaluation.reason_code in {"bulk_threshold_unconfirmed", "bulk_condition_not_supported"} else
+                            "Цены для этого смысла числа нет в базе; проверить может только менеджер."), **base,
         )
     return DialogVerdict(
         verdict="OK", evidence=evaluation.evidence, reference_tg=None, reference_meaning=evaluation.key,

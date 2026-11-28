@@ -22,8 +22,7 @@ from glassflow.contracts.intelligence import (
 from .catalog.kb import KnowledgeBaseError, parse_knowledge_base
 from .catalog.mapping import derive_all
 from .models import IntelligenceReviewRow, ManagerCorrectionRow, QuoteRevisionRow
-from .nlu.extract import extract
-from .quality.dialogs import _references, check_dialog, money_string
+from .quality.dialogs import _references, bulk_price_scope, check_dialog, money_string
 
 
 def _error(status, code, message):
@@ -218,9 +217,7 @@ class IntelligenceReviews:
             if meaning == "bulk_unit":
                 bulk = product.price("bulk_unit")
                 threshold = bulk.minimum_quantity if bulk else None
-                parameters = extract(request.client)
-                applicable = bool(threshold and (parameters.tier_inquiry or
-                    (parameters.quantity is not None and parameters.quantity >= threshold)))
+                applicable = bool(threshold and bulk_price_scope(product, request.client, request.manager) in {"eligible", "conditional"})
                 if threshold:
                     units["bulk_unit"] = f"за шт. при количестве от {threshold} шт."
                 if not applicable:

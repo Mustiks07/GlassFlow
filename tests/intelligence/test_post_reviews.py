@@ -157,11 +157,17 @@ def test_ambiguous_unknown_or_already_correct_manager_reply_is_not_invented(app_
 
 def test_manager_draft_never_applies_bulk_tariff_below_its_quantity_threshold(app_client):
     below = correction(app_client, "Нужно 3 штуки полкодержатель 19×15×16 мм", "Оптовая цена 500 тг за штуку.", "bulk-below")
-    assert below["status"] == "NEEDS_REVIEW" and below["applicable_price_tg"] is None and below["answer"] is None
-    assert below["reason_code"] == "bulk_threshold_not_confirmed"
+    assert below["status"] == "DRAFT_VERIFIED" and below["applicable_price_tg"] == "150"
+    assert below["price_meaning"] == "retail_unit" and below["unit"] == "за шт."
+    assert below["reason_code"] == "bulk_threshold_not_met"
+    unknown = correction(app_client, "Полкодержатель 19×15×16 мм", "Оптовая цена 500 тг за штуку.", "bulk-unknown")
+    assert unknown["status"] == "NEEDS_REVIEW" and unknown["applicable_price_tg"] is None and unknown["answer"] is None
     eligible = correction(app_client, "Нужно 100 штук полкодержатель 19×15×16 мм", "Оптовая цена 500 тг за штуку.", "bulk-eligible")
     assert eligible["status"] == "DRAFT_VERIFIED" and eligible["applicable_price_tg"] == "100"
     assert eligible["unit"] == "за шт. при количестве от 100 шт."
+    conditional = correction(app_client, "Нужно 3 штуки полкодержатель 19×15×16 мм", "От 100 шт — 500 тг за штуку.", "bulk-conditional")
+    assert conditional["status"] == "DRAFT_VERIFIED" and conditional["applicable_price_tg"] == "100"
+    assert conditional["unit"] == "за шт. при количестве от 100 шт."
 
 
 def test_batch_accepted_review_metadata_deduplicates_without_engine(app_client):
