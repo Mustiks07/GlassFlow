@@ -8,11 +8,48 @@ from glassflow.modules.cutting.engine import CuttingEngine
 
 
 def cutting_job(snapshot, context):
-    return CuttingEngine().solve(SolveInput.model_validate(snapshot["cutting_snapshot"]), context).model_dump(mode="json")
+    data = SolveInput.model_validate(snapshot["cutting_snapshot"])
+    baseline = (CutPlan.model_validate(snapshot["sale_baseline"]) if snapshot.get("sale_baseline") else
+                CuttingEngine().solve(data, context))
+    if not snapshot.get("sale_context"):
+        return baseline.model_dump(mode="json")
+    from glassflow.modules.cutting.sale_readiness import ensure_sale_readiness
+
+    available = context.remaining_seconds() if hasattr(context, "remaining_seconds") else None
+    requested_seconds = snapshot.get("sale_budget_seconds", 2.0)
+    seconds = min(requested_seconds, max(.001, available - .1)) if available is not None else requested_seconds
+    trusted = snapshot["sale_context"]
+    outcome = ensure_sale_readiness(data, baseline, set(trusted["eligible_original_ids"]),
+                                    trusted["registry_version"], budget_seconds=seconds, context=context)
+    result = baseline.model_copy(deep=True)
+    result.evidence["sale_readiness_bundle"] = json.dumps({"context": trusted, "outcome": outcome.model_dump(mode="json"),
+                                               "connection_token": snapshot["connection_token"]}, ensure_ascii=False)
+    return result.model_dump(mode="json")
 
 
 def validate_cutting(snapshot, result):
-    return CuttingEngine().validate(SolveInput.model_validate(snapshot["cutting_snapshot"]), CutPlan.model_validate(result)).valid
+    data = SolveInput.model_validate(snapshot["cutting_snapshot"])
+    plan = CutPlan.model_validate(result)
+    if not CuttingEngine().validate(data, plan).valid:
+        return False
+    if not snapshot.get("sale_context"):
+        return True
+    # Baseline solver incumbents precede bounded sale search. They remain valid
+    # for the pinned geometric input; the final persistence hook requires the bundle.
+    if "sale_readiness_bundle" not in plan.evidence:
+        return True
+    from glassflow.contracts.cutting import SaleReadiness
+
+    bundle = json.loads(plan.evidence.get("sale_readiness_bundle", "{}"))
+    if bundle.get("context") != snapshot["sale_context"] or bundle.get("connection_token") != snapshot["connection_token"]:
+        return False
+    outcome = SaleReadiness.model_validate(bundle["outcome"])
+    baseline = plan.model_copy(deep=True)
+    baseline.evidence.pop("sale_readiness_bundle", None)
+    if outcome.baseline != baseline:
+        return False
+    return all(CuttingEngine().validate(data, candidate).valid for candidate in
+               (outcome.alternative, outcome.tradeoff) if candidate is not None)
 
 
 def store_cutting(session, dataset_id, result):
@@ -20,7 +57,82 @@ def store_cutting(session, dataset_id, result):
 
     plan = CutPlan.model_validate(result)
     service = CuttingService(session)
-    stored = service.store_solver_plan(dataset_id, plan, base_plan_id=plan.parent_plan_id)
+    encoded_bundle = plan.evidence.pop("sale_readiness_bundle", None)
+    bundle = json.loads(encoded_bundle) if encoded_bundle else None
+    if bundle is None:
+        from sqlalchemy import select
+
+        from glassflow.core.errors import AppError
+        from glassflow.core.models import JobRow
+        if any(j.input.get("sale_context") for j in session.scalars(select(JobRow).where(
+                JobRow.dataset_id == dataset_id, JobRow.kind == "cutting", JobRow.state == "running"))):
+            raise AppError(409, "SALE_CONTEXT_MISSING", "Итоговое задание должно содержать совместную проверку.")
+    readiness = None
+    stored = None
+    if bundle:
+        from sqlalchemy import select
+
+        from glassflow.contracts.cutting import SaleReadiness
+        from glassflow.core.errors import AppError
+        from glassflow.core.models import JobRow
+        from glassflow.core.snapshots import sale_readiness_snapshot
+
+        # Recover the parent-owned input, never trust eligibility/fingerprints echoed by a child.
+        candidates = [j for j in session.scalars(select(JobRow).where(JobRow.dataset_id == dataset_id,
+            JobRow.kind == "cutting", JobRow.state == "running"))
+            if j.input.get("connection_token") == bundle.get("connection_token")]
+        if len(candidates) != 1:
+            raise AppError(409, "SALE_CONTEXT_MISSING", "Не найдено исходное задание совместной проверки.")
+        pinned = candidates[0].input
+        data, current = sale_readiness_snapshot(session, dataset_id, pinned["sale_context"]["registry_version"],
+            pinned["cutting_snapshot"]["config"], base_plan_id=pinned["sale_context"].get("base_plan_id"))
+        if current != pinned["sale_context"] or bundle["context"] != pinned["sale_context"]:
+            raise AppError(409, "SALE_CONTEXT_CHANGED", "Изменился склад или buyer evidence; исходный результат сохранен.")
+        readiness = SaleReadiness.model_validate(bundle["outcome"])
+        if readiness.baseline != plan or not CuttingEngine().validate(data, plan).valid:
+            raise AppError(409, "SALE_BASELINE_INVALID", "Исходный план не прошел перепроверку.")
+        existing = pinned.get("sale_baseline")
+        stored = (service.get_plan(dataset_id, existing["plan_id"], existing["revision"]) if existing else
+                  service.store_solver_plan(dataset_id, plan, base_plan_id=plan.parent_plan_id))
+        eligible = set(current["eligible_original_ids"])
+        used = {p.remnant_id for p in plan.placements}
+        free = sorted(eligible - used)
+        # Parent derives status and delta from actual layouts; metadata is diagnostic only.
+        readiness.eligible_original_ids = sorted(eligible)
+        readiness.baseline_free_eligible_ids = free
+        readiness.registry_fingerprint = current["registry_fingerprint"]
+        readiness.inventory_fingerprint = current["inventory_fingerprint"]
+        readiness.input_fingerprint = current["input_fingerprint"]
+        readiness.status = "ready_unchanged" if len(free) >= 5 else "evidence_shortage" if len(eligible) < 5 else "limited"
+        if readiness.status in {"ready_unchanged", "evidence_shortage"}:
+            if readiness.alternative or readiness.tradeoff:
+                raise AppError(409, "SALE_SEARCH_UNNECESSARY", "Для текущих evidence пересчет не разрешен.")
+            readiness.search_performed = False
+        for name in ("alternative", "tradeoff"):
+            candidate = getattr(readiness, name)
+            if candidate is None:
+                continue
+            report = CuttingEngine().validate(data, candidate)
+            candidate_free = sorted(eligible - {p.remnant_id for p in candidate.placements})
+            if not report.valid or len(candidate_free) < 5:
+                raise AppError(409, "SALE_CANDIDATE_INVALID", "Совместный вариант не прошел независимую проверку.")
+            # Store revalidates geometry and recalculates metrics from canonical current parts.
+            canonical = service.store_solver_plan(dataset_id, candidate)
+            delta = canonical.metrics.covered_area_mm2 - stored.metrics.covered_area_mm2
+            if (name == "alternative" and delta < 0) or (name == "tradeoff" and delta >= 0):
+                raise AppError(409, "SALE_DELTA_INVALID", "Уступка площади не может быть незаметно принята.")
+            setattr(readiness, name, canonical)
+            readiness.delta_area_mm2 = delta
+            readiness.candidate_free_eligible_ids = candidate_free
+            if len(free) < 5 and len(eligible) >= 5:
+                readiness.status = "ready_alternative" if name == "alternative" else "tradeoff_available"
+    stored = stored or service.store_solver_plan(dataset_id, plan, base_plan_id=plan.parent_plan_id)
+    baseline_ref = {"plan_id": stored.plan_id, "revision": stored.revision}
+    if readiness:
+        readiness.baseline = stored
+        # Only a verified area-neutral/improving alternative is selected automatically.
+        if readiness.status == "ready_alternative":
+            stored = readiness.alternative
     exported = service.export(dataset_id, stored.plan_id, stored.revision)
     result.clear()
     result.update(stored.model_dump(mode="json"))
@@ -28,6 +140,13 @@ def store_cutting(session, dataset_id, result):
                   rows=[r.model_dump(mode="json") for r in exported.rows],
                   provenance={"plan_id": stored.plan_id, "revision": stored.revision,
                               "config": stored.config.model_dump(), "evidence": stored.evidence})
+    if readiness:
+        result.update(sale_readiness=readiness.model_dump(mode="json"), baseline_plan_ref=baseline_ref,
+            selected_plan_ref={"plan_id": stored.plan_id, "revision": stored.revision},
+            alternative_plan_ref=({"plan_id": readiness.alternative.plan_id, "revision": readiness.alternative.revision}
+                                  if readiness.alternative else None),
+            tradeoff_plan_ref=({"plan_id": readiness.tradeoff.plan_id, "revision": readiness.tradeoff.revision}
+                               if readiness.tradeoff else None))
 
 
 def engine_for(snapshot, context):
@@ -92,6 +211,7 @@ def assistant_job(snapshot, context):
             answer = await engine.turn(question["question"], TurnContext(), inventory_mode="none",
                                        allow_ai=snapshot.get("ai_profile") != "local_limited")
             payload = payload_from_answer(answer, proofs.get(semantic_key) if answer.cache_hit else None)
+            payload["provenance"]["review_user_text"] = question["question"]
             if not validate_assistant_checkpoint(snapshot, row_id, fingerprint, payload):
                 # Fail closed on incomplete/unreplayable model evidence. The model's output
                 # is not promoted to a verified row merely because the child says so.
@@ -115,6 +235,11 @@ from glassflow.modules.platform.checkpoints import validate_assistant_checkpoint
 
 assistant_job.checkpoint_validator = validate_assistant_checkpoint
 assistant_job.requires_complete_checkpoints = True
+
+
+def store_assistant(session, dataset_id, result):
+    from glassflow.modules.intelligence.reviews import record_accepted_batch_reviews
+    record_accepted_batch_reviews(session, dataset_id, result)
 
 
 def quality_job(snapshot, context):

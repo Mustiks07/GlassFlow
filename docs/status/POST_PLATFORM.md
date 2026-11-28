@@ -86,3 +86,65 @@ human active/elapsed/pause/negative pairs/mismatch/interruption, canonical workf
 
 Следующий шаг root: объединить codex/post-platform, подключить startup export_context, миграцию0006,
 перегенерировать общие схемы, затем проверить настоящий HTTP/browser/EXE и ограниченный live AI.
+
+## N01 реальное соединение (следующая задача root)
+
+Перед работой merged codex/post-integration-upgrades на9b4247f (C2 sale_readiness/scarcity/NEW и Intelligence).
+Затем merged Intelligence c5fc208, merge63c647a — только их история; авторские файлы не переписывались.
+
+`core/snapshots.sale_readiness_snapshot` получает текущий C2 solve_input, оригинальные source records и
+проверенный реестр sales.registry. S вычисляется сервером через настоящий match_buyers: минимум3 разных
+объяснимых организаций; размеры/материал должны совпадать с оригиналом для полной карточки. Текущие резервы,
+occupied/status/nonoriginal исключаются; committed baseline сохраняет собственные reservations/placement locks.
+Fingerprint содержит весь registry content/version, current inventory, C2 input и matching evidence; клиент S не задаёт.
+
+Полный run с buyer_registry автоматически включает server context; улучшение N02 захватывает свежий context.
+Existing cutting handler вызывает C2 ensure_sale_readiness после baseline. Если уже5free eligible — без поиска;
+если во всём доступном складе S<5 — evidence_shortage без поиска. Raw C2 incumbents до search допустимы как
+pinned geometry-only; final hook требует bundle, повторно читает trusted running Job.input и заново capture current.
+Bundle временно JSON string внутри scalar CutPlan.evidence; перед сохранением удаляется. Сохраняются исходные
+stop/config/evidence; workers не выдают fake stop provenance. Parent самостоятельно пересчитывает status/free/delta,
+геометрию каждого варианта и каноническую площадь через существующий C2 store (без нового geometry/pricing engine).
+
+Baseline сохранён отдельно; zero-area-loss/improving alternative может быть selected с явными refs. Tradeoff
+с уменьшением площади — отдельный stored ref, никогда не selected молча. При несогласованном delta/payload все
+записи откатываются той же транзакцией. При stale job результат не продвигается, прежний baseline/accepted остаётся.
+Standalone существующего плана сохраняет его исходный baseline ref, включая committed с собственными резервами.
+Cards получают cutting_result выбранного persisted plan; E2E тест проверяет5cards ×3matches именно этого ref.
+
+**Root standalone route seam:**
+`runs.enqueue_sale_readiness(session,dataset_id,baseline_plan_id,baseline_revision,registry_version,*,budget_seconds=2)`
+возвращает стандартный job_dto, kind=cutting, run_id=None. Route root владеет session/owner/idempotency/body validation;
+ожидание через существующий GET /jobs/{id}. Функция не принимает eligible IDs. Результат содержит typed existing
+SaleReadiness в result.sale_readiness и refs baseline_plan_ref,selected_plan_ref,alternative_plan_ref,tradeoff_plan_ref
+({plan_id,revision}; optional refs null). Отдельный explicit tradeoff selection root может добавить с новым current
+capture; этого автоматического перехода здесь нет. Общих DTO/main/ports/sales/insights edits этим пакетом не сделано.
+
+## N07 accepted batch hook
+
+По отдельному разрешению root payload whitelist включает review_reasons/review_user_text. Причины формирует
+Intelligence.outcome_reasons; parent повторно сверяет текст с pinned question и correct_policy/missing_parameter/kb_fact
+с каноническим local outcome в уже выполняемой проверке. Historical checkpoints без metadata совместимы и не
+переписываются. Новый store_assistant вызывает record_accepted_batch_reviews в той же Session после полного accepted
+batch; нет новой engine/network/DB. Root должен зарегистрировать result_hooks['assistant']=store_assistant в composition.
+Synthetic regression проверяет правильный policy отказ, отклонение подмены category и полный rollback review inserts.
+Provider/verifier причины дополнительно согласованы с accepted llm_status/error metadata; выдуманная provider_error
+при deterministic результате отвергается. Основные policy/KB/parameter причины replay проверяются предметно.
+
+Старые isolated Services без cutting handler не имеют C2 registration и сохраняют прежнее dependency-failure
+поведение foundation (sale_readiness_enabled=false). Реальная composition включает connection всегда при registry;
+никакой fallback eligibility/fixture data для production нет. Форматный fixture-export не объявляет N01 проверенным.
+
+Первые connection12 PASS, включая настоящий spawn/5cards и own committed reservations; до последнего добавленного
+forged-delta regression combined connection+budget20 PASS/35.28s. Финальный расширенный повтор записывается ниже.
+Ruff всего backend/tests/scripts PASS, foundation14/66/67/PDF PASS. Независимый review oracle не использован.
+
+Финальный N01/N07/регрессии: `uv run pytest tests/platform/test_sale_readiness_connection.py
+tests/platform/test_post_budget_checkpoints.py tests/platform/test_jobs.py tests/platform/test_exports.py
+-q -o addopts='' --junitxml=.post-sale-final.xml` — **29 PASS**,53.39s. JUnit сохранён в
+tests/platform/evidence/post-sale-connection.xml;13 новых connection tests включают forged area/delta rollback,
+strip bundle final-hook fence и truthful review categories. Ruff all PASS, diff --check PASS.
+
+Следующий точный шаг root: merge ветку, добавить route к enqueue_sale_readiness и assistant result hook,
+схемы/UI для явных plan refs; отдельно выполнить реальные browser/EXE проверки и live AI. Эти тесты не являются
+пройденными browser E2E/AI exam. EXE/final human economy этим продолжением не создавались/не заменялись.
