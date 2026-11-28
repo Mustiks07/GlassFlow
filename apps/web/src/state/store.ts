@@ -12,6 +12,7 @@ export interface QuoteDraft {
   length: string;
   width: string;
   quantity: string;
+  priceBasis?: 'auto' | 'per_m2' | 'per_sheet' | 'unit';
   processing: 'none' | 'euro_edge' | 'facet' | 'sandblast';
   sides: 'all' | 'selected';
   selectedSides: ('left' | 'right' | 'top' | 'bottom')[];
@@ -37,6 +38,7 @@ export const emptyQuoteDraft: QuoteDraft = {
   length: '',
   width: '',
   quantity: '1',
+  priceBasis: 'auto',
   processing: 'none',
   sides: 'all',
   selectedSides: [],

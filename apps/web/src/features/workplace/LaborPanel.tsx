@@ -15,6 +15,7 @@ const PAIR_REASON: Record<string, string> = {
   PAIR_INCOMPLETE: 'Нужно выполнить задачу обоими способами',
   PAIR_INPUT_MISMATCH: 'Различаются задача, входы, оператор или порядок способов',
   HUMAN_ATTESTATION_REQUIRED: 'Человек должен подтвердить активное время обоих выполнений',
+  ATTESTATION_TIME_INVALID: 'Старое подтверждение времени требует повторной проверки человеком',
 };
 
 export function LaborPanel({ dataset, onExport }: { dataset: Dataset; onExport: (value: Export) => void }) {
@@ -123,6 +124,7 @@ function MeasurementRow({ value: m, busy, writable, operator, action }: { value:
   return <section className="stack" aria-label={`Измерение ${m.pair_id} ${METHOD[m.method]}`}>
     <h3>{m.task_id} · {m.pair_id} · {METHOD[m.method]}</h3>
     <p>{STATE[m.state]} · прошло {m.elapsed_seconds} с · интервалы работы {m.recorded_running_seconds} с · активное время: {m.attested_active_seconds == null ? 'человек ещё не подтвердил' : `${m.attested_active_seconds} с`}</p>
+    {writable && m.requires_attestation_review && <div className="stack"><p role="alert">Ранее подтверждённое время выходит за точный интервал. Экспорт заблокирован до повторной проверки. Прежнее подтверждение сохраняется в истории.</p><label>Причина повторной проверки<input value={note} onChange={e => setNote(e.target.value)} /></label><label><input type="checkbox" checked={confirmed} onChange={e => setConfirmed(e.target.checked)} />Я проверю фактическое активное время заново</label><Button busy={busy} disabled={!confirmed || !note.trim()} onClick={() => action('reopen', { ...fields, human_confirmed: true })}>Открыть ошибочное подтверждение для проверки</Button></div>}
     {m.interruption_detected && !m.interruption_acknowledged && <label><input type="checkbox" checked={acknowledged} onChange={e => setAcknowledged(e.target.checked)} /> Я проверил незавершённый интервал после перезапуска</label>}
     {writable && m.state !== 'attested' && <>
       <label>Заметка к измерению {m.pair_id} {METHOD[m.method]} <input value={note} onChange={e => setNote(e.target.value)} /></label>
@@ -135,7 +137,7 @@ function MeasurementRow({ value: m, busy, writable, operator, action }: { value:
         <Button busy={busy} disabled={!resultRef.trim()} onClick={() => action('finish', { ...fields, result_ref: resultRef, error_count: Number(errors), rework_seconds: rework })}>Завершить выполнение</Button>
       </>}
       {m.state === 'finished' && <>
-        <label>Подтверждённое активное время, с {m.pair_id} {METHOD[m.method]} <input type="number" min="0" step="0.001" value={active} onChange={e => setActive(e.target.value)} /></label>
+        <label>Подтверждённое активное время, с {m.pair_id} {METHOD[m.method]} <input type="number" min="0" max={m.elapsed_seconds} step="0.000001" value={active} onChange={e => setActive(e.target.value)} /></label>
         <label><input type="checkbox" checked={confirmed} onChange={e => setConfirmed(e.target.checked)} /> Я, {operator || m.operator}, проверил активное время, ошибки и переделки</label>
         <Button busy={busy} disabled={!confirmed || !active} onClick={() => action('attest', { ...fields, active_seconds: active, human_confirmed: true })}>Подтвердить активное время</Button>
       </>}

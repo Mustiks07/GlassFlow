@@ -80,6 +80,8 @@ class TurnContext:
     width_mm: int | None = None
     quantity: int | None = None
     quantity_assumed: bool = False
+    invalid_quantity: bool = False
+    invalid_dimensions: bool = False
     processing: str = "none"
     edge_sides: str | None = None
     selected_sides: tuple[str, ...] = ()
@@ -101,8 +103,8 @@ class TurnContext:
         for key, value in (data or {}).items():
             if key in {"length_mm", "width_mm", "quantity"}:
                 setattr(context, key, int(value))
-            elif key == "quantity_assumed":
-                context.quantity_assumed = value == "True"
+            elif key in {"quantity_assumed", "invalid_quantity", "invalid_dimensions"}:
+                setattr(context, key, value == "True")
             elif key == "selected_sides":
                 context.selected_sides = tuple(v for v in value.split(",") if v)
             elif hasattr(context, key):
@@ -227,10 +229,15 @@ class LocalEngine:
             out.catalog_match_reason = match.reason_code
             if match.reason_code:
                 context.product_id = None
-            if match.status == "exact" and ex.quantity is None:
+            if match.status == "exact" and ex.quantity is None and not ex.invalid_quantity:
                 quantity = _quantity_before_name(text, match.product)
                 if quantity is not None:
-                    ex.quantity, ex.quantity_source = quantity, "number_before_product_name"
+                    count, raw = quantity
+                    ex.quantity_source = raw
+                    if count <= 0 or count != count.to_integral():
+                        ex.invalid_quantity = raw
+                    else:
+                        ex.quantity = int(count)
             out.tool_calls.append(
                 ToolTrace(
                     "search_catalog",
@@ -473,7 +480,8 @@ class LocalEngine:
             self._ambiguous(ex, out, match)
             return True
         elif context.product_id and not match.reason_code and (
-            ex.dimensions or ex.quantity or ex.processing != "none" or ex.price_basis != "auto" or ex.edge_sides is not None
+            ex.dimensions or ex.quantity or ex.invalid_quantity or ex.invalid_dimensions or ex.ambiguous_dimensions
+            or ex.processing != "none" or ex.price_basis != "auto" or ex.edge_sides is not None
         ):
             product = self.kb.product(context.product_id)
         if product is None:
@@ -493,7 +501,7 @@ class LocalEngine:
         out.evidence.append(self._ev(product.product_id, "название"))
         self._name_facts(out, product)
         self._update_params(ex, context, out)
-        if out.missing_parameters and "dimensions_unit" in out.missing_parameters:
+        if out.status == "clarification" and out.missing_parameters:
             return True
         if product.is_hardware:
             self._hardware(ex, out, product)
@@ -505,15 +513,31 @@ class LocalEngine:
         return True
 
     def _update_params(self, ex: Extraction, context: TurnContext, out: LocalOutcome) -> None:
-        if ex.ambiguous_dimensions or ex.invalid_dimensions:
-            raw = (ex.ambiguous_dimensions or ex.invalid_dimensions)[0]
-            question = f"Уточните единицы размера «{raw}»: это мм, см или м?"
+        if ex.invalid_quantity:
+            context.invalid_quantity = True
+        elif ex.quantity is not None:
+            context.invalid_quantity = False
+        if context.invalid_quantity:
+            context.quantity = None
+            question = (f"Укажите положительное целое количество вместо «{ex.invalid_quantity}»." if ex.invalid_quantity
+                        else "Укажите положительное целое количество: прежнее значение было некорректным.")
             out.sentences.append(question)
             out.clarification = question
             out.status = "clarification"
-            out.missing_parameters.append("dimensions_unit")
-            return
-        if ex.dimensions:
+            out.missing_parameters.append("quantity")
+        if ex.ambiguous_dimensions or ex.invalid_dimensions:
+            context.invalid_dimensions = True
+            context.length_mm = context.width_mm = None
+            raw = (ex.ambiguous_dimensions or ex.invalid_dimensions)[0]
+            question = (f"Укажите положительные длину и ширину вместо «{raw}», с единицами мм, см или м."
+                        if ex.invalid_dimensions else f"Уточните единицы размера «{raw}»: это мм, см или м?")
+            if not out.clarification:
+                out.sentences.append(question)
+                out.clarification = question
+            out.status = "clarification"
+            out.missing_parameters.append("dimensions_invalid" if ex.invalid_dimensions else "dimensions_unit")
+        if ex.dimensions and not (ex.ambiguous_dimensions or ex.invalid_dimensions):
+            context.invalid_dimensions = False
             first = ex.dimensions[0]
             context.length_mm, context.width_mm = first.length_mm, first.width_mm
             out.normalized_dimensions = first.normalized_text
@@ -525,6 +549,12 @@ class LocalEngine:
                 out.assumptions.append(f"Размер «{first.source_text}» принят в миллиметрах.")
             if len(ex.dimensions) > 1:
                 out.assumptions.append("В запросе несколько размеров; расчет выполнен для первого.")
+        elif context.invalid_dimensions and not (ex.ambiguous_dimensions or ex.invalid_dimensions):
+            if not out.clarification:
+                out.clarification = "Укажите положительные длину и ширину с единицами: прежний размер требует исправления."
+                out.sentences.append(out.clarification)
+            out.status = "clarification"
+            out.missing_parameters.append("dimensions_invalid")
         if ex.quantity is not None:
             context.quantity, context.quantity_assumed = ex.quantity, False
         if ex.processing_negated:
@@ -691,11 +721,12 @@ class LocalEngine:
             if sheet and sheet.amount is not None:
                 out.facts.add("price", sheet.amount, "₸/лист", self._ref(product.product_id, sheet.source_field))
                 out.evidence.append(self._ev(product.product_id, sheet.source_field))
-                if ex.quantity:
-                    result = self._price(PricingInput(product, quantity=ex.quantity, price_basis="per_sheet"), out)
+                quantity = context.quantity if not context.quantity_assumed else None
+                if quantity:
+                    result = self._price(PricingInput(product, quantity=quantity, price_basis="per_sheet"), out)
                     out.pricing = result
                     out.sentences.append(
-                        f"Целый лист «{product.name}» стоит {_m(sheet.amount)} ₸; за {ex.quantity} шт — {_m(result.total)} ₸."
+                        f"Целый лист «{product.name}» стоит {_m(sheet.amount)} ₸; за {quantity} шт — {_m(result.total)} ₸."
                     )
                 else:
                     out.sentences.append(f"Целый лист «{product.name}» стоит {_m(sheet.amount)} ₸.")
@@ -919,17 +950,18 @@ class LocalEngine:
         out.sentences = seen[:MAX_SENTENCES]
 
 
-def _quantity_before_name(text: str, product: Product) -> int | None:
+def _quantity_before_name(text: str, product: Product) -> tuple[Decimal, str] | None:
     """«4 полкодержателя», «две лупы»: a count directly before a word of the product name."""
     name_stems = {stem(w) for w in words(product.name) if not w.isdigit() and len(w) > 3}
     value = normalize(text)
-    for match in re.finditer(r"(?<![\d.,x])(\d{1,5}|" + "|".join(WORD_NUMBERS) + r")\s+([а-яa-z-]+)", value):
+    for match in re.finditer(r"(?<![\w\d.,x+\-−])([+\-−]?\d+(?:[.,]\d+)?|(?:минус\s+)?(?:" + "|".join(WORD_NUMBERS) + r"))\s+([а-яa-z-]+)", value):
         raw, word = match.groups()
         if re.match(r"(?:мм|см|м|шт|штук|лист|кв|м2|м²|тг|тенге|вт)\b", word):
             continue
         if any(stems_match(stem(word), name_stem) for name_stem in name_stems):
-            number = int(raw) if raw.isdigit() else WORD_NUMBERS[raw]
-            return number if number > 0 else None
+            token = raw.removeprefix("минус ")
+            number = Decimal(WORD_NUMBERS[token]) if token in WORD_NUMBERS else Decimal(token.replace(",", ".").replace("−", "-"))
+            return (-number if raw.startswith("минус ") else number), match.group(0)
     return None
 
 

@@ -45,6 +45,11 @@ class MeasurementAttest(MeasurementAction):
     human_confirmed: Literal[True]
 
 
+class MeasurementReopen(MeasurementAction):
+    human_confirmed: Literal[True]
+    note: str = Field(min_length=1, max_length=2000)
+
+
 class LaborMeasurement(DTO):
     measurement_id: str
     pair_id: str
@@ -67,6 +72,7 @@ class LaborMeasurement(DTO):
     rework_seconds: str = "0"
     interruption_detected: bool = False
     interruption_acknowledged: bool = False
+    requires_attestation_review: bool = False
     events: list[dict]
 
 

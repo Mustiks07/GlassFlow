@@ -9,6 +9,7 @@ from glassflow.contracts.labor import (
     MeasurementAction,
     MeasurementAttest,
     MeasurementFinish,
+    MeasurementReopen,
     MeasurementStart,
     WorkflowQueue,
 )
@@ -68,6 +69,12 @@ def finish_measurement(study_id: str, measurement_id: str, body: MeasurementFini
 def attest_measurement(study_id: str, measurement_id: str, body: MeasurementAttest, request: Request,
                        idempotency_key: str | None = Header(None)):
     return mutate(study_id, measurement_id, body, request, idempotency_key, "attest")
+
+
+@router.post("/labor-studies/{study_id}/measurements/{measurement_id}/reopen", response_model=LaborStudyView)
+def reopen_measurement(study_id: str, measurement_id: str, body: MeasurementReopen, request: Request,
+                       idempotency_key: str | None = Header(None)):
+    return mutate(study_id, measurement_id, body, request, idempotency_key, "reopen")
 
 
 @router.post("/labor-studies/{study_id}/measurements/{measurement_id}/{action}", response_model=LaborStudyView)

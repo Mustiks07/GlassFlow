@@ -8,7 +8,7 @@ from statistics import median
 
 from sqlalchemy import select
 
-from glassflow.contracts.economics import LaborStudy
+from glassflow.contracts.economics import LaborStudy, interval_seconds
 from glassflow.contracts.labor import LaborStudyExport, LaborStudyView
 from glassflow.core.errors import AppError
 from glassflow.core.models import ObjectRow, uid
@@ -23,14 +23,29 @@ def moment():
 
 
 def seconds(start, end):
-    value = Decimal(str((end - datetime.fromisoformat(start)).total_seconds()))
+    value = interval_seconds(start, end.isoformat())
     if value < 0:
         raise AppError(409, "CLOCK_MOVED_BACKWARDS", "Часы изменились назад; интервал требует проверки.")
     return value
 
 
 def scalar(value):
-    return format(Decimal(value).quantize(Decimal("0.001")), "f")
+    value = Decimal(value)
+    # Preserve microseconds without rounding upwards; retain the existing three
+    # decimal display when the value is exactly representable at that scale.
+    scale = Decimal("0.001") if value == value.quantize(Decimal("0.001")) else Decimal("0.000001")
+    return format(value.quantize(scale), "f")
+
+
+def invalid_attestation(item):
+    if item["state"] != "attested":
+        return False
+    try:
+        elapsed = interval_seconds(item["started_at"], item["finished_at"])
+        active = Decimal(item["attested_active_seconds"])
+        return not (0 < active <= elapsed and Decimal(item["rework_seconds"]) <= active)
+    except (ValueError, TypeError):
+        return True
 
 
 def workspace(session, dataset_id):
@@ -51,6 +66,7 @@ def projected(measurement, when):
     result["interruption_detected"] = result["interruption_detected"] or interrupted
     end = datetime.fromisoformat(result["finished_at"]) if result["finished_at"] else when
     result["elapsed_seconds"] = scalar(seconds(result["started_at"], end))
+    result["requires_attestation_review"] = invalid_attestation(result)
     if result["state"] == "running" and not interrupted:
         result["recorded_running_seconds"] = scalar(
             Decimal(result["recorded_running_seconds"]) + seconds(result["running_since"], when))
@@ -74,6 +90,8 @@ def pair_rows(study):
             reason = "PAIR_INPUT_MISMATCH"
         elif any(m["state"] != "attested" or not m["human_confirmed"] for m in values):
             reason = "HUMAN_ATTESTATION_REQUIRED"
+        elif any(invalid_attestation(m) for m in values):
+            reason = "ATTESTATION_TIME_INVALID"
         saved = (scalar(Decimal(methods["manual"]["attested_active_seconds"])
                         - Decimal(methods["app"]["attested_active_seconds"])) if reason is None else None)
         pairs.append({"pair_id": pair_id, "task_id": values[0]["task_id"], "ready": reason is None,
@@ -164,6 +182,16 @@ def act(session, study_id, measurement_id, body, action, correlation):
     if item["operator"] != body.operator:
         raise AppError(409, "MEASUREMENT_OPERATOR_MISMATCH", "Действие подтверждает оператор измерения.")
     when = moment()
+    if action == "reopen":
+        if not invalid_attestation(item):
+            raise AppError(409, "VALID_ATTESTATION_IMMUTABLE", "Повторная проверка доступна только для ошибочного старого подтверждения.")
+        if not body.human_confirmed or not body.note.strip():
+            raise AppError(422, "HUMAN_REVIEW_REQUIRED", "Подтвердите повторную проверку и укажите причину.")
+        previous = {k: item[k] for k in ("attested_active_seconds", "attested_by", "human_confirmed", "elapsed_seconds")}
+        event(item, "reopen_invalid_attestation", when, body.operator, body.note, previous_attestation=previous)
+        item.update(state="finished", attested_active_seconds=None, attested_by=None, human_confirmed=False)
+        save(session, row, data, action, correlation, body.operator)
+        return view(row)
     if item["state"] == "attested":
         raise AppError(409, "MEASUREMENT_IMMUTABLE", "Подтвержденное измерение и его история неизменяемы.")
     if item["state"] == "running" and item["process_epoch"] != PROCESS_EPOCH:
@@ -199,8 +227,9 @@ def act(session, study_id, measurement_id, body, action, correlation):
         if item["state"] != "finished":
             raise AppError(409, "MEASUREMENT_NOT_FINISHED", "Сначала завершите интервал и запишите результат.")
         active = Decimal(body.active_seconds)
-        if not 0 < active <= Decimal(item["elapsed_seconds"]) or Decimal(item["rework_seconds"]) > active:
-            raise AppError(409, "ACTIVE_TIME_INVALID", "Активное время положительно, не больше прошедшего; переделки внутри.")
+        elapsed = interval_seconds(item["started_at"], item["finished_at"])
+        if not 0 < active <= elapsed or Decimal(item["rework_seconds"]) > active:
+            raise AppError(409, "ACTIVE_TIME_INVALID", f"Введите активное время больше нуля и не больше {scalar(elapsed)} с; переделки входят в него.")
         item.update(state="attested", attested_active_seconds=body.active_seconds, human_confirmed=True,
                     attested_by=body.operator)
     else:

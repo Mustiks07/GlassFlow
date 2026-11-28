@@ -1,0 +1,851 @@
+[
+  {
+    "request": "Стекло прозрачное 6 мм 450x370, 0 штук, евро-кромка по четырём сторонам",
+    "response": {
+      "conversation_id": "5b0a3b15-46f2-41f2-aed9-85091b2baed8",
+      "answer": "Стекло 6 мм прозрачное, 450×370 мм: 0,1665 м² × 8 000 ₸ = 1 332 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ = 656 ₸. Итого предварительно 1 988 ₸; окончательную стоимость подтверждает менеджер.",
+      "clarification": null,
+      "quote": {
+        "dataset_id": "761b14b9-f88c-4a2d-a2c1-634728336e29",
+        "origin": "assistant_deterministic",
+        "origin_conversation_id": "5b0a3b15-46f2-41f2-aed9-85091b2baed8",
+        "origin_turn_index": 0,
+        "quote_id": "d42d158b-0dcf-40b7-a59c-04c82da33c66",
+        "revision": 1,
+        "status": "calculated",
+        "components": [
+          {
+            "label": "Стекло 6 мм прозрачное 450×370 мм",
+            "amount_tg": "1332.00",
+            "evidence": [
+              {
+                "source": "ksm_knowledge_base.json",
+                "source_version": "kb-f464c67fb8633008",
+                "record_id": "steklo-6-prozrachnoe",
+                "field": "цена_за_м2_тг"
+              }
+            ],
+            "component": "glass",
+            "quantity": 1,
+            "unit_price_tg": "8000.00",
+            "unit": "м²",
+            "measure_per_unit": "0.1665",
+            "exact_amount_tg": "1332.0000",
+            "formula": "0.1665 м² × 8000 ₸/м² × 1 шт"
+          },
+          {
+            "label": "Евро-кромка 6 мм (все 4 стороны)",
+            "amount_tg": "656.00",
+            "evidence": [
+              {
+                "source": "ksm_knowledge_base.json",
+                "source_version": "kb-f464c67fb8633008",
+                "record_id": "r4",
+                "field": "правило"
+              }
+            ],
+            "component": "edge",
+            "quantity": 1,
+            "unit_price_tg": "400.00",
+            "unit": "м",
+            "measure_per_unit": "1.64",
+            "exact_amount_tg": "656.00",
+            "formula": "1.64 м × 400 ₸/м × 1 шт"
+          }
+        ],
+        "total_tg": "1988.00",
+        "preliminary": true,
+        "clarification": null,
+        "material_mapping_status": "confirmed",
+        "material_id": "clear-6",
+        "catalog_product_id": "steklo-6-prozrachnoe",
+        "product_name": "Стекло 6 мм прозрачное",
+        "kb_version": "kb-f464c67fb8633008",
+        "customer_id": "audit-customer",
+        "dimensions": {
+          "length_mm": 450,
+          "width_mm": 370
+        },
+        "quantity": 1,
+        "processing": {
+          "kind": "euro_edge",
+          "sides": "all",
+          "selected_sides": []
+        },
+        "price_basis": "per_m2",
+        "confirmed_parameters": {
+          "catalog_product_id": "steklo-6-prozrachnoe",
+          "product_name": "Стекло 6 мм прозрачное",
+          "length_mm": "450",
+          "width_mm": "370",
+          "quantity": "1",
+          "price_basis": "per_m2",
+          "processing": "euro_edge",
+          "edge_sides": "all"
+        },
+        "assumptions": [
+          "Размер «450x370» принят в миллиметрах.",
+          "Количество не указано — расчет за 1 деталь."
+        ],
+        "unknown_components": [],
+        "known_subtotal_tg": "1988.00",
+        "rounding_policy": "ROUND_HALF_UP to 0.01 per line; total equals the sum of displayed lines",
+        "source_versions": {
+          "kb": "kb-f464c67fb8633008",
+          "kb_sha256": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+          "pricing": "pricing-v1",
+          "materials": "materials-1391e1fa6600d028",
+          "mapping": "mapping-rules-v1:exact_normalized_name@0"
+        },
+        "inventory_status": "not_requested",
+        "candidate_refs": [],
+        "inventory_reason_codes": [],
+        "stale": false,
+        "created_at": "2026-11-28T11:52:07.160294+00:00",
+        "confirmed_at": null,
+        "confirmed_by": null,
+        "diff": null,
+        "evidence": [
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "steklo-6-prozrachnoe",
+            "field": "название"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "source": "ksm_knowledge_base.json",
+          "source_version": "kb-f464c67fb8633008",
+          "record_id": "steklo-6-prozrachnoe",
+          "field": "название"
+        },
+        {
+          "source": "ksm_knowledge_base.json",
+          "source_version": "kb-f464c67fb8633008",
+          "record_id": "steklo-6-prozrachnoe",
+          "field": "цена_за_м2_тг"
+        },
+        {
+          "source": "ksm_knowledge_base.json",
+          "source_version": "kb-f464c67fb8633008",
+          "record_id": "r4",
+          "field": "правило"
+        }
+      ],
+      "mode": "local_limited",
+      "provider": null,
+      "model_id": null,
+      "answer_path": "deterministic",
+      "status": "answered",
+      "card": {
+        "intent": "quote",
+        "catalog_product_id": "steklo-6-prozrachnoe",
+        "product_name": "Стекло 6 мм прозрачное",
+        "confirmed_parameters": {
+          "product_id": "steklo-6-prozrachnoe",
+          "length_mm": "450",
+          "width_mm": "370",
+          "quantity": "1",
+          "quantity_assumed": "True",
+          "processing": "euro_edge",
+          "edge_sides": "all",
+          "price_basis": "auto",
+          "customer_id": "audit-customer"
+        },
+        "assumptions": [
+          "Размер «450x370» принят в миллиметрах.",
+          "Количество не указано — расчет за 1 деталь."
+        ],
+        "missing_parameters": [],
+        "normalized_dimensions": "450×370 мм",
+        "facts": [
+          {
+            "fact_id": "f1",
+            "kind": "name",
+            "value": "6",
+            "unit": null,
+            "source_ref": "kb:kb-f464c67fb8633008:steklo-6-prozrachnoe:название",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f2",
+            "kind": "dimension",
+            "value": "450",
+            "unit": "мм",
+            "source_ref": "input:normalized",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f3",
+            "kind": "dimension",
+            "value": "370",
+            "unit": "мм",
+            "source_ref": "input:normalized",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f4",
+            "kind": "line",
+            "value": "1332.00",
+            "unit": "₸",
+            "source_ref": "pricing:glass",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f5",
+            "kind": "price",
+            "value": "8000",
+            "unit": "₸/м²",
+            "source_ref": "pricing:glass:rate",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f6",
+            "kind": "measure",
+            "value": "0.1665",
+            "unit": "м²",
+            "source_ref": "pricing:glass:measure",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f7",
+            "kind": "line",
+            "value": "656.00",
+            "unit": "₸",
+            "source_ref": "pricing:edge",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f8",
+            "kind": "price",
+            "value": "400",
+            "unit": "₸/м",
+            "source_ref": "pricing:edge:rate",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f9",
+            "kind": "measure",
+            "value": "1.64",
+            "unit": "м",
+            "source_ref": "pricing:edge:measure",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f10",
+            "kind": "total",
+            "value": "1988.00",
+            "unit": "₸",
+            "source_ref": "pricing:total",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f11",
+            "kind": "total",
+            "value": "1988.00",
+            "unit": "₸",
+            "source_ref": "pricing:known_subtotal",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f12",
+            "kind": "dimension",
+            "value": "450",
+            "unit": "мм",
+            "source_ref": "context",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f13",
+            "kind": "dimension",
+            "value": "370",
+            "unit": "мм",
+            "source_ref": "context",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f14",
+            "kind": "quantity",
+            "value": "1",
+            "unit": "шт",
+            "source_ref": "context",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f15",
+            "kind": "rendered_claim",
+            "value": "Стекло 6 мм прозрачное, 450×370 мм: 0,1665 м² × 8 000 ₸ = 1 332 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ = 656 ₸. Итого предварительно 1 988 ₸; окончательную стоимость подтверждает менеджер.",
+            "unit": null,
+            "source_ref": "renderer:local:kb-f464c67fb8633008",
+            "status": "supported"
+          }
+        ],
+        "alternatives": [
+          "Калёное стекло 6 мм"
+        ],
+        "needs_manager": false
+      },
+      "tool_calls": [
+        {
+          "tool": "search_catalog",
+          "status": "ok",
+          "arguments": {
+            "query_sha": "local"
+          },
+          "summary": "exact: ['steklo-6-prozrachnoe', 'kalenoe-steklo-6']",
+          "error_code": null
+        },
+        {
+          "tool": "calculate_quote",
+          "status": "ok",
+          "arguments": {
+            "catalog_product_id": "steklo-6-prozrachnoe",
+            "length_mm": 450,
+            "width_mm": 370,
+            "quantity": 1,
+            "processing": "euro_edge"
+          },
+          "summary": "total=1988.00 unknown=[]",
+          "error_code": null
+        }
+      ],
+      "verifier_status": "supported",
+      "ai_unavailable_reason": "AI отключен для этого запроса.",
+      "turn_index": 0,
+      "latency_ms": 15,
+      "execution_mode": "hybrid",
+      "origin": "deterministic",
+      "cache_hit": false,
+      "model_call_count": 0,
+      "model_attempts": [],
+      "selected_provider": null,
+      "selected_model_id": null,
+      "verifier_reject_count": 0
+    },
+    "confirm_status": 200
+  },
+  {
+    "request": "Стекло прозрачное 6 мм 450x370, -2 штуки, евро-кромка по четырём сторонам",
+    "response": {
+      "conversation_id": "69e704ac-04b4-473a-b6df-2ba4cf82d214",
+      "answer": "Стекло 6 мм прозрачное, 450×370 мм, 2 шт: 0,1665 м² × 8 000 ₸ × 2 = 2 664 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ × 2 = 1 312 ₸. Итого предварительно 3 976 ₸; окончательную стоимость подтверждает менеджер.",
+      "clarification": null,
+      "quote": {
+        "dataset_id": "761b14b9-f88c-4a2d-a2c1-634728336e29",
+        "origin": "assistant_deterministic",
+        "origin_conversation_id": "69e704ac-04b4-473a-b6df-2ba4cf82d214",
+        "origin_turn_index": 0,
+        "quote_id": "70f6664e-300a-4a9b-898c-587cc51b4282",
+        "revision": 1,
+        "status": "calculated",
+        "components": [
+          {
+            "label": "Стекло 6 мм прозрачное 450×370 мм",
+            "amount_tg": "2664.00",
+            "evidence": [
+              {
+                "source": "ksm_knowledge_base.json",
+                "source_version": "kb-f464c67fb8633008",
+                "record_id": "steklo-6-prozrachnoe",
+                "field": "цена_за_м2_тг"
+              }
+            ],
+            "component": "glass",
+            "quantity": 2,
+            "unit_price_tg": "8000.00",
+            "unit": "м²",
+            "measure_per_unit": "0.1665",
+            "exact_amount_tg": "2664.0000",
+            "formula": "0.1665 м² × 8000 ₸/м² × 2 шт"
+          },
+          {
+            "label": "Евро-кромка 6 мм (все 4 стороны)",
+            "amount_tg": "1312.00",
+            "evidence": [
+              {
+                "source": "ksm_knowledge_base.json",
+                "source_version": "kb-f464c67fb8633008",
+                "record_id": "r4",
+                "field": "правило"
+              }
+            ],
+            "component": "edge",
+            "quantity": 2,
+            "unit_price_tg": "400.00",
+            "unit": "м",
+            "measure_per_unit": "1.64",
+            "exact_amount_tg": "1312.00",
+            "formula": "1.64 м × 400 ₸/м × 2 шт"
+          }
+        ],
+        "total_tg": "3976.00",
+        "preliminary": true,
+        "clarification": null,
+        "material_mapping_status": "confirmed",
+        "material_id": "clear-6",
+        "catalog_product_id": "steklo-6-prozrachnoe",
+        "product_name": "Стекло 6 мм прозрачное",
+        "kb_version": "kb-f464c67fb8633008",
+        "customer_id": "audit-customer",
+        "dimensions": {
+          "length_mm": 450,
+          "width_mm": 370
+        },
+        "quantity": 2,
+        "processing": {
+          "kind": "euro_edge",
+          "sides": "all",
+          "selected_sides": []
+        },
+        "price_basis": "per_m2",
+        "confirmed_parameters": {
+          "catalog_product_id": "steklo-6-prozrachnoe",
+          "product_name": "Стекло 6 мм прозрачное",
+          "length_mm": "450",
+          "width_mm": "370",
+          "quantity": "2",
+          "price_basis": "per_m2",
+          "processing": "euro_edge",
+          "edge_sides": "all"
+        },
+        "assumptions": [
+          "Размер «450x370» принят в миллиметрах."
+        ],
+        "unknown_components": [],
+        "known_subtotal_tg": "3976.00",
+        "rounding_policy": "ROUND_HALF_UP to 0.01 per line; total equals the sum of displayed lines",
+        "source_versions": {
+          "kb": "kb-f464c67fb8633008",
+          "kb_sha256": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+          "pricing": "pricing-v1",
+          "materials": "materials-1391e1fa6600d028",
+          "mapping": "mapping-rules-v1:exact_normalized_name@0"
+        },
+        "inventory_status": "not_requested",
+        "candidate_refs": [],
+        "inventory_reason_codes": [],
+        "stale": false,
+        "created_at": "2026-11-28T11:52:07.234290+00:00",
+        "confirmed_at": null,
+        "confirmed_by": null,
+        "diff": null,
+        "evidence": [
+          {
+            "source": "ksm_knowledge_base.json",
+            "source_version": "kb-f464c67fb8633008",
+            "record_id": "steklo-6-prozrachnoe",
+            "field": "название"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "source": "ksm_knowledge_base.json",
+          "source_version": "kb-f464c67fb8633008",
+          "record_id": "steklo-6-prozrachnoe",
+          "field": "название"
+        },
+        {
+          "source": "ksm_knowledge_base.json",
+          "source_version": "kb-f464c67fb8633008",
+          "record_id": "steklo-6-prozrachnoe",
+          "field": "цена_за_м2_тг"
+        },
+        {
+          "source": "ksm_knowledge_base.json",
+          "source_version": "kb-f464c67fb8633008",
+          "record_id": "r4",
+          "field": "правило"
+        }
+      ],
+      "mode": "local_limited",
+      "provider": null,
+      "model_id": null,
+      "answer_path": "deterministic",
+      "status": "answered",
+      "card": {
+        "intent": "quote",
+        "catalog_product_id": "steklo-6-prozrachnoe",
+        "product_name": "Стекло 6 мм прозрачное",
+        "confirmed_parameters": {
+          "product_id": "steklo-6-prozrachnoe",
+          "length_mm": "450",
+          "width_mm": "370",
+          "quantity": "2",
+          "processing": "euro_edge",
+          "edge_sides": "all",
+          "price_basis": "auto",
+          "customer_id": "audit-customer"
+        },
+        "assumptions": [
+          "Размер «450x370» принят в миллиметрах."
+        ],
+        "missing_parameters": [],
+        "normalized_dimensions": "450×370 мм",
+        "facts": [
+          {
+            "fact_id": "f1",
+            "kind": "name",
+            "value": "6",
+            "unit": null,
+            "source_ref": "kb:kb-f464c67fb8633008:steklo-6-prozrachnoe:название",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f2",
+            "kind": "dimension",
+            "value": "450",
+            "unit": "мм",
+            "source_ref": "input:normalized",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f3",
+            "kind": "dimension",
+            "value": "370",
+            "unit": "мм",
+            "source_ref": "input:normalized",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f4",
+            "kind": "line",
+            "value": "2664.00",
+            "unit": "₸",
+            "source_ref": "pricing:glass",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f5",
+            "kind": "price",
+            "value": "8000",
+            "unit": "₸/м²",
+            "source_ref": "pricing:glass:rate",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f6",
+            "kind": "measure",
+            "value": "0.1665",
+            "unit": "м²",
+            "source_ref": "pricing:glass:measure",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f7",
+            "kind": "line",
+            "value": "1312.00",
+            "unit": "₸",
+            "source_ref": "pricing:edge",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f8",
+            "kind": "price",
+            "value": "400",
+            "unit": "₸/м",
+            "source_ref": "pricing:edge:rate",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f9",
+            "kind": "measure",
+            "value": "1.64",
+            "unit": "м",
+            "source_ref": "pricing:edge:measure",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f10",
+            "kind": "total",
+            "value": "3976.00",
+            "unit": "₸",
+            "source_ref": "pricing:total",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f11",
+            "kind": "total",
+            "value": "3976.00",
+            "unit": "₸",
+            "source_ref": "pricing:known_subtotal",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f12",
+            "kind": "dimension",
+            "value": "450",
+            "unit": "мм",
+            "source_ref": "context",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f13",
+            "kind": "dimension",
+            "value": "370",
+            "unit": "мм",
+            "source_ref": "context",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f14",
+            "kind": "quantity",
+            "value": "2",
+            "unit": "шт",
+            "source_ref": "context",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f15",
+            "kind": "rendered_claim",
+            "value": "Стекло 6 мм прозрачное, 450×370 мм, 2 шт: 0,1665 м² × 8 000 ₸ × 2 = 2 664 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ × 2 = 1 312 ₸. Итого предварительно 3 976 ₸; окончательную стоимость подтверждает менеджер.",
+            "unit": null,
+            "source_ref": "renderer:local:kb-f464c67fb8633008",
+            "status": "supported"
+          }
+        ],
+        "alternatives": [
+          "Калёное стекло 6 мм"
+        ],
+        "needs_manager": false
+      },
+      "tool_calls": [
+        {
+          "tool": "search_catalog",
+          "status": "ok",
+          "arguments": {
+            "query_sha": "local"
+          },
+          "summary": "exact: ['steklo-6-prozrachnoe', 'kalenoe-steklo-6']",
+          "error_code": null
+        },
+        {
+          "tool": "calculate_quote",
+          "status": "ok",
+          "arguments": {
+            "catalog_product_id": "steklo-6-prozrachnoe",
+            "length_mm": 450,
+            "width_mm": 370,
+            "quantity": 2,
+            "processing": "euro_edge"
+          },
+          "summary": "total=3976.00 unknown=[]",
+          "error_code": null
+        }
+      ],
+      "verifier_status": "supported",
+      "ai_unavailable_reason": "AI отключен для этого запроса.",
+      "turn_index": 0,
+      "latency_ms": 15,
+      "execution_mode": "hybrid",
+      "origin": "deterministic",
+      "cache_hit": false,
+      "model_call_count": 0,
+      "model_attempts": [],
+      "selected_provider": null,
+      "selected_model_id": null,
+      "verifier_reject_count": 0
+    },
+    "confirm_status": 200
+  },
+  {
+    "request": "Прозрачное стекло 6 мм, ширина 370 мм, длина 450 мм, евро-кромка по всем сторонам, 2 штуки. Рассчитайте итог.",
+    "response": {
+      "conversation_id": "a797c1bb-c72e-47e7-905c-94d2a938aa83",
+      "answer": "Стекло 6 мм прозрачное: 8 000 ₸ за м². Обработка кромки (евро-кромка) для стекла 6 мм — 400 ₸ за метр. Для расчета детали пришлите размеры в мм и стороны обработки. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+      "clarification": "Для расчета детали пришлите размеры в мм и стороны обработки.",
+      "quote": null,
+      "evidence": [
+        {
+          "source": "ksm_knowledge_base.json",
+          "source_version": "kb-f464c67fb8633008",
+          "record_id": "r4",
+          "field": "правило"
+        }
+      ],
+      "mode": "local_limited",
+      "provider": null,
+      "model_id": null,
+      "answer_path": "deterministic",
+      "status": "answered",
+      "card": {
+        "intent": "edge_rate",
+        "catalog_product_id": "steklo-6-prozrachnoe",
+        "product_name": "Стекло 6 мм прозрачное",
+        "confirmed_parameters": {
+          "processing": "none",
+          "price_basis": "auto",
+          "customer_id": "audit-customer"
+        },
+        "assumptions": [],
+        "missing_parameters": [],
+        "normalized_dimensions": null,
+        "facts": [
+          {
+            "fact_id": "f1",
+            "kind": "measure",
+            "value": "6",
+            "unit": "мм",
+            "source_ref": "input",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f2",
+            "kind": "name",
+            "value": "6",
+            "unit": null,
+            "source_ref": "kb:kb-f464c67fb8633008:steklo-6-prozrachnoe:название",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f3",
+            "kind": "price",
+            "value": "8000",
+            "unit": "₸/м²",
+            "source_ref": "kb:kb-f464c67fb8633008:steklo-6-prozrachnoe:цена_за_м2_тг",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f4",
+            "kind": "price",
+            "value": "400",
+            "unit": "₸/м",
+            "source_ref": "kb:kb-f464c67fb8633008:r4:правило",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f5",
+            "kind": "rendered_claim",
+            "value": "Стекло 6 мм прозрачное: 8 000 ₸ за м². Обработка кромки (евро-кромка) для стекла 6 мм — 400 ₸ за метр. Для расчета детали пришлите размеры в мм и стороны обработки. Цена предварительная, окончательную стоимость подтверждает менеджер.",
+            "unit": null,
+            "source_ref": "renderer:local:kb-f464c67fb8633008",
+            "status": "supported"
+          }
+        ],
+        "alternatives": [],
+        "needs_manager": false
+      },
+      "tool_calls": [
+        {
+          "tool": "search_catalog",
+          "status": "ok",
+          "arguments": {
+            "query_sha": "local"
+          },
+          "summary": "exact: ['steklo-6-prozrachnoe', 'kalenoe-steklo-6']",
+          "error_code": null
+        }
+      ],
+      "verifier_status": "supported",
+      "ai_unavailable_reason": "AI отключен для этого запроса.",
+      "turn_index": 0,
+      "latency_ms": 15,
+      "execution_mode": "hybrid",
+      "origin": "deterministic",
+      "cache_hit": false,
+      "model_call_count": 0,
+      "model_attempts": [],
+      "selected_provider": null,
+      "selected_model_id": null,
+      "verifier_reject_count": 0
+    },
+    "confirm_status": null
+  },
+  {
+    "request": "Нужно 3 листа рифлёного прозрачного стекла 8 мм. Сколько всего?",
+    "response": {
+      "conversation_id": "c01920bb-20db-4945-a7ff-173dbe53a461",
+      "answer": "Рифлёное стекло прозрачное 8 мм: целый лист — 170 000 ₸; ставки за м² в базе нет, поэтому стоимость детали рассчитает менеджер.",
+      "clarification": null,
+      "quote": null,
+      "evidence": [
+        {
+          "source": "ksm_knowledge_base.json",
+          "source_version": "kb-f464c67fb8633008",
+          "record_id": "riflenoe-prozrachnoe-8",
+          "field": "название"
+        },
+        {
+          "source": "ksm_knowledge_base.json",
+          "source_version": "kb-f464c67fb8633008",
+          "record_id": "riflenoe-prozrachnoe-8",
+          "field": "цена_листа_тг"
+        }
+      ],
+      "mode": "local_limited",
+      "provider": null,
+      "model_id": null,
+      "answer_path": "deterministic",
+      "status": "manager_handoff",
+      "card": {
+        "intent": "unit_price",
+        "catalog_product_id": "riflenoe-prozrachnoe-8",
+        "product_name": "Рифлёное стекло прозрачное 8 мм",
+        "confirmed_parameters": {
+          "product_id": "riflenoe-prozrachnoe-8",
+          "quantity": "3",
+          "processing": "none",
+          "price_basis": "auto",
+          "customer_id": "audit-customer"
+        },
+        "assumptions": [],
+        "missing_parameters": [],
+        "normalized_dimensions": null,
+        "facts": [
+          {
+            "fact_id": "f1",
+            "kind": "name",
+            "value": "8",
+            "unit": null,
+            "source_ref": "kb:kb-f464c67fb8633008:riflenoe-prozrachnoe-8:название",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f2",
+            "kind": "price",
+            "value": "170000",
+            "unit": "₸/лист",
+            "source_ref": "kb:kb-f464c67fb8633008:riflenoe-prozrachnoe-8:цена_листа_тг",
+            "status": "supported"
+          },
+          {
+            "fact_id": "f3",
+            "kind": "rendered_claim",
+            "value": "Рифлёное стекло прозрачное 8 мм: целый лист — 170 000 ₸; ставки за м² в базе нет, поэтому стоимость детали рассчитает менеджер.",
+            "unit": null,
+            "source_ref": "renderer:local:kb-f464c67fb8633008",
+            "status": "supported"
+          }
+        ],
+        "alternatives": [],
+        "needs_manager": true
+      },
+      "tool_calls": [
+        {
+          "tool": "search_catalog",
+          "status": "ok",
+          "arguments": {
+            "query_sha": "local"
+          },
+          "summary": "exact: ['riflenoe-prozrachnoe-8']",
+          "error_code": null
+        }
+      ],
+      "verifier_status": "supported",
+      "ai_unavailable_reason": "AI отключен для этого запроса.",
+      "turn_index": 0,
+      "latency_ms": 16,
+      "execution_mode": "hybrid",
+      "origin": "deterministic",
+      "cache_hit": false,
+      "model_call_count": 0,
+      "model_attempts": [],
+      "selected_provider": null,
+      "selected_model_id": null,
+      "verifier_reject_count": 0
+    },
+    "confirm_status": null
+  }
+]

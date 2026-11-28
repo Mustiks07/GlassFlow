@@ -21,6 +21,7 @@ from glassflow.contracts.platform import (
     SettingsUpdate,
     WorkingCopy,
 )
+from glassflow.contracts.release import ReleaseCheck
 from glassflow.core.errors import AppError
 from glassflow.core.models import DatasetRow
 from glassflow.core.security import require_owner
@@ -277,6 +278,20 @@ def export_run(run_id: str, request: Request, idempotency_key: str | None = Head
         )
         with write_transaction(request.app.state.session_factory) as session:
             return idempotent(session, dataset_id, operation, idempotency_key, {}, lambda: result)
+
+
+@router.post("/runs/{run_id}/release-check", response_model=ReleaseCheck)
+async def check_release(run_id: str, request: Request, file: UploadFile = File(...)):
+    from glassflow.modules.insights.passports import passport
+    from glassflow.modules.platform.release_check import check_bundle
+    from glassflow.modules.platform.runs import find_run
+    raw = await file.read(64_000_001)
+    if len(raw) > 64_000_000:
+        raise AppError(413, "RELEASE_ZIP_TOO_LARGE", "Для проверки нужен конкурсный ZIP до 64 МБ, без вложенной Windows-сборки.")
+    with request.app.state.session_factory() as session:
+        run = find_run(session, run_id)
+        accepted = passport(session, request.app.state.data_dir, run_id, run.dataset_id, "accepted")
+        return check_bundle(raw, accepted.manifest)
 
 
 @router.get("/runs/{run_id}/files/{export_id}/{filename}")

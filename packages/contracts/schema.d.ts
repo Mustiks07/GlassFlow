@@ -141,6 +141,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/labor-studies/{study_id}/measurements/{measurement_id}/reopen": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reopen Measurement */
+        post: operations["reopen_measurement_api_v1_labor_studies__study_id__measurements__measurement_id__reopen_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/labor-studies/{study_id}/measurements/{measurement_id}/{action}": {
         parameters: {
             query?: never;
@@ -425,6 +442,23 @@ export interface paths {
         put?: never;
         /** Export Run */
         post: operations["export_run_api_v1_runs__run_id__export_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/runs/{run_id}/release-check": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Check Release */
+        post: operations["check_release_api_v1_runs__run_id__release_check_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1499,6 +1533,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/assistant/choices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Choose Clarification */
+        post: operations["choose_clarification_api_v1_assistant_choices_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/assistant/turns": {
         parameters: {
             query?: never;
@@ -2003,7 +2054,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** List Scenarios */
+        get: operations["list_scenarios_api_v1_economics_scenarios_get"];
         put?: never;
         /** Create */
         post: operations["create_api_v1_economics_scenarios_post"];
@@ -2025,6 +2077,40 @@ export interface paths {
         /** Update */
         put: operations["update_api_v1_economics_scenarios__scenario_id__put"];
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/economics/scenarios/sources": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Selectable Sources */
+        get: operations["selectable_sources_api_v1_economics_scenarios_sources_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/economics/scenarios/wizard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create From Measurements */
+        post: operations["create_from_measurements_api_v1_economics_scenarios_wizard_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2679,6 +2765,19 @@ export interface components {
             /** Correlation Id */
             correlation_id: string;
         };
+        /** AssistantChoice */
+        AssistantChoice: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Conversation Id */
+            conversation_id: string;
+            /** Kb Version */
+            kb_version: string;
+            /** Turn Index */
+            turn_index: number;
+            /** Choice Id */
+            choice_id: string;
+        };
         /** AssistantReply */
         AssistantReply: {
             /** Conversation Id */
@@ -2687,6 +2786,8 @@ export interface components {
             answer: string;
             /** Clarification */
             clarification?: string | null;
+            /** Clarification Options */
+            clarification_options?: components["schemas"]["ClarificationOption"][];
             quote?: components["schemas"]["Quote"] | null;
             /** Evidence */
             evidence: components["schemas"]["Evidence"][];
@@ -2792,6 +2893,8 @@ export interface components {
              * @enum {string}
              */
             execution_mode?: "hybrid" | "model_first";
+            /** Expected Conversation Version */
+            expected_conversation_version?: number | null;
         };
         /** AuditEvent */
         AuditEvent: {
@@ -3054,6 +3157,11 @@ export interface components {
             /** Planned Material Value Tg */
             planned_material_value_tg: string;
         };
+        /** Body_check_release_api_v1_runs__run_id__release_check_post */
+        Body_check_release_api_v1_runs__run_id__release_check_post: {
+            /** File */
+            file: string;
+        };
         /** Body_import_buyers_api_v1_buyers_import_post */
         Body_import_buyers_api_v1_buyers_import_post: {
             /** File */
@@ -3310,6 +3418,20 @@ export interface components {
             expected_version: number;
             /** Children */
             children: components["schemas"]["ChildRemnant"][];
+        };
+        /** ClarificationOption */
+        ClarificationOption: {
+            /** Choice Id */
+            choice_id: string;
+            /** Label */
+            label: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "product" | "unit" | "sides" | "price_basis";
+            /** Reply Text */
+            reply_text: string;
         };
         /** CommitPlan */
         CommitPlan: {
@@ -3768,6 +3890,36 @@ export interface components {
             plan: components["schemas"]["CutPlan"];
             validation: components["schemas"]["ValidationResult"];
         };
+        /** EconomicAssumptions */
+        EconomicAssumptions: {
+            /** Monthly Dataset Multiplier */
+            monthly_dataset_multiplier: string;
+            /** Monthly Operations */
+            monthly_operations: string;
+            /** Hourly Rate Tg */
+            hourly_rate_tg: string;
+            /** Hourly Rate Basis */
+            hourly_rate_basis: string;
+            /** Monthly Volume Basis */
+            monthly_volume_basis: string;
+            /** Ai Monthly Tg */
+            ai_monthly_tg: string;
+            /** Ai Cost Basis */
+            ai_cost_basis: string;
+            /** Hosting Monthly Tg */
+            hosting_monthly_tg: string;
+            /** Support Monthly Tg */
+            support_monthly_tg: string;
+            /** Implementation Tg */
+            implementation_tg: string;
+            /** Implementation Basis */
+            implementation_basis: string;
+            /** Material Use Fraction */
+            material_use_fraction: string;
+            /** Material Use Basis */
+            material_use_basis: string;
+            sensitivity?: components["schemas"]["EconomicSensitivity"];
+        };
         /** EconomicInputs */
         EconomicInputs: {
             /**
@@ -3886,6 +4038,36 @@ export interface components {
             hourly_rate_tg?: components["schemas"]["DecimalRange"] | null;
             material_use_fraction?: components["schemas"]["DecimalRange"] | null;
         };
+        /** EconomicSource */
+        EconomicSource: {
+            /** Reference */
+            reference: string;
+            /** Label */
+            label: string;
+            /** Comparison Key */
+            comparison_key: string;
+            /** Material Value Tg */
+            material_value_tg: string;
+            /** Plan Id */
+            plan_id: string;
+            /** Revision */
+            revision: number;
+            /** Dataset Id */
+            dataset_id: string;
+            /** Run Id */
+            run_id?: string | null;
+            /** Created At */
+            created_at?: string | null;
+        };
+        /** EconomicSources */
+        EconomicSources: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Results */
+            results: components["schemas"]["EconomicSource"][];
+            /** Warnings */
+            warnings?: string[];
+        };
         /** EconomicsCreate */
         EconomicsCreate: {
             /** Dataset Id */
@@ -3936,6 +4118,22 @@ export interface components {
             /** Expected Version */
             expected_version: number;
             inputs: components["schemas"]["EconomicInputs"];
+        };
+        /** EconomicsWizardCreate */
+        EconomicsWizardCreate: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Name */
+            name: string;
+            /** Baseline Ref */
+            baseline_ref: string;
+            /** Final Ref */
+            final_ref: string;
+            /** Study Id */
+            study_id: string;
+            /** Study Version */
+            study_version: number;
+            assumptions: components["schemas"]["EconomicAssumptions"];
         };
         /** Evidence */
         Evidence: {
@@ -4430,6 +4628,11 @@ export interface components {
              * @default false
              */
             interruption_acknowledged?: boolean;
+            /**
+             * Requires Attestation Review
+             * @default false
+             */
+            requires_attestation_review?: boolean;
             /** Events */
             events: {
                 [key: string]: unknown;
@@ -4982,6 +5185,27 @@ export interface components {
              * @default 0
              */
             rework_seconds?: string;
+        };
+        /** MeasurementReopen */
+        MeasurementReopen: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Operator */
+            operator: string;
+            /** Note */
+            note: string;
+            /**
+             * Acknowledge Interruption
+             * @default false
+             */
+            acknowledge_interruption?: boolean;
+            /**
+             * Human Confirmed
+             * @constant
+             */
+            human_confirmed: true;
         };
         /** MeasurementStart */
         MeasurementStart: {
@@ -5907,6 +6131,33 @@ export interface components {
             modules?: {
                 [key: string]: boolean;
             };
+        };
+        /** ReleaseCheck */
+        ReleaseCheck: {
+            /** Run Id */
+            run_id: string;
+            /** Items */
+            items: components["schemas"]["ReleaseCheckItem"][];
+            /** Files Coherent */
+            files_coherent: boolean;
+            /**
+             * Contest Accepted
+             * @default false
+             * @constant
+             */
+            contest_accepted?: false;
+        };
+        /** ReleaseCheckItem */
+        ReleaseCheckItem: {
+            /** Name */
+            name: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ready" | "missing" | "mismatch" | "needs_review";
+            /** Message */
+            message: string;
         };
         /** ReleaseRequest */
         ReleaseRequest: {
@@ -7957,6 +8208,116 @@ export interface operations {
             };
         };
     };
+    reopen_measurement_api_v1_labor_studies__study_id__measurements__measurement_id__reopen_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path: {
+                study_id: string;
+                measurement_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MeasurementReopen"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaborStudyView"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
     pause_resume_api_v1_labor_studies__study_id__measurements__measurement_id___action__post: {
         parameters: {
             query?: never;
@@ -9768,6 +10129,113 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ExportResult"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    check_release_api_v1_runs__run_id__release_check_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_check_release_api_v1_runs__run_id__release_check_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReleaseCheck"];
                 };
             };
             /** @description Bad Request */
@@ -16929,6 +17397,111 @@ export interface operations {
             };
         };
     };
+    choose_clarification_api_v1_assistant_choices_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssistantChoice"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssistantReply"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
     assistant_turn_api_v1_assistant_turns_post: {
         parameters: {
             query?: never;
@@ -20430,6 +21003,109 @@ export interface operations {
             };
         };
     };
+    list_scenarios_api_v1_economics_scenarios_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EconomicsScenario"][];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
     create_api_v1_economics_scenarios_post: {
         parameters: {
             query?: never;
@@ -20657,6 +21333,216 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["EconomicsUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EconomicsScenario"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    selectable_sources_api_v1_economics_scenarios_sources_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EconomicSources"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    create_from_measurements_api_v1_economics_scenarios_wizard_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EconomicsWizardCreate"];
             };
         };
         responses: {

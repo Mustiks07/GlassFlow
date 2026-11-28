@@ -2,11 +2,20 @@ import tempfile
 from pathlib import Path
 
 from fastapi import APIRouter, Header, Query, Request, Response
+from sqlalchemy import select
 
-from glassflow.contracts.economics import EconomicsCreate, EconomicsScenario, EconomicsUpdate
+from glassflow.contracts.economics import (
+    EconomicsCreate,
+    EconomicSources,
+    EconomicsScenario,
+    EconomicsUpdate,
+    EconomicsWizardCreate,
+)
 from glassflow.core.errors import AppError
+from glassflow.core.models import ObjectRow
 from glassflow.core.uow import idempotent, write_transaction
 from glassflow.modules.platform import economics_service as service
+from glassflow.modules.platform import economics_wizard
 from glassflow.modules.platform.reports import build_economics
 
 router = APIRouter(prefix="/economics/scenarios", tags=["economics"])
@@ -26,6 +35,31 @@ def update(scenario_id: str, body: EconomicsUpdate, request: Request, idempotenc
         return idempotent(session, body.dataset_id, f"economics.update:{scenario_id}", idempotency_key,
                           body.model_dump(mode="json"),
                           lambda: service.calculate(session, body, request.state.correlation_id, scenario_id))
+
+
+@router.get("", response_model=list[EconomicsScenario])
+def list_scenarios(dataset_id: str, request: Request):
+    with request.app.state.session_factory() as session:
+        from glassflow.modules.platform.imports import dataset
+        dataset(session, dataset_id)
+        return [row.data for row in session.scalars(select(ObjectRow).where(
+            ObjectRow.dataset_id == dataset_id, ObjectRow.kind == "economics_scenario")).all()]
+
+
+@router.get("/sources", response_model=EconomicSources)
+def selectable_sources(dataset_id: str, request: Request):
+    with request.app.state.session_factory() as session:
+        warnings = []
+        return EconomicSources(dataset_id=dataset_id, results=economics_wizard.sources(
+            session, dataset_id, request.app.state.services, request.app.state.data_dir, warnings), warnings=warnings)
+
+
+@router.post("/wizard", response_model=EconomicsScenario)
+def create_from_measurements(body: EconomicsWizardCreate, request: Request, idempotency_key: str | None = Header(None)):
+    with write_transaction(request.app.state.session_factory) as session:
+        return idempotent(session, body.dataset_id, "economics.wizard", idempotency_key, body.model_dump(mode="json"),
+            lambda: economics_wizard.create(session, body, request.app.state.services,
+                request.app.state.data_dir, request.state.correlation_id))
 
 
 @router.get("/{scenario_id}", response_model=EconomicsScenario)

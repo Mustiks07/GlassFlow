@@ -19,6 +19,7 @@ from glassflow.contracts.intelligence import (
     AIProfileView,
     AnswerBatchRequest,
     AnswerBatchResult,
+    AssistantChoice,
     AssistantReply,
     AssistantTurn,
     CatalogProduct,
@@ -219,6 +220,11 @@ def cancel_quote(request: Request, quote_id: str, body: QuoteCancelRequest):
 
 
 # ------------------------------------------------------------------ assistant
+@router.post("/assistant/choices", response_model=AssistantReply)
+async def choose_clarification(request: Request, body: AssistantChoice):
+    return await _run_async(service_for(request).choose_clarification, body)
+
+
 @router.post("/assistant/turns", response_model=AssistantReply)
 async def assistant_turn(request: Request, body: AssistantTurn):
     return await _run_async(service_for(request).assistant_turn, body, str(uuid4()))

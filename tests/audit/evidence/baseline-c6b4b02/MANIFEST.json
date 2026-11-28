@@ -1,0 +1,62 @@
+{
+  "review_sha": "c6b4b02cfac0eee0836b24ef947defc0864c4202",
+  "date": "2026-11-28",
+  "scope": "Read-only audit; synthetic boundary probes; no production fixes",
+  "files": [
+    {
+      "file": "current_labor_audit.py",
+      "sha256": "345b864ef88888dd1275da09ff501ddcf68df51026625f17fcbefd026d2e3a0b",
+      "bytes": 3055
+    },
+    {
+      "file": "current_labor_audit_result.json",
+      "sha256": "e6b9444280aa20325f98e5081350f4fa47c93e599005260b8d495f01f6e06bd8",
+      "bytes": 480
+    },
+    {
+      "file": "current_nlu_audit.py",
+      "sha256": "ced95fa3bb1488b837cf0de5d2bf3698fee37ce21d7b81e3408efb06cc80662e",
+      "bytes": 2486
+    },
+    {
+      "file": "current_nlu_audit_result.json",
+      "sha256": "fdcdb561d85dfda2bee31004f379875f78fa3f6dc2065d3b8433805f8b3f56c4",
+      "bytes": 2923
+    },
+    {
+      "file": "GlassFlow_Audit_and_Next_Work_RU.txt",
+      "sha256": "7eed9ab9725985ed847bb9a313ab0886d4db1278c825716711e811bfab2f3e63",
+      "bytes": 24169
+    },
+    {
+      "file": "http-input-probes.json",
+      "sha256": "299218095deb0d581f583bdc748381fba89fdeee2978a03e9806ed9bbdefcb37",
+      "bytes": 30589
+    },
+    {
+      "file": "http-numeric-boundary-probes.json",
+      "sha256": "a13e8e50a538cc0588ab6f8358eee1641fc0ff886341bab2632867720fc55ef2",
+      "bytes": 44701
+    },
+    {
+      "file": "local-wording-probes.json",
+      "sha256": "0edd8c49bef0ec6485635f2cf8e186614790a8fcb803c352800aa2676b0f49a0",
+      "bytes": 5087
+    },
+    {
+      "file": "numeric-boundary-probes.json",
+      "sha256": "62e919d14a9c69175fe3b63ef52fabf6ac68bef0b55fed9cbc142a164de3b878",
+      "bytes": 2268
+    },
+    {
+      "file": "review_c6b4b02.py",
+      "sha256": "3c313776c2709745c4f722928e3d9bf304cf437b5463c06503f62f2bc3641b32",
+      "bytes": 2285
+    },
+    {
+      "file": "review_numeric_c6b4b02.py",
+      "sha256": "7cdc7f886f90fb31bd42befb659687817039b8bf2a81e15b6e30594dff664862",
+      "bytes": 2308
+    }
+  ]
+}

@@ -32,7 +32,7 @@ from .local import MAX_SENTENCES, LocalEngine, LocalOutcome, TurnContext
 from .prompts import PROMPT_VERSION
 from .tools import ASSISTANT_TOOLSET, ToolContext
 
-ENGINE_VERSION = "dialog-engine-v1"
+ENGINE_VERSION = "dialog-engine-v2-exact-numeric-inputs"
 
 
 class AnswerCache:
@@ -168,6 +168,8 @@ class AssistantEngine:
                 model_attempts=llm.model_attempts if llm else [],
             )
 
+        if local.missing_parameters and any(p in local.missing_parameters for p in ("quantity", "dimensions_invalid")):
+            return deterministic()
         if not ai_ready and strategy == "ai_first":
             return deterministic("fallback", "not_applicable", mode_value="local_limited")
         if not ai_ready or (strategy != "ai_first" and not self._needs_ai(local)):
@@ -220,6 +222,14 @@ class AssistantEngine:
             llm.status = "verifier_rejected"
             return deterministic("fallback", "unsupported_replaced", llm,
                                  why="AI подменил неизвестный артикул или марку каталожным товаром; требуется уточнение.")
+        if local.pricing is not None and ctx.last_quote is not None:
+            expected = local.pricing.confirmed_parameters
+            actual = ctx.last_quote.confirmed_parameters
+            bound_fields = ("catalog_product_id", "length_mm", "width_mm", "quantity", "price_basis")
+            if any(str(expected[k]) != str(actual.get(k)) for k in bound_fields if k in expected):
+                llm.status = "verifier_rejected"
+                return deterministic("fallback", "unsupported_replaced", llm,
+                                     why="Параметры расчета AI отличаются от подтвержденных параметров запроса; показан проверенный локальный расчет.")
         manager_priced = (local.intent == "mirror_model" or
                           (local.missing_parameters and set(local.missing_parameters) <= {"per_m2_price", "processing_price"}))
         if local.needs_manager and manager_priced and llm.clarification:

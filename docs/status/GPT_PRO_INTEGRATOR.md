@@ -161,3 +161,28 @@ CI fb1f69c **Linux+Windows PASS**, полный Python672 PASS/4 SKIP, native bu
 Рабочая версия проверена; liveAI/полная конкурсная приёмка не приняты. Внешние условия и8локальныхP2
 перечислены в FINAL_STATUS. После завершения публикации следующий этап — эти внешние проверки,
 реальные человеческие пары/Windows11/hosting и согласование финальных конкурсных материалов.
+
+
+## Исправления независимого аудита c6b4b02
+
+Отдельный worktree/ветка codex/audit-c6b4b02-fixes от сохранённого c6b4b02.
+Три подтверждённых дефекта воспроизведены до правок; доказательства сохранены в
+tests/audit/evidence/baseline-c6b4b02. F01: независимые единицы каждой оси и именные
+стороны. F02: точный полный signed/fractional token, invalid context, снятие старого
+черновика; model tools привязаны к подтверждённому товару/единице/геометрии/количеству.
+F03: единый Decimal microsecond interval, отсутствие округления вверх, legacy-invalid
+attestation409 с явным human reopen и сохранением истории вместо export500.
+
+Добавлены типизированные кнопки уточнений с KB/turn-version guards; мастер экономики
+на проверенных сопоставимых C2 результатах и версии labor study; read-only проверка
+реального ZIP относительно принятого паспорта; отдельная генерация examples без economics.
+Формулы экономики и строгие human guards не ослаблены. Исправлены сопутствующие UI
+product_id/canonical form и восстановление superseded quote после invalid followup.
+
+Source checks: новые4 real browser PASS; прежние10+2+4 real PASS в отдельных SQLite;
+25 Vitest/59 fixture отдельно PASS; Ruff/foundation14inputs/contracts/typecheck/build/bundle
+PASS. Полный Python выполняется; EXE/сопоставимая серия/актуальные PDF ещё не приняты
+на этом checkpoint. Результаты будут зафиксированы до main push.
+Подготовлен docs/release/TEAMMATE_ACCEPTANCE_RU.md для ноутбуков сокомандников.
+User finals/case/spec сохранены; human10pairs/liveAI/cleanWindows11/HTTPS/closed submission
+по-прежнему требуют фактической внешней приёмки. Paid mode не включён.

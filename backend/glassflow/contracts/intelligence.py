@@ -232,6 +232,7 @@ class AssistantTurn(DatasetRequest):
     inventory_mode: Literal["none", "free_whole_remnants", "replan"] = "free_whole_remnants"
     allow_ai: bool = True
     execution_mode: Literal["hybrid", "model_first"] = "hybrid"
+    expected_conversation_version: int | None = Field(default=None, ge=0)
 
     @model_validator(mode="after")
     def consistent_execution_mode(self):
@@ -277,10 +278,25 @@ class WorkingCard(DTO):
     needs_manager: bool = False
 
 
+class ClarificationOption(DTO):
+    choice_id: str
+    label: str
+    kind: Literal["product", "unit", "sides", "price_basis"]
+    reply_text: str
+
+
+class AssistantChoice(DatasetRequest):
+    conversation_id: str
+    kb_version: str
+    turn_index: int = Field(ge=0)
+    choice_id: str
+
+
 class AssistantReply(DTO):
     conversation_id: str
     answer: str
     clarification: str | None = None
+    clarification_options: list[ClarificationOption] = Field(default_factory=list)
     quote: Quote | None = None
     evidence: list[Evidence]
     mode: Literal["online", "local_limited"]

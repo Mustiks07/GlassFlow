@@ -13,6 +13,7 @@ import { JobPanel } from '../shell/JobPanel';
 import { RequireDataset } from '../shell/RequireDataset';
 import { TERMINAL, useJob } from '../shell/useJob';
 import { PassportPanel } from './PassportPanel';
+import { ReleaseCheckPanel } from './ReleaseCheckPanel';
 import { ResumePanel } from './ResumePanel';
 import { errorAction, humanText, stageLabel } from '../../ui/human';
 
@@ -193,6 +194,7 @@ function Runs({ dataset }: { dataset: Dataset }) {
         {run.data && <RunStatus run={run.data} />}
         {run.data?.budget && <p className="small">Осталось на весь прогон: {typeof run.data.budget.remaining_seconds === 'number' ? `${Math.ceil(run.data.budget.remaining_seconds)} с` : 'уточняется'}. Резерв на проверку и экспорт: {String(run.data.budget.export_reserve_seconds ?? 'уточняется')} с.</p>}
         {runId && <PassportPanel datasetId={dataset.dataset_id} runId={runId} />}
+        {runId && <ReleaseCheckPanel runId={runId} />}
         {runId && run.data && <ResumePanel run={run.data} runId={runId} />}
       </Panel>
 

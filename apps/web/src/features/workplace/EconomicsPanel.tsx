@@ -6,6 +6,7 @@ import type { Dataset } from '../../api/types';
 import { Button, ErrorState, Panel } from '../../ui/kit';
 import { formatMoney } from '../../lib/format';
 import { LaborPanel } from './LaborPanel';
+import { EconomicsWizard } from './EconomicsWizard';
 
 type Inputs = components['schemas']['EconomicInputs'];
 type Scenario = components['schemas']['EconomicsScenario'];
@@ -17,6 +18,11 @@ const FIELDS = [
 ] as const;
 
 export function EconomicsPanel({ dataset }: { dataset: Dataset }) {
+  const [legacy, setLegacy] = useState(false);
+  return <div className="stack">{legacy ? <LegacyEconomicsPanel dataset={dataset} /> : <EconomicsWizard dataset={dataset} />}<Button onClick={() => setLegacy(value => !value)}>{legacy ? 'Вернуться к мастеру экономики' : 'Импорт прежнего сценария для поддержки'}</Button></div>;
+}
+
+function LegacyEconomicsPanel({ dataset }: { dataset: Dataset }) {
   const { client } = useApi();
   const [inputs, setInputs] = useState<Inputs | null>(null);
   const [scenario, setScenario] = useState<Scenario | null>(null);

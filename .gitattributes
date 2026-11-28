@@ -6,3 +6,7 @@ inputs/** -text -whitespace
 docs/release/integration/**/*.csv -text -whitespace
 analysis/** -whitespace
 *.bat text eol=crlf
+
+tests/audit/evidence/** -text -whitespace
+docs/reviews/AUDIT_C6B4B02_2026-11-28.txt -text -whitespace
+docs/release/audit/**/*.csv -text -whitespace

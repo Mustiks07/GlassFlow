@@ -49,7 +49,7 @@ export function buildRequest(draft: QuoteDraft, datasetId: string, kbVersion: st
   const notes: string[] = [];
   if (!draft.catalogProductId) errors.catalogProductId = 'Выберите товар каталога';
   let dimensions: QuoteRequest['dimensions'] = null;
-  if (draft.length.trim() || draft.width.trim()) {
+  if (!['per_sheet', 'unit'].includes(draft.priceBasis ?? 'auto') && (draft.length.trim() || draft.width.trim())) {
     const length = parseLength(draft.length);
     const width = parseLength(draft.width);
     if (!length.ok) errors.length = length.reason;
@@ -78,6 +78,7 @@ export function buildRequest(draft: QuoteDraft, datasetId: string, kbVersion: st
       catalog_product_id: draft.catalogProductId,
       dimensions,
       quantity: Number(quantity),
+      price_basis: draft.priceBasis ?? 'auto',
       processing,
       kb_version: kbVersion,
       customer_id: draft.customerId.trim() || null,
@@ -92,6 +93,12 @@ function sameInputs(quote: Quote, request: QuoteRequest | null): boolean {
   if (!request) return false;
   if (quote.catalog_product_id !== undefined && quote.catalog_product_id !== request.catalog_product_id) return false;
   if (quote.quantity !== undefined && quote.quantity !== request.quantity) return false;
+  if (quote.processing && (quote.processing.kind !== request.processing?.kind
+    || (quote.processing.kind !== 'none' && (quote.processing.sides !== request.processing?.sides
+      || [...(quote.processing.selected_sides ?? [])].sort().join(',') !== [...(request.processing?.selected_sides ?? [])].sort().join(','))))) return false;
+  if ((quote.customer_id ?? null) !== (request.customer_id ?? null)) return false;
+  if (quote.kb_version && quote.kb_version !== request.kb_version) return false;
+  if (request.price_basis && request.price_basis !== 'auto' && quote.price_basis !== request.price_basis) return false;
   if (quote.dimensions !== undefined) {
     const a = quote.dimensions;
     const b = request.dimensions ?? null;
@@ -120,7 +127,6 @@ export function QuotePanel({
   const [reviseKey, setReviseKey] = useState(newIdempotencyKey);
   const [search, setSearch] = useState('');
   /** Request that produced the shown quote; any difference marks the quote stale. */
-  const [basis, setBasis] = useState<string | null>(null);
 
   const catalog = useQuery({
     queryKey: ['catalog', dataset.dataset_id, kbVersion],
@@ -142,7 +148,7 @@ export function QuotePanel({
 
   const form = useMemo(() => buildRequest(draft, dataset.dataset_id, kbVersion), [draft, dataset.dataset_id, kbVersion]);
   const stale =
-    Boolean(quote && ((basis !== null && basis !== JSON.stringify(form.request)) || !sameInputs(quote, form.request))) ||
+    Boolean(quote && !sameInputs(quote, form.request)) ||
     Boolean(quote?.stale);
   useEffect(() => onStaleChange(stale), [stale, onStaleChange]);
 
@@ -159,6 +165,7 @@ export function QuotePanel({
               catalog_product_id: request.catalog_product_id,
               dimensions: request.dimensions,
               quantity: request.quantity,
+              price_basis: request.price_basis,
               processing: request.processing,
               customer_id: request.customer_id,
               kb_version: request.kb_version,
@@ -169,8 +176,7 @@ export function QuotePanel({
       }
       return api.calculateQuote(request);
     },
-    onSuccess: (result, request) => {
-      setBasis(JSON.stringify(request));
+    onSuccess: (result) => {
       onQuote(result);
       setReviseKey(newIdempotencyKey());
       updateDraft(dataset.dataset_id, { quoteId: result.quote_id });
@@ -217,6 +223,7 @@ export function QuotePanel({
         </div>
         {catalog.isError && <ErrorState error={catalog.error} onRetry={() => catalog.refetch()} context="Каталог" />}
         {selected && <ProductPrices product={selected} />}
+        <Field label="Единица расчёта цены">{props => <select {...props} value={draft.priceBasis ?? 'auto'} onChange={e => update({ priceBasis: e.target.value as QuoteDraft['priceBasis'], ...(['per_sheet', 'unit'].includes(e.target.value) ? { length: '', width: '', processing: 'none' } : {}) })}><option value="auto">По параметрам заявки</option>{selected?.prices.some(p => p.price_type === 'per_m2') && <option value="per_m2">За квадратный метр</option>}{selected?.prices.some(p => p.price_type === 'per_sheet') && <option value="per_sheet">За целый лист</option>}{selected?.prices.some(p => p.price_type === 'retail_unit' || p.price_type === 'bulk_unit') && <option value="unit">За штуку</option>}</select>}</Field>
         <div className="form-grid four">
           <Field label="Длина" hint={hintFor(draft.length)} error={show('length') ?? serverField('length_mm')}>
             {props => <input {...props} value={draft.length} inputMode="decimal" placeholder="мм" onChange={event => update({ length: event.target.value })} />}

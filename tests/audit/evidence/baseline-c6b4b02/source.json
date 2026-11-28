@@ -1,0 +1,6 @@
+{
+  "audit_base": "c6b4b02cfac0eee0836b24ef947defc0864c4202",
+  "archive_sha256": "41a6bad7b9568422846813d7f3b1fa43252960c401db7352ae0eb6d894be2a8c",
+  "report_sha256": "7eed9ab9725985ed847bb9a313ab0886d4db1278c825716711e811bfab2f3e63",
+  "purpose": "Audit counterexamples, not contest results or real human labor"
+}

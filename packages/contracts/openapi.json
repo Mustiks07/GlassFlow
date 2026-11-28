@@ -1221,6 +1221,164 @@
         }
       }
     },
+    "/api/v1/labor-studies/{study_id}/measurements/{measurement_id}/reopen": {
+      "post": {
+        "tags": [
+          "platform",
+          "labor-and-workflow"
+        ],
+        "summary": "Reopen Measurement",
+        "operationId": "reopen_measurement_api_v1_labor_studies__study_id__measurements__measurement_id__reopen_post",
+        "parameters": [
+          {
+            "name": "study_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Study Id"
+            }
+          },
+          {
+            "name": "measurement_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Measurement Id"
+            }
+          },
+          {
+            "name": "idempotency-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeasurementReopen"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaborStudyView"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
     "/api/v1/labor-studies/{study_id}/measurements/{measurement_id}/{action}": {
       "post": {
         "tags": [
@@ -3529,6 +3687,138 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ExportResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{run_id}/release-check": {
+      "post": {
+        "tags": [
+          "platform"
+        ],
+        "summary": "Check Release",
+        "operationId": "check_release_api_v1_runs__run_id__release_check_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_check_release_api_v1_runs__run_id__release_check_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseCheck"
                 }
               }
             }
@@ -12731,6 +13021,127 @@
         }
       }
     },
+    "/api/v1/assistant/choices": {
+      "post": {
+        "tags": [
+          "intelligence"
+        ],
+        "summary": "Choose Clarification",
+        "operationId": "choose_clarification_api_v1_assistant_choices_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssistantChoice"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantReply"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/assistant/turns": {
       "post": {
         "tags": [
@@ -17474,6 +17885,130 @@
             "description": "Service Unavailable"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "economics"
+        ],
+        "summary": "List Scenarios",
+        "operationId": "list_scenarios_api_v1_economics_scenarios_get",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EconomicsScenario"
+                  },
+                  "title": "Response List Scenarios Api V1 Economics Scenarios Get"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
       }
     },
     "/api/v1/economics/scenarios/{scenario_id}": {
@@ -17666,6 +18201,267 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EconomicsScenario"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/economics/scenarios/sources": {
+      "get": {
+        "tags": [
+          "economics"
+        ],
+        "summary": "Selectable Sources",
+        "operationId": "selectable_sources_api_v1_economics_scenarios_sources_get",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EconomicSources"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/economics/scenarios/wizard": {
+      "post": {
+        "tags": [
+          "economics"
+        ],
+        "summary": "Create From Measurements",
+        "operationId": "create_from_measurements_api_v1_economics_scenarios_wizard_post",
+        "parameters": [
+          {
+            "name": "idempotency-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EconomicsWizardCreate"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -21752,6 +22548,43 @@
         ],
         "title": "ApiError"
       },
+      "AssistantChoice": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "conversation_id": {
+            "type": "string",
+            "title": "Conversation Id"
+          },
+          "kb_version": {
+            "type": "string",
+            "title": "Kb Version"
+          },
+          "turn_index": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Turn Index"
+          },
+          "choice_id": {
+            "type": "string",
+            "title": "Choice Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "conversation_id",
+          "kb_version",
+          "turn_index",
+          "choice_id"
+        ],
+        "title": "AssistantChoice"
+      },
       "AssistantReply": {
         "properties": {
           "conversation_id": {
@@ -21772,6 +22605,13 @@
               }
             ],
             "title": "Clarification"
+          },
+          "clarification_options": {
+            "items": {
+              "$ref": "#/components/schemas/ClarificationOption"
+            },
+            "type": "array",
+            "title": "Clarification Options"
           },
           "quote": {
             "anyOf": [
@@ -22034,6 +22874,18 @@
             ],
             "title": "Execution Mode",
             "default": "hybrid"
+          },
+          "expected_conversation_version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Conversation Version"
           }
         },
         "additionalProperties": false,
@@ -22939,6 +23791,20 @@
         ],
         "title": "BasketStockFacts"
       },
+      "Body_check_release_api_v1_runs__run_id__release_check_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_check_release_api_v1_runs__run_id__release_check_post"
+      },
       "Body_import_buyers_api_v1_buyers_import_post": {
         "properties": {
           "file": {
@@ -23688,6 +24554,41 @@
           "children"
         ],
         "title": "ChildRemnantsRequest"
+      },
+      "ClarificationOption": {
+        "properties": {
+          "choice_id": {
+            "type": "string",
+            "title": "Choice Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "product",
+              "unit",
+              "sides",
+              "price_basis"
+            ],
+            "title": "Kind"
+          },
+          "reply_text": {
+            "type": "string",
+            "title": "Reply Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "choice_id",
+          "label",
+          "kind",
+          "reply_text"
+        ],
+        "title": "ClarificationOption"
       },
       "CommitPlan": {
         "properties": {
@@ -25075,6 +25976,101 @@
         ],
         "title": "DraftResult"
       },
+      "EconomicAssumptions": {
+        "properties": {
+          "monthly_dataset_multiplier": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Monthly Dataset Multiplier"
+          },
+          "monthly_operations": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Monthly Operations"
+          },
+          "hourly_rate_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Hourly Rate Tg"
+          },
+          "hourly_rate_basis": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Hourly Rate Basis"
+          },
+          "monthly_volume_basis": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Monthly Volume Basis"
+          },
+          "ai_monthly_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Ai Monthly Tg"
+          },
+          "ai_cost_basis": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Ai Cost Basis"
+          },
+          "hosting_monthly_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Hosting Monthly Tg"
+          },
+          "support_monthly_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Support Monthly Tg"
+          },
+          "implementation_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Implementation Tg"
+          },
+          "implementation_basis": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Implementation Basis"
+          },
+          "material_use_fraction": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Material Use Fraction"
+          },
+          "material_use_basis": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Material Use Basis"
+          },
+          "sensitivity": {
+            "$ref": "#/components/schemas/EconomicSensitivity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "monthly_dataset_multiplier",
+          "monthly_operations",
+          "hourly_rate_tg",
+          "hourly_rate_basis",
+          "monthly_volume_basis",
+          "ai_monthly_tg",
+          "ai_cost_basis",
+          "hosting_monthly_tg",
+          "support_monthly_tg",
+          "implementation_tg",
+          "implementation_basis",
+          "material_use_fraction",
+          "material_use_basis"
+        ],
+        "title": "EconomicAssumptions"
+      },
       "EconomicInputs": {
         "properties": {
           "measurement_status": {
@@ -25454,6 +26450,104 @@
         "type": "object",
         "title": "EconomicSensitivity"
       },
+      "EconomicSource": {
+        "properties": {
+          "reference": {
+            "type": "string",
+            "title": "Reference"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "comparison_key": {
+            "type": "string",
+            "title": "Comparison Key"
+          },
+          "material_value_tg": {
+            "type": "string",
+            "title": "Material Value Tg"
+          },
+          "plan_id": {
+            "type": "string",
+            "title": "Plan Id"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Revision"
+          },
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "run_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Run Id"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reference",
+          "label",
+          "comparison_key",
+          "material_value_tg",
+          "plan_id",
+          "revision",
+          "dataset_id"
+        ],
+        "title": "EconomicSource"
+      },
+      "EconomicSources": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/EconomicSource"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "results"
+        ],
+        "title": "EconomicSources"
+      },
       "EconomicsCreate": {
         "properties": {
           "dataset_id": {
@@ -25583,6 +26677,54 @@
           "inputs"
         ],
         "title": "EconomicsUpdate"
+      },
+      "EconomicsWizardCreate": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "baseline_ref": {
+            "type": "string",
+            "title": "Baseline Ref"
+          },
+          "final_ref": {
+            "type": "string",
+            "title": "Final Ref"
+          },
+          "study_id": {
+            "type": "string",
+            "title": "Study Id"
+          },
+          "study_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Study Version"
+          },
+          "assumptions": {
+            "$ref": "#/components/schemas/EconomicAssumptions"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "name",
+          "baseline_ref",
+          "final_ref",
+          "study_id",
+          "study_version",
+          "assumptions"
+        ],
+        "title": "EconomicsWizardCreate"
       },
       "Evidence": {
         "properties": {
@@ -26853,6 +27995,11 @@
           "interruption_acknowledged": {
             "type": "boolean",
             "title": "Interruption Acknowledged",
+            "default": false
+          },
+          "requires_attestation_review": {
+            "type": "boolean",
+            "title": "Requires Attestation Review",
             "default": false
           },
           "events": {
@@ -28371,6 +29518,53 @@
           "result_ref"
         ],
         "title": "MeasurementFinish"
+      },
+      "MeasurementReopen": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "operator": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Operator"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Note"
+          },
+          "acknowledge_interruption": {
+            "type": "boolean",
+            "title": "Acknowledge Interruption",
+            "default": false
+          },
+          "human_confirmed": {
+            "type": "boolean",
+            "const": true,
+            "title": "Human Confirmed"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "expected_version",
+          "operator",
+          "note",
+          "human_confirmed"
+        ],
+        "title": "MeasurementReopen"
       },
       "MeasurementStart": {
         "properties": {
@@ -31198,6 +32392,69 @@
           "business_modules_ready"
         ],
         "title": "Readiness"
+      },
+      "ReleaseCheck": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "title": "Run Id"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReleaseCheckItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "files_coherent": {
+            "type": "boolean",
+            "title": "Files Coherent"
+          },
+          "contest_accepted": {
+            "type": "boolean",
+            "const": false,
+            "title": "Contest Accepted",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "items",
+          "files_coherent"
+        ],
+        "title": "ReleaseCheck"
+      },
+      "ReleaseCheckItem": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "missing",
+              "mismatch",
+              "needs_review"
+            ],
+            "title": "Status"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "status",
+          "message"
+        ],
+        "title": "ReleaseCheckItem"
       },
       "ReleaseRequest": {
         "properties": {

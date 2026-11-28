@@ -85,6 +85,8 @@ def assemble(export_dir, report_dir, readme, destination, team, windows_bundle=N
         for name in ("economics.pdf", "examples.pdf"):
             shutil.copy2(report_dir / name, staging / name)
         shutil.copy2(readme, staging / "README.md")
+        for name in ("report-build.json", "report-evidence.json"):
+            shutil.copy2(report_dir / name, staging / name)
         code = staging / "code"
         code.mkdir()
         tracked = subprocess.check_output(["git", "ls-files", "-z"], cwd=ROOT).decode("utf8").split("\0")
@@ -103,6 +105,13 @@ def assemble(export_dir, report_dir, readme, destination, team, windows_bundle=N
             target = code / name
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, target)
+        production = ROOT / "apps/web/dist"
+        if production.is_dir():
+            shutil.copytree(production, code / "apps/web/dist")
+        for name, expected in manifest.get("build_info", {}).get("files", {}).items():
+            current = code / name
+            if not current.is_file() or hashlib.sha256(current.read_bytes()).hexdigest() != expected:
+                raise ValueError(f"Code/assets differ from the actual run: {name}")
         if windows_bundle:
             shutil.copytree(windows_bundle, staging / "GlassFlow-Windows")
         problems = scan(staging)

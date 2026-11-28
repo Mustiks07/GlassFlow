@@ -9,6 +9,15 @@ from pydantic import Field, model_validator
 from .common import DTO, DatasetRequest, Identifier, MoneyString, NonnegativeInt
 
 
+def interval_seconds(start: str, end: str) -> Decimal:
+    first = datetime.fromisoformat(start.replace("Z", "+00:00"))
+    last = datetime.fromisoformat(end.replace("Z", "+00:00"))
+    if first.tzinfo is None or last.tzinfo is None:
+        raise ValueError("Measured intervals require timezone")
+    delta = last - first
+    return Decimal(delta.days * 86400 + delta.seconds) + Decimal(delta.microseconds) / 1_000_000
+
+
 class LaborStudy(DTO):
     task_id: Identifier
     protocol: str = Field(min_length=1, max_length=1000)
@@ -34,12 +43,10 @@ class LaborStudy(DTO):
     @model_validator(mode="after")
     def measured_intervals(self):
         for mode in ("manual", "app"):
-            start = datetime.fromisoformat(getattr(self, f"{mode}_started_at").replace("Z", "+00:00"))
-            end = datetime.fromisoformat(getattr(self, f"{mode}_finished_at").replace("Z", "+00:00"))
+            elapsed = interval_seconds(getattr(self, f"{mode}_started_at"), getattr(self, f"{mode}_finished_at"))
             active = Decimal(getattr(self, f"{mode}_active_seconds"))
             rework = Decimal(getattr(self, f"{mode}_rework_seconds"))
-            if (start.tzinfo is None or end.tzinfo is None or end <= start
-                    or not 0 < active <= Decimal(str((end - start).total_seconds()))
+            if (elapsed <= 0 or not 0 < active <= elapsed
                     or rework > active):
                 raise ValueError("Real paired intervals require timezone, positive active time within elapsed time, rework included")
         return self
@@ -154,3 +161,56 @@ class EconomicsScenario(EconomicsCreate):
     results: EconomicResult
     created_at: str
     competition_release_eligible: Literal[False] = False
+
+
+class EconomicAssumptions(DTO):
+    monthly_dataset_multiplier: MoneyString
+    monthly_operations: MoneyString
+    hourly_rate_tg: MoneyString
+    hourly_rate_basis: str = Field(min_length=1, max_length=1000)
+    monthly_volume_basis: str = Field(min_length=1, max_length=1000)
+    ai_monthly_tg: MoneyString
+    ai_cost_basis: str = Field(min_length=1, max_length=1000)
+    hosting_monthly_tg: MoneyString
+    support_monthly_tg: MoneyString
+    implementation_tg: MoneyString
+    implementation_basis: str = Field(min_length=1, max_length=1000)
+    material_use_fraction: MoneyString
+    material_use_basis: str = Field(min_length=1, max_length=1000)
+    sensitivity: EconomicSensitivity = Field(default_factory=EconomicSensitivity)
+
+    @model_validator(mode="after")
+    def bounds(self):
+        if not 0 <= Decimal(self.material_use_fraction) <= 1:
+            raise ValueError("Material use fraction must be between0 and1")
+        for field in ("monthly_operations", "monthly_dataset_multiplier", "hourly_rate_tg", "material_use_fraction"):
+            interval = getattr(self.sensitivity, field)
+            if interval and not Decimal(interval.low) <= Decimal(getattr(self, field)) <= Decimal(interval.high):
+                raise ValueError("Central assumptions must lie inside sensitivity bounds")
+        return self
+
+
+class EconomicsWizardCreate(DatasetRequest):
+    name: str = Field(min_length=1, max_length=200)
+    baseline_ref: str
+    final_ref: str
+    study_id: str
+    study_version: NonnegativeInt
+    assumptions: EconomicAssumptions
+
+
+class EconomicSource(DTO):
+    reference: str
+    label: str
+    comparison_key: str
+    material_value_tg: str
+    plan_id: str
+    revision: NonnegativeInt
+    dataset_id: str
+    run_id: str | None = None
+    created_at: str | None = None
+
+
+class EconomicSources(DatasetRequest):
+    results: list[EconomicSource]
+    warnings: list[str] = Field(default_factory=list)

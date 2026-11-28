@@ -27,6 +27,7 @@ def main():
         raise ValueError("Choose a new version; existing materials are preserved")
     stamp = json.loads((source / "_internal/glassflow/build-info.json").read_text(encoding="utf-8"))
     shutil.copytree(source, target)
+    shutil.copy2(ROOT / 'docs/release/TEAMMATE_ACCEPTANCE_RU.md', target / 'Проверка сокомандником.md')
     starter = target / "Учебные данные KSM.zip"
     files = [
         "1_ostatki/materials.csv",
@@ -57,6 +58,7 @@ def main():
         "Для своих данных используйте импорт. Учебный комплект — исходные данные организаторов.\n"
         "Не переносите один EXE отдельно: рядом нужна вся папка _internal.\n"
         "Резервные копии и завершение работы: Настройки → Система.\n"
+        "Проверка первым сотрудником и десять пар трудозамеров: файл «Проверка сокомандником.md».\n"
         "Данные пользователя хранятся отдельно от программы. GlassFlowDiagnostics.exe предназначен для поддержки.\n\n"
         "Это проверенная рабочая версия. Полная конкурсная приёмка, чистая Windows11 и человеческие замеры\n"
         "не объявлены завершёнными. Документация и точные ограничения: https://github.com/Mustiks07/GlassFlow\n",

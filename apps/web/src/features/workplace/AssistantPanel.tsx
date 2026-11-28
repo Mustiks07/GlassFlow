@@ -35,6 +35,7 @@ const PARAM_LABEL: Record<string, string> = {
   edge_sides: 'Стороны обработки',
   selected_sides: 'Выбранные стороны обработки',
   dimensions_unit: 'Единицы размеров: мм, см или м',
+  dimensions_invalid: 'Положительные длина и ширина с единицами',
   processing_price: 'Стоимость обработки — уточняет менеджер',
   per_m2_price: 'Цена квадратного метра — уточняет менеджер',
   product_id: 'Товар',
@@ -56,6 +57,7 @@ export function assistantParameterValue(key: string, value: unknown, productName
     all: 'По всем сторонам', selected: 'По выбранным сторонам', top: 'Верхняя', bottom: 'Нижняя',
     left: 'Левая', right: 'Правая', unknown: 'Неизвестно — требуется уточнение',
     true: 'Да', false: 'Нет', clear: 'Прозрачный', grey: 'Серый', bronze: 'Бронзовый', green: 'Зелёный',
+    auto: 'По указанным параметрам', per_m2: 'За квадратный метр', per_sheet: 'За целый лист', unit: 'За штуку',
   };
   if (value === 'none') return key === 'processing' ? 'Без обработки' : 'Не указано';
   if (choices[value]) return choices[value];
@@ -63,7 +65,7 @@ export function assistantParameterValue(key: string, value: unknown, productName
 }
 
 export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote: (quote: Quote | null) => void }) {
-  const { api } = useApi();
+  const { api, client } = useApi();
   const draft = useQuoteDraft(dataset.dataset_id);
   const updateDraft = useAppStore(state => state.updateQuoteDraft);
   const [turns, setTurns] = useState<Turn[]>([]);
@@ -99,23 +101,40 @@ export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote
       }),
     onSuccess: (reply, text) => {
       setTurns(current => [...current, { role: 'user', text }, { role: 'assistant', text: reply.answer, reply }]);
-      updateDraft(dataset.dataset_id, { conversationId: reply.conversation_id, request: '' });
-      if (reply.quote) onQuote(reply.quote);
+      updateDraft(dataset.dataset_id, { conversationId: reply.conversation_id, request: '', quoteId: reply.quote?.quote_id ?? null });
+      if (reply.quote) { onQuote(reply.quote); applyParameters(reply); }
       else if (reply.status && ['clarification', 'manager_handoff'].includes(reply.status)) onQuote(null);
     },
   });
 
   const lastReply = [...turns].reverse().find(turn => turn.reply)?.reply;
+  const choose = useMutation({
+    mutationFn: (option: NonNullable<AssistantReply['clarification_options']>[number]) => client.post<AssistantReply>('/assistant/choices', {
+      dataset_id: dataset.dataset_id, kb_version: kbVersion, conversation_id: lastReply!.conversation_id,
+      turn_index: lastReply!.turn_index, choice_id: option.choice_id,
+    }),
+    onSuccess: (reply, option) => {
+      setTurns(current => [...current, { role: 'user', text: option.label }, { role: 'assistant', text: reply.answer, reply }]);
+      updateDraft(dataset.dataset_id, { conversationId: reply.conversation_id, request: '', quoteId: reply.quote?.quote_id ?? null });
+      onQuote(reply.quote ?? null);
+      if (reply.quote) applyParameters(reply);
+    },
+  });
   const offline = lastReply?.mode === 'local_limited' || Boolean(lastReply?.ai_unavailable_reason) || (send.error && ['unavailable', 'offline', 'timeout', 'rate_limited'].includes(asApiError(send.error).kind));
 
   const applyParameters = (reply: AssistantReply) => {
     const params = reply.card?.confirmed_parameters ?? reply.quote?.confirmed_parameters ?? {};
     updateDraft(dataset.dataset_id, {
-      catalogProductId: params.catalog_product_id ?? draft.catalogProductId,
-      length: params.length_mm ?? draft.length,
-      width: params.width_mm ?? draft.width,
-      quantity: params.quantity ?? draft.quantity,
-      processing: (params.processing as typeof draft.processing) ?? draft.processing,
+      catalogProductId: reply.quote?.catalog_product_id ?? params.catalog_product_id ?? params.product_id ?? draft.catalogProductId,
+      length: reply.quote?.dimensions ? String(reply.quote.dimensions.length_mm) : params.length_mm ?? draft.length,
+      width: reply.quote?.dimensions ? String(reply.quote.dimensions.width_mm) : params.width_mm ?? draft.width,
+      quantity: reply.quote?.quantity !== undefined ? String(reply.quote.quantity) : params.quantity ?? draft.quantity,
+      processing: reply.quote?.processing?.kind ?? (params.processing as typeof draft.processing) ?? draft.processing,
+      priceBasis: ['per_m2', 'per_sheet', 'unit'].includes(reply.quote?.price_basis ?? '') ? reply.quote!.price_basis as NonNullable<typeof draft.priceBasis> : 'auto',
+      ...(reply.quote?.dimensions === null ? { length: '', width: '' } : {}),
+      ...(reply.quote ? { quoteId: reply.quote.quote_id } : {}),
+      sides: reply.quote?.processing?.sides ?? draft.sides,
+      selectedSides: reply.quote?.processing?.selected_sides ?? draft.selectedSides,
     });
   };
 
@@ -154,6 +173,7 @@ export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote
       )}
       {offline && <OfflineAiNotice detail={send.error ? asApiError(send.error).message : lastReply?.ai_unavailable_reason ?? 'ответ сформирован локальными правилами'} />}
       {!kbVersion && <StatusBadge tone="warn">Версия базы знаний не определена для этого набора — расчет недоступен</StatusBadge>}
+      {Boolean(lastReply?.clarification_options?.length) && <div className="stack"><p>Выберите уточнение. Предложение и резерв подтверждаются отдельно.</p><div className="row wrap">{lastReply!.clarification_options!.map(option => <Button key={option.choice_id} busy={choose.isPending} disabled={send.isPending} onClick={() => choose.mutate(option)}>{option.label}</Button>)}</div>{choose.error && <ErrorState error={choose.error} context="Уточнение запроса" />}</div>}
       <form
         className="stack"
         onSubmit={event => {

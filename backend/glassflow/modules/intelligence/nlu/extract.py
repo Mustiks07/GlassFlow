@@ -19,21 +19,21 @@ _UNIT_WORDS = [
     ("m", r"м|метр\w*"),
 ]
 _UNIT = r"(?:мм|миллиметр\w*|см|сантиметр\w*|м(?![²2а-я])|метр\w*)"
-_NUMBER = r"\d+(?:[.,]\d+)?"
-_GROUPED = r"\d{1,3}(?: \d{3})+"
-_SEP = r"\s*(?:x|на)\s*"
-_PAIR_GROUPED = re.compile(rf"(?<![\d.,])({_GROUPED})\s*({_UNIT})?{_SEP}({_GROUPED})\s*({_UNIT})?(?!\d|[.,]\d|\s*x\s*\d)")
-_PAIR = re.compile(rf"(?<![\d.,x])({_NUMBER})\s*({_UNIT})?{_SEP}({_NUMBER})\s*({_UNIT})?(?!\d|[.,]\d|\s*x\s*\d)")
+_NUMBER = r"[+\-−]?(?:\d{1,3}(?: \d{3})+|\d+)(?:[.,]\d+)?"
+_SEP = r"\s*(?:[x×х*]|на)\s*"
+_PAIR = re.compile(rf"(?<![\d.,x+\-−])({_NUMBER})\s*({_UNIT})?{_SEP}({_NUMBER})\s*({_UNIT})?(?!\d|[.,]\d|\s*x\s*\d)")
 _TRIPLE = re.compile(r"\d+(?:[.,]\d+)?\s*x\s*\d+(?:[.,]\d+)?\s*x\s*\d+(?:[.,]\d+)?")
 
 WORD_NUMBERS = {
+    "ноль": 0, "нуль": 0, "полтора": Decimal("1.5"), "полторы": Decimal("1.5"),
     "один": 1, "одна": 1, "одну": 1, "одно": 1, "два": 2, "две": 2, "три": 3, "четыре": 4, "пять": 5,
     "шесть": 6, "семь": 7, "восемь": 8, "девять": 9, "десять": 10, "двадцать": 20, "сто": 100,
 }
-_COUNT_NOUN = r"(?:шт\b\.?|штук\w*|штуч\w*|детал\w*|лист(?:а|ов)?\b|изделий|изделия|зеркал(?:а|о)?\b|стекол|полок)"
-_QUANTITY = re.compile(rf"(?<!от )(?<!от\s)\b(\d+)\s*{_COUNT_NOUN}")
-_QUANTITY_WORD = re.compile(rf"\b({'|'.join(WORD_NUMBERS)})\s+{_COUNT_NOUN}")
-_QUANTITY_EXPLICIT = re.compile(r"(?:в количестве|количеств\w*|кол-?во)\s*[:=]?\s*(\d+)")
+_COUNT_NOUN = r"(?:шт\b\.?|штук\w*|штуч\w*|детал\w*|лист(?:а|ов)?\b|изделий|изделия|зеркал(?:а|о)?\b|стек(?:ол|ла|ло)|полок)"
+_COUNT_NUMBER = r"[+\-−]?(?:\d{1,3}(?: \d{3})+|\d+)[\d.,/e+\-−]*"
+_QUANTITY = re.compile(rf"(?<![\w.,/+\-−])({_COUNT_NUMBER})\s*{_COUNT_NOUN}")
+_QUANTITY_WORD = re.compile(rf"\b((?:минус\s+)?(?:{'|'.join(WORD_NUMBERS)}))\s+{_COUNT_NOUN}")
+_QUANTITY_EXPLICIT = re.compile(rf"(?:в количестве|количеств\w*|кол-?во)\s*[:=]?\s*({_COUNT_NUMBER}|(?:минус\s+)?(?:{'|'.join(WORD_NUMBERS)}))(?![\w])")
 _THRESHOLD = re.compile(r"\bот\s+(\d+)\s*(?:шт|штук)|\bопт(?:ом|ов\w*)?\b|оптов")
 _THICKNESS = re.compile(r"(?<![\dx.,])(\d{1,2})\s*-?\s*(?:мм|миллиметр\w*)\b")
 
@@ -59,6 +59,7 @@ class Extraction:
     invalid_dimensions: list[str] = field(default_factory=list)
     quantity: int | None = None
     quantity_source: str | None = None
+    invalid_quantity: str | None = None
     tier_inquiry: bool = False
     thickness_mm: set[int] = field(default_factory=set)
     processing: str = "none"
@@ -73,7 +74,7 @@ class Extraction:
 
 def _to_mm(raw: str, unit: str) -> Decimal | None:
     try:
-        value = Decimal(raw.replace(" ", "").replace(",", "."))
+        value = Decimal(raw.replace(" ", "").replace(",", ".").replace("−", "-"))
     except InvalidOperation:
         return None
     return value * UNIT_FACTORS[unit]
@@ -103,29 +104,48 @@ def extract_dimensions(text: str, exclude: set[str] | None = None) -> tuple[list
     ambiguous: list[str] = []
     invalid: list[str] = []
     spans: list[tuple[int, int]] = []
-    for pattern in (_PAIR_GROUPED, _PAIR):
+    for pattern in (_PAIR,):
         for match in pattern.finditer(value):
             start, end = match.span()
             if any(s <= start < e for s, e in triples) or any(s <= start < e or s < end <= e for s, e in spans):
                 continue
             first, unit1, second, unit2 = match.groups()
+            if re.search(r"\bминус\s*$", value[:start]):
+                invalid.append("минус " + match.group(0).strip())
+                spans.append((start, end))
+                continue
             key = f"{first.replace(' ', '')}x{second.replace(' ', '')}"
             if key in exclude:
                 spans.append((start, end))
                 continue
-            unit = _unit_code(unit2) or _unit_code(unit1)
-            explicit = unit is not None
-            unit = unit or "mm"
+            u1, u2 = _unit_code(unit1), _unit_code(unit2)
+            explicit = u1 is not None or u2 is not None
+            first_unit, second_unit = u1 or u2 or "mm", u2 or u1 or "mm"
+            unit = first_unit if first_unit == second_unit else "mixed"
             if not explicit and ("," in first + second or "." in first + second):
                 ambiguous.append(match.group(0).strip())
                 spans.append((start, end))
                 continue
-            a, b = _to_mm(first, unit), _to_mm(second, unit)
+            a, b = _to_mm(first, first_unit), _to_mm(second, second_unit)
             spans.append((start, end))
             if a is None or b is None or a <= 0 or b <= 0 or a != a.to_integral() or b != b.to_integral():
                 invalid.append(match.group(0).strip())
                 continue
             found.append(DimensionsProposal(int(a), int(b), match.group(0).strip(), unit, explicit))
+    # Explicitly named axes may appear in either order. Each unit belongs to its axis.
+    named = list(re.finditer(rf"\b(длина|длиной|ширина|шириной)\s*[:=]?\s*({_NUMBER})\s*({_UNIT})?", value))
+    axes = {"length" if m.group(1).startswith("длин") else "width": m for m in named}
+    if len(named) == 2 and len(axes) == 2 and not found:
+        length, width = axes["length"], axes["width"]
+        raw = value[min(m.start() for m in named):max(m.end() for m in named)].strip()
+        u1, u2 = _unit_code(length.group(3)), _unit_code(width.group(3))
+        a, b = _to_mm(length.group(2), u1 or u2 or "mm"), _to_mm(width.group(2), u2 or u1 or "mm")
+        if not (u1 or u2) and any(c in length.group(2) + width.group(2) for c in ",."):
+            ambiguous.append(raw)
+        elif a is None or b is None or a <= 0 or b <= 0 or a != a.to_integral() or b != b.to_integral():
+            invalid.append(raw)
+        else:
+            found.append(DimensionsProposal(int(a), int(b), raw, u1 or u2 or "mm", bool(u1 or u2)))
     found.sort(key=lambda d: value.find(d.source_text))
     return found, ambiguous, invalid
 
@@ -170,16 +190,34 @@ def extract(text: str, *, format_exclusions: set[str] | None = None) -> Extracti
     result.tier_inquiry = bool(threshold)
     explicit = _QUANTITY_EXPLICIT.search(value)
     numeric = [m for m in _QUANTITY.finditer(value) if not value[max(0, m.start() - 3) : m.start()].endswith("от ")]
+    count = None
+    raw_count = None
     if explicit:
-        result.quantity, result.quantity_source = int(explicit.group(1)), explicit.group(0)
+        raw_count, result.quantity_source = explicit.group(1), explicit.group(0)
     elif numeric:
-        result.quantity, result.quantity_source = int(numeric[0].group(1)), numeric[0].group(0)
+        raw_count, result.quantity_source = numeric[0].group(1), numeric[0].group(0)
+        if re.search(r"\bминус\s*$", value[:numeric[0].start()]):
+            raw_count = "-" + raw_count
+            result.quantity_source = "минус " + result.quantity_source
     else:
         word = _QUANTITY_WORD.search(value)
         if word:
-            result.quantity, result.quantity_source = WORD_NUMBERS[word.group(1)], word.group(0)
-    if result.quantity is not None and result.quantity <= 0:
-        result.quantity = None
+            raw_count, result.quantity_source = word.group(1), word.group(0)
+    if raw_count is not None:
+        try:
+            token = raw_count.removeprefix("минус ")
+            count = Decimal(WORD_NUMBERS[token]) if token in WORD_NUMBERS else Decimal(token.replace(" ", "").replace(",", ".").replace("−", "-"))
+            if raw_count.startswith("минус "):
+                count = -count
+            if "/" in token or "e" in token:
+                count = Decimal(0)
+        except InvalidOperation:
+            count = Decimal(0)
+    if count is not None:
+        if count <= 0 or count != count.to_integral():
+            result.invalid_quantity = result.quantity_source
+        else:
+            result.quantity = int(count)
 
     result.thickness_mm = {int(t) for t in _THICKNESS.findall(re.sub(r"\d+(?:x\d+)+", " ", value))}
 
@@ -202,9 +240,11 @@ def extract(text: str, *, format_exclusions: set[str] | None = None) -> Extracti
 
     if re.search(
         r"целого листа|целый лист|за лист\b|листом|цена листа|стоимость листа|лист цел|стоит лист|почем лист|"
-        r"\bлист(?:а)? (?:стекла|зеркала)|\bлистами\b",
+        r"\bлист(?:а)? (?:стекла|зеркала)|\bлистами\b|\b(?:\d+|один|два|три|четыре|пять)\s+лист(?:а|ов)?\b",
         value,
     ):
+        result.price_basis = "per_sheet"
+    if result.quantity_source and re.search(r"\bлист(?:а|ов)?\b", result.quantity_source):
         result.price_basis = "per_sheet"
     elif re.search(r"за (?:квадратн\w* метр|кв\.? ?м|м2|м²|квадрат)|по цене за м|за 1 м|за метр квадратн", value):
         result.price_basis = "per_m2"

@@ -341,18 +341,23 @@ def build_examples(evidence, destination, font, *, preview=False):
     return {"run_id": manifest["run_id"], "pages": len(PdfReader(destination).pages)}
 
 
-def build_reports(evidence_path: Path, output_dir: Path, font: Path, *, preview=False):
+def build_reports(evidence_path: Path, output_dir: Path, font: Path, *, preview=False, only="all"):
+    if only not in {"all", "examples", "economics"}:
+        raise ValueError("Unknown report selection")
     evidence = json.loads(evidence_path.read_text(encoding="utf8"))
     output_dir.mkdir(parents=True, exist_ok=True)
     result = {
-        "economics": build_economics(evidence, output_dir / "economics.pdf", font, preview=preview),
-        "examples": build_examples(evidence, output_dir / "examples.pdf", font, preview=preview),
         "status": "synthetic_layout_preview" if preview else "requires_visual_review",
         "visual_review": "not_run",
         "evidence_sha256": hashlib.sha256(evidence_path.read_bytes()).hexdigest(),
     }
+    if only in {"all", "economics"}:
+        result["economics"] = build_economics(evidence, output_dir / "economics.pdf", font, preview=preview)
+    if only in {"all", "examples"}:
+        result["examples"] = build_examples(evidence, output_dir / "examples.pdf", font, preview=preview)
     result["files"] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in output_dir.glob("*.pdf")}
     (output_dir / "report-build.json").write_text(
         json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
     )
+    (output_dir / "report-evidence.json").write_bytes(evidence_path.read_bytes())
     return result

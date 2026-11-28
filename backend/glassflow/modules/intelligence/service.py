@@ -720,6 +720,8 @@ class IntelligenceService:
                 row = session.get(ConversationRow, conversation_id)
                 if row is None or row.dataset_id != turn.dataset_id:
                     raise IntelligenceError(404, "CONVERSATION_NOT_FOUND", "Диалог не найден в этом наборе данных.")
+                if turn.expected_conversation_version is not None and row.version != turn.expected_conversation_version:
+                    raise IntelligenceError(409, "CLARIFICATION_STALE", "Диалог изменился. Обновите последнее уточнение.")
                 stored = json.loads(row.context_json)
                 if turn.customer_id and row.customer_id and turn.customer_id != row.customer_id:
                     notes.append("Клиент изменен: прежние параметры и цена не переносятся.")
@@ -829,8 +831,12 @@ class IntelligenceService:
             selected_model_id=self.runtime.profile.primary.model_id if self.runtime and self.runtime.profile.primary else None,
             verifier_reject_count=int(bool(result.llm and result.llm.status == "verifier_rejected")),
         )
+        from .clarifications import options
+        reply.clarification_options = options(catalog.kb, local, turn.text, conversation_id, turn_index)
         with self.session_factory.begin() as session:
             row = session.get(ConversationRow, conversation_id)
+            if row is not None and row.version != turn_index:
+                raise IntelligenceError(409, "CONVERSATION_CHANGED", "Диалог изменился во время ответа. Обновите историю.")
             context_payload = json.dumps(
                 {"context": new_context.to_dict(), "quote_id": quote_id, "quote_revision": quote_revision}, ensure_ascii=False
             )
@@ -866,6 +872,25 @@ class IntelligenceService:
                 )).all():
                     old.status = "superseded"
         return reply
+
+    async def choose_clarification(self, body):
+        self._current(body.dataset_id, body.kb_version)
+        with self.session_factory() as session:
+            row = session.get(ConversationRow, body.conversation_id)
+            if row is None or row.dataset_id != body.dataset_id:
+                raise IntelligenceError(404, "CONVERSATION_NOT_FOUND", "Диалог не найден в выбранном наборе.")
+            if row.version != body.turn_index + 1:
+                raise IntelligenceError(409, "CLARIFICATION_STALE", "Это уточнение устарело. Откройте последний ответ.")
+            previous = session.scalar(select(TurnRow).where(TurnRow.conversation_id == body.conversation_id,
+                                                           TurnRow.turn_index == body.turn_index))
+            reply = json.loads(previous.reply_json)
+            choice = next((c for c in reply.get("clarification_options", []) if c["choice_id"] == body.choice_id), None)
+            if choice is None:
+                raise IntelligenceError(409, "CLARIFICATION_OPTION_INVALID", "Вариант отсутствует в последнем проверенном уточнении.")
+            customer = row.customer_id
+        return await self.assistant_turn(AssistantTurn(dataset_id=body.dataset_id, kb_version=body.kb_version,
+            conversation_id=body.conversation_id, customer_id=customer, text=choice["reply_text"],
+            allow_ai=False, inventory_mode="free_whole_remnants", expected_conversation_version=body.turn_index + 1))
 
     def get_conversation(self, conversation_id: str, dataset_id: str) -> Conversation:
         with self.session_factory() as session:
