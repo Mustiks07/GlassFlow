@@ -83,7 +83,7 @@ describe('fixture transport (explicit test mode)', () => {
     fireEvent.change(screen.getByLabelText('Длина'), { target: { value: '500' } });
     fireEvent.change(screen.getByLabelText('Ширина'), { target: { value: '500' } });
     fireEvent.click(screen.getByRole('button', { name: 'Рассчитать' }));
-    expect(await screen.findByText(/это не «нет в наличии» и не NEW/)).toBeInTheDocument();
+    expect(await screen.findByText('Соответствие складу не подтверждено. Наличие материала нужно уточнить')).toBeInTheDocument();
     expect(screen.getByText('Нет соответствия каталога складу')).toBeInTheDocument();
     expect(nb(document.querySelector('.quote-total strong')!.textContent)).toBe('не определен');
   });
