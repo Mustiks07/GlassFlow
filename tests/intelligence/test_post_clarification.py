@@ -32,3 +32,11 @@ def test_only_unknown_edge_choice_is_asked_and_answer_is_not_invented(engine):
     assert result.context.length_mm == 450 and result.context.quantity == 2
     assert result.context.edge_sides == "selected" and not result.context.selected_sides
     assert result.status == "clarification"
+
+
+def test_ambiguous_decimal_unit_is_not_hidden_by_edge_only_intent(engine):
+    result = engine.respond("Стекло 6 мм прозрачное 0,45×0,37, кромка по всем сторонам")
+    assert result.status == "clarification"
+    assert result.missing_parameters == ["dimensions_unit"]
+    assert result.context.length_mm is None
+    assert result.pricing is None

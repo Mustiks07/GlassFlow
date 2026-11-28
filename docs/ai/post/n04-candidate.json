@@ -1,0 +1,124 @@
+{
+  "label": "author_regression_comparison_not_independent_acceptance",
+  "baseline": false,
+  "baseline_commit": "5648852d64189ffd7269c277002f6fbc40c8039a",
+  "cases": [
+    {
+      "id": "complete_mm",
+      "question": "Стекло 6 мм прозрачное 450×370 мм, 1 шт., евро-кромка по всем сторонам",
+      "status": "answered",
+      "correct_status": true,
+      "correct_total": true,
+      "clarification": null,
+      "missing_parameters": [],
+      "unnecessary_parameter_request": false,
+      "answer": "Стекло 6 мм прозрачное, 450×370 мм: 0,1665 м² × 8 000 ₸ = 1 332 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ = 656 ₸. Итого предварительно 1 988 ₸; окончательную стоимость подтверждает менеджер."
+    },
+    {
+      "id": "complete_cm",
+      "question": "Стекло 6 мм прозрачное 45×37 см, 1 шт., евро-кромка по всем сторонам",
+      "status": "answered",
+      "correct_status": true,
+      "correct_total": true,
+      "clarification": null,
+      "missing_parameters": [],
+      "unnecessary_parameter_request": false,
+      "answer": "Стекло 6 мм прозрачное, 450×370 мм: 0,1665 м² × 8 000 ₸ = 1 332 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ = 656 ₸. Итого предварительно 1 988 ₸; окончательную стоимость подтверждает менеджер."
+    },
+    {
+      "id": "complete_m",
+      "question": "Стекло 6 мм прозрачное 0,45×0,37 м, 1 шт., евро-кромка по всем сторонам",
+      "status": "answered",
+      "correct_status": true,
+      "correct_total": true,
+      "clarification": null,
+      "missing_parameters": [],
+      "unnecessary_parameter_request": false,
+      "answer": "Стекло 6 мм прозрачное, 450×370 мм: 0,1665 м² × 8 000 ₸ = 1 332 ₸. Евро-кромка по всем 4 сторонам: 1,64 м × 400 ₸ = 656 ₸. Итого предварительно 1 988 ₸; окончательную стоимость подтверждает менеджер."
+    },
+    {
+      "id": "edge_choice",
+      "question": "Стекло 6 мм прозрачное 450×370 мм, 2 шт., кромка по выбранным сторонам",
+      "status": "clarification",
+      "correct_status": true,
+      "correct_total": null,
+      "clarification": "Если кромка нужна по всем 4 сторонам — 1 312 ₸, итого 3 976 ₸; уточните, по каким сторонам обрабатывать.",
+      "missing_parameters": [
+        "edge_sides"
+      ],
+      "unnecessary_parameter_request": false,
+      "answer": "Стекло 6 мм прозрачное, 450×370 мм, 2 шт: 0,1665 м² × 8 000 ₸ × 2 = 2 664 ₸. Если кромка нужна по всем 4 сторонам — 1 312 ₸, итого 3 976 ₸; уточните, по каким сторонам обрабатывать."
+    },
+    {
+      "id": "sensor_choice",
+      "question": "Нужен сенсорный переключатель для зеркала, сколько за 3 шт?",
+      "status": "clarification",
+      "correct_status": true,
+      "correct_total": null,
+      "clarification": "Уточните, пожалуйста, модель или размер.",
+      "missing_parameters": [
+        "модель или размер"
+      ],
+      "unnecessary_parameter_request": false,
+      "answer": "В каталоге несколько вариантов: Сенсорный переключатель двойной YZKJ-F2FTC — 2 000 ₸ в розницу, 1 800 ₸ от 100 шт; Сенсорный переключатель двойной + часы YZKJ-B3-13LTC — 5 500 ₸ в розницу, 4 800 ₸ от 100 шт; Сенсорный переключатель с источником питания YZKJ-Y1-36TC — 4 500 ₸ в розницу, 3 500 ₸ от 100 шт; Сенсорный переключатель одинарный YZKJ-TCW — 1 500 ₸ в розницу, 1 300 ₸ от 100 шт. Уточните, пожалуйста, модель или размер."
+    },
+    {
+      "id": "manager_price_complete",
+      "question": "Рифленое прозрачное 8 мм, деталь 400×300 мм, 2 шт., сколько стоит?",
+      "status": "manager_handoff",
+      "correct_status": true,
+      "correct_total": null,
+      "clarification": null,
+      "missing_parameters": [
+        "per_m2_price"
+      ],
+      "unnecessary_parameter_request": false,
+      "answer": "Ставки за м² для «Рифлёное стекло прозрачное 8 мм» в базе нет — есть только цена целого листа, поэтому стоимость детали рассчитает менеджер. Передам указанные параметры менеджеру для индивидуального расчета."
+    },
+    {
+      "id": "manager_rate",
+      "question": "Рифленое прозрачное 8 мм за квадратный метр",
+      "status": "manager_handoff",
+      "correct_status": true,
+      "correct_total": null,
+      "clarification": null,
+      "missing_parameters": [],
+      "unnecessary_parameter_request": false,
+      "answer": "Ставки за м² для «Рифлёное стекло прозрачное 8 мм» в базе нет — есть только цена целого листа; стоимость детали рассчитает менеджер. Передам запрос менеджеру для индивидуального расчета."
+    },
+    {
+      "id": "implicit_mm",
+      "question": "Стекло 6 мм прозрачное 45×37, кромка по всем сторонам",
+      "status": "answered",
+      "correct_status": true,
+      "correct_total": true,
+      "clarification": null,
+      "missing_parameters": [],
+      "unnecessary_parameter_request": false,
+      "answer": "Стекло 6 мм прозрачное, 45×37 мм: 0,001665 м² × 8 000 ₸ = 13,32 ₸. Евро-кромка по всем 4 сторонам: 0,164 м × 400 ₸ = 65,60 ₸. Итого предварительно 78,92 ₸; окончательную стоимость подтверждает менеджер."
+    },
+    {
+      "id": "unknown_dimension_unit",
+      "question": "Стекло 6 мм прозрачное 0,45×0,37, кромка по всем сторонам",
+      "status": "clarification",
+      "correct_status": true,
+      "correct_total": null,
+      "clarification": "Уточните единицы размера «0,45x0,37»: это мм, см или м?",
+      "missing_parameters": [
+        "dimensions_unit"
+      ],
+      "unnecessary_parameter_request": false,
+      "answer": "Уточните единицы размера «0,45x0,37»: это мм, см или м?"
+    }
+  ],
+  "metrics": {
+    "cases": 9,
+    "correct_status": 9,
+    "complete_correct_totals": 4,
+    "unnecessary_manager_parameter_requests": 0,
+    "clarification_count": 3,
+    "latency_median_ms": 17.058099969290197,
+    "latency_p95_ms": 22.463299916125834,
+    "provider_calls": 0
+  }
+}

@@ -248,6 +248,7 @@ class LocalEngine:
         )
         edge_only = (
             ex.processing == "euro_edge" and not ex.dimensions and context.length_mm is None and not ex.unknown_services
+            and not ex.ambiguous_dimensions and not ex.invalid_dimensions
             and ex.price_basis == "auto"
         )
         if ex.unknown_services and service_only:

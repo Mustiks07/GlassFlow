@@ -21,3 +21,23 @@ Worktree: `GlassFlow-post-intelligence`, branch `codex/post-intelligence`, base 
 - Earlier P0/resilience/provider adapter subset: 45 passed. Full intelligence suite started; result will be recorded after completion.
 - No external calls or keys used. First real candidate exam belongs to the independent integrator. In-memory quota cap is per runtime lifetime; cumulative run/restart debit remains integrator responsibility and is documented explicitly.
 - Next: N04 refinement, persistent N07 review queue + read-only KB impact preview, N19 correction drafts and N17 measured extraction decision.
+
+## 2026-11-28 — N04 / N07 / N19 implementation
+
+- Full early-freeze suite at `2f3a7ee`: 316 passed, 3 skipped, 319 total. No live acceptance claim.
+- Domain migrations/DTO commit `f7aa94d`; implementation `c5fc208`.
+- Authorized dependencies: root central migration `8cabfaa` cherry-picked as `87d0bad`; platform `b3de4cd` merged to supply the matching Coordinator/export_context API. Initial tests before the platform merge correctly failed on the missing Coordinator argument; no check was disabled. The integrated startup and eight P0/provenance tests passed afterward.
+- N07/N19: 10 API/shared-DB regressions passed (classified causes, persistence, isolation, version conflicts, read-only preview, real existing KB apply API, contest immutability, verified correction, unknown/ambiguous review, unchanged history, migration up/down).
+- N04: 7 targeted regressions passed; baseline/candidate comparison has 9 controlled author cases, correct statuses 7→9, full totals retained 4/4, unnecessary manager parameter requests 2→0, no provider calls. Raw comparison JSON under `docs/ai/post/`.
+- N17: no additional extractor promoted; no measured independent benefit. Existing deterministic dispatch defect was fixed without adding a model.
+- Parent batch adapter was given `outcome_reasons` and `record_accepted_batch_reviews` contract. Root/platform owns coordinator registration and accepted-row callback wiring.
+- Full final suite with JUnit evidence is running; results to follow. Root owns generated contracts, functional UI, real browser/live/provider exam and release artifacts.
+
+## Final source freeze (before independent live exam)
+
+- All independent assigned implementation is complete. N07/N19 API regressions: 11 passed, including closed batch preserving clarification without synthetic customer replies. `AnswerRow.clarification` is an additive nullable field.
+- Canonical preview additionally calls the exact platform import validator before displaying impact. Confirmation checks only matching linked historical turns rather than materializing all dataset turns. Legacy pre-origin drafts have a dedicated confirmation regression.
+- BasisWeb hardening: malformed text payloads fail closed, malformed/missing usage retains quota reservation, cancellation retains reservation and records the actual attempted call, error credential redaction occurs before truncation. Budget rejection before sending does not count as a model call.
+- Affected provider/resilience/provenance subset after hardening: 32 passed. Ruff: all intelligence source/contracts/tests passed.
+- Final full suite is still running; no source changes are planned after this freeze. Only verification/status evidence may follow.
+- No actual provider requests, key access, paid mode enablement, buyer messages, oracle reads or final-material replacement occurred in this worktree.

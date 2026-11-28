@@ -117,3 +117,34 @@ def test_error_messages_redact_credentials():
     with pytest.raises(ProviderError) as info:
         asyncio.run(provider.generate(ProviderRequest("test", [])))
     assert "test-not-secret" not in str(info.value)
+
+
+def test_malformed_usage_keeps_unknown_and_non_text_content_is_rejected():
+    payload = response()
+    payload["usage"] = {"prompt_tokens_details": "unexpected", "prompt_tokens": -1}
+    provider = BasisWebProvider("gpt-6-luna", "test-not-secret", transport=httpx.MockTransport(
+        lambda r: httpx.Response(200, json=payload)))
+    answer = asyncio.run(provider.generate(ProviderRequest("test", [])))
+    assert answer.usage.input_tokens is None and answer.usage.cached_tokens is None
+    payload["choices"][0]["message"]["content"] = [{"text": "not a plain chat response"}]
+    with pytest.raises(ProviderError) as info:
+        asyncio.run(provider.generate(ProviderRequest("test", [])))
+    assert info.value.kind == "malformed"
+
+
+def test_cancelled_http_retains_quota_reservation_and_attempt_trace():
+    calls = []
+    async def handler(request):
+        calls.append(request)
+        raise asyncio.CancelledError
+    request = ProviderRequest("test", [])
+    client = ResilientClient(profile(), {"basisweb:gpt-6-luna": BasisWebProvider(
+        "gpt-6-luna", "test-not-secret", transport=httpx.MockTransport(handler))}, MemoryLedger(), "test")
+    async def run():
+        attempts = []
+        with capture_attempts(attempts), pytest.raises(asyncio.CancelledError):
+            await client.call(request, deadline=time.monotonic() + 5)
+        assert len(attempts) == 1 and attempts[0]["status"] == "error"
+    asyncio.run(run())
+    assert len(calls) == 1
+    assert client.quota_tokens_spent == reserve_quota(request, "gpt-6-luna")
