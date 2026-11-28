@@ -1,0 +1,23 @@
+{
+  "schema_version":1,
+  "purpose":"Ten real paired human tasks; this is an empty protocol, NOT measurement evidence",
+  "source":"Unchanged open educational KSM pack, current explicit dataset/KB/stock snapshot",
+  "operators":[],
+  "measurements":[],
+  "start_definition":"Operator sees the complete task and can access its specified source snapshot",
+  "end_definition":"Correct result or explicit correct next action/manager handoff is recorded and linked",
+  "tasks":[
+    {"task_id":"H01","planned_order":"manual_first","request":"Рассчитать прозрачное стекло6мм,450×370мм,1шт.,без обработки","required_sources":["KB"],"result_type":"quote"},
+    {"task_id":"H02","planned_order":"app_first","request":"Рассчитать прозрачное стекло6мм,451×370мм,2шт.,евро-кромка по всем сторонам","required_sources":["KB"],"result_type":"quote"},
+    {"task_id":"H03","planned_order":"manual_first","request":"Рассчитать прозрачное стекло4мм,580×410мм,3шт.,евро-кромка по двум длинным сторонам","required_sources":["KB"],"result_type":"quote"},
+    {"task_id":"H04","planned_order":"app_first","request":"Рассчитать большой уголок рамочного фасада,100шт.,по применимому порогу","required_sources":["KB"],"result_type":"quote"},
+    {"task_id":"H05","planned_order":"manual_first","request":"Оформить одно полезное уточнение для зеркала4мм560×430мм без указанного формата прайса","required_sources":["KB"],"result_type":"clarification"},
+    {"task_id":"H06","planned_order":"app_first","request":"Оформить ответ на запрос рифлёного прозрачного8мм560×430мм с неизвестной ценой за м²","required_sources":["KB"],"result_type":"manager_handoff"},
+    {"task_id":"H07","planned_order":"manual_first","request":"Подобрать свободный исходный кусок clear-6 под деталь450×370мм и указать реальное место","required_sources":["materials","stock","contest5mm3mm_rules"],"result_type":"candidate_with_location"},
+    {"task_id":"H08","planned_order":"app_first","request":"Оформить корзину:2шт.прозрачное6мм200×100мм и1шт.220×120мм; цена и совместная допустимость","required_sources":["KB","materials","stock"],"result_type":"basket"},
+    {"task_id":"H09","planned_order":"manual_first","request":"Проверить ответ менеджера к запросу прозрачное6мм1200×1800 с кромкой по двум длинным сторонам; менеджер указал17280тг","required_sources":["KB"],"result_type":"QA_correction"},
+    {"task_id":"H10","planned_order":"app_first","request":"Выбрать адресата из фактического CRM top25 и оформить локальное напоминание о товарной группе с ответственным/сроком; ничего не отправлять","required_sources":["applications","reference_policy"],"result_type":"local_reminder_draft"}
+  ],
+  "record_template":{"pair_id":null,"task_id":null,"task_input_ref":null,"input_hash":null,"operator":null,"observer":null,"method":null,"planned_order":null,"events":[],"elapsed_seconds":null,"human_attested_active_seconds":null,"human_confirmed":false,"error_count":null,"rework_seconds":null,"result_ref":null},
+  "acceptance":{"minimum_distinct_complete_pairs":10,"both_methods_same_input_hash":true,"explicit_human_attestation":true,"negative_savings_retained":true,"rework_not_added_twice":true,"interrupted_measurement_requires_review":true}
+}

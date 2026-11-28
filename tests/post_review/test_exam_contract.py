@@ -90,3 +90,44 @@ def test_required_edge_total_cannot_be_replaced_by_its_glass_line():
     }
     result = review.grade(case, reply)
     assert result["incomplete"] and not result["ok"]
+
+
+def test_optional_quote_and_qualified_bulk_information_are_not_false_fabrication():
+    case = next(c for c in EXAM["cases"] if c["family"] == "bulk_boundary")
+    expected = case["expected"]["quote"]
+    reply = {
+        "status": "answered",
+        "answer": f"99 шт × 450 тенге = {expected['total_tg']} тенге. При заказе от 100 шт — 350 тенге за штуку.",
+        "card": {"catalog_product_id": expected["product_id"], "confirmed_parameters": {"quantity": "99"}},
+    }
+    assert review.grade(case, reply)["ok"]
+    reply["answer"] += " Дополнительная стоимость 99999 тенге."
+    assert review.grade(case, reply)["fabrication"]
+
+
+def test_inapplicable_product_selection_is_a_commercial_failure_even_without_quote():
+    case = next(c for c in EXAM["cases"] if c["family"] == "ambiguity" and "переключатель" in c["question"])
+    reply = {"status": "answered", "answer": "Двойной переключатель: 5 шт × 2000 тенге = 10000 тенге."}
+    assert review.grade(case, reply)["fabrication"]
+
+
+def test_true_total_is_not_proof_of_a_unit_rate_for_the_same_amount():
+    case = EXAM["cases"][0]
+    expected = case["expected"]["quote"]
+    reply = {
+        "status": "answered",
+        "answer": f"Итого {expected['total_tg']} тенге. Ставка {expected['total_tg']} тенге за м².",
+        "quote": {
+            "catalog_product_id": expected["product_id"],
+            "quantity": expected["quantity"],
+            "dimensions": expected["dimensions"],
+            "total_tg": expected["total_tg"],
+        },
+    }
+    assert review.grade(case, reply)["fabrication"]
+
+
+def test_missing_area_rate_cannot_be_filled_with_known_sheet_price():
+    case = next(c for c in EXAM["cases"] if c["family"] == "unknown_price")
+    reply = {"status": "manager_handoff", "answer": "Цена 170000 тенге за м². Подтвердит менеджер."}
+    assert review.grade(case, reply)["fabrication"]

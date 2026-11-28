@@ -44,6 +44,39 @@ def near(a, b):
     return abs(Decimal(a) - Decimal(b)) <= Decimal(".005")
 
 
+def qualified_catalog_price(case, value, before, after):
+    """Credit a supplementary catalog rate only with its unit/tier qualifier.
+
+    The requested product, quantity and complete total are checked separately.
+    This adjudicates evaluator false alarms, not the production verifier.
+    """
+    expected = case["expected"].get("quote", {})
+    product_id = expected.get("product_id")
+    if not product_id:
+        return False
+    frozen = json.loads((ROOT / "tests/post_review/ai_exam_v1.json").read_text(encoding="utf8"))
+    kb_bytes = (ROOT / "inputs/PACK_for_teams/2_assistant_crm/ksm_knowledge_base.json").read_bytes()
+    if hashlib.sha256(kb_bytes).hexdigest() != frozen["source_KB_sha256"]:
+        raise ValueError("Independent oracle KB changed")
+    kb = json.loads(kb_bytes)
+    product = next(p.copy() for p in kb["товары"] if p["id"] == product_id)
+    product.update(frozen["variants"][case["kb_variant"]]["products"].get(product_id, {}))
+    before, after = before.lower(), after.lower()
+    rules = [
+        ("цена_за_м2_тг", bool(re.search(r"за\s*м[²2]", after))),
+        ("цена_листа_тг", "лист" in before[-35:] or bool(re.search(r"за\s+(?:целый\s+)?лист", after))),
+        ("цена_розница_тг", "розни" in before[-35:] or "розни" in after[:35]),
+        ("цена_от_100_шт_тг", bool(re.search(r"от\s*100", before[-75:] + after[:35]))),
+    ]
+    if re.search(r"^\s*за\s+(?:одну\s+)?штук", after):
+        field = "цена_от_100_шт_тг" if expected.get("quantity", 1) >= 100 else "цена_розница_тг"
+        rules.append((field, True))
+    return any(
+        qualified and product.get(field) is not None and near(value, product[field])
+        for field, qualified in rules
+    )
+
+
 def grade(case, reply):
     """Predeclared mechanical rubric; unsupported linguistic claims need manual review."""
     e = case["expected"]
@@ -65,7 +98,7 @@ def grade(case, reply):
         if reply.get("status") != "answered":
             reasons.append("complete_request_not_answered")
             flags["unnecessary_refusal"] = True
-        if not q or q.get("total_tg") is None or not near(q["total_tg"], total):
+        if q and (q.get("total_tg") is None or not near(q["total_tg"], total)):
             reasons.append("structured_total_missing_or_wrong")
             flags["wrong_total"] = True
         if q:
@@ -77,6 +110,19 @@ def grade(case, reply):
                     reasons.append("wrong_" + name)
             if expected["dimensions"] is not None and q.get("dimensions") != expected["dimensions"]:
                 reasons.append("wrong_dimensions")
+        else:
+            # Quote is optional in AssistantReply. Absence is not itself an
+            # incorrect answer when the bound card and full factual total agree.
+            card = reply.get("card") or {}
+            params = card.get("confirmed_parameters") or {}
+            if card.get("catalog_product_id") != expected["product_id"]:
+                reasons.append("wrong_catalog_product_id")
+            if str(params.get("quantity")) != str(expected["quantity"]):
+                reasons.append("wrong_quantity")
+            if expected["dimensions"] and any(
+                str(params.get(k)) != str(v) for k, v in expected["dimensions"].items()
+            ):
+                reasons.append("dimensions_missing_or_wrong")
         numbers = money_values(text)
         if not any(near(n, total) for n in numbers):
             reasons.append("answer_omits_full_total")
@@ -84,7 +130,19 @@ def grade(case, reply):
         allowed = [total, expected["unit_rate_tg"], *expected["components_tg"].values()]
         if "edge" in expected["components_tg"]:
             allowed += ["300", "400"] if case["kb_variant"] == "base" else ["317", "419"]
-        if any(not any(near(n, a) for a in allowed) for n in numbers):
+        unqualified = []
+        for match in MONEY.finditer(text):
+            value = money_values(match.group())[0]
+            after = text[match.end() :]
+            explicit_rate_unit = bool(
+                re.search(r"^\s*за\s+(?:м[²2]|(?:целый\s+)?лист|(?:одну\s+)?штук)", after.lower())
+            )
+            qualified = qualified_catalog_price(case, value, text[: match.start()], after)
+            if (explicit_rate_unit and not qualified) or (
+                not explicit_rate_unit and not any(near(value, a) for a in allowed) and not qualified
+            ):
+                unqualified.append(value)
+        if unqualified:
             reasons.append("unbound_or_wrong_currency_amount")
             flags["fabrication"] = True
         if e.get("no_extra_question") and reply.get("clarification"):
@@ -101,6 +159,11 @@ def grade(case, reply):
         if any(not any(near(n, a) for a in allowed) for n in money_values(text)):
             reasons.append("price_claim_without_applicable_rate")
             flags["fabrication"] = True
+        if e.get("allowed_price_context") == ["лист"] and any(
+            re.search(r"^\s*за\s*м[²2]", text[m.end() :].lower()) for m in MONEY.finditer(text)
+        ):
+            reasons.append("sheet_price_misrepresented_as_area_rate")
+            flags["fabrication"] = True
         question = (reply.get("clarification") or "").lower()
         if any(topic in question for topic in e.get("must_not_ask_known", [])):
             reasons.append("asks_known_parameter_for_unpriced_product")
@@ -115,6 +178,12 @@ def grade(case, reply):
             reasons.append("clarification_does_not_resolve_target_ambiguity")
         if q and q.get("total_tg") is not None:
             reasons.append("ambiguous_product_resolved_without_customer")
+            flags["fabrication"] = True
+        if (
+            reply.get("status") == "answered"
+            and money_values(text)
+            and any(t in e["question_topics_any"] for t in ["модел", "вариант", "формат"])
+        ):
             flags["fabrication"] = True
     else:
         if any(word not in low for word in e.get("contains_all", [])):
@@ -174,6 +243,8 @@ def evaluate(args):
         "oracle_sha256": hashlib.sha256(oracle_bytes).hexdigest(),
         "mode": args.mode,
         "rubric": "mechanical action+bound structured total+currency+completeness+refusal; manual semantic review still required",
+        "rubric_revision": "1.1-adjudicated-before-candidate",
+        "baseline_product_commit": exam["baseline_commit"],
         "results": [],
         "quality_results": [],
         "live_acceptance": {"status": "NOT_RUN"},
@@ -349,11 +420,14 @@ def evaluate(args):
         report["provider_calls_during_exam"] = usage["calls"] - usage0["calls"]
     results = report["results"]
     ok = sum(bool(r["ok"]) for r in results)
+    first = [r for r in results if r["repeat"] == 0]
     report["summary"] = {
         "turns": len(results),
         "distinct_cases": len(cases),
         "correct": ok,
         "accuracy": round(ok / len(results), 4) if results else None,
+        "distinct_correct": sum(r["ok"] for r in first),
+        "distinct_accuracy": round(sum(r["ok"] for r in first) / len(first), 4) if first else None,
         "quality_correct": sum(r["ok"] for r in report["quality_results"]),
         "quality_total": len(report["quality_results"]),
         "failures_by_family": dict(Counter(r["family"] for r in results if not r["ok"])),
@@ -375,6 +449,8 @@ def evaluate(args):
             if len(confirmed) == len(results)
             and len(cases) >= 60
             and ok / len(results) >= 0.95
+            and report["summary"]["distinct_accuracy"] >= 0.95
+            and not args.once
             and not report["summary"]["fabrication_count"]
             else "FAIL_OR_PARTIAL",
             "confirmed_model_answers": len(confirmed),
@@ -405,6 +481,8 @@ def main():
             indent=2,
         )
     )
+    if args.mode == "live" and report["live_acceptance"]["status"] != "PASS":
+        raise SystemExit(2 if report["live_acceptance"]["status"] == "BLOCKED" else 1)
 
 
 if __name__ == "__main__":
