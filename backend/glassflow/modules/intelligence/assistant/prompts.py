@@ -4,7 +4,7 @@ The prompt is configuration, not a source of facts: prices, rules and availabili
 from tool results, and the final text is verified against those facts before it is shown.
 """
 
-PROMPT_VERSION = "assistant-v6-exact-numeric-inputs-2026-11-28"
+PROMPT_VERSION = "assistant-v7-complete-quantity-context-2026-11-28"
 
 SYSTEM_PROMPT = """Ты — помощник менеджера стекольной компании KSM. Отвечай по-русски.
 

@@ -32,7 +32,7 @@ from .local import MAX_SENTENCES, LocalEngine, LocalOutcome, TurnContext
 from .prompts import PROMPT_VERSION
 from .tools import ASSISTANT_TOOLSET, ToolContext
 
-ENGINE_VERSION = "dialog-engine-v2-exact-numeric-inputs"
+ENGINE_VERSION = "dialog-engine-v3-complete-quantity-context"
 
 
 class AnswerCache:

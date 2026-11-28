@@ -773,6 +773,12 @@ class LocalEngine:
                 out.sentences.append(f"Цены «{product.name}» в базе нет — ее назовет менеджер.")
                 out.needs_manager = True
                 out.status = "manager_handoff"
+            if context.quantity and not context.quantity_assumed and context.price_basis == "auto" and parts:
+                question = f"Для общей стоимости {context.quantity} деталей укажите длину и ширину с единицами измерения."
+                out.sentences.append(question)
+                out.clarification = question
+                out.status = "clarification"
+                out.missing_parameters.append("dimensions")
             if ex.processing != "none":
                 self._processing_without_dims(ex, out, product)
             return

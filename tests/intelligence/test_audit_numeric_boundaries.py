@@ -84,3 +84,24 @@ def test_multiple_sheets_compute_total(engine):
     result = engine.respond('Нужно 3 листа рифлёного прозрачного стекла 8 мм. Сколько всего?')
     assert result.pricing is not None and str(result.pricing.total) == '510000.00'
     assert not result.needs_manager
+
+
+@pytest.mark.parametrize('text', [
+    'Хочу заказать стекло 6 мм прозрачное, 3 детали без обработки. Общая стоимость?',
+    'Рассчитайте 7 штук прозрачного стекла 4 мм без обработки.',
+])
+def test_explicit_piece_count_needs_geometry_for_the_total(engine, text):
+    result = engine.respond(text)
+    assert result.status == 'clarification' and result.pricing is None
+    assert 'dimensions' in result.missing_parameters
+    assert 'длину и ширину' in result.clarification
+
+
+@pytest.mark.parametrize('text', [
+    'Вы устанавливаете заказанное стекло у клиента?',
+    'Устанавливаете зеркало на стену?',
+])
+def test_installation_verb_uses_actual_kb_rule(engine, text):
+    result = engine.respond(text)
+    assert result.intent != 'unrecognized'
+    assert 'не выполня' in result.answer

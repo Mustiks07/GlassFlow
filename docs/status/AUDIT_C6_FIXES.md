@@ -55,3 +55,16 @@ Node24:25 Vitest PASS, typecheck/build PASS;59 fixture E2E PASS отдельно
 Ruff и foundation14immutable inputs PASS. Полный Python и прежние real suites
 проверяются до сборки. Независимая запись требований первого сотрудника и human10pairs:
 docs/release/TEAMMATE_ACCEPTANCE_RU.md, включается в новый portable ZIP.
+
+
+EXE50f54c9:20 browser PASS, changed-input TCP protocol PASS70.625с,
+smoke backup/restore+scanner PASS. Local regression147/149,QA10/10,0 provider calls.
+Разобраны2 остаточных случая: explicit qty без геометрии теперь спрашивает длину/ширину;
+глагол «устанавливаете» использует существующее правило KB. Добавлены4 варианта
+регрессий; все intelligence tests PASS с3прежними SKIP. Это исправление по уже
+раскрытому oracle, новый независимый экзамен не заявляется.
+
+Первая полная проверка710PASS/3FAIL/4SKIP затронула accepted-row fingerprint: assets
+пересобирались во время прогона. DB jobs показывают INVALID_ACCEPTED_ROW;9 checkpoint
+тестов на неизменной версии повторно PASS. Полная проверка повторяется после
+окончательной фиксации runtime/production assets; fingerprint guards не изменены.
