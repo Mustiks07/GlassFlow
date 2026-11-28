@@ -8,6 +8,7 @@ from pathlib import Path
 PATTERNS = [
     re.compile(rb"AIza[0-9A-Za-z_-]{35}"),
     re.compile(rb"sk-or-v1-[0-9a-fA-F]{64}"),
+    re.compile(rb"sk-pl-[0-9a-fA-F]{64}"),
     re.compile(rb"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
 ]
 

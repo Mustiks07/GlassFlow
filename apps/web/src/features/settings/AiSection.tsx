@@ -56,6 +56,7 @@ export function AiSection() {
             if (!paidBlocked) save.mutate(form);
           }}
         >
+          {form.provider === 'basisweb' && <div className="stack"><label className="check"><input type="checkbox" checked={Boolean(form.included_quota_enabled)} onChange={e => update({ included_quota_enabled: e.target.checked })} />Разрешить расход включённой квоты BasisWeb</label><label>Лимит взвешенных токенов сессии<input type="number" min={1} max={5000000} value={form.quota_token_budget ?? 1000000} onChange={e => update({ quota_token_budget: Number(e.target.value) })} /></label><p className="small muted">Квота проверяется до запроса. Этот режим не включает денежную оплату. Новый процесс начинает отдельную сессию учёта.</p></div>}
           <div className="form-grid">
             <Field label="Профиль доступа" error={fieldError('profile')}>
               {props => (
@@ -73,6 +74,7 @@ export function AiSection() {
                 <select {...props} value={form.provider} onChange={event => update({ provider: event.target.value as AISettings['provider'] })}>
                   <option value="gemini">Gemini (основной)</option>
                   <option value="openrouter">OpenRouter (альтернативный)</option>
+                  <option value="basisweb">BasisWeb (включённая квота)</option>
                 </select>
               )}
             </Field>

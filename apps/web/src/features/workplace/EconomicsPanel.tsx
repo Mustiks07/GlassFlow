@@ -5,6 +5,7 @@ import { newIdempotencyKey } from '../../api/client';
 import type { Dataset } from '../../api/types';
 import { Button, ErrorState, Panel } from '../../ui/kit';
 import { formatMoney } from '../../lib/format';
+import { LaborPanel } from './LaborPanel';
 
 type Inputs = components['schemas']['EconomicInputs'];
 type Scenario = components['schemas']['EconomicsScenario'];
@@ -24,6 +25,7 @@ export function EconomicsPanel({ dataset }: { dataset: Dataset }) {
   const [error, setError] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
   const [key, setKey] = useState(newIdempotencyKey);
+  const [labor, setLabor] = useState<components['schemas']['LaborStudyExport'] | null>(null);
   async function calculate() {
     setBusy(true); setError(null);
     try {
@@ -34,12 +36,17 @@ export function EconomicsPanel({ dataset }: { dataset: Dataset }) {
       setScenario(value); setScenarioId(value.scenario_id); setKey(newIdempotencyKey());
     } catch (e) { setError(e); } finally { setBusy(false); }
   }
-  return <Panel title="Экономика внедрения" subtitle="Экран и PDF используют один серверный расчет. Оценка материала, подтвержденный расход и выручка разделены.">
+  return <div className="stack"><LaborPanel dataset={dataset} onExport={value => {
+    setLabor(value);
+    if (inputs) setInputs({ ...inputs, measurement_status: 'supplied_measurements', labor_studies: value.labor_studies });
+    setScenario(null); setKey(newIdempotencyKey());
+  }} /><Panel title="Экономика внедрения" subtitle="Экран и PDF используют один серверный расчет. Оценка материала, подтвержденный расход и выручка разделены.">
     <div className="stack">
       <p>Для расчета нужны минимум 10 пар настоящих трудозамеров, ссылки на исходные результаты раскроя и основания ставок. Время ответа менеджера не является трудозатратами.</p>
+      {labor && <p role="status">Получено подтверждённых пар: {labor.pair_count}. Медианная экономия {labor.median_saved_active_seconds} с; отрицательных результатов: {labor.negative_saving_pairs}. Дополните протокол оценками материала и основаниями сценарных ставок.</p>}
       <label>Протокол замеров и исходных оценок <input type="file" accept=".json" onChange={async e => {
         const file = e.target.files?.[0]; if (!file) return;
-        try { const value = JSON.parse(await file.text()); setInputs(value.inputs ?? value); setScenario(null); setKey(newIdempotencyKey()); setError(null); }
+        try { const value = JSON.parse(await file.text()); const base = value.inputs ?? value; setInputs(labor ? { ...base, measurement_status: 'supplied_measurements', labor_studies: labor.labor_studies } : base); setScenario(null); setKey(newIdempotencyKey()); setError(null); }
         catch (err) { setError(err); }
       }} /></label>
       <p className="small muted">В протоколе укажите начало и конец каждой операции, активное время, ошибки, оператора и ссылки на результаты. Неполные измерения будут отклонены; отсутствующие значения не заменяются нулями.</p>
@@ -65,5 +72,5 @@ export function EconomicsPanel({ dataset }: { dataset: Dataset }) {
       </>}
       {error != null && <ErrorState error={error} />}
     </div>
-  </Panel>;
+  </Panel></div>;
 }

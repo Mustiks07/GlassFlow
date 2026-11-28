@@ -6,6 +6,7 @@ import type { ApplicationRow, Dataset, ManagerMetrics, MetricEvidence, Ratio } f
 import { formatInt, formatMoney, formatPercent } from '../../lib/format';
 import { Button, EmptyState, ErrorState, LoadingState, Panel, SideDialog, TableWrap } from '../../ui/kit';
 import { RequireDataset } from '../shell/RequireDataset';
+import { ComparablePanel } from './ComparablePanel';
 
 export function ManagersPage() {
   return <RequireDataset>{dataset => <Managers dataset={dataset} key={dataset.dataset_id} />}</RequireDataset>;
@@ -196,6 +197,7 @@ function Managers({ dataset }: { dataset: Dataset }) {
         </form>
         <p className="small muted">день_года — исходное относительное значение учебной CRM, а не календарная дата.</p>
       </Panel>
+      <ComparablePanel datasetId={dataset.dataset_id} />
       <Panel title="Показатели" subtitle="Нажмите на значение, чтобы открыть определение, знаменатель и исходные строки.">
         {metrics.isLoading && <LoadingState label="Считаем показатели…" />}
         {metrics.isError && <ErrorState error={metrics.error} onRetry={() => metrics.refetch()} context="M1–M5" />}

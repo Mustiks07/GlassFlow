@@ -12,6 +12,7 @@ import { MODE_LABEL } from '../shell/dataset';
 import { JobPanel } from '../shell/JobPanel';
 import { RequireDataset } from '../shell/RequireDataset';
 import { TERMINAL, useJob } from '../shell/useJob';
+import { PassportPanel } from './PassportPanel';
 
 export function RunsPage() {
   return <RequireDataset>{dataset => <Runs dataset={dataset} key={dataset.dataset_id} />}</RequireDataset>;
@@ -60,6 +61,8 @@ function Runs({ dataset }: { dataset: Dataset }) {
   const [modules, setModules] = useState<RunModule[]>(MODULES.map(module => module.id));
   const [jobId, setJobId] = useState<string | null>(null);
   const [confirm, setConfirm] = useState(false);
+  const [budget, setBudget] = useState(180);
+  const [exportReserve, setExportReserve] = useState(30);
   const [runKey, setRunKey] = useState(newIdempotencyKey);
   const [aiProfile, setAiProfile] = useState<'direct' | 'judge_gateway' | 'local_limited'>('local_limited');
   const present = new Set(Object.keys(dataset.source_hashes));
@@ -68,7 +71,7 @@ function Runs({ dataset }: { dataset: Dataset }) {
   const start = useMutation({
     mutationFn: () =>
       api.createRun(
-        { dataset_id: dataset.dataset_id, modules, config_version: 'contest-v1', solver_config: { profile: 'extended', seed: 42, time_limit_seconds: 600, workers: 1, minimum_free_remnants: 5 }, ai_profile: aiProfile },
+        { dataset_id: dataset.dataset_id, modules, config_version: 'contest-v1', solver_config: { profile: 'extended', seed: 42, time_limit_seconds: 600, workers: 1, minimum_free_remnants: 5 }, ai_profile: aiProfile, total_budget_seconds: budget, export_reserve_seconds: exportReserve },
         runKey,
       ),
     onSuccess: job => {
@@ -170,6 +173,8 @@ function Runs({ dataset }: { dataset: Dataset }) {
             <option value="local_limited">Только локальный режим (ассистент может быть неполным)</option>
           </select>
         </label>
+        <div className="form-row"><label>Общий бюджет, секунд<input type="number" min={60} max={7200} value={budget} onChange={e => setBudget(Number(e.target.value))} /></label><label>Резерв на проверку и экспорт, секунд<input type="number" min={10} max={budget - 1} value={exportReserve} onChange={e => setExportReserve(Number(e.target.value))} /></label></div>
+        <p className="small muted">Сначала сохраняется полный допустимый комплект, затем оставшееся время используется для улучшений.</p>
         <div className="row">
           <Button variant="primary" icon={<Play size={14} aria-hidden="true" />} disabled={!modules.length || missingInputs.length > 0} onClick={() => setConfirm(true)}>
             Запустить прогон
@@ -184,6 +189,8 @@ function Runs({ dataset }: { dataset: Dataset }) {
         {runId && run.isLoading && <LoadingState label="Получаем состояние прогона…" />}
         {run.isError && <ErrorState error={run.error} onRetry={() => run.refetch()} context="Прогон" />}
         {run.data && <RunStatus run={run.data} />}
+        {run.data?.budget && <p className="small">Бюджет прогона: {JSON.stringify(run.data.budget)}</p>}
+        {runId && <PassportPanel datasetId={dataset.dataset_id} runId={runId} />}
       </Panel>
 
       {run.data && runId && (TERMINAL.includes(job.data?.state ?? 'completed') || !jobId) && <ExportPanel run={run.data} runId={runId} />}

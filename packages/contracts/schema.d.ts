@@ -38,6 +38,143 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/labor-studies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Studies */
+        get: operations["list_studies_api_v1_labor_studies_get"];
+        put?: never;
+        /** Create Study */
+        post: operations["create_study_api_v1_labor_studies_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/labor-studies/{study_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Study */
+        get: operations["get_study_api_v1_labor_studies__study_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/labor-studies/{study_id}/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Export Study */
+        get: operations["export_study_api_v1_labor_studies__study_id__export_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/labor-studies/{study_id}/measurements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start Measurement */
+        post: operations["start_measurement_api_v1_labor_studies__study_id__measurements_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/labor-studies/{study_id}/measurements/{measurement_id}/finish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Finish Measurement */
+        post: operations["finish_measurement_api_v1_labor_studies__study_id__measurements__measurement_id__finish_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/labor-studies/{study_id}/measurements/{measurement_id}/attest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Attest Measurement */
+        post: operations["attest_measurement_api_v1_labor_studies__study_id__measurements__measurement_id__attest_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/labor-studies/{study_id}/measurements/{measurement_id}/{action}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Pause Resume */
+        post: operations["pause_resume_api_v1_labor_studies__study_id__measurements__measurement_id___action__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/workflow/queue": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Workflow Queue */
+        get: operations["workflow_queue_api_v1_workflow_queue_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/session": {
         parameters: {
             query?: never;
@@ -220,6 +357,23 @@ export interface paths {
         get: operations["get_run_api_v1_runs__run_id__get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/runs/{run_id}/budget": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Renew Run Budget */
+        post: operations["renew_run_budget_api_v1_runs__run_id__budget_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -672,6 +826,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/cutting/scarcity": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Scarcity */
+        post: operations["scarcity_api_v1_cutting_scarcity_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/cutting/solve-input": {
         parameters: {
             query?: never;
@@ -828,6 +999,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/plans/{plan_id}/new-requirements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Plan New Requirements */
+        get: operations["plan_new_requirements_api_v1_plans__plan_id__new_requirements_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/plans/{plan_id}/geometry-margins": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Plan Geometry Margins */
+        get: operations["plan_geometry_margins_api_v1_plans__plan_id__geometry_margins_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/plans/{plan_id}/free-remnants": {
         parameters: {
             query?: never;
@@ -947,6 +1152,92 @@ export interface paths {
          * @description A proposed layout, explicitly NOT evidence of physical execution.
          */
         post: operations["execution_template_api_v1_cutting_execution_template_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/assistant/review-items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Review Items */
+        get: operations["list_review_items_api_v1_assistant_review_items_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/assistant/review-items/{item_id}/resolve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resolve Review Item */
+        post: operations["resolve_review_item_api_v1_assistant_review_items__item_id__resolve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/assistant/review-items/{item_id}/kb-preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview Review Kb */
+        post: operations["preview_review_kb_api_v1_assistant_review_items__item_id__kb_preview_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/dialogs/corrections": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Manager Corrections */
+        get: operations["list_manager_corrections_api_v1_dialogs_corrections_get"];
+        put?: never;
+        /** Create Manager Correction */
+        post: operations["create_manager_correction_api_v1_dialogs_corrections_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/dialogs/corrections/{draft_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Manager Correction */
+        get: operations["get_manager_correction_api_v1_dialogs_corrections__draft_id__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1929,6 +2220,176 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/runs/{run_id}/passport": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Result Passport */
+        get: operations["result_passport_api_v1_runs__run_id__passport_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/analytics/comparable": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Compare Managers */
+        post: operations["compare_managers_api_v1_analytics_comparable_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/analytics/questions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Analytics Question */
+        post: operations["analytics_question_api_v1_analytics_questions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/piece-labels": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Label */
+        post: operations["create_label_api_v1_piece_labels_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/piece-labels/{label_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Piece Label */
+        get: operations["piece_label_api_v1_piece_labels__label_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/piece-labels/{label_id}/resolve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Resolve Label */
+        get: operations["resolve_label_api_v1_piece_labels__label_id__resolve_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/piece-labels/{label_id}/pdf": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Piece Label Pdf */
+        get: operations["piece_label_pdf_api_v1_piece_labels__label_id__pdf_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/warehouse-documents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Warehouse Document */
+        post: operations["create_warehouse_document_api_v1_warehouse_documents_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/warehouse-documents/{document_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Warehouse Document */
+        get: operations["warehouse_document_api_v1_warehouse_documents__document_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/warehouse-documents/{document_id}/pdf": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Warehouse Document Pdf */
+        get: operations["warehouse_document_pdf_api_v1_warehouse_documents__document_id__pdf_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1941,7 +2402,7 @@ export interface components {
              * Provider
              * @enum {string}
              */
-            provider: "gemini" | "openrouter" | "judge_gateway" | "none";
+            provider: "gemini" | "openrouter" | "judge_gateway" | "basisweb" | "none";
             /** Model Id */
             model_id: string | null;
             /**
@@ -1958,6 +2419,21 @@ export interface components {
              * @default 0
              */
             budget_limit_usd?: string;
+            /**
+             * Included Quota Enabled
+             * @default false
+             */
+            included_quota_enabled?: boolean;
+            /**
+             * Quota Token Budget
+             * @default 1000000
+             */
+            quota_token_budget?: number;
+            /**
+             * Quota Tokens Spent
+             * @default 0
+             */
+            quota_tokens_spent?: number;
             /** Limits */
             limits?: {
                 [key: string]: number | null;
@@ -1981,7 +2457,17 @@ export interface components {
              * @default gemini
              * @enum {string}
              */
-            provider?: "gemini" | "openrouter";
+            provider?: "gemini" | "openrouter" | "basisweb";
+            /**
+             * Included Quota Enabled
+             * @default false
+             */
+            included_quota_enabled?: boolean;
+            /**
+             * Quota Token Budget
+             * @default 1000000
+             */
+            quota_token_budget?: number;
             /**
              * Model Id
              * @default
@@ -2052,6 +2538,33 @@ export interface components {
              * @default false
              */
             secret_present?: boolean;
+        };
+        /** AnalyticsAnswer */
+        AnalyticsAnswer: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "answered" | "clarification";
+            /** Metric */
+            metric?: ("application_count" | "mean_response_minutes" | "conversion" | "returns" | "mean_sale_tg" | "complaints" | "discounts") | null;
+            /** Answer Ru */
+            answer_ru: string;
+            resolved?: components["schemas"]["ComparableRequest"] | null;
+            comparison?: components["schemas"]["ComparableView"] | null;
+            /**
+             * Origin
+             * @default deterministic_aggregates
+             * @constant
+             */
+            origin?: "deterministic_aggregates";
+        };
+        /** AnalyticsQuestion */
+        AnalyticsQuestion: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Question */
+            question: string;
         };
         /** AnswerBatchRequest */
         AnswerBatchRequest: {
@@ -2176,6 +2689,39 @@ export interface components {
             turn_index?: number;
             /** Latency Ms */
             latency_ms?: number | null;
+            /**
+             * Execution Mode
+             * @default hybrid
+             * @enum {string}
+             */
+            execution_mode?: "hybrid" | "model_first";
+            /**
+             * Origin
+             * @default deterministic
+             * @enum {string}
+             */
+            origin?: "model" | "deterministic" | "cache" | "fallback" | "reuse";
+            /**
+             * Cache Hit
+             * @default false
+             */
+            cache_hit?: boolean;
+            /**
+             * Model Call Count
+             * @default 0
+             */
+            model_call_count?: number;
+            /** Model Attempts */
+            model_attempts?: components["schemas"]["ModelAttempt"][];
+            /** Selected Provider */
+            selected_provider?: string | null;
+            /** Selected Model Id */
+            selected_model_id?: string | null;
+            /**
+             * Verifier Reject Count
+             * @default 0
+             */
+            verifier_reject_count?: number;
         };
         /** AssistantTurn */
         AssistantTurn: {
@@ -2200,6 +2746,12 @@ export interface components {
              * @default true
              */
             allow_ai?: boolean;
+            /**
+             * Execution Mode
+             * @default hybrid
+             * @enum {string}
+             */
+            execution_mode?: "hybrid" | "model_first";
         };
         /** AuditEvent */
         AuditEvent: {
@@ -2744,6 +3296,88 @@ export interface components {
             released_reservation_ids?: string[];
             /** Superseded Plan */
             superseded_plan?: string | null;
+        };
+        /** ComparableGroup */
+        ComparableGroup: {
+            /** Dimensions */
+            dimensions: {
+                [key: string]: string | null;
+            };
+            /** Application Count */
+            application_count: number;
+            /** Managers */
+            managers: components["schemas"]["ManagerMetrics"][];
+            /** Warnings */
+            warnings: components["schemas"]["ComparableWarning"][];
+        };
+        /** ComparableRequest */
+        ComparableRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Dimensions */
+            dimensions?: ("product_group" | "channel" | "client_type")[];
+            /** Managers */
+            managers?: ("M1" | "M2" | "M3" | "M4" | "M5" | "unknown")[];
+            /** Product Group */
+            product_group?: string | null;
+            /** Channel */
+            channel?: string | null;
+            /** Client Type */
+            client_type?: string | null;
+            /** Day From */
+            day_from?: number | null;
+            /** Day To */
+            day_to?: number | null;
+            /**
+             * Minimum Count
+             * @default 10
+             */
+            minimum_count?: number;
+            /**
+             * Offset
+             * @default 0
+             */
+            offset?: number;
+            /**
+             * Limit
+             * @default 50
+             */
+            limit?: number;
+        };
+        /** ComparableView */
+        ComparableView: {
+            /** Dataset Id */
+            dataset_id: string;
+            resolved: components["schemas"]["ComparableRequest"];
+            /** Total Groups */
+            total_groups: number;
+            /** Matched Application Count */
+            matched_application_count: number;
+            /** Groups */
+            groups: components["schemas"]["ComparableGroup"][];
+            /** Overall */
+            overall: components["schemas"]["ManagerMetrics"][];
+            /**
+             * Caveat Ru
+             * @default Состав заявок различается. Сравнение описательное; оно не устанавливает причины и не является рейтингом сотрудников.
+             */
+            caveat_ru?: string;
+        };
+        /** ComparableWarning */
+        ComparableWarning: {
+            /** Manager */
+            manager: string;
+            /** Metric */
+            metric: string;
+            /** Known Count */
+            known_count: number;
+            /** Total Count */
+            total_count: number;
+            /**
+             * Code
+             * @enum {string}
+             */
+            code: "SMALL_GROUP" | "INCOMPLETE" | "NO_OBSERVATIONS";
         };
         /** CompareRequest */
         CompareRequest: {
@@ -3510,6 +4144,52 @@ export interface components {
             /** Warnings */
             warnings: string[];
         };
+        /** IntelligenceReviewItem */
+        IntelligenceReviewItem: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Item Id */
+            item_id: string;
+            /** Kb Version */
+            kb_version: string;
+            /**
+             * Category
+             * @enum {string}
+             */
+            category: "correct_policy" | "missing_parameter" | "kb_fact" | "provider_error" | "verifier_reject";
+            /** Reason Codes */
+            reason_codes: string[];
+            /**
+             * Status
+             * @default open
+             * @enum {string}
+             */
+            status?: "open" | "resolved";
+            /**
+             * Version
+             * @default 1
+             */
+            version?: number;
+            /** User Text */
+            user_text: string;
+            /** Conversation Id */
+            conversation_id?: string | null;
+            /** Turn Index */
+            turn_index?: number | null;
+            /**
+             * Occurrences
+             * @default 1
+             */
+            occurrences?: number;
+            /** Created At */
+            created_at: string;
+            /** Updated At */
+            updated_at: string;
+            /** Resolved By */
+            resolved_by?: string | null;
+            /** Resolution Note */
+            resolution_note?: string | null;
+        };
         /**
          * InventoryChange
          * @description Result of reserve/consume/release/withdraw: the new state and the audit event id.
@@ -3576,6 +4256,11 @@ export interface components {
             started_at?: string | null;
             /** Finished At */
             finished_at?: string | null;
+            /**
+             * Accepted Row Count
+             * @default 0
+             */
+            accepted_row_count?: number;
         };
         /** KbHead */
         KbHead: {
@@ -3587,6 +4272,141 @@ export interface components {
             sha256: string;
             /** Version */
             version: number;
+        };
+        /** KnowledgeImpactPreview */
+        KnowledgeImpactPreview: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Item Id */
+            item_id: string;
+            /** Current Kb Version */
+            current_kb_version: string;
+            /** Expected Platform Version */
+            expected_platform_version: number;
+            /** Proposed Kb Version */
+            proposed_kb_version: string;
+            /** Proposed Sha256 */
+            proposed_sha256: string;
+            /** Changed Products */
+            changed_products: string[];
+            /** Changed Rules */
+            changed_rules: string[];
+            /** Affected Quotes */
+            affected_quotes: string[];
+            /** Mapping Changes */
+            mapping_changes: string[];
+            /** No Op */
+            no_op: boolean;
+            /**
+             * Apply Method
+             * @default POST
+             * @constant
+             */
+            apply_method?: "POST";
+            /** Apply Path */
+            apply_path: string;
+            /**
+             * Requires Explicit Human Confirmation
+             * @default true
+             */
+            requires_explicit_human_confirmation?: boolean;
+            /** Warnings */
+            warnings?: string[];
+        };
+        /** KnowledgeImpactRequest */
+        KnowledgeImpactRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Kb Version */
+            expected_kb_version: string;
+            /** Proposed Content */
+            proposed_content: string;
+        };
+        /** LaborMeasurement */
+        LaborMeasurement: {
+            /** Measurement Id */
+            measurement_id: string;
+            /** Pair Id */
+            pair_id: string;
+            /** Task Id */
+            task_id: string;
+            /** Task Input Ref */
+            task_input_ref: string;
+            /** Input Hash */
+            input_hash: string;
+            /** Operator */
+            operator: string;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "manual" | "app";
+            /**
+             * Planned Order
+             * @enum {string}
+             */
+            planned_order: "manual_first" | "app_first";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "running" | "paused" | "finished" | "attested";
+            /** Started At */
+            started_at: string;
+            /** Finished At */
+            finished_at?: string | null;
+            /** Elapsed Seconds */
+            elapsed_seconds: string;
+            /** Recorded Running Seconds */
+            recorded_running_seconds: string;
+            /** Attested Active Seconds */
+            attested_active_seconds?: string | null;
+            /** Attested By */
+            attested_by?: string | null;
+            /**
+             * Human Confirmed
+             * @default false
+             */
+            human_confirmed?: boolean;
+            /** Result Ref */
+            result_ref?: string | null;
+            /**
+             * Error Count
+             * @default 0
+             */
+            error_count?: number;
+            /**
+             * Rework Seconds
+             * @default 0
+             */
+            rework_seconds?: string;
+            /**
+             * Interruption Detected
+             * @default false
+             */
+            interruption_detected?: boolean;
+            /**
+             * Interruption Acknowledged
+             * @default false
+             */
+            interruption_acknowledged?: boolean;
+            /** Events */
+            events: {
+                [key: string]: unknown;
+            }[];
+        };
+        /** LaborPairStatus */
+        LaborPairStatus: {
+            /** Pair Id */
+            pair_id: string;
+            /** Task Id */
+            task_id: string;
+            /** Ready */
+            ready: boolean;
+            /** Reason Code */
+            reason_code: string | null;
+            /** Saved Active Seconds */
+            saved_active_seconds?: string | null;
         };
         /** LaborStudy */
         LaborStudy: {
@@ -3631,6 +4451,89 @@ export interface components {
             /** App Rework Seconds */
             app_rework_seconds: string;
         };
+        /** LaborStudyCreate */
+        LaborStudyCreate: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Name */
+            name: string;
+            /** Protocol */
+            protocol: string;
+            /** Observer */
+            observer: string;
+            /** Start Definition */
+            start_definition: string;
+            /** End Definition */
+            end_definition: string;
+        };
+        /** LaborStudyExport */
+        LaborStudyExport: {
+            /** Study Id */
+            study_id: string;
+            /** Study Version */
+            study_version: number;
+            /**
+             * Measurement Status
+             * @default supplied_measurements
+             * @constant
+             */
+            measurement_status?: "supplied_measurements";
+            /** Labor Studies */
+            labor_studies: components["schemas"]["LaborStudy"][];
+            /** Pair Count */
+            pair_count: number;
+            /** Negative Saving Pairs */
+            negative_saving_pairs: number;
+            /** Median Saved Active Seconds */
+            median_saved_active_seconds: string;
+            /** Source Ref */
+            source_ref: string;
+            /** Order Counts */
+            order_counts: {
+                [key: string]: number;
+            };
+        };
+        /** LaborStudyView */
+        LaborStudyView: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Name */
+            name: string;
+            /** Protocol */
+            protocol: string;
+            /** Observer */
+            observer: string;
+            /** Start Definition */
+            start_definition: string;
+            /** End Definition */
+            end_definition: string;
+            /** Study Id */
+            study_id: string;
+            /** Version */
+            version: number;
+            /** Created At */
+            created_at: string;
+            /** Measurements */
+            measurements: components["schemas"]["LaborMeasurement"][];
+            /** Pairs */
+            pairs: components["schemas"]["LaborPairStatus"][];
+            /** Ready Pair Count */
+            ready_pair_count: number;
+            /** Export Ready */
+            export_ready: boolean;
+            /** Order Counts */
+            order_counts?: {
+                [key: string]: number;
+            };
+            /** Protocol Warnings */
+            protocol_warnings?: string[];
+            /**
+             * Human Attestation Is Not Independent Verification
+             * @default true
+             * @constant
+             */
+            human_attestation_is_not_independent_verification?: true;
+        };
         /** LayoutPart */
         LayoutPart: {
             /** Part Id */
@@ -3666,6 +4569,60 @@ export interface components {
         LocalSession: {
             /** Session Token */
             session_token: string;
+        };
+        /** ManagerCorrectionDraft */
+        ManagerCorrectionDraft: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Draft Id */
+            draft_id: string;
+            /** Dialog Id */
+            dialog_id: string;
+            /** Input Sha256 */
+            input_sha256: string;
+            /** Kb Version */
+            kb_version: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "DRAFT_VERIFIED" | "NEEDS_REVIEW" | "NOT_NEEDED";
+            /** Answer */
+            answer?: string | null;
+            /** Catalog Product Id */
+            catalog_product_id?: string | null;
+            /** Applicable Price Tg */
+            applicable_price_tg?: string | null;
+            /** Price Meaning */
+            price_meaning?: string | null;
+            /** Unit */
+            unit?: string | null;
+            /** Source Ref */
+            source_ref?: string | null;
+            /** Evidence */
+            evidence?: components["schemas"]["Evidence"][];
+            /** Reason Code */
+            reason_code: string;
+            /** Created At */
+            created_at: string;
+            /**
+             * Requires Human Review
+             * @default true
+             */
+            requires_human_review?: boolean;
+        };
+        /** ManagerCorrectionRequest */
+        ManagerCorrectionRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Id */
+            id: string;
+            /** Client */
+            client: string;
+            /** Manager */
+            manager: string;
+            /** Kb Version */
+            kb_version: string;
         };
         /** ManagerMetrics */
         ManagerMetrics: {
@@ -3903,6 +4860,109 @@ export interface components {
             /** Value Tg */
             value_tg: string;
         };
+        /** MeasurementAction */
+        MeasurementAction: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Operator */
+            operator: string;
+            /**
+             * Note
+             * @default
+             */
+            note?: string;
+            /**
+             * Acknowledge Interruption
+             * @default false
+             */
+            acknowledge_interruption?: boolean;
+        };
+        /** MeasurementAttest */
+        MeasurementAttest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Operator */
+            operator: string;
+            /**
+             * Note
+             * @default
+             */
+            note?: string;
+            /**
+             * Acknowledge Interruption
+             * @default false
+             */
+            acknowledge_interruption?: boolean;
+            /** Active Seconds */
+            active_seconds: string;
+            /**
+             * Human Confirmed
+             * @constant
+             */
+            human_confirmed: true;
+        };
+        /** MeasurementFinish */
+        MeasurementFinish: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Operator */
+            operator: string;
+            /**
+             * Note
+             * @default
+             */
+            note?: string;
+            /**
+             * Acknowledge Interruption
+             * @default false
+             */
+            acknowledge_interruption?: boolean;
+            /** Result Ref */
+            result_ref: string;
+            /**
+             * Error Count
+             * @default 0
+             */
+            error_count?: number;
+            /**
+             * Rework Seconds
+             * @default 0
+             */
+            rework_seconds?: string;
+        };
+        /** MeasurementStart */
+        MeasurementStart: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Pair Id */
+            pair_id: string;
+            /** Task Id */
+            task_id: string;
+            /** Task Input Ref */
+            task_input_ref: string;
+            /** Input Hash */
+            input_hash: string;
+            /** Operator */
+            operator: string;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "manual" | "app";
+            /**
+             * Planned Order
+             * @enum {string}
+             */
+            planned_order: "manual_first" | "app_first";
+        };
         /** MeasurementUpdate */
         MeasurementUpdate: {
             /** Dataset Id */
@@ -3936,6 +4996,20 @@ export interface components {
             /** Definition */
             definition: string;
         };
+        /** ModelAttempt */
+        ModelAttempt: {
+            /** Provider */
+            provider: string;
+            /** Model Id */
+            model_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ok" | "error" | "rejected";
+            /** Error Kind */
+            error_kind?: string | null;
+        };
         /** NewRemnant */
         NewRemnant: {
             /** Dataset Id */
@@ -3951,6 +5025,55 @@ export interface components {
             age_days?: number | null;
             /** Remnant Id */
             remnant_id?: string | null;
+        };
+        /** NewRequirement */
+        NewRequirement: {
+            /** Material Id */
+            material_id: string;
+            dimensions: components["schemas"]["Dimensions"];
+            /** Quantity */
+            quantity: number;
+            /** Part Ids */
+            part_ids: string[];
+            /** Order Ids */
+            order_ids: string[];
+            /** Area Mm2 */
+            area_mm2: number;
+            /** Reason Code */
+            reason_code: string;
+            /** Reason Ru */
+            reason_ru: string;
+        };
+        /** NewRequirements */
+        NewRequirements: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Plan Id */
+            plan_id: string;
+            /** Revision */
+            revision: number;
+            /** Plan Status */
+            plan_status: string;
+            /** Is Active */
+            is_active: boolean;
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "active" | "proposal" | "historical";
+            /** Inventory Version */
+            inventory_version: string;
+            /** Rows */
+            rows: components["schemas"]["NewRequirement"][];
+            /** Total Area Mm2 */
+            total_area_mm2: number;
+            /** Total Quantity */
+            total_quantity: number;
+            /**
+             * Disclaimer Ru
+             * @default Потребность в деталях NEW; число новых листов и закупочная цена не определены.
+             */
+            disclaimer_ru?: string;
         };
         /** OrderAction */
         OrderAction: {
@@ -4155,6 +5278,53 @@ export interface components {
              */
             product_type?: string;
         };
+        /** PieceLabel */
+        PieceLabel: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Label Id */
+            label_id: string;
+            /** Created At */
+            created_at: string;
+            /** Printed Version */
+            printed_version: number;
+            /** Operator */
+            operator: string;
+            snapshot: components["schemas"]["Remnant"];
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /** Scan Payload */
+            scan_payload: string;
+            /**
+             * Confirmation Note Ru
+             * @default Бирка идентифицирует кусок. Резерв, выдача и расход требуют отдельных актуальных проверок.
+             */
+            confirmation_note_ru?: string;
+        };
+        /** PieceLabelCreate */
+        PieceLabelCreate: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Remnant Id */
+            remnant_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Operator */
+            operator: string;
+        };
+        /** PieceLabelResolved */
+        PieceLabelResolved: {
+            label: components["schemas"]["PieceLabel"];
+            current: components["schemas"]["Remnant"];
+            /** Changed */
+            changed: boolean;
+            /**
+             * Mutation Authorized By Label
+             * @default false
+             * @constant
+             */
+            mutation_authorized_by_label?: false;
+        };
         /** Placement */
         Placement: {
             /** Part Id */
@@ -4185,6 +5355,28 @@ export interface components {
              * @enum {string}
              */
             kind: "added" | "removed" | "moved" | "reassigned" | "unchanged";
+        };
+        /** PlacementMargin */
+        PlacementMargin: {
+            /** Part Id */
+            part_id: string;
+            /** Remnant Id */
+            remnant_id: string;
+            /** Tempered */
+            tempered: boolean;
+            /**
+             * Margin Kind
+             * @enum {string}
+             */
+            margin_kind: "cut_geometry" | "whole_piece_tolerance";
+            /** Edge Clearance Mm */
+            edge_clearance_mm?: number | null;
+            /** Neighbor Clearance Mm */
+            neighbor_clearance_mm?: number | null;
+            /** Minimum Excess Mm */
+            minimum_excess_mm: number;
+            /** Dimension Deviation Mm */
+            dimension_deviation_mm?: number | null;
         };
         /** PlanComparison */
         PlanComparison: {
@@ -4238,6 +5430,39 @@ export interface components {
             remnants: components["schemas"]["RemnantLayout"][];
             /** New Part Ids */
             new_part_ids: string[];
+        };
+        /** PlanMargins */
+        PlanMargins: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Plan Id */
+            plan_id: string;
+            /** Revision */
+            revision: number;
+            /** Inventory Version */
+            inventory_version: string;
+            /** Placements */
+            placements: components["schemas"]["PlacementMargin"][];
+            /**
+             * Trim Mm
+             * @default 5
+             */
+            trim_mm?: number;
+            /**
+             * Gap Mm
+             * @default 3
+             */
+            gap_mm?: number;
+            /**
+             * Tempered Tolerance Mm
+             * @default 2
+             */
+            tempered_tolerance_mm?: number;
+            /**
+             * Note Ru
+             * @default Геометрический запас по текущему замеру, не вероятность брака. Конкурсные допуски не изменены.
+             */
+            note_ru?: string;
         };
         /** PlanRef */
         PlanRef: {
@@ -4318,6 +5543,16 @@ export interface components {
         Quote: {
             /** Dataset Id */
             dataset_id: string;
+            /**
+             * Origin
+             * @default explicit_request
+             * @enum {string}
+             */
+            origin?: "explicit_request" | "assistant_deterministic" | "assistant_model";
+            /** Origin Conversation Id */
+            origin_conversation_id?: string | null;
+            /** Origin Turn Index */
+            origin_turn_index?: number | null;
             /** Quote Id */
             quote_id: string;
             /** Revision */
@@ -4922,6 +6157,72 @@ export interface components {
             /** Confirm Replace */
             confirm_replace: boolean;
         };
+        /** ResultPassport */
+        ResultPassport: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Run Id */
+            run_id: string;
+            /**
+             * View
+             * @enum {string}
+             */
+            view: "current" | "accepted";
+            /** Export Id */
+            export_id?: string | null;
+            /** Status */
+            status: string;
+            /** Manifest */
+            manifest: {
+                [key: string]: unknown;
+            };
+            /** Files */
+            files?: {
+                [key: string]: string;
+            };
+            /** Validators */
+            validators?: {
+                [key: string]: unknown;
+            }[] | {
+                [key: string]: unknown;
+            };
+            /** Modules */
+            modules: {
+                [key: string]: unknown;
+            }[];
+            /** History Available */
+            history_available: boolean;
+            /**
+             * Caveat Ru
+             * @default История содержит только фактически сохранённые допустимые результаты. Оптимум ограниченного пула не является глобальным оптимумом.
+             */
+            caveat_ru?: string;
+        };
+        /** ReviewResolveRequest */
+        ReviewResolveRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Resolved By */
+            resolved_by: string;
+            /** Resolution Note */
+            resolution_note: string;
+        };
+        /** RunBudgetRenew */
+        RunBudgetRenew: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Total Budget Seconds */
+            total_budget_seconds: number;
+            /**
+             * Export Reserve Seconds
+             * @default 30
+             */
+            export_reserve_seconds?: number;
+        };
         /** RunRequest */
         RunRequest: {
             /** Dataset Id */
@@ -4939,6 +6240,13 @@ export interface components {
             ai_profile?: "direct" | "judge_gateway" | "local_limited";
             /** Buyer Registry Version */
             buyer_registry_version?: string | null;
+            /** Total Budget Seconds */
+            total_budget_seconds?: number | null;
+            /**
+             * Export Reserve Seconds
+             * @default 30
+             */
+            export_reserve_seconds?: number;
         };
         /** RunView */
         RunView: {
@@ -4955,6 +6263,15 @@ export interface components {
             jobs: components["schemas"]["Job"][];
             /** Missing Modules */
             missing_modules: string[];
+            /**
+             * Version
+             * @default 0
+             */
+            version?: number;
+            /** Budget */
+            budget?: {
+                [key: string]: unknown;
+            } | null;
         };
         /** SaleCard */
         SaleCard: {
@@ -5015,6 +6332,87 @@ export interface components {
             /** Match Snapshot Hash */
             match_snapshot_hash?: string | null;
         };
+        /** ScarcityExplanation */
+        ScarcityExplanation: {
+            /** Preserve Remnant Id */
+            preserve_remnant_id: string;
+            /** Alternative Remnant Id */
+            alternative_remnant_id: string;
+            /** Known Order Id */
+            known_order_id: string;
+            /** Pending Part Ids */
+            pending_part_ids: string[];
+            /** Joint Witness */
+            joint_witness: components["schemas"]["Placement"][];
+            /** Request Part Ids */
+            request_part_ids?: string[];
+            /** Reason Ru */
+            reason_ru: string;
+        };
+        /** ScarcityRequest */
+        ScarcityRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Material Id */
+            material_id: string;
+            dimensions: components["schemas"]["Dimensions"];
+            /**
+             * Premium
+             * @default false
+             */
+            premium?: boolean;
+            /**
+             * Inventory Mode
+             * @default free_whole_remnants
+             * @enum {string}
+             */
+            inventory_mode?: "free_whole_remnants" | "replan";
+            /** Base Plan Id */
+            base_plan_id?: string | null;
+            /**
+             * Quantity
+             * @default 1
+             */
+            quantity?: number;
+            /**
+             * Budget Ms
+             * @default 300
+             */
+            budget_ms?: number;
+        };
+        /** ScarcityResult */
+        ScarcityResult: {
+            /** Dataset Id */
+            dataset_id: string;
+            baseline: components["schemas"]["Candidates"];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "proved" | "no_proof" | "limited" | "not_applicable";
+            /** Recommended Remnant Id */
+            recommended_remnant_id?: string | null;
+            /** Explanations */
+            explanations?: components["schemas"]["ScarcityExplanation"][];
+            /** Elapsed Ms */
+            elapsed_ms: number;
+            /** Inventory Version */
+            inventory_version: string;
+            /** Plan Id */
+            plan_id?: string | null;
+            /** Plan Revision */
+            plan_revision?: number | null;
+            /**
+             * Baseline Order Preserved
+             * @default true
+             */
+            baseline_order_preserved?: boolean;
+            /**
+             * Pending Basis
+             * @default uncovered_parts_of_selected_plan_or_imported_orders_without_plan
+             */
+            pending_basis?: string;
+        };
         /** SettingsUpdate */
         SettingsUpdate: {
             /**
@@ -5033,7 +6431,17 @@ export interface components {
              * @default gemini
              * @enum {string}
              */
-            provider?: "gemini" | "openrouter";
+            provider?: "gemini" | "openrouter" | "basisweb";
+            /**
+             * Included Quota Enabled
+             * @default false
+             */
+            included_quota_enabled?: boolean;
+            /**
+             * Quota Token Budget
+             * @default 1000000
+             */
+            quota_token_budget?: number;
             /**
              * Model Id
              * @default
@@ -5319,6 +6727,53 @@ export interface components {
             /** Expected Version */
             expected_version: number;
         };
+        /** WarehouseDocument */
+        WarehouseDocument: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Document Id */
+            document_id: string;
+            /**
+             * Subject Type
+             * @enum {string}
+             */
+            subject_type: "order" | "basket";
+            /** Subject Id */
+            subject_id: string;
+            /** Subject Version */
+            subject_version: number;
+            /** Created At */
+            created_at: string;
+            /** Operator */
+            operator: string;
+            /** Snapshot Hash */
+            snapshot_hash: string;
+            /** Snapshot */
+            snapshot: {
+                [key: string]: unknown;
+            };
+            /**
+             * Notice Ru
+             * @default Снимок задания указанной версии. Выдача и расход подтверждаются отдельно в приложении.
+             */
+            notice_ru?: string;
+        };
+        /** WarehouseDocumentCreate */
+        WarehouseDocumentCreate: {
+            /** Dataset Id */
+            dataset_id: string;
+            /**
+             * Subject Type
+             * @enum {string}
+             */
+            subject_type: "order" | "basket";
+            /** Subject Id */
+            subject_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Operator */
+            operator: string;
+        };
         /** WarehouseTask */
         WarehouseTask: {
             /** Order Id */
@@ -5350,6 +6805,50 @@ export interface components {
             expected_version: number;
             /** Reason */
             reason: string;
+        };
+        /** WorkflowItem */
+        WorkflowItem: {
+            /**
+             * Subject Type
+             * @enum {string}
+             */
+            subject_type: "order" | "basket" | "reminder";
+            /** Subject Id */
+            subject_id: string;
+            /** Version */
+            version: number;
+            /** Reason Code */
+            reason_code: string;
+            /**
+             * Responsible Role
+             * @enum {string}
+             */
+            responsible_role: "manager" | "warehouse" | "owner";
+            /** Next Action */
+            next_action: string;
+            /** Route Hint */
+            route_hint: string;
+            /** Summary */
+            summary: string;
+            /** Amount Tg */
+            amount_tg?: string | null;
+        };
+        /** WorkflowQueue */
+        WorkflowQueue: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Items */
+            items: components["schemas"]["WorkflowItem"][];
+            /** Counts */
+            counts: {
+                [key: string]: number;
+            };
+            /**
+             * Projection Only
+             * @default true
+             * @constant
+             */
+            projection_only?: true;
         };
         /** WorkingCard */
         WorkingCard: {
@@ -5513,6 +7012,969 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Readiness"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_studies_api_v1_labor_studies_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaborStudyView"][];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    create_study_api_v1_labor_studies_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LaborStudyCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaborStudyView"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    get_study_api_v1_labor_studies__study_id__get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaborStudyView"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    export_study_api_v1_labor_studies__study_id__export_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaborStudyExport"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    start_measurement_api_v1_labor_studies__study_id__measurements_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MeasurementStart"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaborStudyView"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    finish_measurement_api_v1_labor_studies__study_id__measurements__measurement_id__finish_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path: {
+                study_id: string;
+                measurement_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MeasurementFinish"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaborStudyView"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    attest_measurement_api_v1_labor_studies__study_id__measurements__measurement_id__attest_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path: {
+                study_id: string;
+                measurement_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MeasurementAttest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaborStudyView"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    pause_resume_api_v1_labor_studies__study_id__measurements__measurement_id___action__post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path: {
+                study_id: string;
+                measurement_id: string;
+                action: "pause" | "resume";
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MeasurementAction"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaborStudyView"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    workflow_queue_api_v1_workflow_queue_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WorkflowQueue"];
                 };
             };
             /** @description Bad Request */
@@ -6763,6 +9225,115 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunView"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    renew_run_budget_api_v1_runs__run_id__budget_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RunBudgetRenew"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {
@@ -10025,6 +12596,111 @@ export interface operations {
             };
         };
     };
+    scarcity_api_v1_cutting_scarcity_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScarcityRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScarcityResult"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
     solve_input_api_v1_cutting_solve_input_post: {
         parameters: {
             query?: never;
@@ -10970,6 +13646,218 @@ export interface operations {
             };
         };
     };
+    plan_new_requirements_api_v1_plans__plan_id__new_requirements_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                revision?: number | null;
+            };
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NewRequirements"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    plan_geometry_margins_api_v1_plans__plan_id__geometry_margins_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                revision?: number | null;
+            };
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanMargins"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
     plan_free_remnants_api_v1_plans__plan_id__free_remnants_get: {
         parameters: {
             query: {
@@ -11634,6 +14522,638 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_review_items_api_v1_assistant_review_items_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                category?: ("correct_policy" | "missing_parameter" | "kb_fact" | "provider_error" | "verifier_reject") | null;
+                status?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IntelligenceReviewItem"][];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    resolve_review_item_api_v1_assistant_review_items__item_id__resolve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewResolveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IntelligenceReviewItem"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    preview_review_kb_api_v1_assistant_review_items__item_id__kb_preview_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KnowledgeImpactRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KnowledgeImpactPreview"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    list_manager_corrections_api_v1_dialogs_corrections_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ManagerCorrectionDraft"][];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    create_manager_correction_api_v1_dialogs_corrections_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ManagerCorrectionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ManagerCorrectionDraft"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    get_manager_correction_api_v1_dialogs_corrections__draft_id__get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path: {
+                draft_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ManagerCorrectionDraft"];
                 };
             };
             /** @description Bad Request */
@@ -18422,6 +21942,1057 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["MaterialUseRecord"];
                 };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    result_passport_api_v1_runs__run_id__passport_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+                view?: "current" | "accepted";
+            };
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResultPassport"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    compare_managers_api_v1_analytics_comparable_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ComparableRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComparableView"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    analytics_question_api_v1_analytics_questions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AnalyticsQuestion"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnalyticsAnswer"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    create_label_api_v1_piece_labels_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PieceLabelCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PieceLabel"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    piece_label_api_v1_piece_labels__label_id__get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path: {
+                label_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PieceLabel"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    resolve_label_api_v1_piece_labels__label_id__resolve_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path: {
+                label_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PieceLabelResolved"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    piece_label_pdf_api_v1_piece_labels__label_id__pdf_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path: {
+                label_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    create_warehouse_document_api_v1_warehouse_documents_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WarehouseDocumentCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WarehouseDocument"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    warehouse_document_api_v1_warehouse_documents__document_id__get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WarehouseDocument"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    warehouse_document_pdf_api_v1_warehouse_documents__document_id__pdf_get: {
+        parameters: {
+            query: {
+                dataset_id: string;
+            };
+            header?: never;
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Bad Request */
             400: {

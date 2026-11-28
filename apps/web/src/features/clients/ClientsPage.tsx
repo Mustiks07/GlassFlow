@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Users } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRoute } from '../../state/router';
 import { useApi } from '../../api/context';
 import type { Dataset } from '../../api/types';
 import { formatDateTime, formatPercent } from '../../lib/format';
@@ -189,7 +190,11 @@ function ClientHistory({ dataset, clientId }: { dataset: Dataset; clientId: stri
 
 function RemindersList({ dataset }: { dataset: Dataset }) {
   const { api } = useApi();
+  const target = useRoute().params.get('reminder_id');
   const reminders = useQuery({ queryKey: ['reminders', dataset.dataset_id], queryFn: ({ signal }) => api.listReminders(dataset.dataset_id, signal), staleTime: 0 });
+  useEffect(() => {
+    if (target && reminders.data) document.getElementById(`reminder-${target}`)?.scrollIntoView({ block: 'center' });
+  }, [target, reminders.data]);
   return (
     <Panel title="Локальные напоминания" subtitle="Актуальность предмета перепроверяется при открытии списка и при подтверждении." actions={<Users size={16} aria-hidden="true" />}>
       {reminders.isLoading && <LoadingState />}
@@ -211,7 +216,7 @@ function RemindersList({ dataset }: { dataset: Dataset }) {
             </thead>
             <tbody>
               {reminders.data.map(item => (
-                <tr key={item.reminder_id}>
+                <tr key={item.reminder_id} id={`reminder-${item.reminder_id}`} aria-selected={target === item.reminder_id}>
                   <td className="mono small">
                     {item.reminder_id}
                     <div className="muted">v{item.version}</div>

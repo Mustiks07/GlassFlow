@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { components } from '../../../../../packages/contracts/schema';
 import { useApi } from '../../api/context';
@@ -7,6 +7,8 @@ import type { Dataset, Job } from '../../api/types';
 import { Button, ErrorState, Panel } from '../../ui/kit';
 import { formatMoney } from '../../lib/format';
 import { ActualUse, flowLabel } from './OrderFlowPanel';
+import { useRoute } from '../../state/router';
+import { OperationalDocument } from './OperationalDocument';
 
 type Basket = components['schemas']['Basket'];
 type Line = components['schemas']['BasketLineDraft'];
@@ -14,6 +16,7 @@ type Quote = components['schemas']['Quote'];
 
 export function BasketPanel({ dataset }: { dataset: Dataset }) {
   const { client, api } = useApi();
+  const targetId = useRoute().params.get('basket_id');
   const [customer, setCustomer] = useState('');
   const [text, setText] = useState('');
   const [basket, setBasket] = useState<Basket | null>(null);
@@ -25,6 +28,13 @@ export function BasketPanel({ dataset }: { dataset: Dataset }) {
   const [retryKey, setRetryKey] = useState(newIdempotencyKey);
   const list = useQuery({ queryKey: ['baskets', dataset.dataset_id], queryFn: () => client.get<Basket[]>('/baskets', { query: { dataset_id: dataset.dataset_id } }) });
   const catalog = useQuery({ queryKey: ['catalog-baskets', dataset.dataset_id], queryFn: () => api.listCatalog(dataset.dataset_id, dataset.kb_version ?? "") });
+  useEffect(() => {
+    let current = true;
+    if (targetId) client.get<Basket>(`/baskets/${encodeURIComponent(targetId)}`, { query: { dataset_id: dataset.dataset_id } })
+      .then(value => { if (current) { setBasket(value); setLines(value.lines ?? []); setCustomer(value.customer_ref); setError(null); } })
+      .catch(e => { if (current) setError(e); });
+    return () => { current = false; };
+  }, [client, dataset.dataset_id, targetId]);
   async function wait(job: Job) {
     for (let n = 0; n < 300; n++) {
       const value = await api.getJob(job.job_id);
@@ -126,6 +136,7 @@ export function BasketPanel({ dataset }: { dataset: Dataset }) {
           ] as const).map(([operation, label, enabled]) => <Button key={operation} busy={busy} disabled={!enabled} onClick={() => run(() => command(operation))}>{label}</Button>)}</div>
           {basket.state === 'handed_over' && <ActualUse dataset={dataset} subject={basket} kind="basket" onDone={async () => { setBasket(await client.get<Basket>(`/baskets/${basket.basket_id}`, { query: { dataset_id: dataset.dataset_id } })); await list.refetch(); }} />}
           {basket.material_use_id && <p role="status">Фактический расход сохранен: {basket.material_use_id}</p>}
+          {dataset.mode === 'workspace' && basket.state && basket.version != null && ['confirmed', 'reserved', 'checked', 'handed_over'].includes(basket.state) && <OperationalDocument datasetId={dataset.dataset_id} kind="basket" subjectId={basket.basket_id} version={basket.version} />}
         </>}
         {stage && <p role="status">{stage}</p>}
         {error != null && <ErrorState error={error} />}

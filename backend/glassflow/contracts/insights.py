@@ -6,10 +6,19 @@ from pydantic import Field, model_validator
 
 from .common import DTO, DatasetRequest, Identifier, NonnegativeInt
 from .crm import ManagerMetrics
+from .cutting import Remnant
 
 Dimension = Literal["product_group", "channel", "client_type"]
 Manager = Literal["M1", "M2", "M3", "M4", "M5", "unknown"]
-Metric = Literal["application_count", "mean_response_minutes", "conversion", "returns", "mean_sale_tg", "complaints", "discounts"]
+Metric = Literal[
+    "application_count",
+    "mean_response_minutes",
+    "conversion",
+    "returns",
+    "mean_sale_tg",
+    "complaints",
+    "discounts",
+]
 
 
 class ComparableRequest(DatasetRequest):
@@ -83,14 +92,48 @@ class PieceLabel(DatasetRequest):
     created_at: str
     printed_version: int
     operator: str
-    snapshot: dict
+    snapshot: Remnant
     snapshot_hash: str
     scan_payload: str
-    confirmation_note_ru: str = "Бирка идентифицирует кусок. Резерв, выдача и расход требуют отдельных актуальных проверок."
+    confirmation_note_ru: str = (
+        "Бирка идентифицирует кусок. Резерв, выдача и расход требуют отдельных актуальных проверок."
+    )
 
 
 class PieceLabelResolved(DTO):
     label: PieceLabel
-    current: dict
+    current: Remnant
     changed: bool
     mutation_authorized_by_label: Literal[False] = False
+
+
+class WarehouseDocumentCreate(DatasetRequest):
+    subject_type: Literal["order", "basket"]
+    subject_id: Identifier
+    expected_version: NonnegativeInt
+    operator: Identifier
+
+
+class WarehouseDocument(DatasetRequest):
+    document_id: str
+    subject_type: Literal["order", "basket"]
+    subject_id: str
+    subject_version: int
+    created_at: str
+    operator: str
+    snapshot_hash: str
+    snapshot: dict
+    notice_ru: str = "Снимок задания указанной версии. Выдача и расход подтверждаются отдельно в приложении."
+
+
+class ResultPassport(DatasetRequest):
+    run_id: str
+    view: Literal["current", "accepted"]
+    export_id: str | None = None
+    status: str
+    manifest: dict
+    files: dict[str, str] = Field(default_factory=dict)
+    validators: list[dict] | dict = Field(default_factory=list)
+    modules: list[dict]
+    history_available: bool
+    caveat_ru: str = "История содержит только фактически сохранённые допустимые результаты. Оптимум ограниченного пула не является глобальным оптимумом."

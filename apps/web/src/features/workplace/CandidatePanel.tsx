@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CheckCircle2, Lock, MapPin } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { newIdempotencyKey } from '../../api/client';
 import { useApi } from '../../api/context';
 import { ApiError, asApiError } from '../../api/errors';
@@ -10,6 +10,7 @@ import { Button, ConfirmDialog, EmptyState, ErrorState, Field, LoadingState, Pan
 import { RemnantSvg, footprint } from '../cutting/RemnantSvg';
 import { parseLocation, reasonLabel } from '../cutting/labels';
 import { isMutable } from '../shell/dataset';
+import type { components } from '../../../../../packages/contracts/schema';
 
 /**
  * Candidate remnant for the current quote + explicit confirmation.
@@ -32,7 +33,7 @@ export function CandidatePanel({
   quoteStale: boolean;
   onQuote: (quote: Quote) => void;
 }) {
-  const { api } = useApi();
+  const { api, client } = useApi();
   const queryClient = useQueryClient();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -44,6 +45,12 @@ export function CandidatePanel({
   const dims = quote?.dimensions ?? null;
   const mapped = quote?.material_mapping_status === 'confirmed' && quote.material_id;
   const fromQuote = quote?.inventory_status && quote.inventory_status !== 'not_requested';
+  const scarcity = useMutation({ mutationFn: () => client.post<components['schemas']['ScarcityResult']>('/cutting/scarcity', {
+    dataset_id: dataset.dataset_id, material_id: quote!.material_id, dimensions: quote!.dimensions,
+    quantity: quote!.quantity ?? 1, inventory_mode: 'free_whole_remnants', budget_ms: 300,
+  }) });
+  const resetScarcity = scarcity.reset;
+  useEffect(() => { resetScarcity(); }, [quote?.quote_id, quote?.revision, dataset.dataset_id, resetScarcity]);
 
   // Older backends without inventory in the quote: ask Claude 2 directly (read-only).
   const direct = useQuery({
@@ -199,6 +206,9 @@ export function CandidatePanel({
   return (
     <Panel title="Подходящий остаток" subtitle="Свободные целые исходные куски; место хранения из поля «место».">
       {body}
+      {mapped && dims && !quoteStale && <details><summary>Сохранить редкий кусок для известного заказа</summary><p className="small muted">Проверяется совместная геометрия известных незавершённых деталей. Порядок обычного подбора сохраняется.</p><Button disabled={scarcity.isPending} onClick={() => scarcity.mutate()}>Проверить ограниченную альтернативу</Button>
+        {scarcity.error && <ErrorState error={scarcity.error} />}{scarcity.data && <div role="status">{scarcity.data.status === 'proved' ? (scarcity.data.explanations ?? []).map((e, i) => <p key={i}>{e.reason_ru} · сохранить {e.preserve_remnant_id}, альтернатива {e.alternative_remnant_id}, заказ {e.known_order_id}. Совместно проверено размещений: {e.joint_witness.length}.</p>) : <p>{scarcity.data.status === 'limited' ? 'Время проверки истекло. Используйте обычный проверенный подбор.' : 'Доказанного основания менять подбор нет.'}</p>}<p className="small muted">Версия склада: {scarcity.data.inventory_version} · {scarcity.data.elapsed_ms.toFixed(0)} мс</p></div>}
+      </details>}
       {quote && quote.status === 'confirmed' && (
         <StatusBadge tone="ok">
           Предложение подтверждено (ревизия {quote.revision}

@@ -71,6 +71,8 @@ export type ExportResult = S['ExportResult'] & Partial<{ export_id: string; mani
 
 /** GET /runs/{id} — Pro 6512eae run_view. */
 export interface RunView {
+  version?: number;
+  budget?: Record<string, unknown> | null;
   manifest: Record<string, unknown> & { modules?: RunModule[]; dataset_id?: string };
   status: 'running' | 'completed' | 'partial' | 'blocked';
   jobs: Job[];
@@ -80,7 +82,9 @@ export interface RunView {
 export interface AISettings {
   version: number;
   profile: 'direct' | 'judge_gateway' | 'local_limited';
-  provider: 'gemini' | 'openrouter';
+  provider: 'gemini' | 'openrouter' | 'basisweb';
+  included_quota_enabled?: boolean;
+  quota_token_budget?: number;
   model_id: string;
   mode: 'free_only' | 'paid_enabled';
   paid_enabled: boolean;

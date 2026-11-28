@@ -13,14 +13,33 @@ def runtime_for(settings, secret=None, ledger=None):
     # A KZT budget is never silently treated as dollars. Paid tariff/currency setup
     # requires an explicit supported C3 price profile; fail closed until supplied.
     paid = safe.get("mode") == "paid_enabled"
-    profile = AIProfile(name=safe.get("profile", "local_limited"),
+    profile = AIProfile(
+        name=safe.get("profile", "local_limited"),
+        included_quota_enabled=bool(safe.get("included_quota_enabled", False)),
+        quota_token_budget=safe.get("quota_token_budget", 1_000_000),
         primary=ModelRef(provider=provider, model_id=model) if enabled and model and not paid else None,
-        mode="free_only", rpm=safe.get("rpm", 1), tpm=safe.get("tpm", 1000), rpd=safe.get("rpd", 100),
-        max_concurrency=safe.get("max_parallel", 1), request_timeout_s=safe.get("timeout_seconds", 30),
-        turn_deadline_s=safe.get("timeout_seconds", 30), max_retries=safe.get("max_retries", 2),
+        mode="free_only",
+        rpm=safe.get("rpm", 1),
+        tpm=safe.get("tpm", 1000),
+        rpd=safe.get("rpd", 100),
+        max_concurrency=safe.get("max_parallel", 1),
+        request_timeout_s=safe.get("timeout_seconds", 30),
+        turn_deadline_s=safe.get("timeout_seconds", 30),
+        max_retries=safe.get("max_retries", 2),
         max_output_tokens=min(8192, max(64, safe.get("max_output_tokens", 2048))),
         max_tool_iterations=safe.get("max_tool_iterations", 6),
-        fallbacks=[ModelRef(provider=x.split(":", 1)[0], model_id=x.split(":", 1)[1])
-                   for x in safe.get("fallback_models", []) if ":" in x] if enabled else [])
-    return build_runtime(profile, EnvSecrets({SECRET_NAMES[provider]: secret or ""}),
-        prompt_version=PROMPT_VERSION, ledger=ledger, env={"GLASSFLOW_GATEWAY_URL": safe.get("gateway_url") or ""})
+        fallbacks=[
+            ModelRef(provider=x.split(":", 1)[0], model_id=x.split(":", 1)[1])
+            for x in safe.get("fallback_models", [])
+            if ":" in x
+        ]
+        if enabled
+        else [],
+    )
+    return build_runtime(
+        profile,
+        EnvSecrets({SECRET_NAMES[provider]: secret or ""}),
+        prompt_version=PROMPT_VERSION,
+        ledger=ledger,
+        env={"GLASSFLOW_GATEWAY_URL": safe.get("gateway_url") or ""},
+    )

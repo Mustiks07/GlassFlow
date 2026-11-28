@@ -13,6 +13,9 @@ import { RequireDataset } from '../shell/RequireDataset';
 import { useJob } from '../shell/useJob';
 import { AddRemnantDialog, ConsumeDialog, MeasureDialog } from './RemnantDialogs';
 import { SchemeEditor } from './SchemeEditor';
+import { PlanInsights } from './PlanInsights';
+import { OperationalDocument } from '../workplace/OperationalDocument';
+import { LabelLookup } from './LabelLookup';
 import { draftChanged, draftKey, effectivePlacements, useCuttingStore } from './draftStore';
 import { PLAN_STATUS_LABEL, REMNANT_STATUS_LABEL, SEARCH_STATUS_LABEL, parseLocation, reasonLabel } from './labels';
 
@@ -97,7 +100,9 @@ function Cutting({ dataset }: { dataset: Dataset }) {
         >
           {plan.isLoading && <LoadingState label="Загружаем размещения…" />}
           {plan.isError && <ErrorState error={plan.error} onRetry={() => plan.refetch()} context="План" />}
+          <LabelLookup datasetId={dataset.dataset_id} />
           {plan.data && <PlanMetrics plan={plan.data} />}
+          {plan.data && <PlanInsights datasetId={dataset.dataset_id} planId={plan.data.plan_id} revision={plan.data.revision} />}
         </Panel>
       )}
 
@@ -648,6 +653,7 @@ function EditorPanel({ dataset, plan, remnants, parts, materials }: { dataset: D
           </div>
         </div>
       )}
+      {remnant && dataset.mode === 'workspace' && <OperationalDocument datasetId={dataset.dataset_id} kind="piece" subjectId={remnant.remnant_id} version={remnant.version ?? 0} />}
       {!remnant ? (
         <EmptyState title="Выберите остаток в таблице">Откроется схема с размерами, краем 5 мм и табличной альтернативой.</EmptyState>
       ) : (

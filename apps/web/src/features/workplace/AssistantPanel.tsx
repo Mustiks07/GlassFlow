@@ -33,7 +33,7 @@ const PARAM_LABEL: Record<string, string> = {
   color: 'Цвет',
 };
 
-export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote: (quote: Quote) => void }) {
+export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote: (quote: Quote | null) => void }) {
   const { api } = useApi();
   const draft = useQuoteDraft(dataset.dataset_id);
   const updateDraft = useAppStore(state => state.updateQuoteDraft);
@@ -72,6 +72,7 @@ export function AssistantPanel({ dataset, onQuote }: { dataset: Dataset; onQuote
       setTurns(current => [...current, { role: 'user', text }, { role: 'assistant', text: reply.answer, reply }]);
       updateDraft(dataset.dataset_id, { conversationId: reply.conversation_id, request: '' });
       if (reply.quote) onQuote(reply.quote);
+      else if (reply.status && ['clarification', 'manager_handoff'].includes(reply.status)) onQuote(null);
     },
   });
 
@@ -248,6 +249,7 @@ function ReplyDetails({ reply, onApply }: { reply: AssistantReply; onApply: () =
             </ul>
           )}
           {reply.answer_path && <p className="small muted">Путь ответа: {reply.answer_path}{reply.latency_ms ? ` · ${reply.latency_ms} мс` : ''}</p>}
+          {reply.origin && <p className="small muted">Происхождение: {reply.origin} · ответ из кеша: {reply.cache_hit ? 'да' : 'нет'} · обращений к модели: {reply.model_call_count ?? 0}{reply.selected_provider ? ` · выбран ${reply.selected_provider}/${reply.selected_model_id}` : ''} · отклонено проверкой: {reply.verifier_reject_count ?? 0}</p>}
         </Details>
       )}
     </div>

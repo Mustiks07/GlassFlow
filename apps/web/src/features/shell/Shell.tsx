@@ -42,11 +42,12 @@ export function Shell({ children }: { children: ReactNode }) {
       </a>
       <aside className="sidebar">
         <a className="brand" href={href('workplace')} aria-label="GlassFlow, рабочее место">
-          <span className="brand-symbol" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
+          <svg width="32" height="32" viewBox="0 0 64 64" aria-hidden="true">
+            <defs><clipPath id="glassflow-brand-back"><path d="M8 16 L18 6 L58 6 L28 36 L22 36 L22 56 L8 56 Z" /></clipPath></defs>
+            <path d="M8 16 L18 6 L58 6 L28 36 L22 36 L22 56 L8 56 Z" fill="#A6DCCF" />
+            <path d="M22 24 L60 24 L60 46 L48 58 L12 58 L24 46 L36 46 L46 36 L22 36 Z" fill="#3E8C7C" />
+            <path d="M22 24 L60 24 L60 46 L48 58 L12 58 L24 46 L36 46 L46 36 L22 36 Z" fill="#1F6B5D" clipPath="url(#glassflow-brand-back)" />
+          </svg>
           <span>
             GlassFlow<small>Рабочее место KSM</small>
           </span>

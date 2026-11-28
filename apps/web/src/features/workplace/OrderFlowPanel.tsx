@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { OperationalDocument } from './OperationalDocument';
 import { useQuery } from '@tanstack/react-query';
 import type { components } from '../../../../../packages/contracts/schema';
 import { useApi } from '../../api/context';
@@ -6,6 +7,7 @@ import { newIdempotencyKey } from '../../api/client';
 import type { Dataset, Quote } from '../../api/types';
 import { Button, ErrorState, Panel } from '../../ui/kit';
 import { formatMoney } from '../../lib/format';
+import { useRoute } from '../../state/router';
 
 type Sheet = components['schemas']['OrderSheet'];
 type Part = components['schemas']['Part'];
@@ -75,6 +77,7 @@ export function ActualUse({ dataset, subject, kind, onDone }: {
 
 export function OrderFlowPanel({ dataset, quote }: { dataset: Dataset; quote: Quote | null }) {
   const { client } = useApi();
+  const targetId = useRoute().params.get('order_id');
   const [selected, setSelected] = useState<Sheet | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
@@ -83,6 +86,13 @@ export function OrderFlowPanel({ dataset, quote }: { dataset: Dataset; quote: Qu
   const [retryKey, setRetryKey] = useState(newIdempotencyKey);
   const list = useQuery({ queryKey: ['order-sheets', dataset.dataset_id],
     queryFn: () => client.get<Sheet[]>('/order-sheets', { query: { dataset_id: dataset.dataset_id } }) });
+  useEffect(() => {
+    let current = true;
+    if (targetId) client.get<Sheet>(`/order-sheets/${encodeURIComponent(targetId)}`, { query: { dataset_id: dataset.dataset_id } })
+      .then(value => { if (current) { setSelected(value); setRemnant(value.facts?.remnant.remnant_id ?? ''); setError(null); } })
+      .catch(e => { if (current) setError(e); });
+    return () => { current = false; };
+  }, [client, dataset.dataset_id, targetId]);
   async function create() {
     if (!quote?.customer_id) return;
     setBusy(true); setError(null);
@@ -139,6 +149,7 @@ export function OrderFlowPanel({ dataset, quote }: { dataset: Dataset; quote: Qu
           setSelected(await client.get<Sheet>(`/order-sheets/${selected.order_id}`, { query: { dataset_id: dataset.dataset_id } })); await list.refetch();
         }} />}
         {selected.material_use_id && <p role="status">Фактический расход записан: {selected.material_use_id}. Повторного списания нет.</p>}
+        {dataset.mode === 'workspace' && selected.quote_state === 'confirmed' && selected.lifecycle !== 'completed' && selected.lifecycle !== 'cancelled' && selected.version != null && <OperationalDocument datasetId={dataset.dataset_id} kind="order" subjectId={selected.order_id} version={selected.version} />}
       </>}
       {error != null && <ErrorState error={error} />}
     </div>

@@ -7,6 +7,7 @@ import { formatMoney } from '../../lib/format';
 import { Button, ErrorState, Field, Panel, StatusBadge, TableWrap } from '../../ui/kit';
 import { kbVersionOf } from '../shell/dataset';
 import { EvidenceList } from './EvidenceList';
+import type { components } from '../../../../../packages/contracts/schema';
 
 const VERDICT: Record<DialogVerdict['verdict'], { label: string; tone: 'ok' | 'error' | 'warn' }> = {
   OK: { label: 'OK — цена верна', tone: 'ok' },
@@ -64,7 +65,7 @@ export function QualityPanel({ dataset }: { dataset: Dataset }) {
       </Panel>
       <Panel title="Результат" subtitle="Неопределенность не отображается зеленым.">
         {!latest && <p className="muted small">Результат появится после проверки.</p>}
-        {latest && <VerdictCard checked={latest} />}
+        {latest && <><VerdictCard checked={latest} /><CorrectionDraft dataset={dataset} checked={latest} key={latest.verdict.id + latest.client + latest.manager} /></>}
         {history.length > 1 && (
           <TableWrap label="История проверок" maxHeight={240}>
             <table className="table compact">
@@ -128,4 +129,17 @@ function VerdictCard({ checked }: { checked: Checked }) {
       </div>
     </div>
   );
+}
+
+function CorrectionDraft({ dataset, checked }: { dataset: Dataset; checked: Checked }) {
+  const { client } = useApi();
+  const draft = useMutation({ mutationFn: () => client.post<components['schemas']['ManagerCorrectionDraft']>('/dialogs/corrections', {
+    dataset_id: dataset.dataset_id, id: checked.verdict.id, kb_version: kbVersionOf(dataset) ?? '', client: checked.client, manager: checked.manager,
+  }) });
+  return <div className="stack"><Button disabled={draft.isPending} onClick={() => draft.mutate()}>Подготовить проверенный черновик исправления</Button>
+    {draft.error && <ErrorState error={draft.error} />}{draft.data && <div role="status"><strong>{draft.data.status === 'DRAFT_VERIFIED' ? 'Черновик проверен по действующей KB' : draft.data.status === 'NOT_NEEDED' ? 'Исправление не требуется' : 'Нужен разбор человеком'}</strong>
+      {draft.data.answer && <p className="pre">{draft.data.answer}</p>}{draft.data.applicable_price_tg != null && <p>{formatMoney(draft.data.applicable_price_tg)} · {draft.data.unit} · {draft.data.price_meaning}</p>}
+      <p className="small">Источник: {draft.data.source_ref ?? 'нет подтверждённого основания'}</p><EvidenceList evidence={draft.data.evidence ?? []} /><p className="small muted">Черновик требует проверки человеком. История диалога сохранена; автоматической отправки нет.</p>
+    </div>}
+  </div>;
 }
