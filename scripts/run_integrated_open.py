@@ -20,12 +20,45 @@ import httpx
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def changed_files():
+    """Independent IDs and geometry, preserving meanings; no evaluation labels."""
+    pack = ROOT / 'inputs/PACK_for_teams'
+    files = []
+    for relative, columns in (
+        ('1_ostatki/stock_open.csv', ['remnant_id']),
+        ('1_ostatki/orders_open.csv', ['part_id', 'order_id']),
+        ('2_assistant_crm/applications_open.csv', ['app_id', 'client_id']),
+        ('2_assistant_crm/questions_open.csv', ['id']),
+        ('2_assistant_crm/dialogs_open.csv', ['id']),
+    ):
+        reader = csv.DictReader(io.StringIO((pack / relative).read_text(encoding='utf-8-sig')))
+        headers = [c for c in reader.fieldnames if c != 'вернулся_за_60_дней']
+        rows = list(reader)
+        for row in rows:
+            for column in columns:
+                row[column] = 'NEW-' + row[column]
+            row.pop('вернулся_за_60_дней', None)
+            if 'длина_мм' in row:
+                row['длина_мм'] = str(int(row['длина_мм']) + (7 if 'stock' in relative else 1))
+        if 'questions' in relative:
+            rows[0]['question'] = 'Сколько стоит стекло 6 мм прозрачное 451×370 мм с кромкой по всем сторонам?'
+        stream = io.StringIO(newline='')
+        writer = csv.DictWriter(stream, fieldnames=headers, lineterminator='\n')
+        writer.writeheader()
+        writer.writerows(reversed(rows))
+        files.append(('files', (Path(relative).name, stream.getvalue().encode('utf-8'))))
+    files.extend(('files', (Path(relative).name, (pack / relative).read_bytes())) for relative in (
+        '1_ostatki/materials.csv', '2_assistant_crm/ksm_knowledge_base.json'))
+    return files
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--base", default="http://127.0.0.1:8000")
     parser.add_argument("--output", type=Path, default=ROOT / ".runtime/integrated-open")
     parser.add_argument("--budget", type=int, default=600)
     parser.add_argument("--profile", default="extended", choices=["quick", "standard", "extended"])
+    parser.add_argument("--changed-inputs", action="store_true")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     if hasattr(sys.stdout, "reconfigure"):
@@ -40,7 +73,13 @@ def main():
                 headers={"Idempotency-Key": f"integration:{time.time_ns()}"}, **kwargs)
             response.raise_for_status()
             return response.json()
-        source = post("/datasets/demo")
+        if args.changed_inputs:
+            preview = post('/imports/preview', files=changed_files())
+            assert not preview['errors'], preview
+            source = post(f"/imports/{preview['import_id']}/commit", {'name': 'New IDs and changed geometry without labels'})
+            report['kind'] = 'actual_http_changed_input_run'
+        else:
+            source = post("/datasets/demo")
         buyer = post("/buyers/import", params={"dataset_id": source["dataset_id"]}, files={
             "file": ("buyers.platform.csv", (ROOT / "data/buyers/buyers.platform.csv").read_bytes(), "text/csv"),
             "evidence": ("evidence.platform.json", (ROOT / "data/buyers/evidence.platform.json").read_bytes(), "application/json")})
@@ -87,6 +126,9 @@ def main():
     for mode, output, key in (("assistant", "answers.csv", "questions_open_KEY.csv"),
                               ("dialogs", "verdicts.csv", "dialogs_open_KEY.csv"),
                               ("crm", "picks.csv", "applications_open.csv")):
+        if args.changed_inputs:
+            checks[mode] = {'status': 'not_run', 'reason': 'Changed inputs have no official evaluation KEY'}
+            continue
         if not (args.output / output).is_file():
             checks[mode] = {"status": "not_run", "reason": "output missing"}
             continue

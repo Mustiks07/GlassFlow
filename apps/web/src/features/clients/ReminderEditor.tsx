@@ -58,6 +58,7 @@ export function ReminderEditor({
   const reminders = useQuery({
     queryKey: ['reminders', dataset.dataset_id],
     queryFn: ({ signal }) => api.listReminders(dataset.dataset_id, signal),
+    staleTime: 0,
   });
   const duplicates = (reminders.data ?? []).filter(item => item.recipient_client_id === draft.recipientClientId && ACTIVE.includes(item.state));
 

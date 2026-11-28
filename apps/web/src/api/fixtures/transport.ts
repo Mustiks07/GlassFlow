@@ -725,7 +725,10 @@ export function createFixtureTransport(): Transport {
         list.push(candidate);
         job.last_valid_result_ref = candidate.plan_id;
       }
-      if (job.state === 'completed') job.result_ref = job.last_valid_result_ref;
+      if (job.state === 'completed') {
+        job.result_ref = job.job_id;
+        job.result = { plan_id: job.last_valid_result_ref };
+      }
       return;
     }
     if (job.kind === 'run') {

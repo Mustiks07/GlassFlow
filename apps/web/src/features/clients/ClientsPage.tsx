@@ -189,7 +189,7 @@ function ClientHistory({ dataset, clientId }: { dataset: Dataset; clientId: stri
 
 function RemindersList({ dataset }: { dataset: Dataset }) {
   const { api } = useApi();
-  const reminders = useQuery({ queryKey: ['reminders', dataset.dataset_id], queryFn: ({ signal }) => api.listReminders(dataset.dataset_id, signal) });
+  const reminders = useQuery({ queryKey: ['reminders', dataset.dataset_id], queryFn: ({ signal }) => api.listReminders(dataset.dataset_id, signal), staleTime: 0 });
   return (
     <Panel title="Локальные напоминания" subtitle="Актуальность предмета перепроверяется при открытии списка и при подтверждении." actions={<Users size={16} aria-hidden="true" />}>
       {reminders.isLoading && <LoadingState />}
