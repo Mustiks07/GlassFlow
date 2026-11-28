@@ -183,3 +183,33 @@ JUnit: tests/insights/evidence/post-insights-final.xml. PDF skill прочита
 через bundled Poppler PNG: .qa/order-final-1.png, .qa/label-final-1.png, .qa/basket-final-1.png;
 renderer stress2 pages: .qa/long-final-{1,2}.png. Кириллица/отступы/переносы без потерь; QR видим, аппаратный scanner NOT RUN.
 Это API/renderer acceptance на production composition, не browser/EXE/чистая Windows/human measurement acceptance.
+
+## Новый HTTP source / actual failures / restart на554adc1
+
+Новая задача root: frozen isolated branch, TCP uvicorn18484, свежая `.qa/new-inputs`; код продукта не менялся.
+`scripts/post_acceptance.py` генерирует отдельные changed inputs, original materials/KB сохраняет побайтно,
+не читает KEY/секреты, запускает child без AI credential env и проверяет свободный порт. Backend tree не меняется
+между parent source_digest и spawn worker. Реестр — independent-v2,50 организаций.
+
+Полный budget120/reserve30 baseline5/improvement6 autoaccepted8.235s. Скачаны5 resultCSV+buyers_top50;
+проверены exact headers, noBOM/UTF8, все новые ID/counts, unique25 picks,5 cards×3 explainable actual matches,
+manifest hashes. Original validator на скачанных bytes coverage0.558090,invalid0,missing0,165/298,960705₸ replacement
+value. Это другой вход, не сравнение с исходным open score и не прибыль. На новые questions/dialogs нет KEY:
+official hidden accuracy/live AI NOT RUN.
+
+Реальное deadline source1000questions: 12s total/4 reserve -> RUN_WORK_BUDGET_EXCEEDED,100 принятых durable rows,
+partial export без полного answers. Дополнительный real cancellation:4 других modules completed, assistant cancelled
+после256 accepted rows; partial export содержит4 result CSV+buyers, answers отсутствует. Это фактические API события,
+без инъекции JobRow/fixture worker/подмены доменных портов. Дополнительная cancellation duration не записывалась.
+После остановки coordinator/uvicorn и рестарта sameDB accepted passport unchanged, old artifact hashes unchanged,
+existing partial accepted_row_count сохранился. Новый dependency cards job мог появиться после раннего poll;
+проверяется сохранность существующих job counts, не ошибочное равенство состава очереди во времени.
+
+**Общий статус blocked_product_issue**: explicit unknown ZETA SKU ошибочно стал known hanger price400/200₸
+(`answered/supported`, deterministic,0modelcalls). Root/Intelligence получили точный witness. Проверка не ослаблена:
+финальный harness exits2 при незакрытом issue, независимые этапы продолжают собирать evidence.
+Report/source/downloads: docs/release/post/http-new-inputs, README содержит exact reproduction/new fresh path.
+Первый harness cards URL исправлен с nonexistent /cards/{id} на реальный /sale-cards + pinned exported refs;
+это ошибка проверяющего, не исправление продукта. Публичный source/case/final materials не менялись.
+Следующий шаг: дождаться Intelligence fixed SHA, merge на остановленной isolated ветке, новый fresh полный TCP run
+и строго повторить unknown probe; прежний blocked report сохранить отдельно. Затем root final EXE/browser/release.
