@@ -30,3 +30,13 @@ Complete further stale/ID/lock/invalid/persistence boundaries and full C2 suite;
 comparison in docs/experiments/post_cutting/PROTOCOL.md, then run all trials and decide promotion. Baseline remains
 production until criteria pass. Root independently integrates functional UI/actual E2E/packaging.
 Pending architecture approval: explicit BEGIN for C2 read_session to guarantee multi-query read snapshot.
+
+## Snapshot and boundaries checkpoint
+
+Root approved explicit SQLite BEGIN only when driver transaction is absent. C2 read_session now uses one WAL read snapshot; borrowed Session read_session(existing_session) retains caller commit/rollback/close ownership. Interleaved-writer and borrowed BEGIN IMMEDIATE rollback regressions PASS.
+Added boundaries for nonoriginal/unknown eligibility, preserved requested locks, changed IDs/order, invalid budgets, invalid NEW projection and reserved scarcity alternatives. Full `uv run pytest tests/cutting -q -o addopts=''`:89 PASS/1 SKIP in114.24s; skipped600s profile not claimed run. Scope Ruff PASS. Timing copied separately; original C2 evidence restored.
+
+## Priority0 first-complete correction
+
+9s pilot found a valid-geometry incumbent with fewer than requested5 free originals. Preserved all observed rows in pilot-9s-partial.json, interrupted comparison, no promotion conclusions. Root approved fix: checked all-NEW seed before native/greedy, immediate deadline/cancel handling; strict requested minimum (no min(requested,available) relaxation), no published incumbent below requested free constraint, limited status if impossible. Engine version cutting-engine/1.1-min-free-incumbent. Requested locks remain independently checked before publication.
+Target first-complete+N01:16 PASS; existing solver targets17 PASS; whole C2 after main seed fix94 PASS/1 SKIP92.63s (then one extra excluded-stock boundary separately PASS). Original quick coverage>=55.8080067%, geometry valid and five free retained. New20s paired study will freeze before running any new candidate; old9s history remains available.

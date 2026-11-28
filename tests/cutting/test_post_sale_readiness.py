@@ -79,3 +79,43 @@ def test_changed_dimensions_make_old_plan_stale_and_cancel_preserves_it():
         def cancelled(self):return True
     result = ensure_sale_readiness(data, baseline, eligible, 'registry1', context=Cancelled())
     assert result.status == 'cancelled' and result.baseline == baseline and not result.search_performed
+
+
+def test_nonoriginal_and_unknown_ids_do_not_create_buyer_eligible_stock():
+    data, baseline, eligible = case()
+    data.remnants[1].original = False
+    result = ensure_sale_readiness(data, baseline, eligible | {'invented-id'}, 'registry1')
+    assert result.status == 'evidence_shortage'
+    assert 'invented-id' not in result.eligible_original_ids
+
+
+def test_requested_lock_is_not_silently_dropped_to_make_cards():
+    data, baseline, eligible = case()
+    lock = baseline.placements[0].model_copy(update={'lock_kind': 'assignment'})
+    data.locks = [lock]
+    baseline.requested_locks = [lock]
+    result = ensure_sale_readiness(data, baseline, eligible, 'registry1', budget_seconds=2)
+    assert result.status == 'limited'
+    assert result.alternative is result.tradeoff is None and result.baseline == baseline
+
+
+def test_replaced_ids_and_reversed_input_use_ordinary_domain_data():
+    data, baseline, eligible = case()
+    names = {r.remnant_id: 'changed-' + str(i*13+7) for i, r in enumerate(reversed(data.remnants))}
+    for r in data.remnants:
+        r.remnant_id = names[r.remnant_id]
+    data.remnants.reverse()
+    data.parts[0].part_id = 'new-part-1029'
+    baseline.placements[0].part_id = 'new-part-1029'
+    baseline.placements[0].remnant_id = names[baseline.placements[0].remnant_id]
+    result = ensure_sale_readiness(data, baseline, {names[x] for x in eligible}, 'new-registry')
+    assert result.status == 'ready_alternative'
+    assert result.alternative.placements[0].remnant_id == names['other']
+
+
+def test_invalid_budget_rejected_without_mutation():
+    import pytest
+    data, baseline, eligible = case()
+    for invalid in [0, -1, float('nan'), float('inf'), 31]:
+        with pytest.raises(ValueError):
+            ensure_sale_readiness(data, baseline, eligible, 'registry1', budget_seconds=invalid)

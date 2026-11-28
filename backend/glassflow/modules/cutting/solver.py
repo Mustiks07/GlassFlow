@@ -350,7 +350,7 @@ class CuttingSolver:
             covered_area=area,
             full_orders=full_orders,
             free_original=free_original,
-            meets_min_free=free_original >= min(self.settings.minimum_free_remnants, len(self.p.original_available)),
+            meets_min_free=free_original >= self.settings.minimum_free_remnants,
             stage=stage,
         )
 
@@ -572,7 +572,7 @@ class CuttingSolver:
                 lower[remnant_rows[rid]] = 1.0
         constraints = [LinearConstraint(matrix, lower, upper)]
         free_row = None
-        need = min(self.settings.minimum_free_remnants, len(self.p.original_available))
+        need = self.settings.minimum_free_remnants
         if with_free and need > 0:
             originals = {r for r in self.p.original_available}
             row = np.array([1.0 if p.remnant_id in originals else 0.0 for p in patterns])
@@ -665,7 +665,7 @@ class CuttingSolver:
         if not patterns:
             return None
         matrix, part_rows, remnant_rows = self._matrix(patterns)
-        need = min(self.settings.minimum_free_remnants, len(self.p.original_available))
+        need = self.settings.minimum_free_remnants
         originals = set(self.p.original_available)
         a_ub = matrix
         b_ub = np.ones(matrix.shape[0])
@@ -858,6 +858,16 @@ class CuttingSolver:
     # -- main ---------------------------------------------------------------------------------
     def run(self) -> SolveOutcome:
         self.started = self.clock()
+        # Preserve a complete geometrically valid plan with the free-piece
+        # constraint before native startup/greedy consumes a short budget. A
+        # greedy plan using every original must not displace this feasible
+        # incumbent merely because MILP has not run yet. Requested locks are
+        # still independently enforced by the engine before publication.
+        self.offer({}, "initial_complete_plan")
+        if self.should_stop():
+            self.best.search_status = 'limited'
+            self.best.stop_reason = self.stop_reason
+            return self._finish(self.best, interim=False)
         tempered = self.tempered_matching()
         for pattern in self.tempered_patterns():
             if self.p.pattern_ok_for_locks(pattern):
@@ -921,6 +931,8 @@ class CuttingSolver:
             status = "optimal_in_pool"
         if self.stop_reason in {"time_limit", "cancelled"}:
             status = "limited"
+        if not outcome.meets_min_free:
+            status = 'limited'
         eligible_area = sum(self.s.parts[p].area for p in self.s.part_order if self.p.elig.eligible[p])
         if outcome.covered_area == eligible_area and outcome.meets_min_free:
             status = "proven_optimal"  # trivial certificate: every individually eligible part is covered
