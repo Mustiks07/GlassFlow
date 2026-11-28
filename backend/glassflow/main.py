@@ -25,6 +25,7 @@ from glassflow.modules.platform.order_router import router as order_router
 from glassflow.modules.platform.router import router as platform_router
 from glassflow.modules.platform.runs import crm_job, schedule_cards
 from glassflow.modules.sales.router import router as sales_router
+from glassflow.modules.sales.readiness_router import router as sale_readiness_router
 
 
 def create_app(
@@ -117,7 +118,7 @@ def create_app(
             ai="unchecked" if app.state.secrets else "unavailable",
         )
 
-    for router in [platform_router, cutting_router, workflow_router, intelligence_router, crm_router, sales_router, order_router, economics_router, basket_router, material_use_router, insights_router]:
+    for router in [platform_router, cutting_router, workflow_router, intelligence_router, crm_router, sales_router, sale_readiness_router, order_router, economics_router, basket_router, material_use_router, insights_router]:
         app.include_router(router, prefix="/api/v1")
     from glassflow.core.resources import resource_root
 

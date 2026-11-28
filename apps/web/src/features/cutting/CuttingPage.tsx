@@ -16,6 +16,7 @@ import { SchemeEditor } from './SchemeEditor';
 import { PlanInsights } from './PlanInsights';
 import { OperationalDocument } from '../workplace/OperationalDocument';
 import { LabelLookup } from './LabelLookup';
+import { SaleReadinessPanel } from './SaleReadinessPanel';
 import { draftChanged, draftKey, effectivePlacements, useCuttingStore } from './draftStore';
 import { PLAN_STATUS_LABEL, REMNANT_STATUS_LABEL, SEARCH_STATUS_LABEL, parseLocation, reasonLabel } from './labels';
 
@@ -103,6 +104,7 @@ function Cutting({ dataset }: { dataset: Dataset }) {
           <LabelLookup datasetId={dataset.dataset_id} />
           {plan.data && <PlanMetrics plan={plan.data} />}
           {plan.data && <PlanInsights datasetId={dataset.dataset_id} planId={plan.data.plan_id} revision={plan.data.revision} />}
+          {plan.data && <SaleReadinessPanel datasetId={dataset.dataset_id} planId={plan.data.plan_id} revision={plan.data.revision} key={`${dataset.dataset_id}:${plan.data.plan_id}:${plan.data.revision}`} />}
         </Panel>
       )}
 

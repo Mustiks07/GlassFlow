@@ -1859,6 +1859,23 @@ export interface paths {
         patch: operations["edit_card_api_v1_sale_cards__card_id__patch"];
         trace?: never;
     };
+    "/api/v1/sale-readiness": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sale Readiness */
+        post: operations["sale_readiness_api_v1_sale_readiness_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/order-sheets": {
         parameters: {
             query?: never;
@@ -2599,6 +2616,8 @@ export interface components {
         };
         /** AnswerRow */
         AnswerRow: {
+            /** Clarification */
+            clarification?: string | null;
             /** Id */
             id: string;
             /** Answer */
@@ -6331,6 +6350,22 @@ export interface components {
             matching_policy?: string;
             /** Match Snapshot Hash */
             match_snapshot_hash?: string | null;
+        };
+        /** SaleReadinessRequest */
+        SaleReadinessRequest: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Plan Id */
+            plan_id: string;
+            /** Revision */
+            revision: number;
+            /** Buyer Registry Version */
+            buyer_registry_version: string;
+            /**
+             * Budget Seconds
+             * @default 2
+             */
+            budget_seconds?: number;
         };
         /** ScarcityExplanation */
         ScarcityExplanation: {
@@ -19274,6 +19309,113 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SaleCard"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    sale_readiness_api_v1_sale_readiness_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SaleReadinessRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Job"];
                 };
             };
             /** @description Bad Request */
