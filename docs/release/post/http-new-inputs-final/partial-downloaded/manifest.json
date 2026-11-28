@@ -1,7 +1,7 @@
 {
-  "run_id": "d60665cd-0806-4cce-9032-6b45fc4e28e6",
-  "dataset_id": "740523a0-b39b-40a0-82f1-77d829f2456b",
-  "source_dataset_id": "9cba2f5c-ac20-49b1-9675-0603267ae5e2",
+  "run_id": "909f3093-cca2-4316-8afb-a2eebd97f903",
+  "dataset_id": "9d505800-157c-4f37-be8c-da460c5e4ab0",
+  "source_dataset_id": "bca68bb3-207a-49c0-beb3-e99811f6beba",
   "source_hashes": {
     "materials": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
     "stock": "6d0ed08e269aa2be1e809157221da755780c11435764930ee497d034d48922f8",
@@ -15,8 +15,8 @@
   "schema_version": "0007_intelligence_reviews",
   "build": "0.1.0",
   "build_info": {
-    "commit": "4ee5812a65157acd7aa504df3d994497f608e29a",
-    "source_digest": "fbd7eaad72cfffa0d7f59292ccc214750a2b838f68e599d1331963649b765b8e",
+    "commit": "fc4cca439ced3cbf644af88c186c90e96fc66c86",
+    "source_digest": "6ba6600a50230689379b35c1c0799808a2d8f599202598945af152d8a8d88bad",
     "frozen": false
   },
   "config_version": "post-changed-input-http-v1",
@@ -29,7 +29,7 @@
     "ortools": "9.15.6755"
   },
   "crm_policy": "reference-v1",
-  "created_at": "2026-11-28T10:27:59.493824+00:00",
+  "created_at": "2026-11-28T10:35:55.498261+00:00",
   "modules": [
     "cutting",
     "assistant",
@@ -83,9 +83,9 @@
     "version": 0,
     "total_seconds": 12,
     "export_reserve_seconds": 4,
-    "started_at": "2026-11-28T10:27:59.493824+00:00",
-    "deadline_utc": "2026-11-28T10:28:11.493824+00:00",
-    "work_deadline_utc": "2026-11-28T10:28:07.493824+00:00",
+    "started_at": "2026-11-28T10:35:55.498261+00:00",
+    "deadline_utc": "2026-11-28T10:36:07.498261+00:00",
+    "work_deadline_utc": "2026-11-28T10:36:03.498261+00:00",
     "requested_solver": {
       "profile": "extended",
       "seed": 42,
@@ -99,7 +99,7 @@
     "export_status": "not_started"
   },
   "sale_readiness_enabled": true,
-  "export_id": "930255d7-0691-4d82-9ad8-c368a1120138",
+  "export_id": "d6e462a2-2aa3-4966-af90-19ce5ea4c7d5",
   "status": "partial",
   "errors": [
     "cutting: результат не завершен",
@@ -110,23 +110,23 @@
   ],
   "result_refs": {
     "quality": {
-      "job_id": "5e4f81c5-2410-488e-95ee-45def20cc638",
+      "job_id": "e6794c0d-0d5c-4524-998d-3f8b37a64b62",
       "state": "failed"
     },
     "crm": {
-      "job_id": "ea1a7f38-58ca-488c-8348-f5dc1267de5d",
+      "job_id": "50a495f7-f70e-40af-8628-ff1922021c3a",
       "state": "failed"
     },
     "cutting": {
-      "job_id": "014561f4-bbde-4bbc-ab81-a516000ec5c5",
+      "job_id": "7c112461-19a6-4bdd-ae9f-5d7a6e79ad65",
       "state": "failed"
     },
     "assistant": {
-      "job_id": "84118544-6458-4af0-9e98-5413ce21384f",
+      "job_id": "0cc3a532-ce4b-428f-bc3d-f9445e7408df",
       "state": "failed"
     },
     "cards": {
-      "job_id": "6ba9d342-cf2f-4047-ad84-ad9a037846ae",
+      "job_id": "c2d8b8a3-4e25-4663-bcff-24475865c9f8",
       "state": "failed"
     }
   },

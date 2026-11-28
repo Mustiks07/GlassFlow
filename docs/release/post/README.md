@@ -1,8 +1,8 @@
 # Post-integration actual HTTP evidence
 
 Current changed-input local acceptance: **PASS**, [http-new-inputs-final](http-new-inputs-final/README.md),
-runtime `4ee5812a65157acd7aa504df3d994497f608e29a`. This includes root55049e4, Intelligence efbf8de,
-and terminal dependency fix f090a75. The runtime tree stayed immutable during spawn/parent verification.
+runtime `fc4cca439ced3cbf644af88c186c90e96fc66c86`. This includes root55049e4, Intelligence efbf8de,
+terminal dependency fix f090a75 and pending-dispatch guard fc4cca4. The runtime tree stayed immutable during spawn/parent verification.
 
 Historical [http-new-inputs](http-new-inputs/README.md) is explicitly **blocked before the unknown-SKU fix**;
 its original downloaded bytes and defect response are retained. [Dependency replay witness](dependency-replay-before-fix.json)
