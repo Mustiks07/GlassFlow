@@ -10,7 +10,7 @@
 
 CI кода3f83310: Linux verify и Windows full tests/build/native/scanner SUCCESS, run46126201073 (https://github.com/Mustiks07/GlassFlow/actions/runs/46126201073). Native package CRC и relocated import/solver/scanner PASS; startup перенесенного EXE2,328с на build host.
 
-Текущие отчеты docs/release/integration/v4, summary.json, pytest.xml, frozen-smoke/exe-browser/native-recovery/portable/package, actual open/baseline/changed runs. Backend/production frontend после3f83310 не менялись. Следующий шаг — обычный fast-forward сохраненного main и push, проверка remote SHA; затем внешняя приемка. Исторические checkpoints ниже относятся к своим SHA.
+Текущие отчеты docs/release/integration/v4, summary.json, pytest.xml, frozen-smoke/exe-browser/native-recovery/portable/package, actual open/baseline/changed runs. Backend/production frontend после3f83310 не менялись. Рабочая версия перенесена fast-forward в main и опубликована обычным push: b674fcd8c48cc9dc88b88fd65848b0c8cb30fc3b (remote SHA проверен). Этот последующий commit фиксирует факт публикации; backend и production frontend не меняет. Следующий шаг — перечисленная внешняя приемка. Исторические checkpoints ниже относятся к своим SHA.
 
 ---
 
