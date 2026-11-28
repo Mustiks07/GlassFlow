@@ -11,6 +11,7 @@ import { useAppStore, useQuoteDraft, type QuoteDraft } from '../../state/store';
 import { Button, Details, ErrorState, Field, LoadingState, Panel, StaleNotice, StatusBadge, TableWrap } from '../../ui/kit';
 import { kbVersionOf } from '../shell/dataset';
 import { EvidenceList } from './EvidenceList';
+import { fieldLabel, humanText } from '../../ui/human';
 
 const PRICE_TYPE: Record<string, string> = {
   per_m2: 'за м²',
@@ -309,10 +310,10 @@ function hintFor(value: string): string | undefined {
 function ProductPrices({ product }: { product: CatalogProduct }) {
   return (
     <div className="product-prices small">
-      <span className="muted">{product.category}</span>
+      <span className="muted">{({ material: 'Материал', hardware: 'Фурнитура', service: 'Услуга' } as Record<string, string>)[product.category] ?? humanText(product.category, 'Товар каталога')}</span>
       {product.prices.map((price, index) => (
         <span key={index} className="price-chip">
-          {PRICE_TYPE[price.price_type] ?? price.price_type}: {price.amount_tg === null ? <em>цены нет в базе знаний — ответ дает менеджер</em> : formatMoney(price.amount_tg)}
+          {PRICE_TYPE[price.price_type] ?? 'Цена по каталогу'}: {price.amount_tg === null ? <em>цены нет в базе знаний — ответ дает менеджер</em> : formatMoney(price.amount_tg)}
           {price.minimum_quantity ? ` (от ${price.minimum_quantity} шт)` : ''}
         </span>
       ))}
@@ -404,7 +405,8 @@ export function QuoteResult({ quote, stale }: { quote: Quote; stale: boolean }) 
 function QuoteDiffView({ diff }: { diff: NonNullable<Quote['diff']> }) {
   return (
     <Details summary={`Изменения: ревизия ${diff.from_revision} → ${diff.to_revision}`} open>
-      <p className="small">Изменено: {diff.changed_fields.join(', ') || '—'}</p>
+      <p className="small">Изменено: {diff.changed_fields.map(fieldLabel).join(', ') || '—'}</p>
+      <Details summary="Исходные поля изменений для поддержки">{diff.changed_fields.join(', ')}</Details>
       <TableWrap label="Разница ревизий">
         <table className="table compact">
           <thead>
@@ -421,7 +423,7 @@ function QuoteDiffView({ diff }: { diff: NonNullable<Quote['diff']> }) {
           <tbody>
             {diff.lines.map(line => (
               <tr key={line.component}>
-                <td>{line.component}</td>
+                <td>{({ glass: 'Стекло', sheet: 'Целый лист', edge: 'Обработка кромки', hardware: 'Фурнитура' } as Record<string, string>)[line.component] ?? humanText(line.component, 'Позиция расчета')}</td>
                 <td className="num">{formatMoney(line.before_tg, { fixed2: true })}</td>
                 <td className="num">{formatMoney(line.after_tg, { fixed2: true })}</td>
               </tr>

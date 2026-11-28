@@ -11,6 +11,7 @@ export const FIELD_LABELS: Record<string, string> = {
   active_seconds: 'Активное время', result_ref: 'Ссылка на результат', input_hash: 'Входные данные',
   total_budget_seconds: 'Общий бюджет времени', export_reserve_seconds: 'Резерв на проверку и экспорт',
   price_basis: 'Единица расчёта цены', price_meaning: 'Основание цены', unit: 'Единица',
+  kb_version: 'Версия базы знаний', catalog_price_type: 'Единица цены', confirmed_parameters: 'Подтверждённые параметры',
 };
 export function fieldLabel(name: string): string { return FIELD_LABELS[name] ?? 'Поле формы'; }
 
