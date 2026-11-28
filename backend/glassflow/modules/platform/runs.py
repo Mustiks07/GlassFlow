@@ -130,6 +130,10 @@ def create_run(session, request, services, correlation):
         )
         allowed_inputs = {"cutting": ("materials", "stock", "orders"), "assistant": ("kb", "questions", "materials"),
                           "crm": ("applications",), "quality": ("kb", "dialogs", "materials")}[module]
+        import base64
+
+        from glassflow.core.models import SourceRow
+        source_bytes = {r.kind: r.content for r in session.scalars(select(SourceRow).where(SourceRow.dataset_id == snapshot.id))}
         job = enqueue(
             session,
             snapshot.id,
@@ -141,6 +145,8 @@ def create_run(session, request, services, correlation):
                 "solver_config": request.solver_config.model_dump(),
                 "ai_profile": request.ai_profile,
                 "ai_settings": settings.model_dump(exclude={"secret_present"}),
+                **{f"{kind}_bytes_b64": base64.b64encode(source_bytes[kind]).decode("ascii")
+                   for kind in ("kb", "materials") if kind in allowed_inputs},
                 "cutting_snapshot": typed_cutting,
                 **{kind: inputs[kind] for kind in allowed_inputs},
             },

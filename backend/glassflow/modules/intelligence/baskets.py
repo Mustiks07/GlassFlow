@@ -1,5 +1,6 @@
 """Conservative multi-line parsing. Every source fragment survives as a line."""
 
+import base64
 import json
 import re
 
@@ -12,7 +13,8 @@ from glassflow.modules.intelligence.service import _processing_from
 
 
 def parse_basket(snapshot, context):
-    kb = parse_knowledge_base(json.dumps(snapshot["kb"], ensure_ascii=False).encode("utf-8"))
+    kb = parse_knowledge_base(base64.b64decode(snapshot["kb_bytes_b64"]) if snapshot.get("kb_bytes_b64")
+                              else json.dumps(snapshot["kb"], ensure_ascii=False).encode("utf-8"))
     engine = LocalEngine(kb, {}, dataset_id=snapshot["dataset_id"])
     fragments = [p.strip() for p in re.split(r"[;\n]+", snapshot["request_text"]) if p.strip()]
     lines, warnings = [], []
@@ -24,7 +26,7 @@ def parse_basket(snapshot, context):
             pricing = out.pricing
             confirmed = pricing.confirmed_parameters
             request = QuoteRequest(dataset_id=snapshot["dataset_id"], catalog_product_id=pricing.product.product_id,
-                kb_version=kb.version, customer_id=snapshot["customer_ref"],
+                kb_version=snapshot["kb_version"], customer_id=snapshot["customer_ref"],
                 dimensions=Dimensions(length_mm=int(confirmed["length_mm"]), width_mm=int(confirmed["width_mm"]))
                     if "length_mm" in confirmed else None,
                 quantity=int(confirmed["quantity"]) if "quantity" in confirmed else None,

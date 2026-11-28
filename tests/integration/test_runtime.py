@@ -150,6 +150,7 @@ def test_actual_parser_preserves_unknown_items_and_quantities(runtime):
         expected_version=0, operator="manager", job_id=job["job_id"]))
     assert len(basket["lines"]) == 2 and basket["total_tg"] is None
     assert basket["lines"][0]["request"]["quantity"] == 2
+    assert basket["lines"][0]["request"]["kb_version"] == workspace["kb_version"]
     assert basket["lines"][1]["request"] is None and basket["lines"][1]["clarification"]
 
 

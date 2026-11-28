@@ -1261,6 +1261,24 @@ class CuttingService:
         return Candidates(candidates=candidates, reason_codes=codes, scope=scope, covered_quantity=covered,
                           requested_quantity=request.quantity, reasons_ru=reasons_ru, inventory_version=token)
 
+    def alternatives(self, request: FindRequest, excluding: str) -> list[str]:
+        """Complete alternatives for one whole-piece order; excludes the owning piece."""
+        snapshot = self.load_snapshot(request.dataset_id)
+        if request.material_id not in snapshot.materials:
+            return []
+        part = PartSpec("__request__", "__request__", request.material_id,
+                        request.dimensions.length_mm, request.dimensions.width_mm, request.premium)
+        active = self._active_plan_row(request.dataset_id)
+        occupied = {a.remnant_id for a in self._assignments(active)} if active else set()
+        result = []
+        for rid, piece in snapshot.remnants.items():
+            if rid == excluding or rid in occupied or piece.status != "available" or pair_reason(snapshot, part, piece):
+                continue
+            positions = self._positions(snapshot, part, piece, [], request.quantity, snapshot.is_tempered(part.material_id))
+            if len(positions) == request.quantity:
+                result.append((piece.area - part.area * request.quantity, -(piece.age_days or 0), rid))
+        return [rid for _, _, rid in sorted(result)[:5]]
+
     @staticmethod
     def _positions(snapshot: Snapshot, part: PartSpec, r: RemnantSpec, existing: list[Assignment],
                    quantity: int, tempered: bool) -> list[tuple[int, int, int]]:

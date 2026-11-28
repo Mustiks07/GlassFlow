@@ -9,6 +9,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: '../../tests/e2e/real',
+  testMatch: 'product.spec.ts',
   outputDir: '../../tests/e2e/.results/real',
   reporter: [['list'], ['json', { outputFile: '../../tests/e2e/.results/real-report.json' }]],
   timeout: 90_000,

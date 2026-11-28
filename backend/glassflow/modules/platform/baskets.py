@@ -264,6 +264,7 @@ def apply(session, basket_id, body, action, services, correlation):
 
 
 def parse_job(session, basket, body, handlers, correlation):
+    import base64
     handler = handlers.get("basket.parse")
     if handler is None or handler.lane != "network":
         raise AppError(503, "BASKET_PARSER_UNAVAILABLE", "C3 parser worker пока не подключен.")
@@ -277,6 +278,7 @@ def parse_job(session, basket, body, handlers, correlation):
         "input_hash": basket.input_hash, "customer_ref": basket.customer_ref, "request_text": basket.request_text,
         "existing_lines": [line.model_dump(mode="json") for line in basket.lines], "kb_version": head["kb_version"],
         "kb": json.loads(document.content), "ai_profile": settings.profile,
+        "kb_bytes_b64": base64.b64encode(document.content).decode("ascii"),
         "ai_settings": settings.model_dump(exclude={"secret_present"}),
     })
     session.flush()

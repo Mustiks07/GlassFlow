@@ -7,7 +7,7 @@ async function workspace(page: Page, name: string) {
   const source = await page.request.post('/api/v1/datasets/demo', { headers: { 'Idempotency-Key': `browser-demo:${name}` } });
   expect(source.ok()).toBeTruthy();
   const d = (await source.json()).dataset_id;
-  const response = await page.request.post(`/api/v1/datasets/${d}/working-copy`, { data: { name }, headers: { 'Idempotency-Key': name } });
+  const response = await page.request.post(`/api/v1/datasets/${d}/working-copy`, { data: { name }, headers: { 'Idempotency-Key': `${name}:${Date.now()}` } });
   expect(response.ok()).toBeTruthy();
   const copy = await response.json();
   await page.reload();

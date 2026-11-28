@@ -31,13 +31,16 @@ def store_cutting(session, dataset_id, result):
 
 
 def engine_for(snapshot, context):
+    import base64
+
     from glassflow.core.domain_runtime import runtime_for
     from glassflow.modules.intelligence.assistant.engine import AssistantEngine
     from glassflow.modules.intelligence.catalog.kb import parse_knowledge_base
     from glassflow.modules.intelligence.catalog.mapping import derive_all
     from glassflow.modules.intelligence.catalog.materials import parse_materials
 
-    kb = parse_knowledge_base(json.dumps(snapshot["kb"][0], ensure_ascii=False).encode("utf-8"))
+    kb = parse_knowledge_base(base64.b64decode(snapshot["kb_bytes_b64"]) if snapshot.get("kb_bytes_b64")
+                              else json.dumps(snapshot["kb"][0], ensure_ascii=False).encode("utf-8"))
     # Material mappings use the same canonical CSV parser as the HTTP service.
     import csv
     import io
@@ -46,7 +49,8 @@ def engine_for(snapshot, context):
     writer = csv.DictWriter(stream, fieldnames=list(snapshot["materials"][0]))
     writer.writeheader()
     writer.writerows(snapshot["materials"])
-    materials = parse_materials(stream.getvalue().encode("utf-8"))
+    materials = parse_materials(base64.b64decode(snapshot["materials_bytes_b64"]) if snapshot.get("materials_bytes_b64")
+                                else stream.getvalue().encode("utf-8"))
     runtime = runtime_for(snapshot.get("ai_settings", {}), context.private_config.get("api_key"))
     return AssistantEngine(kb, derive_all(kb, materials), dataset_id=snapshot["dataset_id"], runtime=runtime)
 

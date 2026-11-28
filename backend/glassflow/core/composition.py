@@ -72,8 +72,9 @@ def wire_app(app):
     from glassflow.modules.platform.system import get_settings
 
     factory = app.state.session_factory
+    from glassflow.core.domain_sources import ScenarioSource
     app.state.intelligence_service = IntelligenceService(app.state.intelligence_sources, factory,
-        inventory=CuttingPortAdapter(factory), crm=app.state.crm_port)
+        inventory=CuttingPortAdapter(factory), crm=app.state.crm_port, scenario=ScenarioSource(factory))
 
     composed_service = app.state.intelligence_service
 

@@ -3,7 +3,7 @@
 from contextlib import contextmanager
 from dataclasses import replace
 
-from glassflow.contracts.cutting import ReleaseRequest, ReserveRequest
+from glassflow.contracts.cutting import FindRequest, ReleaseRequest, ReserveRequest
 from glassflow.contracts.intelligence import QuoteRequest
 from glassflow.contracts.orders import OrderFacts, OrderReservation
 from glassflow.core.errors import AppError
@@ -80,10 +80,13 @@ class OrderSource:
         # Reservation bookkeeping is carried in OrderReservation. Avoid changing
         # any other fact merely because the owning order acquired its own piece.
         remnant.active_reservation_id = None
+        alternatives = service.alternatives(FindRequest(dataset_id=dataset_id, material_id=quote.material_id,
+            dimensions=request.dimensions, quantity=request.quantity, premium=request.premium), remnant_id) if (
+                quote.material_id and request.dimensions and request.quantity) else []
         return OrderFacts(dataset_id=dataset_id, quote=quote, quote_customer_ref=quote.customer_id,
             remnant=remnant, requested_dimensions=request.dimensions or remnant.dimensions,
             quantity=request.quantity or 1, kb_version=quote.kb_version,
-            mapping_version=mapping_version, compatible=compatible, alternative_remnant_ids=[])
+            mapping_version=mapping_version, compatible=compatible, alternative_remnant_ids=alternatives)
 
     def reserve(self, session, facts, order_id, order_revision):
         change = domain_error(lambda: CuttingService(session).reserve(facts.remnant.remnant_id,
@@ -114,6 +117,33 @@ class OrderSource:
         domain_error(lambda: service.release_reservation(res.id, ReleaseRequest(
             dataset_id=reservation.dataset_id, expected_version=res.version, reason="Снятие резерва заказа")))
         return self.reservation(session, reservation.dataset_id, reservation.reservation_id)
+
+
+class ScenarioSource:
+    def __init__(self, factory):
+        self.factory = factory
+
+    def compare(self, dataset_id, base_plan_id, change):
+        from glassflow.contracts.cutting import ImpactRequest, SolveRequest
+        from glassflow.core.jobs import enqueue, job_dto
+        from glassflow.core.uow import write_transaction
+        with write_transaction(self.factory) as session:
+            service = CuttingService(session)
+            if change.get("remnant_id") and change.get("change") in {"exclude", "measurement"}:
+                return domain_error(lambda: service.impact(ImpactRequest.model_validate({
+                    **change, "dataset_id": dataset_id, "plan_id": base_plan_id}))).model_dump(mode="json")
+            allowed = {"excluded_remnant_ids", "config", "mode"}
+            if set(change) - allowed:
+                raise AppError(422, "SCENARIO_CHANGE_INVALID", "Для сценария укажите исключенные куски, режим и бюджет.")
+            base = service.get_plan(dataset_id, base_plan_id)
+            data = domain_error(lambda: service.solve_input(SolveRequest.model_validate({
+                **change, "dataset_id": dataset_id, "base_plan_id": base_plan_id, "base_revision": base.revision})))
+            job = enqueue(session, dataset_id, "cutting", {"dataset_id": dataset_id,
+                "cutting_snapshot": data.model_dump(mode="json"), "solver_config": data.config.model_dump(),
+                "base_plan_id": base_plan_id})
+            session.flush()
+            return {"job": job_dto(job).model_dump(mode="json"), "applied": False,
+                    "message_ru": "Сценарий рассчитывается отдельной ревизией; действующий план не заменен."}
 
 
 class SubjectSource:
