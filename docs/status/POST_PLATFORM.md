@@ -248,3 +248,21 @@ Production P1 fixes remain separate commits: C3 unknown identity guard and f090a
 Artifacts, exact reproduction and limitations: docs/release/post/http-new-inputs-final; post/README distinguishes
 historical blocked witness. All artifact bytes protected by scoped post/.gitattributes. Root owns final CI/EXE/browser/
 online AI/human/clean-Windows acceptance and main/push; none of those are inferred from this local HTTP PASS.
+
+## N02 next-tick pending race (independent review)
+
+Root reviewer на immutable92aed19 зафиксировал4completed non-card jobs до schedule_cards: RunView ошибочно
+возвращал partial, frontend прекращал poll. Аналогичное окно accepted baseline -> next tick improvement позволяло
+кратковременный completed до реально ожидаемого improvement dispatch.
+По отдельной передаче ownership исправлен только runs.py: cards_dispatch_due/improvement_dispatch_due — общие
+малые predicates view и scheduler. View ждёт реально планируемые cards после completed cutting при живом work
+budget; ожидаемый improvement только при accepted export, nonquick time>5s, work>7s и отсутствии попытки.
+После recorded completed/failed/cancelled attempt, quick/too-short config или истечения work budget running не
+удерживается. Accepted refs/files не изменяются. No-budget baseline cards также не теряются до первого tick.
+Terminal failed/exhausted cards остаются partial; dedup dependency fix сохранён.
+
+`uv run pytest tests/post_acceptance tests/platform/test_post_budget_checkpoints.py tests/platform/test_jobs.py
+-q -o addopts=''` —25 PASS/38.66s. После дешёвого early-return для no-budget/no-accepted в scheduler:
+`uv run pytest tests/post_acceptance -q -o addopts=''` —13 PASS/6.09s, Ruff scoped PASS.
+Следующий шаг: новый fresh полный TCP acceptance с этим минимальным product commit; прежний4ee5812 PASS
+сохраняется как evidence предыдущей базы, не объявляется проверкой нового guard.

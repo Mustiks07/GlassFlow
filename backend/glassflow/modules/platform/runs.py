@@ -227,13 +227,38 @@ def latest_jobs(session, run_id):
     return result
 
 
+def cards_dispatch_due(data, cutting, previous):
+    """Whether the next coordinator tick will create this dependency outcome."""
+    if "cards" not in data["modules"]:
+        return False
+    if previous and (not data.get("budget") or not cutting or previous.input.get("cutting_job_id") == cutting.id):
+        return False
+    return not cutting or cutting.state not in {"queued", "running"}
+
+
+def improvement_dispatch_due(data, selected):
+    budget = data.get("budget")
+    if (not budget or not data.get("accepted_export_id") or budget.get("improvement_job_id")
+            or "cutting" not in data["modules"] or remaining(budget, work=True) <= 7):
+        return False
+    requested = budget["requested_solver"]
+    return (requested.get("profile") != "quick" and requested.get("time_limit_seconds", 5) > 5
+            and selected is not None and selected.state == "completed")
+
+
 def run_view(session, run_id):
     row = find_run(session, run_id)
-    jobs = list(latest_jobs(session, run_id).values())
+    latest = latest_jobs(session, run_id)
+    jobs = list(latest.values())
     complete = {j.kind for j in jobs if j.state == "completed"}
     requested = set(row.data["modules"])
     waiting = any(j.state in {"queued", "running"} for j in session.scalars(select(JobRow).where(JobRow.run_id == run_id)))
     budget = row.data.get("budget")
+    cutting = latest.get("cutting")
+    if (cutting and cutting.state == "completed" and cards_dispatch_due(row.data, cutting, latest.get("cards"))
+            and (not budget or remaining(budget, work=True) > 0)):
+        waiting = True
+    waiting = waiting or improvement_dispatch_due(row.data, cutting)
     if budget and set(row.data["modules"]) == set(MODULE_FILES) and remaining(budget) > 0:
         refs = {j.kind: {"job_id": j.id, "state": j.state} for j in jobs}
         if complete == requested and row.data.get("accepted_result_refs") != refs:
@@ -268,10 +293,7 @@ def schedule_cards(factory):
             jobs = list(latest_jobs(session, run.id).values())
             cutting = next((j for j in jobs if j.kind == "cutting"), None)
             previous = next((j for j in jobs if j.kind == "cards"), None)
-            if previous and (not run.data.get("budget") or not cutting or
-                    previous.input.get("cutting_job_id") == cutting.id):
-                continue
-            if cutting and cutting.state in {"queued", "running"}:
+            if not cards_dispatch_due(run.data, cutting, previous):
                 continue
             if not cutting or cutting.state != "completed":
                 card = enqueue(session, run.dataset_id, "cards",
@@ -301,15 +323,12 @@ def schedule_improvement(session, run):
     from glassflow.core.uow import audit
 
     budget = run.data.get("budget")
-    if (not budget or not run.data.get("accepted_export_id") or budget.get("improvement_job_id")
-            or "cutting" not in run.data["modules"] or remaining(budget, work=True) <= 7):
-        return
-    requested = budget["requested_solver"]
-    if requested.get("profile") == "quick" or requested.get("time_limit_seconds", 5) <= 5:
+    if not budget or not run.data.get("accepted_export_id"):
         return
     selected = latest_jobs(session, run.id).get("cutting")
-    if not selected or selected.state != "completed":
+    if not improvement_dispatch_due(run.data, selected):
         return
+    requested = budget["requested_solver"]
     snapshot = deepcopy(selected.input)
     solver = bound_solver(requested, budget)
     snapshot.update(phase="improvement", run_budget=deepcopy(budget), solver_config=solver,
