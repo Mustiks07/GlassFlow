@@ -6,11 +6,12 @@ from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
 from glassflow.contracts.common import Dimensions
+from glassflow.core.registry import Services
 from glassflow.main import create_app
 
 
 def test_health_and_honest_readiness(tmp_path):
-    with TestClient(create_app(tmp_path, testing=True)) as client:
+    with TestClient(create_app(tmp_path, Services(), testing=True)) as client:
         assert client.get("/api/v1/health").json()["app"] == "GlassFlow"
         readiness = client.get("/api/v1/ready").json()
         assert readiness["status"] == "degraded"

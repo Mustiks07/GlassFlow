@@ -149,6 +149,7 @@ def _remember_prices(ctx: ToolContext, product: Product) -> None:
     for price in product.prices:
         if price.amount is not None:
             ctx.facts.add("price", price.amount, price.unit, f"kb:{ctx.kb.version}:{product.product_id}:{price.source_field}")
+            ctx.facts.claim(f"{product.name}: {money_str(price.amount)} {price.unit}; источник {product.product_id}, версия {ctx.kb.version}.")
         if price.minimum_quantity:
             ctx.facts.add("threshold", price.minimum_quantity, "шт", f"kb:{ctx.kb.version}:{product.product_id}:{price.source_field}")
 
@@ -215,6 +216,11 @@ def _quote(ctx: ToolContext, args: CalculateQuoteArgs) -> dict[str, Any]:
     if quantity:
         ctx.facts.add("quantity", quantity, "шт", "input")
     ctx.last_quote = result
+    details = "; ".join(f"{line.label}: {money_str(line.amount)} ₸" for line in result.lines)
+    dimensions = f"{args.length_mm}×{args.width_mm} мм, " if args.length_mm else ""
+    total = f"итого {money_str(result.total)} ₸" if result.total is not None else "общий итог неизвестен"
+    ctx.facts.claim(f"{product.name}, {dimensions}количество {quantity if quantity is not None else 'не уточнено'}: "
+                    f"{details}; {total}; предварительно, условия подтверждает менеджер.", "quote")
     return {
         "catalog_product_id": product.product_id,
         "product_name": product.name,
@@ -433,4 +439,5 @@ def execute_tool(ctx: ToolContext, name: str, raw_arguments: str | dict | None, 
     except ServiceUnavailable as exc:
         return ToolExecution(name, "unavailable", safe_args, {"status": "service_unavailable", "service": exc.service}, "SERVICE_UNAVAILABLE")
     status = "unavailable" if result.get("status") == "service_unavailable" else "ok"
+    result["commercial_references"] = {f"[[{k}]]": v for k, v in ctx.facts.commercial_claims.items()}
     return ToolExecution(name, status, safe_args, result)

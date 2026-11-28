@@ -19,6 +19,19 @@ class Fact:
 @dataclass
 class FactSet:
     facts: list[Fact] = field(default_factory=list)
+    # Complete claims rendered by trusted domain code, including subject, role,
+    # unit, quantity and source version. LLM may select a reference, never edit it.
+    commercial_claims: dict[str, str] = field(default_factory=dict)
+
+    def claim(self, text: str, key: str | None = None) -> str:
+        key = key or f"c{len(self.commercial_claims) + 1}"
+        self.commercial_claims[key] = text
+        return f"[[{key}]]"
+
+    def render(self, text: str) -> str:
+        for key, claim in self.commercial_claims.items():
+            text = text.replace(f"[[{key}]]", claim)
+        return text
 
     def add(self, kind: str, value, unit: str | None, source_ref: str) -> Fact:
         numeric = value if isinstance(value, Decimal) else None

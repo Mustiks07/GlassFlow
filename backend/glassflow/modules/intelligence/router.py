@@ -62,6 +62,9 @@ def build_default_service(app) -> IntelligenceService:
 
 
 def service_for(request: Request) -> IntelligenceService:
+    refresh = getattr(request.app.state, "refresh_intelligence", None)
+    if refresh is not None:
+        return refresh()
     service = getattr(request.app.state, "intelligence_service", None)
     if service is None:
         service = build_default_service(request.app)

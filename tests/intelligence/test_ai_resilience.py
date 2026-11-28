@@ -147,13 +147,13 @@ def test_llm_tool_loop_uses_pricing_and_verifier(kb, mappings):
     script = [
         reply(tool_call("search_catalog", {"query": "стекло бронза"})),
         reply(tool_call("calculate_quote", {"catalog_product_id": "steklo-bronza", "length_mm": 1000, "width_mm": 500, "quantity": 1})),
-        reply(tool_call("submit_answer", {"answer_ru": "Стекло бронза 1000×500 мм: 0,5 м² × 12 000 ₸ = 6 000 ₸. Цена предварительная, подтверждает менеджер."})),
+        reply(tool_call("submit_answer", {"answer_ru": "[[quote]]"})),
     ]
     provider = ScriptedProvider(script)
     runtime = runtime_with({"gemini:gemini-3.8-flash": provider})
     result = run(engine_with(kb, mappings, runtime).turn(UNRECOGNIZED))
     assert result.answer_path == "llm_tools" and result.mode == "online"
-    assert "6 000" in result.answer
+    assert "6000.00" in result.answer
     assert f"{result.tool_context.last_quote.total:f}" == "6000.00"
     assert result.model_id == "scripted-model"
 
@@ -212,7 +212,7 @@ def test_t35_switch_provider_same_contracts(kb, mappings):
     for label in ["gemini:gemini-3.8-flash", "openrouter:google/gemma-4-31b-it:free"]:
         script = [
             reply(tool_call("calculate_quote", {"catalog_product_id": "steklo-bronza", "length_mm": 1000, "width_mm": 500}), model=label),
-            reply(tool_call("submit_answer", {"answer_ru": "Стекло бронза 1000×500 мм — 6 000 ₸, предварительно."}), model=label),
+            reply(tool_call("submit_answer", {"answer_ru": "[[quote]]"}), model=label),
         ]
         prof = profile(primary=ModelRef(provider=label.split(":")[0], model_id=label.split(":", 1)[1]), fallbacks=[])
         result = run(engine_with(kb, mappings, runtime_with({label: ScriptedProvider(script, model_id=label)}, prof)).turn(UNRECOGNIZED))

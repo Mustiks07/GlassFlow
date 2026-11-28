@@ -1,6 +1,7 @@
 """Database-backed C3 IntelligenceSources protocol: original bytes and versioned workspace KB."""
 
 import hashlib
+from contextlib import contextmanager
 from dataclasses import dataclass
 
 from sqlalchemy import or_, select, text
@@ -24,11 +25,21 @@ class SourceDocument:
 
 
 class PlatformIntelligenceSources:
-    def __init__(self, factory):
+    def __init__(self, factory, bound_session=None):
         self.factory = factory
+        self.bound_session = bound_session
+
+    @contextmanager
+    def reading(self):
+        if self.bound_session is not None:
+            yield self.bound_session
+        else:
+            with self.factory() as session:
+                session.execute(text("BEGIN"))
+                yield session
 
     def kb_history(self, dataset_id):
-        with self.factory() as session:
+        with self.reading() as session:
             return self._history(session, dataset_id)
 
     def _history(self, session, dataset_id):
@@ -53,8 +64,7 @@ class PlatformIntelligenceSources:
         ]
 
     def knowledge_base(self, dataset_id, version=None):
-        with self.factory() as session:
-            session.execute(text("BEGIN"))  # One WAL read snapshot across history and head pointer.
+        with self.reading() as session:
             history = self._history(session, dataset_id)
             if not history:
                 raise AppError(404, "KB_NOT_FOUND", "База знаний не найдена в этом наборе.")
@@ -63,14 +73,14 @@ class PlatformIntelligenceSources:
             if version is None:
                 return next(d for d in history if d.sha256 == digest)
         for document in history:
-            if version in {document.sha256, f"kb-{document.sha256[:16]}"}:
+            if version in {document.sha256, f"sha256:{document.sha256}", f"kb-{document.sha256[:16]}"}:
                 return document
         raise AppError(
             409, "STALE_KB_VERSION", "Версия KB отсутствует в этом наборе.", conflicts=[f"kb-{digest[:16]}"]
         )
 
     def materials(self, dataset_id):
-        with self.factory() as session:
+        with self.reading() as session:
             dataset(session, dataset_id)
             row = session.scalar(
                 select(SourceRow).where(SourceRow.dataset_id == dataset_id, SourceRow.kind == "materials")

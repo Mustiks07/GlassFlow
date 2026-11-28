@@ -865,6 +865,60 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/baskets/{basket_id}/selection": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Prepare */
+        post: operations["prepare_api_v1_baskets__basket_id__selection_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/cutting/executions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record Execution */
+        post: operations["record_execution_api_v1_cutting_executions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/cutting/execution-template": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Execution Template
+         * @description A proposed layout, explicitly NOT evidence of physical execution.
+         */
+        post: operations["execution_template_api_v1_cutting_execution_template_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/catalog": {
         parameters: {
             query?: never;
@@ -1869,7 +1923,7 @@ export interface components {
              * Budget Limit Usd
              * @default 0
              */
-            budget_limit_usd: string;
+            budget_limit_usd?: string;
             /** Limits */
             limits?: {
                 [key: string]: number | null;
@@ -1881,80 +1935,80 @@ export interface components {
              * Version
              * @default 0
              */
-            version: number;
+            version?: number;
             /**
              * Profile
              * @default local_limited
              * @enum {string}
              */
-            profile: "direct" | "judge_gateway" | "local_limited";
+            profile?: "direct" | "judge_gateway" | "local_limited";
             /**
              * Provider
              * @default gemini
              * @enum {string}
              */
-            provider: "gemini" | "openrouter";
+            provider?: "gemini" | "openrouter";
             /**
              * Model Id
              * @default
              */
-            model_id: string;
+            model_id?: string;
             /**
              * Mode
              * @default free_only
              * @enum {string}
              */
-            mode: "free_only" | "paid_enabled";
+            mode?: "free_only" | "paid_enabled";
             /**
              * Paid Enabled
              * @default false
              */
-            paid_enabled: boolean;
+            paid_enabled?: boolean;
             /**
              * Monthly Budget Tg
              * @default 0
              */
-            monthly_budget_tg: string;
+            monthly_budget_tg?: string;
             /**
              * Rpm
              * @default 1
              */
-            rpm: number;
+            rpm?: number;
             /**
              * Tpm
              * @default 1000
              */
-            tpm: number;
+            tpm?: number;
             /**
              * Rpd
              * @default 100
              */
-            rpd: number;
+            rpd?: number;
             /**
              * Max Parallel
              * @default 1
              */
-            max_parallel: number;
+            max_parallel?: number;
             /**
              * Timeout Seconds
              * @default 30
              */
-            timeout_seconds: number;
+            timeout_seconds?: number;
             /**
              * Max Retries
              * @default 2
              */
-            max_retries: number;
+            max_retries?: number;
             /**
              * Max Tool Iterations
              * @default 6
              */
-            max_tool_iterations: number;
+            max_tool_iterations?: number;
             /**
              * Max Output Tokens
              * @default 2048
              */
-            max_output_tokens: number;
+            max_output_tokens?: number;
             /** Fallback Models */
             fallback_models?: string[];
             /** Gateway Url */
@@ -1963,7 +2017,7 @@ export interface components {
              * Secret Present
              * @default false
              */
-            secret_present: boolean;
+            secret_present?: boolean;
         };
         /** AnswerBatchRequest */
         AnswerBatchRequest: {
@@ -1977,7 +2031,7 @@ export interface components {
              * Allow Ai
              * @default true
              */
-            allow_ai: boolean;
+            allow_ai?: boolean;
         };
         /** AnswerBatchResult */
         AnswerBatchResult: {
@@ -2034,7 +2088,7 @@ export interface components {
              * Retryable
              * @default false
              */
-            retryable: boolean;
+            retryable?: boolean;
             /** Correlation Id */
             correlation_id: string;
         };
@@ -2063,13 +2117,13 @@ export interface components {
              * @default deterministic
              * @enum {string}
              */
-            answer_path: "deterministic" | "llm_tools" | "fallback";
+            answer_path?: "deterministic" | "llm_tools" | "fallback";
             /**
              * Status
              * @default answered
              * @enum {string}
              */
-            status: "answered" | "clarification" | "manager_handoff" | "limited";
+            status?: "answered" | "clarification" | "manager_handoff" | "limited";
             card?: components["schemas"]["WorkingCard"] | null;
             /** Tool Calls */
             tool_calls?: components["schemas"]["ToolCallRecord"][];
@@ -2078,14 +2132,14 @@ export interface components {
              * @default supported
              * @enum {string}
              */
-            verifier_status: "supported" | "unsupported_replaced" | "not_applicable";
+            verifier_status?: "supported" | "unsupported_replaced" | "not_applicable";
             /** Ai Unavailable Reason */
             ai_unavailable_reason?: string | null;
             /**
              * Turn Index
              * @default 0
              */
-            turn_index: number;
+            turn_index?: number;
             /** Latency Ms */
             latency_ms?: number | null;
         };
@@ -2106,12 +2160,12 @@ export interface components {
              * @default free_whole_remnants
              * @enum {string}
              */
-            inventory_mode: "none" | "free_whole_remnants" | "replan";
+            inventory_mode?: "none" | "free_whole_remnants" | "replan";
             /**
              * Allow Ai
              * @default true
              */
-            allow_ai: boolean;
+            allow_ai?: boolean;
         };
         /** AuditEvent */
         AuditEvent: {
@@ -2156,18 +2210,18 @@ export interface components {
              * Version
              * @default 0
              */
-            version: number;
+            version?: number;
             /**
              * Revision
              * @default 0
              */
-            revision: number;
+            revision?: number;
             /**
              * State
              * @default draft
              * @enum {string}
              */
-            state: "draft" | "needs_review" | "ready" | "confirmed" | "reserved" | "checked" | "handed_over" | "completed" | "stale" | "cancelled";
+            state?: "draft" | "needs_review" | "ready" | "confirmed" | "reserved" | "checked" | "handed_over" | "completed" | "stale" | "cancelled";
             /** Input Hash */
             input_hash: string;
             binding?: components["schemas"]["BasketBind"] | null;
@@ -2204,7 +2258,7 @@ export interface components {
              * Note
              * @default
              */
-            note: string;
+            note?: string;
             /** Job Id */
             job_id: string;
         };
@@ -2220,7 +2274,7 @@ export interface components {
              * Note
              * @default
              */
-            note: string;
+            note?: string;
             /** Lines */
             lines: components["schemas"]["BasketLineRef"][];
             /** Selection Ref */
@@ -2294,7 +2348,7 @@ export interface components {
              * @default needs_review
              * @enum {string}
              */
-            compatibility: "confirmed" | "not_required" | "needs_review";
+            compatibility?: "confirmed" | "not_required" | "needs_review";
             /** Clarification */
             clarification?: string | null;
         };
@@ -2319,7 +2373,7 @@ export interface components {
              * Note
              * @default
              */
-            note: string;
+            note?: string;
             /** Lines */
             lines: components["schemas"]["BasketLineDraft"][];
         };
@@ -2448,13 +2502,13 @@ export interface components {
              * @default false
              * @constant
              */
-            interest_confirmed: false;
+            interest_confirmed?: false;
             /**
              * Policy Version
              * @default evidence-v1
              * @constant
              */
-            policy_version: "evidence-v1";
+            policy_version?: "evidence-v1";
         };
         /** Candidate */
         Candidate: {
@@ -2477,20 +2531,20 @@ export interface components {
              * Copy Index
              * @default 0
              */
-            copy_index: number;
+            copy_index?: number;
             remnant_dimensions?: components["schemas"]["Dimensions"] | null;
             /**
              * Waste Area Mm2
              * @default 0
              */
-            waste_area_mm2: number;
+            waste_area_mm2?: number;
             /** Age Days */
             age_days?: number | null;
             /**
              * Shares Remnant With Plan
              * @default false
              */
-            shares_remnant_with_plan: boolean;
+            shares_remnant_with_plan?: boolean;
         };
         /** Candidates */
         Candidates: {
@@ -2504,19 +2558,19 @@ export interface components {
              * Covered Quantity
              * @default 0
              */
-            covered_quantity: number;
+            covered_quantity?: number;
             /**
              * Requested Quantity
              * @default 1
              */
-            requested_quantity: number;
+            requested_quantity?: number;
             /** Reasons Ru */
             reasons_ru?: string[];
             /**
              * Inventory Version
              * @default
              */
-            inventory_version: string;
+            inventory_version?: string;
         };
         /** CardUpdate */
         CardUpdate: {
@@ -2543,7 +2597,7 @@ export interface components {
              * Factor
              * @default 0.50
              */
-            factor: string;
+            factor?: string;
         };
         /** CatalogPrice */
         CatalogPrice: {
@@ -2645,7 +2699,7 @@ export interface components {
              * Owner Context
              * @default
              */
-            owner_context: string;
+            owner_context?: string;
         };
         /** CommitResult */
         CommitResult: {
@@ -2676,7 +2730,7 @@ export interface components {
              * Reason
              * @default
              */
-            reason: string;
+            reason?: string;
         };
         /** Conversation */
         Conversation: {
@@ -2723,42 +2777,42 @@ export interface components {
              * Total Orders
              * @default 0
              */
-            total_orders: number;
+            total_orders?: number;
             /**
              * Covered Parts
              * @default 0
              */
-            covered_parts: number;
+            covered_parts?: number;
             /**
              * Total Parts
              * @default 0
              */
-            total_parts: number;
+            total_parts?: number;
             /**
              * Used Original Remnants
              * @default 0
              */
-            used_original_remnants: number;
+            used_original_remnants?: number;
             /**
              * Free Original Remnants
              * @default 0
              */
-            free_original_remnants: number;
+            free_original_remnants?: number;
             /**
              * Used Remnants
              * @default 0
              */
-            used_remnants: number;
+            used_remnants?: number;
             /**
              * Score
              * @default 0
              */
-            score: number;
+            score?: number;
             /**
              * Coverage Percent
              * @default 0
              */
-            coverage_percent: string;
+            coverage_percent?: string;
             /** Value By Material */
             value_by_material?: components["schemas"]["MaterialValue"][];
             /** New Reasons */
@@ -2797,7 +2851,7 @@ export interface components {
              * Stop Reason
              * @default completed
              */
-            stop_reason: string;
+            stop_reason?: string;
             config?: components["schemas"]["SolverConfig"] | null;
             /** Issues */
             issues?: components["schemas"]["PlanIssue"][];
@@ -2812,14 +2866,14 @@ export interface components {
              * @default solver
              * @enum {string}
              */
-            source: "solver" | "edit" | "import";
+            source?: "solver" | "edit" | "import";
             /** Requested Locks */
             requested_locks?: components["schemas"]["Placement"][];
             /**
              * Inventory Version
              * @default
              */
-            inventory_version: string;
+            inventory_version?: string;
             /** Inventory Current */
             inventory_current?: boolean | null;
         };
@@ -2848,14 +2902,14 @@ export interface components {
              * Version
              * @default 0
              */
-            version: number;
+            version?: number;
             /** Created At */
             created_at?: string | null;
             /**
              * Schema Version
              * @default 1
              */
-            schema_version: string;
+            schema_version?: string;
         };
         /** DecimalRange */
         DecimalRange: {
@@ -2978,7 +3032,7 @@ export interface components {
              * @default move
              * @enum {string}
              */
-            action: "move" | "unplace" | "lock" | "unlock";
+            action?: "move" | "unplace" | "lock" | "unlock";
             /** Remnant Id */
             remnant_id?: string | null;
             /** X Mm */
@@ -3049,12 +3103,12 @@ export interface components {
              * Material Use Fraction
              * @default 1
              */
-            material_use_fraction: string;
+            material_use_fraction?: string;
             /**
              * Material Use Basis
              * @default Сценарное допущение: весь прирост оценки используется
              */
-            material_use_basis: string;
+            material_use_basis?: string;
             /** Confirmed Material Use Value Tg */
             confirmed_material_use_value_tg?: string | null;
             /** Confirmed Material Use Ref */
@@ -3063,7 +3117,7 @@ export interface components {
              * Potential Remnant Sale Tg
              * @default 0
              */
-            potential_remnant_sale_tg: string;
+            potential_remnant_sale_tg?: string;
             /** Actual Sale Revenue Tg */
             actual_sale_revenue_tg?: string | null;
             /** Actual Sale Ref */
@@ -3146,7 +3200,7 @@ export interface components {
              * @default economics-v2
              * @constant
              */
-            formula_version: "economics-v2";
+            formula_version?: "economics-v2";
             /** Source Hashes */
             source_hashes: {
                 [key: string]: string;
@@ -3163,7 +3217,7 @@ export interface components {
              * @default false
              * @constant
              */
-            competition_release_eligible: false;
+            competition_release_eligible?: false;
         };
         /** EconomicsUpdate */
         EconomicsUpdate: {
@@ -3183,6 +3237,56 @@ export interface components {
             record_id?: string | null;
             /** Field */
             field?: string | null;
+        };
+        /** ExecutionCreate */
+        ExecutionCreate: {
+            /** Dataset Id */
+            dataset_id: string;
+            /**
+             * Subject Type
+             * @enum {string}
+             */
+            subject_type: "order" | "basket";
+            /** Subject Id */
+            subject_id: string;
+            /** Expected Version */
+            expected_version: number;
+            /** Execution Ref */
+            execution_ref: string;
+            /** Execution Version */
+            execution_version: number;
+            /** Operator */
+            operator: string;
+            /**
+             * Note
+             * @default
+             */
+            note?: string;
+            /**
+             * Discrepancy Reason
+             * @default
+             */
+            discrepancy_reason?: string;
+            /** Parts */
+            parts: components["schemas"]["Part"][];
+            /** Placements */
+            placements: components["schemas"]["Placement"][];
+        };
+        /** ExportResult */
+        ExportResult: {
+            /** Run Id */
+            run_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ready" | "partial" | "blocked";
+            /** Files */
+            files: {
+                [key: string]: string;
+            };
+            /** Errors */
+            errors: string[];
         };
         /** ExportRow */
         ExportRow: {
@@ -3208,20 +3312,20 @@ export interface components {
              * Premium
              * @default false
              */
-            premium: boolean;
+            premium?: boolean;
             /**
              * Inventory Mode
              * @default free_whole_remnants
              * @enum {string}
              */
-            inventory_mode: "free_whole_remnants" | "replan";
+            inventory_mode?: "free_whole_remnants" | "replan";
             /** Base Plan Id */
             base_plan_id?: string | null;
             /**
              * Quantity
              * @default 1
              */
-            quantity: number;
+            quantity?: number;
         };
         /** FreeRemnant */
         FreeRemnant: {
@@ -3274,17 +3378,17 @@ export interface components {
              * @default ok
              * @constant
              */
-            status: "ok";
+            status?: "ok";
             /**
              * App
              * @default GlassFlow
              */
-            app: string;
+            app?: string;
             /**
              * Version
              * @default 0.1.0
              */
-            version: string;
+            version?: string;
         };
         /** ImpactReport */
         ImpactReport: {
@@ -3314,12 +3418,12 @@ export interface components {
              * Requires Commit
              * @default true
              */
-            requires_commit: boolean;
+            requires_commit?: boolean;
             /**
              * Note Ru
              * @default
              */
-            note_ru: string;
+            note_ru?: string;
         };
         /** ImpactRequest */
         ImpactRequest: {
@@ -3342,18 +3446,18 @@ export interface components {
              * Name
              * @default Набор данных
              */
-            name: string;
+            name?: string;
             /**
              * Mode
              * @default source
              * @enum {string}
              */
-            mode: "source" | "contest";
+            mode?: "source" | "contest";
             /**
              * Explicit Copy
              * @default false
              */
-            explicit_copy: boolean;
+            explicit_copy?: boolean;
         };
         /** ImportPreview */
         ImportPreview: {
@@ -3407,17 +3511,17 @@ export interface components {
              * Cancel Requested
              * @default false
              */
-            cancel_requested: boolean;
+            cancel_requested?: boolean;
             /**
              * Stopped
              * @default false
              */
-            stopped: boolean;
+            stopped?: boolean;
             /**
              * Completed
              * @default 0
              */
-            completed: number;
+            completed?: number;
             /** Total */
             total?: number | null;
             /** Result */
@@ -3515,12 +3619,12 @@ export interface components {
              * @default none
              * @enum {string}
              */
-            lock_kind: "none" | "assignment" | "placement";
+            lock_kind?: "none" | "assignment" | "placement";
             /**
              * Premium
              * @default false
              */
-            premium: boolean;
+            premium?: boolean;
         };
         /** LocalSession */
         LocalSession: {
@@ -3561,7 +3665,7 @@ export interface components {
              * @default confirmed
              * @enum {string}
              */
-            status: "confirmed" | "unmapped";
+            status?: "confirmed" | "unmapped";
             /** Expected Version */
             expected_version: number;
             /** Confirmed By */
@@ -3570,7 +3674,7 @@ export interface components {
              * Basis
              * @default manager_confirmation
              */
-            basis: string;
+            basis?: string;
         };
         /** Material */
         Material: {
@@ -3611,7 +3715,7 @@ export interface components {
              * Version
              * @default 0
              */
-            version: number;
+            version?: number;
             /** Kb Version */
             kb_version: string;
             /** Materials Version */
@@ -3699,12 +3803,12 @@ export interface components {
              * Note
              * @default
              */
-            note: string;
+            note?: string;
             /**
              * Discrepancy Reason
              * @default
              */
-            discrepancy_reason: string;
+            discrepancy_reason?: string;
         };
         /** MaterialUseScope */
         MaterialUseScope: {
@@ -3750,7 +3854,7 @@ export interface components {
              * Definition
              * @default Подтвержденная оценка использованного материала; не выручка, прибыль или дополнительная к baseline выгода
              */
-            definition: string;
+            definition?: string;
         };
         /** MaterialValue */
         MaterialValue: {
@@ -3775,7 +3879,7 @@ export interface components {
              * Reason
              * @default
              */
-            reason: string;
+            reason?: string;
         };
         /** MetricEvidence */
         MetricEvidence: {
@@ -3824,7 +3928,7 @@ export interface components {
              * Note
              * @default
              */
-            note: string;
+            note?: string;
         };
         /** OrderBind */
         OrderBind: {
@@ -3838,7 +3942,7 @@ export interface components {
              * Note
              * @default
              */
-            note: string;
+            note?: string;
             /** Quote Id */
             quote_id: string;
             /** Quote Revision */
@@ -3915,7 +4019,7 @@ export interface components {
              * Note
              * @default
              */
-            note: string;
+            note?: string;
             /** Reminder Id */
             reminder_id: string;
         };
@@ -3953,30 +4057,30 @@ export interface components {
              * Version
              * @default 0
              */
-            version: number;
+            version?: number;
             /**
              * Revision
              * @default 0
              */
-            revision: number;
+            revision?: number;
             /**
              * Lifecycle
              * @default open
              * @enum {string}
              */
-            lifecycle: "open" | "handed_over" | "completed" | "cancelled";
+            lifecycle?: "open" | "handed_over" | "completed" | "cancelled";
             /**
              * Quote State
              * @default missing
              * @enum {string}
              */
-            quote_state: "missing" | "draft" | "confirmed" | "stale";
+            quote_state?: "missing" | "draft" | "confirmed" | "stale";
             /**
              * Warehouse State
              * @default unchecked
              * @enum {string}
              */
-            warehouse_state: "unchecked" | "checked" | "handed_over" | "stale";
+            warehouse_state?: "unchecked" | "checked" | "handed_over" | "stale";
             facts?: components["schemas"]["OrderFacts"] | null;
             /** Facts Hash */
             facts_hash?: string | null;
@@ -4013,7 +4117,7 @@ export interface components {
              * Product Type
              * @default
              */
-            product_type: string;
+            product_type?: string;
         };
         /** Placement */
         Placement: {
@@ -4032,7 +4136,7 @@ export interface components {
              * @default none
              * @enum {string}
              */
-            lock_kind: "none" | "assignment" | "placement";
+            lock_kind?: "none" | "assignment" | "placement";
         };
         /** PlacementChange */
         PlacementChange: {
@@ -4157,13 +4261,13 @@ export interface components {
              * @default none
              * @enum {string}
              */
-            kind: "none" | "euro_edge" | "facet" | "sandblast";
+            kind?: "none" | "euro_edge" | "facet" | "sandblast";
             /**
              * Sides
              * @default all
              * @enum {string}
              */
-            sides: "all" | "selected";
+            sides?: "all" | "selected";
             /** Selected Sides */
             selected_sides?: ("left" | "right" | "top" | "bottom")[];
         };
@@ -4195,7 +4299,7 @@ export interface components {
              * Preliminary
              * @default true
              */
-            preliminary: boolean;
+            preliminary?: boolean;
             /** Clarification */
             clarification?: string | null;
             /**
@@ -4233,7 +4337,7 @@ export interface components {
              * Rounding Policy
              * @default ROUND_HALF_UP to 0.01 per line; total equals the sum of displayed lines
              */
-            rounding_policy: string;
+            rounding_policy?: string;
             /** Source Versions */
             source_versions?: {
                 [key: string]: string;
@@ -4243,7 +4347,7 @@ export interface components {
              * @default not_requested
              * @enum {string}
              */
-            inventory_status: "not_requested" | "checked" | "mapping_required" | "unavailable" | "service_unavailable";
+            inventory_status?: "not_requested" | "checked" | "mapping_required" | "unavailable" | "service_unavailable";
             /** Candidate Refs */
             candidate_refs?: components["schemas"]["RemnantCandidateRef"][];
             /** Inventory Reason Codes */
@@ -4252,7 +4356,7 @@ export interface components {
              * Stale
              * @default false
              */
-            stale: boolean;
+            stale?: boolean;
             /** Created At */
             created_at?: string | null;
             /** Confirmed At */
@@ -4273,7 +4377,7 @@ export interface components {
              * Reason
              * @default
              */
-            reason: string;
+            reason?: string;
         };
         /** QuoteChanges */
         QuoteChanges: {
@@ -4357,7 +4461,7 @@ export interface components {
              * Quantity
              * @default 1
              */
-            quantity: number | null;
+            quantity?: number | null;
             processing?: components["schemas"]["Processing"];
             /** Kb Version */
             kb_version: string;
@@ -4368,18 +4472,18 @@ export interface components {
              * @default auto
              * @enum {string}
              */
-            price_basis: "auto" | "per_m2" | "per_sheet" | "unit";
+            price_basis?: "auto" | "per_m2" | "per_sheet" | "unit";
             /**
              * Inventory Mode
              * @default none
              * @enum {string}
              */
-            inventory_mode: "none" | "free_whole_remnants" | "replan";
+            inventory_mode?: "none" | "free_whole_remnants" | "replan";
             /**
              * Premium
              * @default false
              */
-            premium: boolean;
+            premium?: boolean;
             /** Assumptions */
             assumptions?: string[];
         };
@@ -4394,7 +4498,7 @@ export interface components {
              * Reprice Current Kb
              * @default false
              */
-            reprice_current_kb: boolean;
+            reprice_current_kb?: boolean;
         };
         /** RankRequest */
         RankRequest: {
@@ -4405,7 +4509,7 @@ export interface components {
              * @default reference
              * @enum {string}
              */
-            policy: "reference" | "validated_model";
+            policy?: "reference" | "validated_model";
         };
         /** RankedApplication */
         RankedApplication: {
@@ -4432,7 +4536,7 @@ export interface components {
              * Policy Version
              * @default reference-v1
              */
-            policy_version: string;
+            policy_version?: string;
             /** Grouped Clients */
             grouped_clients?: {
                 [key: string]: string[];
@@ -4441,7 +4545,7 @@ export interface components {
              * Target Definition
              * @default Новое обращение в течение 60 дней; не покупка и не выручка
              */
-            target_definition: string;
+            target_definition?: string;
         };
         /** Ratio */
         Ratio: {
@@ -4467,18 +4571,18 @@ export interface components {
              * Schema
              * @default false
              */
-            schema: boolean;
+            schema?: boolean;
             /**
              * Worker
              * @default false
              */
-            worker: boolean;
+            worker?: boolean;
             /**
              * Ai
              * @default unchecked
              * @enum {string}
              */
-            ai: "unavailable" | "unchecked" | "available";
+            ai?: "unavailable" | "unchecked" | "available";
             /** Modules */
             modules?: {
                 [key: string]: boolean;
@@ -4494,7 +4598,7 @@ export interface components {
              * Reason
              * @default
              */
-            reason: string;
+            reason?: string;
         };
         /** Reminder */
         Reminder: {
@@ -4525,7 +4629,7 @@ export interface components {
              * Text
              * @default
              */
-            text: string;
+            text?: string;
             /** Active Period */
             active_period?: string | null;
             /** Reminder Id */
@@ -4569,7 +4673,7 @@ export interface components {
              * Text
              * @default
              */
-            text: string;
+            text?: string;
             /** Active Period */
             active_period?: string | null;
         };
@@ -4608,12 +4712,12 @@ export interface components {
              * @default available
              * @enum {string}
              */
-            status: "available" | "reserved" | "consumed" | "withdrawn";
+            status?: "available" | "reserved" | "consumed" | "withdrawn";
             /**
              * Version
              * @default 0
              */
-            version: number;
+            version?: number;
             /** Internal Id */
             internal_id?: string | null;
             /**
@@ -4621,12 +4725,12 @@ export interface components {
              * @default source
              * @enum {string}
              */
-            origin: "source" | "working" | "child";
+            origin?: "source" | "working" | "child";
             /**
              * Original
              * @default true
              */
-            original: boolean;
+            original?: boolean;
             /** Rack */
             rack?: string | null;
             /** Cell */
@@ -4676,7 +4780,7 @@ export interface components {
              * Tempered Tolerance Mm
              * @default 2
              */
-            tempered_tolerance_mm: number;
+            tempered_tolerance_mm?: number;
             /** Defect */
             defect: boolean;
             /** Location Raw */
@@ -4717,7 +4821,7 @@ export interface components {
              * Reason
              * @default
              */
-            reason: string;
+            reason?: string;
         };
         /** Reservation */
         Reservation: {
@@ -4767,7 +4871,7 @@ export interface components {
              * Premium
              * @default false
              */
-            premium: boolean;
+            premium?: boolean;
             /** X Mm */
             x_mm?: number | null;
             /** Y Mm */
@@ -4796,7 +4900,7 @@ export interface components {
              * @default local_limited
              * @enum {string}
              */
-            ai_profile: "direct" | "judge_gateway" | "local_limited";
+            ai_profile?: "direct" | "judge_gateway" | "local_limited";
             /** Buyer Registry Version */
             buyer_registry_version?: string | null;
         };
@@ -4846,32 +4950,32 @@ export interface components {
              * Version
              * @default 0
              */
-            version: number;
+            version?: number;
             /**
              * Status
              * @default draft
              * @enum {string}
              */
-            status: "draft" | "ready" | "stale";
+            status?: "draft" | "ready" | "stale";
             /**
              * Factor
              * @default 0.50
              */
-            factor: string;
+            factor?: string;
             /** Top3 Buyer Ids */
             top3_buyer_ids?: string[];
             /**
              * Assumptions
              * @default Коэффициент - проектное допущение, не рыночная оценка и не факт продажи
              */
-            assumptions: string;
+            assumptions?: string;
             /** Buyer Matches */
             buyer_matches?: components["schemas"]["BuyerMatch"][];
             /**
              * Matching Policy
              * @default legacy-unexplained
              */
-            matching_policy: string;
+            matching_policy?: string;
             /** Match Snapshot Hash */
             match_snapshot_hash?: string | null;
         };
@@ -4881,80 +4985,80 @@ export interface components {
              * Version
              * @default 0
              */
-            version: number;
+            version?: number;
             /**
              * Profile
              * @default local_limited
              * @enum {string}
              */
-            profile: "direct" | "judge_gateway" | "local_limited";
+            profile?: "direct" | "judge_gateway" | "local_limited";
             /**
              * Provider
              * @default gemini
              * @enum {string}
              */
-            provider: "gemini" | "openrouter";
+            provider?: "gemini" | "openrouter";
             /**
              * Model Id
              * @default
              */
-            model_id: string;
+            model_id?: string;
             /**
              * Mode
              * @default free_only
              * @enum {string}
              */
-            mode: "free_only" | "paid_enabled";
+            mode?: "free_only" | "paid_enabled";
             /**
              * Paid Enabled
              * @default false
              */
-            paid_enabled: boolean;
+            paid_enabled?: boolean;
             /**
              * Monthly Budget Tg
              * @default 0
              */
-            monthly_budget_tg: string;
+            monthly_budget_tg?: string;
             /**
              * Rpm
              * @default 1
              */
-            rpm: number;
+            rpm?: number;
             /**
              * Tpm
              * @default 1000
              */
-            tpm: number;
+            tpm?: number;
             /**
              * Rpd
              * @default 100
              */
-            rpd: number;
+            rpd?: number;
             /**
              * Max Parallel
              * @default 1
              */
-            max_parallel: number;
+            max_parallel?: number;
             /**
              * Timeout Seconds
              * @default 30
              */
-            timeout_seconds: number;
+            timeout_seconds?: number;
             /**
              * Max Retries
              * @default 2
              */
-            max_retries: number;
+            max_retries?: number;
             /**
              * Max Tool Iterations
              * @default 6
              */
-            max_tool_iterations: number;
+            max_tool_iterations?: number;
             /**
              * Max Output Tokens
              * @default 2048
              */
-            max_output_tokens: number;
+            max_output_tokens?: number;
             /** Fallback Models */
             fallback_models?: string[];
             /** Gateway Url */
@@ -4963,7 +5067,7 @@ export interface components {
              * Secret Present
              * @default false
              */
-            secret_present: boolean;
+            secret_present?: boolean;
             /** Api Key */
             api_key?: string | null;
         };
@@ -4994,22 +5098,22 @@ export interface components {
              * As Of
              * @default
              */
-            as_of: string;
+            as_of?: string;
             /**
              * Inventory Version
              * @default
              */
-            inventory_version: string;
+            inventory_version?: string;
             /**
              * Plan Inventory Version
              * @default
              */
-            plan_inventory_version: string;
+            plan_inventory_version?: string;
             /**
              * Inventory Changed Since Plan
              * @default false
              */
-            inventory_changed_since_plan: boolean;
+            inventory_changed_since_plan?: boolean;
             /** Plan Free Original Remnant Ids */
             plan_free_original_remnant_ids?: string[];
             /** No Longer Free Remnant Ids */
@@ -5018,12 +5122,12 @@ export interface components {
              * Minimum Free Remnants
              * @default 5
              */
-            minimum_free_remnants: number;
+            minimum_free_remnants?: number;
             /**
              * Minimum Free Remnants Met
              * @default true
              */
-            minimum_free_remnants_met: boolean;
+            minimum_free_remnants_met?: boolean;
         };
         /** SolveInput */
         SolveInput: {
@@ -5065,7 +5169,7 @@ export interface components {
              * @default replan
              * @enum {string}
              */
-            mode: "replan" | "keep_committed";
+            mode?: "replan" | "keep_committed";
         };
         /** SolverConfig */
         SolverConfig: {
@@ -5074,37 +5178,37 @@ export interface components {
              * @default standard
              * @enum {string}
              */
-            profile: "quick" | "standard" | "extended";
+            profile?: "quick" | "standard" | "extended";
             /**
              * Seed
              * @default 42
              */
-            seed: number;
+            seed?: number;
             /**
              * Time Limit Seconds
              * @default 60
              */
-            time_limit_seconds: number;
+            time_limit_seconds?: number;
             /**
              * Workers
              * @default 1
              */
-            workers: number;
+            workers?: number;
             /**
              * Minimum Free Remnants
              * @default 5
              */
-            minimum_free_remnants: number;
+            minimum_free_remnants?: number;
             /**
              * Fixed Work
              * @default false
              */
-            fixed_work: boolean;
+            fixed_work?: boolean;
             /**
              * Max Pool Patterns
              * @default 80000
              */
-            max_pool_patterns: number;
+            max_pool_patterns?: number;
         };
         /** ToolCallRecord */
         ToolCallRecord: {
@@ -5123,7 +5227,7 @@ export interface components {
              * Summary
              * @default
              */
-            summary: string;
+            summary?: string;
             /** Error Code */
             error_code?: string | null;
         };
@@ -5170,7 +5274,7 @@ export interface components {
              * @default supported
              * @enum {string}
              */
-            status: "supported" | "unsupported" | "unknown";
+            status?: "supported" | "unsupported" | "unknown";
         };
         /** VersionAction */
         VersionAction: {
@@ -5237,7 +5341,7 @@ export interface components {
              * Needs Manager
              * @default false
              */
-            needs_manager: boolean;
+            needs_manager?: boolean;
         };
         /** WorkingCopy */
         WorkingCopy: {
@@ -5245,7 +5349,7 @@ export interface components {
              * Name
              * @default Рабочая копия
              */
-            name: string;
+            name?: string;
         };
     };
     responses: never;
@@ -6945,7 +7049,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["ExportResult"];
                 };
             };
             /** @description Bad Request */
@@ -10969,6 +11073,327 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CommitResult"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    prepare_api_v1_baskets__basket_id__selection_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path: {
+                basket_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BasketBind"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    record_execution_api_v1_cutting_executions_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "idempotency-key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExecutionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    execution_template_api_v1_cutting_execution_template_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MaterialUseRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Bad Request */

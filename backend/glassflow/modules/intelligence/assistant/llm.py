@@ -118,6 +118,8 @@ async def run_llm_turn(
     outcome.verification = verify_answer(outcome.answer, ctx.facts, text, remnant_checked=ctx.remnant_checked)
     if outcome.verification.status != "supported":
         outcome.status = "verifier_rejected"
+    else:
+        outcome.answer = ctx.facts.render(outcome.answer)
     return outcome
 
 

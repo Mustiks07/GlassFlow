@@ -8,7 +8,7 @@
     "build": "pnpm --filter @glassflow/web build",
     "typecheck": "pnpm --filter @glassflow/web typecheck",
     "test": "pnpm --filter @glassflow/web test",
-    "contracts:generate": "openapi-typescript packages/contracts/openapi.json -o packages/contracts/schema.d.ts"
+    "contracts:generate": "openapi-typescript packages/contracts/openapi.json --default-non-nullable false -o packages/contracts/schema.d.ts"
   },
   "devDependencies": {"openapi-typescript": "^7.6.1"}
 }

@@ -49,17 +49,24 @@ def _numbers(text: str) -> list[Decimal]:
 
 
 def verify_answer(answer: str, facts: FactSet, user_text: str = "", *, remnant_checked: bool = False) -> VerificationResult:
+    # C3-F5: membership in a numeric whitelist does not establish a commercial
+    # assertion. Only complete domain-rendered claims can carry money or stock.
+    # Check the surrounding model prose BEFORE expanding references. An attacker
+    # cannot use a real amount with a different product, role, unit or quantity.
+    remainder = answer
+    for key, claim in facts.commercial_claims.items():
+        remainder = remainder.replace(f"[[{key}]]", "").replace(claim, "")
     allowed = {value for value in facts.numbers()} | set(_numbers(user_text))
     # Literal small counts in fixed phrases ("4 сторонам", "2–4") are not commercial claims.
     allowed |= {Decimal(n) for n in range(0, 13)}
     unsupported: list[str] = []
+    if re.search(r"\[\[|₸|тенге|\bтг\b|tg/|\b(?:цена|стоимость|итого|стоит|ставка)\b.{0,60}\d", remainder, re.I):
+        unsupported.append("claim:unbound_commercial")
     for value in _numbers(answer):
         if not any(abs(value - known) <= Decimal("0.005") for known in allowed):
             unsupported.append(f"number:{value}")
-    lowered = answer.lower().replace("ё", "е")
+    lowered = remainder.lower().replace("ё", "е")
     for kind, pattern in _CLAIMS:
-        if kind == "availability" and remnant_checked:
-            continue
         if re.search(pattern, lowered):
             unsupported.append(f"claim:{kind}")
     return VerificationResult("unsupported" if unsupported else "supported", sorted(set(unsupported)))

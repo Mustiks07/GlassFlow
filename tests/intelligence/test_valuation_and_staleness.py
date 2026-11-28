@@ -49,8 +49,9 @@ class VersionedInventory:
 
 
 def test_t23_inventory_rechecked_before_confirmation(tmp_path):
-    app = create_app(tmp_path)
+    app = create_app(tmp_path, testing=True)
     with TestClient(app) as client:
+        client.get("/api/v1/health")
         sources = InMemorySources()
         sources.add_kb("ds", KB_PATH.read_bytes())
         sources.set_materials("ds", MATERIALS_PATH.read_bytes())

@@ -55,7 +55,7 @@ def setup(client, imported, services):
                     headers={"Idempotency-Key": "order-workspace"}).json()["dataset_id"]
     services.order_source = SyntheticOrderSource()
     facts = dict(dataset_id=d, quote=dict(dataset_id=d, quote_id="synthetic-Q", revision=1,
-        status="ready", components=[], total_tg="1988", preliminary=False,
+        status="ready", components=[], total_tg="1988", preliminary=False, customer_id="C-test",
         material_mapping_status="confirmed", material_id="synthetic-clear"),
         remnant=dict(dataset_id=d, remnant_id="synthetic-R", material_id="synthetic-clear",
                      dimensions=dict(length_mm=1000, width_mm=1000), defect=False, location_raw="",
@@ -194,7 +194,7 @@ def test_bind_rejects_other_or_anonymous_quote_customer_without_mutations(client
     with write_transaction(client.app.state.session_factory) as session:
         row = session.get(ObjectRow, (d, "synthetic", "facts"))
         row.data = ({k: v for k, v in row.data.items() if k != "quote_customer_ref"}
-                    if owner == "missing" else {**row.data, "quote_customer_ref": owner})
+                    if owner == "missing" else {**row.data, "quote_customer_ref": owner, "quote": {**row.data["quote"], "customer_id": owner}})
     response = command(client, sheet, "bind", quote_id="synthetic-Q", quote_revision=1,
                        remnant_id="synthetic-R", remnant_version=0)
     assert response.status_code == 409 and response.json()["code"] == code
@@ -217,7 +217,7 @@ def test_customer_changed_before_confirm_or_reserve_is_durable_stale(client, imp
     with write_transaction(client.app.state.session_factory) as session:
         row = session.get(ObjectRow, (d, "synthetic", "facts"))
         # Isolate ownership from geometry/price and even quote revision.
-        row.data = {**row.data, "quote_customer_ref": owner}
+        row.data = {**row.data, "quote_customer_ref": owner, "quote": {**row.data["quote"], "customer_id": owner}}
     response = command(client, sheet, "reserve" if confirmed else "confirm")
     assert response.status_code == 409 and response.json()["code"] == code
     url, params = f"/api/v1/order-sheets/{sheet['order_id']}", {"dataset_id": d}
@@ -254,7 +254,7 @@ def test_explicit_customer_attestation_agrees_with_extended_c3_quote(client, imp
     class ExtendedSource(SyntheticOrderSource):
         def capture(self, session, dataset_id, quote_id, remnant_id, order_id):
             facts = super().capture(session, dataset_id, quote_id, remnant_id, order_id)
-            facts.quote = SyntheticCustomerQuote(**facts.quote.model_dump(), customer_id=canonical)
+            facts.quote = SyntheticCustomerQuote(**{**facts.quote.model_dump(), "customer_id": canonical})
             facts.quote_customer_ref = owner
             return facts
 
@@ -296,7 +296,7 @@ def test_owner_change_during_reservation_rolls_back_inventory(client, imported, 
         def reserve(self, session, facts, order_id, order_revision):
             ref = super().reserve(session, facts, order_id, order_revision)
             row = session.get(ObjectRow, (facts.dataset_id, "synthetic", "facts"))
-            row.data = {**row.data, "quote_customer_ref": "C-other"}
+            row.data = {**row.data, "quote_customer_ref": "C-other", "quote": {**row.data["quote"], "customer_id": "C-other"}}
             return ref
 
     d = setup(client, imported, services)

@@ -180,7 +180,7 @@ function SolvePanel({
   onPlanReady: (planId: string) => void;
 }) {
   const { api } = useApi();
-  const [profile, setProfile] = useState<SolverConfig['profile']>('standard');
+  const [profile, setProfile] = useState<NonNullable<SolverConfig['profile']>>('standard');
   const [mode, setMode] = useState<'keep' | 'replan'>('keep');
   const [minFree, setMinFree] = useState('5');
   const [key, setKey] = useState(newIdempotencyKey);
@@ -222,7 +222,7 @@ function SolvePanel({
       >
         <label className="inline-field">
           Профиль
-          <select value={profile} onChange={event => setProfile(event.target.value as SolverConfig['profile'])}>
+          <select value={profile} onChange={event => setProfile(event.target.value as NonNullable<SolverConfig['profile']>)}>
             <option value="quick">Быстрый подбор (~5 с)</option>
             <option value="standard">Стандартный (60 с)</option>
             <option value="extended">Расширенный конкурсный (600 с)</option>

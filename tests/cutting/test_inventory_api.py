@@ -50,6 +50,7 @@ def commit(client, dataset, plan, key=None, owner="test"):
 
 def test_solve_without_platform_is_honest_503(app_client):
     app, client = app_client
+    app.state.job_submitter = None
     register(app, "ws", small_snapshot())
     response = client.post(f"{API}/cutting/solve", json={"dataset_id": "ws"})
     assert response.status_code == 503 and response.json()["code"] == "JOB_PLATFORM_UNAVAILABLE"
@@ -73,8 +74,9 @@ def test_list_filter_paginate_and_dataset_isolation(app_client):
 
 
 def test_t20_add_restart_reserve_consume_history(tmp_path):
-    app = create_app(tmp_path)
+    app = create_app(tmp_path, testing=True)
     with TestClient(app) as client:
+        client.get("/api/v1/health")
         register(app, "ws", small_snapshot())
         added = client.post(f"{API}/remnants", json={"dataset_id": "ws", "material_id": "clear-4",
                                                      "dimensions": {"length_mm": 700, "width_mm": 500},
@@ -87,8 +89,9 @@ def test_t20_add_restart_reserve_consume_history(tmp_path):
                                                    "dimensions": {"length_mm": 7, "width_mm": 5}, "location_raw": "x"})
         assert bad.status_code == 422 and bad.json()["code"] == "UNKNOWN_MATERIAL"
     # restart: a new app instance on the same data directory
-    app = create_app(tmp_path)
+    app = create_app(tmp_path, testing=True)
     with TestClient(app) as client:
+        client.get("/api/v1/health")
         stored = client.get(f"{API}/remnants/{new['remnant_id']}", params={"dataset_id": "ws"}).json()
         assert stored["location_raw"] == "Стеллаж Z, ячейка 9" and stored["status"] == "available"
         plan = solve(app, client, locks=[{"part_id": "P1", "remnant_id": new["remnant_id"], "lock_kind": "assignment"}])
@@ -132,8 +135,9 @@ def test_immutable_source_dataset_rejects_working_mutations(app_client):
 
 
 def test_t18_two_concurrent_commits_one_success_one_409(tmp_path):
-    app = create_app(tmp_path)
+    app = create_app(tmp_path, testing=True)
     with TestClient(app) as client:
+        client.get("/api/v1/health")
         register(app, "ws", small_snapshot())
         plan_a = solve(app, client)
         plan_b = solve(app, client)

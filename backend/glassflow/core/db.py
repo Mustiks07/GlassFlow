@@ -10,7 +10,7 @@ from fastapi import Request
 from sqlalchemy import String, create_engine, event
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 
-SCHEMA_HEAD = "0003_material_use"
+SCHEMA_HEAD = "0004_domains"
 
 
 class Base(DeclarativeBase):

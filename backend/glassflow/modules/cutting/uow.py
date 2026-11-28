@@ -23,7 +23,7 @@ def write_transaction(factory) -> Iterator[Session]:
         if connection.dialect.name == "sqlite":
             # A write statement (even matching no row) makes the DBAPI open the transaction and take the
             # SQLite write lock now, before any version is read. Equivalent to BEGIN IMMEDIATE.
-            connection.execute(text("UPDATE cut_datasets SET mode = mode WHERE dataset_id = '__lock__'"))
+            connection.execute(text("BEGIN IMMEDIATE"))
         yield session
         session.commit()
     except BaseException:

@@ -17,8 +17,9 @@ from .conftest import KB_PATH, MATERIALS_PATH, PACK
 
 @pytest.fixture()
 def app_client(tmp_path):
-    app = create_app(tmp_path)
+    app = create_app(tmp_path, testing=True)
     with TestClient(app) as client:
+        client.get("/api/v1/health")
         sources = InMemorySources()
         sources.add_kb("ds-a", KB_PATH.read_bytes())
         sources.set_materials("ds-a", MATERIALS_PATH.read_bytes())

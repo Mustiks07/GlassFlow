@@ -15,6 +15,7 @@ from glassflow.core.sources import PlatformIntelligenceSources
 from glassflow.core.submission import DurableJobSubmitter
 from glassflow.modules.crm.router import router as crm_router
 from glassflow.modules.cutting.router import router as cutting_router
+from glassflow.modules.cutting.workflow_router import router as workflow_router
 from glassflow.modules.intelligence.router import router as intelligence_router
 from glassflow.modules.platform.basket_router import router as basket_router
 from glassflow.modules.platform.economics_router import router as economics_router
@@ -41,10 +42,12 @@ def create_app(
             app.state.session_factory = factory
             app.state.engine = engine
             app.state.data_dir = Path(engine.url.database).parent
-            app.state.services = services or Services()
+            from glassflow.core.composition import domain_services, wire_app
+            app.state.services = services if services is not None else domain_services()
             app.state.intelligence_sources = PlatformIntelligenceSources(factory)
             app.state.crm_port = PlatformCrmPort(factory, app.state.services)
             app.state.secrets = {}
+            wire_app(app)
             app.state.maintenance = False
             handlers = {"crm": Handler(crm_job), **app.state.services.job_handlers}
             app.state.job_submitter = DurableJobSubmitter(factory, handlers)
@@ -112,7 +115,7 @@ def create_app(
             ai="unchecked" if app.state.secrets else "unavailable",
         )
 
-    for router in [platform_router, cutting_router, intelligence_router, crm_router, sales_router, order_router, economics_router, basket_router, material_use_router]:
+    for router in [platform_router, cutting_router, workflow_router, intelligence_router, crm_router, sales_router, order_router, economics_router, basket_router, material_use_router]:
         app.include_router(router, prefix="/api/v1")
     from glassflow.core.resources import resource_root
 

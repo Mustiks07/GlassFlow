@@ -1,0 +1,737 @@
+{
+  "records": [
+    {
+      "name": "CATRINE (группа компаний)",
+      "city": "Астана",
+      "profile": "Изготовление индивидуальной, модульной и корпоративной мебели; Астана, ул. Ташенова 19. Подтверждено на публичной странице CATRINE.",
+      "source_url": "https://catrine.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "Изготовление индивидуальной, модульной и корпоративной мебели; Астана, ул. Ташенова 19. Подтверждено на публичной странице CATRINE.",
+      "entity_id": "B01",
+      "applications": [
+        {
+          "application": "furniture_insert",
+          "material_ids": [
+            "clear-4",
+            "clear-6",
+            "clear-8"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "Изготовление индивидуальной, модульной и корпоративной мебели; Астана, ул. Ташенова 19. Подтверждено на публичной странице CATRINE.",
+          "source_url": "https://catrine.kz/",
+          "checked_at": "2026-11-28"
+        },
+        {
+          "application": "mirror_interior",
+          "material_ids": [
+            "mirror-4"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "Изготовление индивидуальной, модульной и корпоративной мебели; Астана, ул. Ташенова 19. Подтверждено на публичной странице CATRINE.",
+          "source_url": "https://catrine.kz/",
+          "checked_at": "2026-11-28"
+        }
+      ],
+      "verification_scope": "integration_public_page_review"
+    },
+    {
+      "name": "Astana MG — мебель на заказ",
+      "city": "Астана",
+      "profile": "Собственное производство мебели в Астане; шкафы со стеклом и зеркалами, витрины и полки. Подтверждено на публичной странице Astana MG.",
+      "source_url": "https://astanamg.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "Собственное производство мебели в Астане; шкафы со стеклом и зеркалами, витрины и полки. Подтверждено на публичной странице Astana MG.",
+      "entity_id": "B02",
+      "applications": [
+        {
+          "application": "furniture_insert",
+          "material_ids": [
+            "clear-4",
+            "clear-6",
+            "clear-8"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "Собственное производство мебели в Астане; шкафы со стеклом и зеркалами, витрины и полки. Подтверждено на публичной странице Astana MG.",
+          "source_url": "https://astanamg.kz/",
+          "checked_at": "2026-11-28"
+        },
+        {
+          "application": "mirror_interior",
+          "material_ids": [
+            "mirror-4"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "Собственное производство мебели в Астане; шкафы со стеклом и зеркалами, витрины и полки. Подтверждено на публичной странице Astana MG.",
+          "source_url": "https://astanamg.kz/",
+          "checked_at": "2026-11-28"
+        }
+      ],
+      "verification_scope": "integration_public_page_review"
+    },
+    {
+      "name": "DalaSK (astana-mebel.kz)",
+      "city": "Астана",
+      "profile": "Собственное производство корпусной мебели в Астане; шкафы, полки, журнальные столики и зеркала для прихожей. Подтверждено на публичной странице DalaSK.",
+      "source_url": "https://astana-mebel.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / GPT Pro integration",
+      "confirmation": "Собственное производство корпусной мебели в Астане; шкафы, полки, журнальные столики и зеркала для прихожей. Подтверждено на публичной странице DalaSK.",
+      "entity_id": "B03",
+      "applications": [
+        {
+          "application": "furniture_insert",
+          "material_ids": [
+            "clear-4",
+            "clear-6",
+            "clear-8"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "Собственное производство корпусной мебели в Астане; шкафы, полки, журнальные столики и зеркала для прихожей. Подтверждено на публичной странице DalaSK.",
+          "source_url": "https://astana-mebel.kz/",
+          "checked_at": "2026-11-28"
+        },
+        {
+          "application": "mirror_interior",
+          "material_ids": [
+            "mirror-4"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "Собственное производство корпусной мебели в Астане; шкафы, полки, журнальные столики и зеркала для прихожей. Подтверждено на публичной странице DalaSK.",
+          "source_url": "https://astana-mebel.kz/",
+          "checked_at": "2026-11-28"
+        }
+      ],
+      "verification_scope": "integration_public_page_review"
+    },
+    {
+      "name": "Mebel Ideal",
+      "city": "Астана",
+      "profile": "мебельная фабрика",
+      "source_url": "https://mebel-ideal.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Производство мебели на заказ в Астане - самые красивые кухни!; city_confirmed=True; profile_keyword=мебел",
+      "entity_id": "B04",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Clever Design",
+      "city": "Астана",
+      "profile": "дизайн-студия",
+      "source_url": "https://cleverdesign.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Дизайн интерьера в Астане | Студия дизайна Clever Design; city_confirmed=True; profile_keyword=дизайн",
+      "entity_id": "B05",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Biar.kz",
+      "city": "Астана",
+      "profile": "дизайн-студия",
+      "source_url": "https://biar.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Дизайн интерьера и ремонт в Астане под ключ - Студия Biar.kz; city_confirmed=True; profile_keyword=дизайн",
+      "entity_id": "B06",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "DreamArt",
+      "city": "Астана",
+      "profile": "дизайн-студия",
+      "source_url": "https://dreamart.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Дизайн интерьера Астана | Торговый дизайн Астана - DreamArt ИНТЕРЬЕР ПОД КЛЮЧ; city_confirmed=True; profile_keyword=дизайн",
+      "entity_id": "B07",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "SENSATA GROUP",
+      "city": "Астана",
+      "profile": "строительная компания",
+      "source_url": "https://sensata.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: SENSATA GROUP; city_confirmed=True; profile_keyword=ЖК",
+      "entity_id": "B08",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "SG Holding",
+      "city": "Астана",
+      "profile": "строительная компания",
+      "source_url": "https://sgholding.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Главная Строительная компания SG Holding в Астане -; city_confirmed=True; profile_keyword=строит",
+      "entity_id": "B09",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Алкон+",
+      "city": "Астана",
+      "profile": "окна и двери",
+      "source_url": "https://alcon.kz/private/metalplastic_designs/proizvodstvo/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Производство металлопластикових конструкций на Alcon.kz; city_confirmed=True; profile_keyword=окон",
+      "entity_id": "B10",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "VEKA Казахстан (окна ПВХ)",
+      "city": "Астана",
+      "profile": "окна и двери",
+      "source_url": "https://www.veka.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Купить пластиковые окна ПВХ в Астанe с установкой – цены производителя, недорогие готовые окна; city_confirmed=True; profile_keyword=окн",
+      "entity_id": "B11",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Мегастрой",
+      "city": "Астана",
+      "profile": "магазин",
+      "source_url": "https://megastroy.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Строительный магазин Мегастрой | Купить стройматериалы в Казахстане; city_confirmed=True; profile_keyword=строй",
+      "entity_id": "B12",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Строительная компания АстанаСтройДом",
+      "city": "Астана",
+      "profile": "строительная компания",
+      "source_url": "https://www.kn.kz/companies/view/id/22789",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Строительная компания АстанаСтройДом в Астане: адрес, номер телефона, сайт и контакты | kn.kz; city_confirmed=True; profile_keyword=Строительная компания",
+      "entity_id": "B13",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "ТРЦ Хан Шатыр",
+      "city": "Астана",
+      "profile": "торговый центр",
+      "source_url": "https://sxodim.com/astana/place/han-shatyr",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Хан Шатыр - Торговый центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Торговый центр",
+      "entity_id": "B14",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "ТРЦ «Керуен»",
+      "city": "Астана",
+      "profile": "торговый центр",
+      "source_url": "https://sxodim.com/astana/place/keruen",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: ТРЦ «Керуен» Астана - Торговый центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Торговый центр",
+      "entity_id": "B15",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "ТРЦ Asia Park Astana",
+      "city": "Астана",
+      "profile": "торговый центр",
+      "source_url": "https://astana.asiapark.kz/ru/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Торгово-развлекательный центр Asia Park Astana; city_confirmed=True; profile_keyword=Торгово-развлекательный центр",
+      "entity_id": "B16",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "ТРЦ MEGA Silk Way",
+      "city": "Астана",
+      "profile": "торговый центр",
+      "source_url": "https://sxodim.com/astana/place/mega-silk-way",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: ТРЦ MEGA Silk Way Астана - Торговый центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Торговый центр",
+      "entity_id": "B17",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "МФК Abu Dhabi Plaza",
+      "city": "Астана",
+      "profile": "торговый центр",
+      "source_url": "https://abudhabiplaza.info/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Официальный сайт МФК Абу Даби Плаза в г. Астана; city_confirmed=True; profile_keyword=Абу Даби Плаза",
+      "entity_id": "B18",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Talan Towers",
+      "city": "Астана",
+      "profile": "торговый центр",
+      "source_url": "https://sxodim.com/astana/place/talan-towers",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Talan Towers - Торговый центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Talan",
+      "entity_id": "B19",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "ТРЦ «Сарыарка»",
+      "city": "Астана",
+      "profile": "торговый центр",
+      "source_url": "https://sxodim.com/astana/place/saryarka",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: ТРЦ Сарыарка Астана - Торговый центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Торговый центр",
+      "entity_id": "B20",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "ТРЦ Astana Mall",
+      "city": "Астана",
+      "profile": "торговый центр",
+      "source_url": "https://sxodim.com/astana/place/astana-mall",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: ТРЦ Astana Mall - Торговый центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Торговый центр",
+      "entity_id": "B21",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "KeruenCity",
+      "city": "Астана",
+      "profile": "торговый центр",
+      "source_url": "https://sxodim.com/astana/place/keruencity",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: KeruenCity - Торговый центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Торговый центр",
+      "entity_id": "B22",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "ТРЦ «Аружан»",
+      "city": "Астана",
+      "profile": "торговый центр",
+      "source_url": "https://sxodim.com/astana/place/aruzhan",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: ТРЦ Аружан Астана - Торговый центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Торговый центр",
+      "entity_id": "B23",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Торговый центр Green Mall",
+      "city": "Астана",
+      "profile": "торговый центр",
+      "source_url": "https://sxodim.com/astana/place/green-mall",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Торговый центр Green Mall - Торговый центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Торговый центр",
+      "entity_id": "B24",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Qazaq Gourmet",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://qazaqgourmet.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Ресторан высокой казахской кухни в г. Астана. Ресторан казахской кухни. Шеф Артем Канцев.; city_confirmed=True; profile_keyword=Ресторан",
+      "entity_id": "B25",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Чайхана NAVAT",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://sxodim.com/astana/place/navat",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Ресторан восточной кухни на левом берегу Астаны - Ресторан - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Ресторан",
+      "entity_id": "B26",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Coffee Boom",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://sxodim.com/astana/place/coffee-boom-1",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Coffee Boom - Кофейня - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Кофейня",
+      "entity_id": "B27",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Nudu",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://nudu.kz/ru",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Nudu Астана; city_confirmed=True; profile_keyword=Nudu",
+      "entity_id": "B28",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Starbucks Казахстан",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://sxodim.com/astana/place/starbucks",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Старбакс - Кофейня - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Кофейня",
+      "entity_id": "B29",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Ресторан MANNA",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://sxodim.com/astana/place/manna",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: MANNA - Ресторан - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Ресторан",
+      "entity_id": "B30",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "LINE BREW RESERVE",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://sxodim.com/astana/place/line-brew-reserve",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: LINE BREW RESERVE - Ресторан - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Ресторан",
+      "entity_id": "B31",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Ресторан Shafran",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://sxodim.com/astana/place/shafran",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Shafran - Ресторан - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Ресторан",
+      "entity_id": "B32",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Гастро-Площадь Центр",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://sxodim.com/astana/place/gastro-ploshchad-centr",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Гастро-Площадь Центр в Астане - Ресторан - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Ресторан",
+      "entity_id": "B33",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Кофейня Marrone Rosso",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://sxodim.com/astana/place/marrone-rosso",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Кофейня Marrone Rosso в Астане - Кофейня - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Кофейня",
+      "entity_id": "B34",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Bahandi Burger",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://bahandi.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Bahandi Burger — сеть стрит-фуд кафе быстрого питания; city_confirmed=True; profile_keyword=Bahandi",
+      "entity_id": "B35",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "La Bottega",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://sxodim.com/astana/place/la-bottega",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: La Bottega - Ресторан - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Ресторан",
+      "entity_id": "B36",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "OldBoy Barbershop (Астана)",
+      "city": "Астана",
+      "profile": "салон",
+      "source_url": "https://oldboybarbershop.com/astana",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Сеть барбершопов OldBoy в Астане | Barberbshop OldBoy; city_confirmed=True; profile_keyword=барбершоп",
+      "entity_id": "B37",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "The Ritz-Carlton, Astana",
+      "city": "Астана",
+      "profile": "другое",
+      "source_url": "https://www.ritzcarlton.com/en/hotels/tserz-the-ritz-carlton-astana/overview/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: The Ritz-Carlton, Astana | Luxury Hotel near Baiterek Tower; city_confirmed=True; profile_keyword=hotel",
+      "entity_id": "B38",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Rixos President Astana",
+      "city": "Астана",
+      "profile": "другое",
+      "source_url": "https://www.rixos.com/hotel-resort/rixos-president-astana",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Rixos President Astana - Luxury Resort in Astana | Rixos; city_confirmed=True; profile_keyword=hotel",
+      "entity_id": "B39",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "World Class Астана",
+      "city": "Астана",
+      "profile": "другое",
+      "source_url": "https://worldclass.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: World Class Астана; city_confirmed=True; profile_keyword=фитнес",
+      "entity_id": "B40",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Invictus Fitness",
+      "city": "Астана",
+      "profile": "другое",
+      "source_url": "https://sxodim.com/astana/place/invictus",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Инвиктус - Фитнес-центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Фитнес",
+      "entity_id": "B41",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Fitness Palace",
+      "city": "Астана",
+      "profile": "другое",
+      "source_url": "https://sxodim.com/astana/place/fitness-palace",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Фитнес Палас Астана - Фитнес-центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Фитнес",
+      "entity_id": "B42",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Fitness First (левый берег)",
+      "city": "Астана",
+      "profile": "другое",
+      "source_url": "https://sxodim.com/astana/place/fitness-first",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Фитнес-центр на левом берегу Астаны - Фитнес-центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Фитнес",
+      "entity_id": "B43",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "PilatesPro",
+      "city": "Астана",
+      "profile": "другое",
+      "source_url": "https://sxodim.com/astana/place/pilatespro",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: PilatesPro - Фитнес-центр - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Фитнес",
+      "entity_id": "B44",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Астана Опера",
+      "city": "Астана",
+      "profile": "другое",
+      "source_url": "https://astanaopera.kz/ru",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Астана Опера; city_confirmed=True; profile_keyword=Астана Опера",
+      "entity_id": "B45",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "QazExpoCongress (МВЦ EXPO)",
+      "city": "Астана",
+      "profile": "другое",
+      "source_url": "https://qazexpocongress.kz/ru/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Акционерное общество «Национальная компания «QazExpoCongress» <? //wp_title(':'); ?>; city_confirmed=True; profile_keyword=ЭКСПО",
+      "entity_id": "B46",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "KHS Hub — IT bar",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://khshub.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Первый IT BAR в Казахстане; city_confirmed=True; profile_keyword=бар",
+      "entity_id": "B47",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Ресторан Tamaq",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://sxodim.com/astana/place/tamaq",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Tamaq - Ресторан - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Ресторан",
+      "entity_id": "B48",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Ресторан «Saf»",
+      "city": "Астана",
+      "profile": "кафе или ресторан",
+      "source_url": "https://sxodim.com/astana/place/restoran-saf",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Ресторан «Saf» Астана - Ресторан - фото, цены, адреса, ☎ телефоны | Давай Сходим!; city_confirmed=True; profile_keyword=Ресторан",
+      "entity_id": "B49",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    },
+    {
+      "name": "Hani Cakes & Coffee",
+      "city": "Караганда",
+      "profile": "кафе или ресторан",
+      "source_url": "https://hanicc.kz/",
+      "checked_at": "2026-11-27",
+      "reviewer": "Claude 1 (агент Ильяса): ручной отбор публичных организаций; автоматическая загрузка source_url с проверкой города и профиля; ручной просмотр заголовка и фрагмента",
+      "confirmation": "C1 evidence: Hani в Караганде | Торты, десерты и бранчи; city_confirmed=True; profile_keyword=Hani",
+      "entity_id": "B50",
+      "applications": [],
+      "verification_scope": "C1_report_not_independently_accepted"
+    }
+  ],
+  "dedupe_policy": "Одна запись на организацию/бренд: филиалы, точки сети и залы одного бренда объединяются в одну запись; запись указывает город проверенного объекта. Разные юридические бренды одной группы считаются разными только при разных сайтах и профилях.",
+  "source_evidence_sha256": "fc4ae232bd1569fcb8f762f498595ca0538aa40b9a29285468ec511a3d47756c",
+  "source_csv_sha256": "7d2b004d83d4cbefb90b04fc9634be879f3c3132c90bceefd1a1c83e4c968b08",
+  "transform_version": "c1-platform-v1",
+  "application_policy": "Explicit project assumptions; no confirmed interest",
+  "integration_reviewed_ids": [
+    "B01",
+    "B02",
+    "B03"
+  ]
+}

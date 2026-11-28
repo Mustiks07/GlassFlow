@@ -8,6 +8,7 @@ from glassflow.contracts.common import ApiError
 from glassflow.contracts.platform import (
     AISettings,
     Dataset,
+    ExportResult,
     ImportCommit,
     ImportPreview,
     Job,
@@ -229,7 +230,7 @@ def cancel_job(job_id: str, request: Request, dataset_id: str):
         return job_dto(row)
 
 
-@router.post("/runs/{run_id}/export")
+@router.post("/runs/{run_id}/export", response_model=ExportResult)
 def export_run(run_id: str, request: Request, idempotency_key: str | None = Header(None)):
     import threading
 

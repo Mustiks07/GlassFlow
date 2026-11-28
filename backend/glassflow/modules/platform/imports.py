@@ -56,6 +56,10 @@ def dataset(session, dataset_id):
 
 
 def dataset_dto(row):
+    from sqlalchemy.orm import object_session
+    session = object_session(row)
+    head = session.get(SettingsRow, f"kb_head:{row.id}") if session is not None else None
+    digest = head.data["sha256"] if head else row.source_hashes.get("kb")
     return Dataset(
         dataset_id=row.id,
         name=row.name,
@@ -65,6 +69,7 @@ def dataset_dto(row):
         row_counts=row.row_counts,
         version=row.version,
         created_at=row.created_at,
+        kb_version=f"kb-{digest[:16]}" if digest else None,
     )
 
 

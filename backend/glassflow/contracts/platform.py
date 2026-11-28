@@ -16,6 +16,7 @@ class Dataset(DTO):
     version: int = 0
     created_at: str | None = None
     schema_version: str = "1"
+    kb_version: str | None = None
 
 
 class ImportPreview(DTO):

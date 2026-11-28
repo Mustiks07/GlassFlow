@@ -655,6 +655,7 @@ class IntelligenceService:
             reasons.extend(fresh_reasons)
         quote.inventory_reason_codes = list(dict.fromkeys(reasons))
         quote.status = "confirmed"
+        quote.preliminary = False
         quote.confirmed_at, quote.confirmed_by = self.clock(), request.confirmed_by
         with self.session_factory.begin() as session:
             row = session.get(QuoteRevisionRow, target.id)

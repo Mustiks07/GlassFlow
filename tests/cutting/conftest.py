@@ -88,8 +88,9 @@ class InlineJobSubmitter:
 
 @pytest.fixture()
 def app_client(tmp_path):
-    app = create_app(tmp_path)
+    app = create_app(tmp_path, testing=True)
     with TestClient(app) as client:
+        client.get("/api/v1/health")
         yield app, client
 
 
