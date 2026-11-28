@@ -1,0 +1,3483 @@
+{
+  "oracle_unchanged_since": "c6a788809e27648bcd24f3dcdcc779afba0cd6a5",
+  "initial_summary": {
+    "turns": 149,
+    "distinct_cases": 79,
+    "correct": 112,
+    "accuracy": 0.7517,
+    "quality_correct": 10,
+    "quality_total": 10,
+    "failures_by_family": {
+      "units_and_wording": 1,
+      "bulk_boundary": 12,
+      "hardware": 4,
+      "sheet_unit": 10,
+      "ambiguity": 3,
+      "rules": 1,
+      "changed_KB": 6
+    },
+    "origins": {
+      "deterministic": 149
+    },
+    "latency_p50_ms": 33.77,
+    "latency_p95_ms": 56.75,
+    "fabrication_count": 18,
+    "unnecessary_refusal_count": 6,
+    "incomplete_count": 12,
+    "unnecessary_question_count": 0
+  },
+  "adjudicated_summary": {
+    "turns": 149,
+    "distinct_cases": 79,
+    "correct": 135,
+    "accuracy": 0.906,
+    "distinct_correct": 69,
+    "distinct_accuracy": 0.8734,
+    "quality_correct": 10,
+    "quality_total": 10,
+    "failures_by_family": {
+      "units_and_wording": 1,
+      "sheet_unit": 9,
+      "ambiguity": 3,
+      "rules": 1
+    },
+    "origins": {
+      "deterministic": 149
+    },
+    "latency_p50_ms": 33.77,
+    "latency_p95_ms": 56.75,
+    "fabrication_count": 2,
+    "unnecessary_refusal_count": 6,
+    "incomplete_count": 12,
+    "unnecessary_question_count": 0
+  },
+  "rubric_frozen_commit": "d8a628c1a3abf7a12ddfe316b38ebaece86c9611",
+  "changes": [
+    {
+      "case_id": "IR001",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR002",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR003",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR004",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR005",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR006",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR007",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR008",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR009",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR010",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR011",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR012",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR013",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR014",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR015",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR016",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR017",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR017",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR017",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR018",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR018",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR018",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR019",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR019",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR019",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR020",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR020",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR020",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR021",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR021",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR021",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR022",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR022",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR022",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR023",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR023",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR023",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR024",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR024",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR024",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR025",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR025",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR025",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR026",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR026",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR026",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR027",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR028",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR029",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR030",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR031",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "answer_omits_full_total"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": true,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "dimensions_missing_or_wrong",
+          "answer_omits_full_total"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": true,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR032",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR033",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR033",
+      "repeat": 1,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR033",
+      "repeat": 2,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR034",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR034",
+      "repeat": 1,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR034",
+      "repeat": 2,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR035",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR035",
+      "repeat": 1,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR035",
+      "repeat": 2,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR036",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR036",
+      "repeat": 1,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR036",
+      "repeat": 2,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR037",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR038",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR039",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR040",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR041",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "answer_omits_full_total",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": true,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "answer_omits_full_total"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": true,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR042",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "answer_omits_full_total",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": true,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "answer_omits_full_total"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": true,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR043",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR044",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "answer_omits_full_total",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": true,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "answer_omits_full_total"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": true,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR045",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "complete_request_not_answered",
+          "structured_total_missing_or_wrong",
+          "answer_omits_full_total"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": true,
+        "incomplete": true,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "complete_request_not_answered",
+          "answer_omits_full_total"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": true,
+        "incomplete": true,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR045",
+      "repeat": 1,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "complete_request_not_answered",
+          "structured_total_missing_or_wrong",
+          "answer_omits_full_total"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": true,
+        "incomplete": true,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "complete_request_not_answered",
+          "answer_omits_full_total"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": true,
+        "incomplete": true,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR045",
+      "repeat": 2,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "complete_request_not_answered",
+          "structured_total_missing_or_wrong",
+          "answer_omits_full_total"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": true,
+        "incomplete": true,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "complete_request_not_answered",
+          "answer_omits_full_total"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": true,
+        "incomplete": true,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR046",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "complete_request_not_answered",
+          "structured_total_missing_or_wrong",
+          "answer_omits_full_total"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": true,
+        "incomplete": true,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "complete_request_not_answered",
+          "answer_omits_full_total"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": true,
+        "incomplete": true,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR046",
+      "repeat": 1,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "complete_request_not_answered",
+          "structured_total_missing_or_wrong",
+          "answer_omits_full_total"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": true,
+        "incomplete": true,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "complete_request_not_answered",
+          "answer_omits_full_total"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": true,
+        "incomplete": true,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR046",
+      "repeat": 2,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "complete_request_not_answered",
+          "structured_total_missing_or_wrong",
+          "answer_omits_full_total"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": true,
+        "incomplete": true,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "complete_request_not_answered",
+          "answer_omits_full_total"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": true,
+        "incomplete": true,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR047",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR047",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR047",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR048",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR048",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR048",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR049",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR049",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR049",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR050",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR050",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR050",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR051",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR051",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR051",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR052",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR052",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR052",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR053",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR053",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR053",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR054",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR055",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR056",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "useful_clarification_missing",
+          "clarification_does_not_resolve_target_ambiguity"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": true,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "useful_clarification_missing",
+          "clarification_does_not_resolve_target_ambiguity"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": true,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR057",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "ambiguous_product_resolved_without_customer"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "ambiguous_product_resolved_without_customer"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": true,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR058",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR059",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "useful_clarification_missing"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": true,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "useful_clarification_missing"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": true,
+        "fabrication": true,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR060",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "missing_required_rule",
+          "missing_rule_context"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": false,
+        "reasons": [
+          "missing_required_rule",
+          "missing_rule_context"
+        ],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR061",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR062",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR063",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR064",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR065",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR066",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR067",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR068",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR068",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR068",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR069",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR069",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR069",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR070",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR070",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR070",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR071",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR071",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR071",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR072",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR072",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR072",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR073",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR073",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR073",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR074",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR074",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR074",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR075",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR075",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR075",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR076",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR076",
+      "repeat": 1,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR076",
+      "repeat": 2,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong",
+          "unbound_or_wrong_currency_amount"
+        ],
+        "fabrication": true,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR077",
+      "repeat": 0,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR077",
+      "repeat": 1,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR077",
+      "repeat": 2,
+      "initial": {
+        "ok": false,
+        "reasons": [
+          "structured_total_missing_or_wrong"
+        ],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR078",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR078",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR078",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR079",
+      "repeat": 0,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR079",
+      "repeat": 1,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    },
+    {
+      "case_id": "IR079",
+      "repeat": 2,
+      "initial": {
+        "ok": true,
+        "reasons": [],
+        "fabrication": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "unnecessary_question": false
+      },
+      "adjudicated": {
+        "ok": true,
+        "reasons": [],
+        "wrong_total": false,
+        "unnecessary_refusal": false,
+        "incomplete": false,
+        "fabrication": false,
+        "unnecessary_question": false
+      },
+      "basis": "AssistantReply.quote optional; supplementary true catalog price qualified by correct product/unit/tier; unrequested ambiguous SKU remains a commercial failure. Original questions and numeric oracle unchanged."
+    }
+  ],
+  "semantic_rubric_freeze_commit": "334c0c70023872a885c2582eb848d6067e68e8c2",
+  "applied_grader_sha256": "ce6506eb942dc5ad1e09aaa2845de175b597e7d067198ed4b457e18bb757739d"
+}

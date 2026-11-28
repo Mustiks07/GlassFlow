@@ -1,0 +1,15 @@
+{
+  "baseline_product_commit": "5648852d64189ffd7269c277002f6fbc40c8039a",
+  "oracle_freeze_commit": "c6a788809e27648bcd24f3dcdcc779afba0cd6a5",
+  "final_rubric_freeze_commit": "d8a628c1a3abf7a12ddfe316b38ebaece86c9611",
+  "algorithm_corpus_freeze_commit": "dd5fe2330eebb19ead8365adaa7c59908b08d334",
+  "product_tree_changed_by_reviewer": false,
+  "oracle_sha256": "505301657dd8b68832c876dced667d6a87c784f0a27183438b8eecec4bb7d59b",
+  "grader_sha256": "ce6506eb942dc5ad1e09aaa2845de175b597e7d067198ed4b457e18bb757739d",
+  "files_sha256": {
+    "adjudicated_report.json": "a7c4d03743f43ef108f6e8e08227f605f9510eb8ed4f1ea1f42b231ad901e525",
+    "adjudication_log.json": "172cefdf734a5ee34847bb9506f876927917316afa166fc4c08204cf87868d82",
+    "initial_report.json": "905d847607e711e685506a840fa36f9c20575994364fa1c1f06bb16c91f25294",
+    "live_capability.json": "03d5d700f29a27216124e373796606b1c4784e6ec4aa44a7deae56102d57c31e"
+  }
+}
