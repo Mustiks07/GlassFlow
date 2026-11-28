@@ -14,7 +14,7 @@ Fetch в начале и перед публикацией подтвердил:
 - C1877c122bd8249f6996cd85f01b8c1034a622fb7c.
 
 Merge в порядке Pro4396799 → C213922cb → C3b906992 → C1af19bff. Сохранены авторы и история. Новые commits от Mustiks07 <232028042+Mustiks07@users.noreply.github.com>. Reset/force-push не применялись.
-Интеграция0477926, U01/U04/U06/UI dc15352, actual HTTP runner16de48d, hardening d5f675c, original KB pinning6399ace, actual-use UI/Windows fixture c4836fe, reminder cache/new inputs ba32194, linked reminder/regression/pinned public CA2c1ad77. Замороженный EXE имеет build_commit **ba32194be5575c513ab7b3fd89cffcad1a5a6a1b**; следующие изменения относятся к проверкам/документации, backend и production frontend байты те же.
+Интеграция0477926, U01/U04/U06/UI dc15352, actual HTTP runner16de48d, hardening d5f675c, original KB pinning6399ace, actual-use UI/Windows fixture c4836fe, reminder cache/new inputs ba32194, linked reminder/regression/pinned public CA2c1ad77. Замороженный EXE имеет build_commit **ba32194be5575c513ab7b3fd89cffcad1a5a6a1b**; следующие изменения относятся к проверкам/документации/упаковочным правилам, backend и production frontend байты те же.
 
 ## Соединения и исправления
 
@@ -29,7 +29,7 @@ C3-F5 закрыт предметной защитой: trusted commercial refer
 ## Фактические проверки
 
 - `uv sync --locked --all-groups`, `pnpm install --frozen-lockfile` PASS; Python3.12.11, Node24.22.3, pnpm11.25.0.
-- `uv run pytest -o addopts='' -q --junitxml=.runtime/final-pytest.xml`:476 PASS/4 SKIP,500,3 с. SKIP:600-секундный solver отдельно проверен actual HTTP; три KB товара не имеют цены за единицу. Дополнительные actual integration8/8 PASS после новых проверок владельца/прайса/напоминания; release guards3/3 PASS.
+- `uv run pytest -o addopts='' -q --junitxml=.runtime/final-pytest.xml`:476 PASS/4 SKIP,500,3 с. SKIP:600-секундный solver отдельно проверен actual HTTP; три KB товара не имеют цены за единицу. Дополнительные actual integration8/8 PASS после новых проверок владельца/прайса/напоминания; release guards6/6 PASS.
 - `uv run ruff check backend tests scripts` PASS; `uv run python scripts/check_foundation.py` PASS14 исходных файлов+точный spec PDF. `export_openapi.py`, `pnpm contracts:generate`, `git diff --exit-code packages/contracts` PASS. Схемы из объединенных Python DTO, без ours/theirs.
 - `pnpm typecheck`, `pnpm test`20/20, `pnpm build`, `check:bundle` PASS на Node24. Production bundle не содержит fixtures/ключей. Vite предупреждает о JS chunk548,78kB; правило не отключено.
 - Playwright настоящего backend:10/10+2/2 PASS. Затем те же10+2 PASS **на запущенном окончательном GlassFlow.exe**, port23509. Файлы exe-real-report.json/exe-integrated-report.json. 1366/1920/125% проверены; actual basket включает2 строки/3 детали, резерв/warehouse/physical receipt.
@@ -38,7 +38,7 @@ C3-F5 закрыт предметной защитой: trusted commercial refer
 - Отдельный настоящий аварийный kill EXE с деревом его worker → restart: `interrupted/PROCESS_RESTARTED`, incumbent сохранен; retry completed/validated, повтор ключа тот жеjob_id. См. native-recovery.json.
 - `scan_release.py dist/GlassFlow` PASS. Выявлен ложный запрет публичного certifi CA PEM: разрешены только точное место и SHA bb92c6ac31c92f4f553bffd6bf093db02c858c23e111b0b4df9bafa3fdbe00d1; измененный bundle/любой private PEM по-прежнему отклоняются,3 регрессии PASS.
 
-CI опубликованной ветки запускает Linux verify и Windows full/native smoke/scanner; итог смотреть в GitHub Actions для публикуемого SHA. Первый run46125025629 относится к ba32194 до исправления CA scanner. Следующий run относится к2c1ad77 и последующим evidence commits. Локальные и remote результаты не подменяются друг другом.
+CI опубликованной ветки запускает Linux verify и Windows full/native smoke/scanner; итог смотреть в GitHub Actions для публикуемого SHA. CI2c1ad77 выявил два Linux failure исторического C2 evidence: Windows separators. В74ffe13 чтение пути исправлено без ослабления byte/hash assertions; оба локальных regression PASS. Также Git text normalization менял скачанные CRLF CSV: добавлен -text для артефактов, все18 committed Git blobs совпадают с manifest SHA;6 release guards PASS. Первые CI runs сохранены как failed history; дальнейшие SHA проверяются заново. Локальные и remote результаты не подменяются друг другом.
 
 ## Настоящие CSV и материалы
 

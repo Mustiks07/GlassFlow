@@ -40,3 +40,12 @@ def test_only_exact_pinned_public_certifi_bundle_is_approved(tmp_path):
     assert 'Unapproved runtime artifact' in scan(tmp_path)[0]
     bundle.write_bytes(b'-----BEGIN PRIVATE KEY-----\nsynthetic\n')
     assert len(scan(tmp_path)) == 2
+
+
+@pytest.mark.parametrize('name', ['open-run', 'baseline', 'changed-input-run'])
+def test_actual_downloads_keep_exact_manifest_bytes_in_checkout(name):
+    from assemble_release import verify_export
+
+    directory = Path(__file__).resolve().parents[2] / 'docs/release/integration' / name
+    manifest = verify_export(directory)
+    assert manifest['status'] == 'ready'
