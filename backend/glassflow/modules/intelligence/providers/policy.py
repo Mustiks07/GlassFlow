@@ -313,6 +313,7 @@ class ResilientClient:
                 timeout = min(self.profile.request_timeout_s, max(MIN_ATTEMPT_SECONDS, deadline - self.clock()))
                 started = self.clock()
                 reservation = 0
+                network_started = False
                 try:
                     async with self.limiter.semaphore:
                         if included:
@@ -321,7 +322,13 @@ class ResilientClient:
                                 raise ProviderError("budget", "Лимит включенной квоты исчерпан; новый вызов не отправлен.")
                             # Reserve atomically before awaiting I/O, including failures and cancellation.
                             self.quota_tokens_spent += reservation
+                        network_started = True
                         response = await asyncio.wait_for(provider.generate(_with_timeout(request, timeout)), timeout=timeout + 1)
+                except asyncio.CancelledError:
+                    if network_started:
+                        self._log(request, label, attempt, "error", "timeout", None, int(queue_s * 1000),
+                                  int((self.clock() - started) * 1000), correlation_id, "Отменен запрос; расход квоты неизвестен.")
+                    raise
                 except TimeoutError:
                     error = ProviderError("timeout", "Тайм-аут запроса к модели.", provider=provider.name, model_id=provider.model_id)
                 except ProviderError as exc:
@@ -341,7 +348,7 @@ class ResilientClient:
                     self._log(request, label, attempt, "ok", None, response, int(queue_s * 1000), latency, correlation_id)
                     self.unhealthy_until.pop(label, None)
                     return CallOutcome(response, attempts, label != self.chain_order()[0], label)
-                latency = int((self.clock() - started) * 1000)
+                latency = int((self.clock() - started) * 1000) if network_started else None
                 self._log(request, label, attempt, "error", error.kind, None, int(queue_s * 1000), latency, correlation_id, str(error)[:200])
                 last_error = error
                 if not error.retryable:
@@ -376,7 +383,7 @@ class ResilientClient:
         usage = response.usage if response else None
         sink = _ATTEMPT_SINK.get()
         # Preflight/queue rejection has no HTTP attempt. A failed HTTP call does.
-        if sink is not None and latency is not None and not (kind == "budget" and message and "не отправлен" in message):
+        if sink is not None and latency is not None:
             sink.append({"provider": provider, "model_id": response.model_id if response else model,
                          "status": status, "error_kind": kind})
         self.ledger.record(

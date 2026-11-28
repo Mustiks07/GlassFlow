@@ -83,7 +83,7 @@ class BasisWebProvider:
             status = reply.status_code if reply.status_code >= 300 else 500
             kind = {401: "auth", 403: "auth", 402: "budget", 429: "rate_limit", 408: "timeout"}.get(status)
             kind = kind or ("server" if status >= 500 else "bad_request")
-            message = sanitize(str(error)[:500], [self._api_key]) if error else "запрос отклонен"
+            message = sanitize(str(error), [self._api_key]) if error else "запрос отклонен"
             try:
                 retry_after = float(reply.headers["retry-after"]) if "retry-after" in reply.headers else None
             except ValueError:
@@ -94,6 +94,8 @@ class BasisWebProvider:
             choice = payload["choices"][0]
             message = choice["message"]
             if not isinstance(message, dict):
+                raise TypeError
+            if message.get("content") is not None and not isinstance(message["content"], str):
                 raise TypeError
             actual_model = payload.get("model")
             if actual_model != self.model_id:
@@ -110,8 +112,11 @@ class BasisWebProvider:
                                       raw if isinstance(raw, str) else json.dumps(raw),
                                       arguments if isinstance(arguments, dict) else None))
             raw_usage = payload.get("usage") or {}
+            if not isinstance(raw_usage, dict):
+                raw_usage = {}
             def token(name, details=None):
-                value = (raw_usage.get(details) or {}).get(name) if details else raw_usage.get(name)
+                detail = raw_usage.get(details) if details else None
+                value = (detail.get(name) if isinstance(detail, dict) else None) if details else raw_usage.get(name)
                 return value if isinstance(value, int) and not isinstance(value, bool) and value >= 0 else None
             usage = Usage(input_tokens=token("prompt_tokens"), output_tokens=token("completion_tokens"),
                           cached_tokens=token("cached_tokens", "prompt_tokens_details"),

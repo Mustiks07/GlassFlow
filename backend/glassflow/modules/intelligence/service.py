@@ -649,7 +649,8 @@ class IntelligenceService:
         with self.session_factory() as session:
             turns = session.scalars(
                 select(TurnRow).join(ConversationRow, TurnRow.conversation_id == ConversationRow.conversation_id)
-                .where(ConversationRow.dataset_id == request.dataset_id)
+                .where(ConversationRow.dataset_id == request.dataset_id,
+                       TurnRow.reply_json.contains(quote_id, autoescape=True))
             ).all()
             for row in turns:
                 reply = json.loads(row.reply_json)
@@ -905,6 +906,7 @@ class IntelligenceService:
                 AnswerRow(
                     id=question.id,
                     answer=result.answer,
+                    clarification=result.clarification,
                     status=result.status if result.status in {"answered", "clarification", "manager_handoff", "limited"} else "answered",  # type: ignore[arg-type]
                     answer_path=result.answer_path,
                     provider=result.provider,
@@ -913,6 +915,9 @@ class IntelligenceService:
                     evidence=result.local.evidence[:10],
                 )
             )
+            with self.session_factory.begin() as session:
+                self.reviews.record_outcome(session, request.dataset_id, catalog.kb.version, question.question,
+                                            result, f"batch:{question.id}", 0)
         counts: dict[str, int] = {}
         for row in rows:
             counts[row.status] = counts.get(row.status, 0) + 1

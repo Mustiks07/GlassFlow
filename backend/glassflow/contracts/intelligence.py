@@ -451,6 +451,7 @@ class AnswerBatchRequest(DatasetRequest):
 
 
 class AnswerRow(DTO):
+    clarification: str | None = None
     id: str
     answer: str
     status: Literal["answered", "clarification", "manager_handoff", "limited", "failed"]

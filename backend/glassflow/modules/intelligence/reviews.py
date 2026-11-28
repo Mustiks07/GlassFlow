@@ -11,6 +11,7 @@ import uuid
 from datetime import UTC, datetime
 
 from sqlalchemy import select, update
+from sqlalchemy.exc import IntegrityError
 
 from glassflow.contracts.intelligence import (
     IntelligenceReviewItem,
@@ -158,6 +159,11 @@ class IntelligenceReviews:
         raw = request.proposed_content.encode("utf-8")
         if len(raw) > 5_000_000:
             _error(422, "KB_TOO_LARGE", "KB превышает 5 МБ.")
+        from glassflow.modules.platform.imports import inspect_files
+        parsed, _, validation_errors, _ = inspect_files(
+            [("ksm_knowledge_base.json", raw)], supply_reference=False, require_complete=False)
+        if validation_errors or set(parsed) != {"kb"}:
+            _error(422, "KB_INVALID", "Кандидат KB не прошел ту же проверку, которую выполняет применение.")
         try:
             proposed = parse_knowledge_base(raw)
         except KnowledgeBaseError as exc:
@@ -213,10 +219,20 @@ class IntelligenceReviews:
                 draft.price_meaning, draft.unit = meaning, units[meaning]
                 draft.source_ref = f"{source.source}:{source.source_version}:{source.record_id}:{source.field}"
                 draft.answer = f"«{product.name}»: корректная цена {money_string(canonical)} ₸ {units[meaning]}."
-        with self.service.session_factory.begin() as session:
-            session.add(ManagerCorrectionRow(id=draft.draft_id, dataset_id=draft.dataset_id, dialog_id=draft.dialog_id,
-                kb_version=draft.kb_version, input_sha256=draft.input_sha256,
-                payload_json=draft.model_dump_json(), created_at=draft.created_at))
+        try:
+            with self.service.session_factory.begin() as session:
+                session.add(ManagerCorrectionRow(id=draft.draft_id, dataset_id=draft.dataset_id, dialog_id=draft.dialog_id,
+                    kb_version=draft.kb_version, input_sha256=draft.input_sha256,
+                    payload_json=draft.model_dump_json(), created_at=draft.created_at))
+        except IntegrityError:
+            # Two managers may request the same immutable draft concurrently.
+            with self.service.session_factory() as session:
+                existing = session.scalar(select(ManagerCorrectionRow).where(
+                    ManagerCorrectionRow.dataset_id == draft.dataset_id, ManagerCorrectionRow.dialog_id == draft.dialog_id,
+                    ManagerCorrectionRow.kb_version == draft.kb_version, ManagerCorrectionRow.input_sha256 == draft.input_sha256))
+                if existing is None:
+                    raise
+                return ManagerCorrectionDraft.model_validate_json(existing.payload_json)
         return draft
 
     def list_corrections(self, dataset_id, draft_id=None):
