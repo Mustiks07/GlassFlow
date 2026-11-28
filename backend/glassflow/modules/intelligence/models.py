@@ -116,3 +116,33 @@ INTELLIGENCE_TABLES = [
     AICallRow.__table__,
     QualityCheckRow.__table__,
 ]
+
+
+class IntelligenceReviewRow(Base):
+    __tablename__ = "intel_review_item"
+    __table_args__ = (UniqueConstraint("dataset_id", "fingerprint", name="uq_intel_review_fingerprint"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    dataset_id: Mapped[str] = mapped_column(String(128), index=True)
+    kb_version: Mapped[str] = mapped_column(String(64))
+    category: Mapped[str] = mapped_column(String(32))
+    status: Mapped[str] = mapped_column(String(16))
+    fingerprint: Mapped[str] = mapped_column(String(64))
+    version: Mapped[int] = mapped_column(Integer)
+    payload_json: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[str] = mapped_column(String(40))
+    updated_at: Mapped[str] = mapped_column(String(40))
+
+
+class ManagerCorrectionRow(Base):
+    __tablename__ = "intel_manager_correction"
+    __table_args__ = (UniqueConstraint("dataset_id", "dialog_id", "kb_version", "input_sha256", name="uq_intel_correction_input"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    dataset_id: Mapped[str] = mapped_column(String(128), index=True)
+    dialog_id: Mapped[str] = mapped_column(String(128))
+    kb_version: Mapped[str] = mapped_column(String(64))
+    input_sha256: Mapped[str] = mapped_column(String(64))
+    payload_json: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[str] = mapped_column(String(40))
+
+
+POST_INTELLIGENCE_TABLES = [IntelligenceReviewRow.__table__, ManagerCorrectionRow.__table__]

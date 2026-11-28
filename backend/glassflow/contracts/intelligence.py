@@ -319,6 +319,79 @@ class Conversation(DTO):
     turns: list[ConversationTurnView]
 
 
+ReviewCategory = Literal["correct_policy", "missing_parameter", "kb_fact", "provider_error", "verifier_reject"]
+
+
+class IntelligenceReviewItem(DatasetRequest):
+    item_id: str
+    kb_version: str
+    category: ReviewCategory
+    reason_codes: list[str]
+    status: Literal["open", "resolved"] = "open"
+    version: int = 1
+    user_text: str
+    conversation_id: str | None = None
+    turn_index: int | None = None
+    occurrences: int = 1
+    created_at: str
+    updated_at: str
+    resolved_by: str | None = None
+    resolution_note: str | None = None
+
+
+class ReviewResolveRequest(DatasetRequest):
+    expected_version: int = Field(ge=1)
+    resolved_by: str = Field(min_length=1, max_length=128)
+    resolution_note: str = Field(min_length=1, max_length=2000)
+
+
+class KnowledgeImpactRequest(DatasetRequest):
+    expected_kb_version: str
+    proposed_content: str = Field(min_length=2, max_length=5_000_000)
+
+
+class KnowledgeImpactPreview(DatasetRequest):
+    item_id: str
+    current_kb_version: str
+    expected_platform_version: int
+    proposed_kb_version: str
+    proposed_sha256: str
+    changed_products: list[str]
+    changed_rules: list[str]
+    affected_quotes: list[str]
+    mapping_changes: list[str]
+    no_op: bool
+    apply_method: Literal["POST"] = "POST"
+    apply_path: str
+    requires_explicit_human_confirmation: bool = True
+    warnings: list[str] = Field(default_factory=list)
+
+
+class ManagerCorrectionRequest(DatasetRequest):
+    id: str = Field(min_length=1, max_length=128)
+    client: str = Field(max_length=16000)
+    manager: str = Field(max_length=16000)
+    kb_version: str
+
+
+class ManagerCorrectionDraft(DatasetRequest):
+    draft_id: str
+    dialog_id: str
+    input_sha256: str
+    kb_version: str
+    status: Literal["DRAFT_VERIFIED", "NEEDS_REVIEW", "NOT_NEEDED"]
+    answer: str | None = None
+    catalog_product_id: str | None = None
+    applicable_price_tg: MoneyString | None = None
+    price_meaning: str | None = None
+    unit: str | None = None
+    source_ref: str | None = None
+    evidence: list[Evidence] = Field(default_factory=list)
+    reason_code: str
+    created_at: str
+    requires_human_review: bool = True
+
+
 class DialogRequest(DatasetRequest):
     id: str
     client: str
