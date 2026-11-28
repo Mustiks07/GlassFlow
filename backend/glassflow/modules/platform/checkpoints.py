@@ -32,6 +32,7 @@ def row_fingerprint(snapshot, row_id):
 
 
 def payload_from_answer(answer, proof=None):
+    from glassflow.modules.intelligence.reviews import outcome_reasons
     calls = proof or ([{"name": e.name, "arguments": e.arguments} for e in answer.llm.executions if e.status == "ok"]
                       if answer.llm and answer.answer_path == "llm_tools" else [])
     return {"row": {"answer": answer.answer}, "tool_calls": calls,
@@ -41,7 +42,8 @@ def payload_from_answer(answer, proof=None):
                 "llm_status": answer.llm.status if answer.llm else None,
                 "llm_model_id": answer.llm.model_id if answer.llm else None,
                 "provider_error_kind": answer.llm.error.kind if answer.llm and answer.llm.error else None,
-                "provider_error_status": answer.llm.error.status if answer.llm and answer.llm.error else None}}
+                "provider_error_status": answer.llm.error.status if answer.llm and answer.llm.error else None,
+                "review_reasons": outcome_reasons(answer)}}
 
 
 def validate_assistant_checkpoint(snapshot, row_id, fingerprint, payload):
@@ -58,14 +60,37 @@ def validate_assistant_checkpoint(snapshot, row_id, fingerprint, payload):
     if set(payload["row"]) != {"answer"} or not isinstance(payload["row"]["answer"], str):
         return False
     if set(payload["provenance"]) - {"path", "provider", "model_id", "verifier_status", "cache_hit",
-            "llm_status", "llm_model_id", "parent_verifier_rejected", "provider_error_kind", "provider_error_status"}:
+            "llm_status", "llm_model_id", "parent_verifier_rejected", "provider_error_kind", "provider_error_status",
+            "review_reasons", "review_user_text"}:
         return False
     question = next(q for q in snapshot["questions"] if q["id"] == row_id)
     validation_context = type("ValidationContext", (), {"private_config": {}})()
     engine = engine_for(snapshot, validation_context)
+    canonical = engine.local.respond(question["question"], TurnContext(), inventory_mode="none")
+    flags = payload["provenance"].get("review_reasons")
+    if flags is not None:
+        from types import SimpleNamespace
+
+        from glassflow.modules.intelligence.reviews import outcome_reasons
+        if payload["provenance"].get("review_user_text") != question["question"] or not isinstance(flags, dict):
+            return False
+        allowed = {"correct_policy", "missing_parameter", "kb_fact", "provider_error", "verifier_reject"}
+        if set(flags) - allowed or any(not isinstance(values, list) or any(not isinstance(v, str) or len(v) > 500
+                                      for v in values) for values in flags.values()):
+            return False
+        expected = outcome_reasons(SimpleNamespace(local=canonical, llm=None))
+        for category in {"correct_policy", "missing_parameter", "kb_fact"}:
+            if flags.get(category) != expected.get(category):
+                return False
+        provenance = payload["provenance"]
+        provider_reasons = ([provenance.get("provider_error_kind") or "unavailable"]
+                            if provenance.get("llm_status") == "provider_error" else None)
+        if flags.get("provider_error") != provider_reasons:
+            return False
+        if "verifier_reject" in flags and provenance.get("llm_status") != "verifier_rejected":
+            return False
     path = payload["provenance"].get("path")
     if path in {"deterministic", "fallback"}:
-        canonical = engine.local.respond(question["question"], TurnContext(), inventory_mode="none")
         return payload["row"]["answer"] == canonical.answer
     if path != "llm_tools" or payload["provenance"].get("verifier_status") != "supported":
         return False

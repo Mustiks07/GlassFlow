@@ -122,6 +122,16 @@ def create_run(session, request, services, correlation):
                             request.solver_config.model_dump()) if request.total_budget_seconds is not None else None)
     if budget:
         manifest["budget"] = budget
+    sale_context = None
+    from glassflow.core.domain_jobs import cutting_job
+    # Explicit Services with no domain handler remain dependency-isolation seams;
+    # they cannot claim a production sale-readiness result. Real composition always registers this handler.
+    connected_cutting = getattr(services.job_handlers.get("cutting"), "function", None) is cutting_job
+    manifest["sale_readiness_enabled"] = bool(connected_cutting and request.buyer_registry_version)
+    if "cutting" in request.modules and request.buyer_registry_version and connected_cutting:
+        from glassflow.core.snapshots import sale_readiness_snapshot
+        live_cutting, sale_context = sale_readiness_snapshot(session, snapshot.id, request.buyer_registry_version,
+            bound_solver(request.solver_config.model_dump(), budget, baseline=True))
     row = ObjectRow(dataset_id=snapshot.id, kind="run", id=run_id, version=0, data=manifest)
     session.add(row)
     first_job = None
@@ -134,7 +144,7 @@ def create_run(session, request, services, correlation):
 
         solver = bound_solver(request.solver_config.model_dump(), budget, baseline=True)
         typed_cutting = (
-            cutting_snapshot(snapshot.id, inputs, solver).model_dump(mode="json")
+            (live_cutting if sale_context else cutting_snapshot(snapshot.id, inputs, solver)).model_dump(mode="json")
             if module == "cutting"
             else None
         )
@@ -153,6 +163,8 @@ def create_run(session, request, services, correlation):
                 "run_id": run_id,
                 "config_version": request.config_version,
                 "solver_config": solver,
+                **({"sale_context": sale_context, "connection_token": uid()}
+                   if module == "cutting" and sale_context else {}),
                 **({"run_budget": budget, "phase": "baseline"} if budget else {}),
                 "ai_profile": request.ai_profile,
                 "ai_settings": settings.model_dump(exclude={"secret_present"}),
@@ -176,6 +188,26 @@ def find_run(session, run_id):
     if row is None:
         raise AppError(404, "RUN_NOT_FOUND", "Прогон не найден.")
     return get_object(session, row.dataset_id, "run", run_id)
+
+
+def enqueue_sale_readiness(session, dataset_id, baseline_plan_id, baseline_revision, registry_version,
+                           *, budget_seconds=2):
+    """Standalone server seam. Route owns authorization, idempotency and transaction."""
+    from glassflow.core.errors import AppError
+    from glassflow.core.snapshots import sale_readiness_snapshot
+    from glassflow.modules.cutting.service import CuttingService
+    if not 0 < budget_seconds <= 30:
+        raise AppError(422, "SALE_BUDGET_INVALID", "Бюджет совместной проверки должен быть от0 до30 секунд.")
+    service = CuttingService(session)
+    baseline = service.get_plan(dataset_id, baseline_plan_id, baseline_revision)
+    data, facts = sale_readiness_snapshot(session, dataset_id, registry_version,
+                                         baseline.config or {}, base_plan_id=baseline_plan_id)
+    if not service.validate(dataset_id, baseline_plan_id, baseline_revision).valid:
+        raise AppError(409, "STALE_PLAN", "Исходный план не соответствует текущему складу.")
+    return job_dto(enqueue(session, dataset_id, "cutting", {"dataset_id": dataset_id,
+        "cutting_snapshot": data.model_dump(mode="json"), "solver_config": data.config.model_dump(),
+        "sale_baseline": baseline.model_dump(mode="json"), "sale_context": facts, "connection_token": uid(),
+        "sale_budget_seconds": budget_seconds})).model_dump()
 
 
 def latest_jobs(session, run_id):
@@ -282,6 +314,10 @@ def schedule_improvement(session, run):
     snapshot.update(phase="improvement", run_budget=deepcopy(budget), solver_config=solver,
                     baseline_metrics=deepcopy(selected.result.get("metrics", {})))
     snapshot["cutting_snapshot"]["config"] = solver
+    if snapshot.get("sale_context"):
+        from glassflow.core.snapshots import sale_readiness_snapshot
+        current, facts = sale_readiness_snapshot(session, run.dataset_id, run.data["buyer_registry_version"], solver)
+        snapshot.update(cutting_snapshot=current.model_dump(mode="json"), sale_context=facts, connection_token=uid())
     snapshot.pop("checkpoint_lineage", None)
     job = enqueue(session, run.dataset_id, "cutting", snapshot, run.id)
     budget = {**budget, "phase": "improving", "improvement_job_id": job.id,

@@ -44,3 +44,40 @@ def cutting_snapshot(dataset_id, rows, config):
             for r in rows["orders"]
         ],
     )
+
+
+def sale_readiness_snapshot(session, dataset_id, registry_version, config, *, base_plan_id=None):
+    """Trusted current C2 stock + reviewed sales evidence. Never accepts browser eligibility."""
+    from glassflow.contracts.cutting import SolveRequest
+    from glassflow.core.uow import canonical_hash
+    from glassflow.modules.cutting.engine import input_hash
+    from glassflow.modules.cutting.sale_readiness import inventory_fingerprint
+    from glassflow.modules.cutting.service import CuttingService
+    from glassflow.modules.platform.imports import records
+    from glassflow.modules.sales.matching import match_buyers
+    from glassflow.modules.sales.service import registry
+
+    service = CuttingService(session)
+    base = service.get_plan(dataset_id, base_plan_id) if base_plan_id else None
+    data = service.solve_input(SolveRequest(dataset_id=dataset_id, base_plan_id=base_plan_id, config=config,
+        mode="keep_committed" if base and base.status == "committed" else "replan"))
+    buyers = registry(session, dataset_id, registry_version)
+    originals = {r.public_id: r.data for r in records(session, dataset_id, "stock")}
+    materials = {r.public_id: r.data for r in records(session, dataset_id, "materials")}
+    eligible, evidence = [], {}
+    blocked = set(data.unavailable_remnant_ids) | set(data.occupied_remnant_ids)
+    for piece in data.remnants:
+        raw = originals.get(piece.remnant_id)
+        if (not raw or not piece.original or piece.status != "available" or piece.remnant_id in blocked
+                or (piece.material_id, piece.dimensions.length_mm, piece.dimensions.width_mm) !=
+                (raw["material_id"], int(raw["длина_мм"]), int(raw["ширина_мм"]))):
+            continue
+        matches = match_buyers(buyers, piece, materials[piece.material_id])
+        if len({m.buyer_id for m in matches}) >= 3:
+            eligible.append(piece.remnant_id)
+            evidence[piece.remnant_id] = [m.model_dump(mode="json") for m in matches]
+    context = {"registry_version": registry_version, "eligible_original_ids": sorted(eligible),
+               "registry_fingerprint": canonical_hash({"id": buyers.id, "version": buyers.version, "data": buyers.data}),
+               "inventory_fingerprint": inventory_fingerprint(data), "input_fingerprint": input_hash(data),
+               "matching_fingerprint": canonical_hash(evidence), "base_plan_id": base_plan_id}
+    return data, context
