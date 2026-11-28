@@ -30,7 +30,7 @@ WORD_NUMBERS = {
     "шесть": 6, "семь": 7, "восемь": 8, "девять": 9, "десять": 10, "двадцать": 20, "сто": 100,
 }
 _COUNT_NOUN = r"(?:шт\b\.?|штук\w*|штуч\w*|детал\w*|лист(?:а|ов)?\b|изделий|изделия|зеркал(?:а|о)?\b|стек(?:ол|ла|ло)|полок)"
-_COUNT_NUMBER = r"(?:[+\-−]\s*)?(?:\d{1,3}(?: \d{3})+|\d+)[\d.,/e+\-−]*"
+_COUNT_NUMBER = r"(?:\(?[+\-−]\s*)?\d[\d.,/e+\-− ()]*"
 _QUANTITY = re.compile(rf"(?<![\w.,/+\-−])({_COUNT_NUMBER})\s*{_COUNT_NOUN}")
 _QUANTITY_WORD = re.compile(rf"\b((?:минус\s+)?(?:{'|'.join(WORD_NUMBERS)}))\s+{_COUNT_NOUN}")
 _QUANTITY_EXPLICIT = re.compile(rf"(?:в количестве|количеств\w*|кол-?во)\s*[:=]?\s*({_COUNT_NUMBER}|(?:минус\s+)?(?:{'|'.join(WORD_NUMBERS)}))(?![\w])")
@@ -205,15 +205,7 @@ def extract(text: str, *, format_exclusions: set[str] | None = None) -> Extracti
         if word:
             raw_count, result.quantity_source = word.group(1), word.group(0)
     if raw_count is not None:
-        try:
-            token = raw_count.removeprefix("минус ")
-            count = Decimal(WORD_NUMBERS[token]) if token in WORD_NUMBERS else Decimal(token.replace(" ", "").replace(",", ".").replace("−", "-"))
-            if raw_count.startswith("минус "):
-                count = -count
-            if "/" in token or "e" in token:
-                count = Decimal(0)
-        except InvalidOperation:
-            count = Decimal(0)
+        count = quantity_value(raw_count)
     if count is not None:
         if count <= 0 or count != count.to_integral():
             result.invalid_quantity = result.quantity_source
@@ -260,6 +252,26 @@ def extract(text: str, *, format_exclusions: set[str] | None = None) -> Extracti
             result.unknown_services.append(label)
     result.model_codes = [f"{prefix}{number}" for prefix, number in _MODEL.findall(value) if prefix in {"ab"}]
     return result
+
+
+def quantity_value(raw: str) -> Decimal:
+    """Validate the entire numeric span before removing valid thousands separators.
+
+    Unsupported operators, brackets and malformed grouping must not expose a valid
+    suffix (``1 / 2`` → ``2``) or become a different integer (``2 3`` → ``23``).
+    Zero is the existing invalid-count sentinel, never a default order quantity.
+    """
+    token = raw.removeprefix("минус ").strip()
+    try:
+        if token in WORD_NUMBERS:
+            value = Decimal(WORD_NUMBERS[token])
+        elif re.fullmatch(_NUMBER, token):
+            value = Decimal(token.replace(" ", "").replace(",", ".").replace("−", "-"))
+        else:
+            return Decimal(0)
+    except InvalidOperation:
+        return Decimal(0)
+    return -value if raw.startswith("минус ") else value
 
 
 _ONE = r"(?:одн(?:ой|у|а)|1)\s+"

@@ -21,7 +21,7 @@ test('mixed units and invalid numbers through the visible assistant', async ({ p
   await input.fill('Стекло 6 мм прозрачное 45 см x 370 мм, 2 штуки, евро-кромка по всем сторонам');
   await input.press('Control+Enter');
   await expect(page.locator('.quote-total strong')).toHaveText('3 976,00 ₸');
-  for (const invalid of ['-2', '− 2', '0', '1,5']) {
+  for (const invalid of ['-2', '− 2', '0', '1,5', '1 / 2', '2 3', '(-2)']) {
     await input.fill(`Количество: ${invalid} штуки`); await input.press('Control+Enter');
     await expect(page.getByText(/Укажите положительное целое количество вместо/).first()).toBeVisible();
     await expect(page.locator('.quote-total')).toHaveCount(0);

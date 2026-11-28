@@ -37,7 +37,7 @@ def test_equivalent_dimensions_have_same_persisted_quote(client, imported, dimen
 
 @pytest.mark.parametrize('invalid', ['0 штук', '-2 штуки', '−2 штуки', '1,5 штуки', '1.5 штуки',
     'ноль штук', 'минус две штуки', '1/2 штуки', 'количество: 0', 'количество: ноль', 'количество: 1,5',
-    '- 2 штуки', '− 2 штуки', 'количество: − 2'])
+    '- 2 штуки', '− 2 штуки', 'количество: − 2', '1 / 2 штуки', '1 , 5 штуки', '2 3 штуки', '(-2) штуки'])
 def test_invalid_count_never_becomes_confirmable_quote(client, imported, invalid):
     body = dict(dataset_id=imported['dataset_id'], kb_version=imported['kb_version'], allow_ai=False,
                 text=f'Стекло 6 мм прозрачное 450x370 мм, {invalid}, евро-кромка по всем сторонам.')
@@ -112,7 +112,7 @@ def test_installation_verb_uses_actual_kb_rule(engine, text):
     assert 'не выполня' in result.answer
 
 
-@pytest.mark.parametrize('quantity', ['− 2', '-1 500', '1/2'])
+@pytest.mark.parametrize('quantity', ['− 2', '-1 500', '1/2', '1 / 2', '2 3', '(-2)'])
 def test_count_before_hardware_name_does_not_reinterpret_invalid_token(client, imported, quantity):
     result = client.post('/api/v1/assistant/turns', json=dict(dataset_id=imported['dataset_id'],
         kb_version=imported['kb_version'], allow_ai=False, inventory_mode='none',
