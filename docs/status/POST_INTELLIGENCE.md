@@ -77,3 +77,12 @@ Worktree: `GlassFlow-post-intelligence`, branch `codex/post-intelligence`, base 
 
 - The full run on `a7e95ff` found one existing F1 regression: the generic hardware guard had included weak aluminium-hinge candidates in the otherwise internal/external glass-hinge interpretation set. The old expectation ERROR 450 was retained. The fix first preserves candidates with identical mentioned features, excludes weaker incomplete interpretations, and does not choose a SKU or filter by price. Differing canonical corrections still remain NEEDS_REVIEW.
 - The independent 5-warmup run on the integrator's intermediate SHA remains historical evidence. The held-out exam has not been run or read by this child. Final full verification runs again on frozen production sources after this correction.
+
+## Final frozen verification — source `efbf8de`
+
+- `uv run pytest tests/intelligence -q --junitxml=docs/ai/post/intelligence-tests.xml --tb=short`: **380 total / 377 passed / 3 skipped / 0 failures / 0 errors**, 111.907 seconds. No production source changed during this run.
+- Three skips are still the generic per-unit-price sweep for patterned materials with no KB unit rate; their unknown-rate/handoff behavior is separately tested.
+- `uv run ruff check backend tests scripts`: passed.
+- `uv run python scripts/check_foundation.py`: passed (14 immutable inputs, 66 requirements, 67 assigned scenarios, exact specification PDF).
+- Source freeze is `efbf8de`; this subsequent checkpoint changes documentation/JUnit evidence only. Root and platform agent received the green result and exact SHA.
+- All assigned independent intelligence work and all disclosed reproducible defects are complete. Next action is integrator/platform actual TCP recheck on original and CSV unknown-identity wording, merged schema/UI verification, named live preflight and sealed exam, full integrated core tests and EXE. Live model acceptance, final release and main push are not claimed by this worktree.
