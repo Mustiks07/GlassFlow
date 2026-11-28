@@ -198,11 +198,14 @@ class IntelligenceReviews:
                 ManagerCorrectionRow.dataset_id == request.dataset_id, ManagerCorrectionRow.dialog_id == request.id,
                 ManagerCorrectionRow.kb_version == catalog.kb.version, ManagerCorrectionRow.input_sha256 == digest))
             if existing:
-                return ManagerCorrectionDraft.model_validate_json(existing.payload_json)
+                draft = ManagerCorrectionDraft.model_validate_json(existing.payload_json)
+                draft.current_kb_version = catalog.kb.version
+                return draft
         verdict = check_dialog(catalog.kb, request.id, request.client, request.manager)
         draft = ManagerCorrectionDraft(dataset_id=request.dataset_id, draft_id=str(uuid.uuid4()), dialog_id=request.id,
             input_sha256=digest, kb_version=catalog.kb.version, status="NEEDS_REVIEW",
-            reason_code=verdict.reason_code or "ambiguous_reference", evidence=verdict.evidence, created_at=self.service.clock())
+            reason_code=verdict.reason_code or "ambiguous_reference", evidence=verdict.evidence,
+            created_at=self.service.clock(), current_kb_version=catalog.kb.version)
         if verdict.verdict == "OK":
             draft.status = "NOT_NEEDED"
         elif verdict.verdict == "ERROR" and verdict.catalog_product_id and verdict.correct and verdict.reference_meaning:
@@ -245,7 +248,7 @@ class IntelligenceReviews:
         return draft
 
     def list_corrections(self, dataset_id, draft_id=None):
-        self.service.catalog_for(dataset_id)
+        current_version = self.service.catalog_for(dataset_id).kb.version
         with self.service.session_factory() as session:
             statement = select(ManagerCorrectionRow).where(ManagerCorrectionRow.dataset_id == dataset_id)
             if draft_id:
@@ -254,4 +257,9 @@ class IntelligenceReviews:
             if draft_id and not rows:
                 _error(404, "CORRECTION_NOT_FOUND", "Черновик не найден в этом наборе данных.")
             drafts = [ManagerCorrectionDraft.model_validate_json(row.payload_json) for row in rows]
+        for draft in drafts:
+            draft.is_current = draft.kb_version == current_version
+            draft.current_kb_version = current_version
+        if draft_id and not drafts[0].is_current:
+            _error(409, "STALE_KB_VERSION", f"Прайс изменился ({current_version}); создайте новый черновик по текущей KB.")
         return drafts[0] if draft_id else drafts

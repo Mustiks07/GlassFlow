@@ -113,8 +113,8 @@
     "complete_correct_totals": 4,
     "unnecessary_manager_parameter_requests": 2,
     "clarification_count": 2,
-    "latency_median_ms": 19.81745002558455,
-    "latency_p95_ms": 24.77570006158203,
+    "latency_median_ms": 14.240899996366352,
+    "latency_p95_ms": 16.399100073613226,
     "provider_calls": 0
   }
 }

@@ -200,6 +200,8 @@ class RateLimiter:
     async def acquire(self, estimated_tokens: int, deadline: float) -> float:
         start = self.clock()
         while True:
+            if self.clock() >= deadline:
+                raise ProviderError("timeout", "Истек общий срок ответа AI в очереди лимитера.")
             async with self.lock:
                 wait = self.wait_needed(estimated_tokens)
                 if wait <= 0:
@@ -306,37 +308,51 @@ class ResilientClient:
                 estimated = estimate_tokens(request)
                 attempts += 1
                 try:
-                    queue_s = await self.limiter.acquire(estimated, deadline)
+                    queue_s = await asyncio.wait_for(self.limiter.acquire(estimated, deadline),
+                                                     timeout=max(0, deadline - self.clock()))
+                except TimeoutError:
+                    self._log(request, label, attempt, "error", "timeout", None, 0, None, correlation_id)
+                    raise ProviderError("timeout", "Истек общий срок ответа AI в очереди лимитера.") from None
                 except ProviderError as exc:
                     self._log(request, label, attempt, "error", exc.kind, None, 0, None, correlation_id)
                     raise
-                timeout = min(self.profile.request_timeout_s, max(MIN_ATTEMPT_SECONDS, deadline - self.clock()))
                 started = self.clock()
                 reservation = 0
                 network_started = False
+                sent_at = None
                 try:
-                    async with self.limiter.semaphore:
-                        if included:
-                            reservation = reserve_quota(request, provider.model_id)
-                            if self.quota_tokens_spent + reservation > self.profile.quota_token_budget:
-                                raise ProviderError("budget", "Лимит включенной квоты исчерпан; новый вызов не отправлен.")
-                            # Reserve atomically before awaiting I/O, including failures and cancellation.
-                            self.quota_tokens_spent += reservation
-                        network_started = True
-                        response = await asyncio.wait_for(provider.generate(_with_timeout(request, timeout)), timeout=timeout + 1)
+                    # Semaphore waiting belongs to the same absolute turn budget.
+                    # Recompute the HTTP allowance after waiting; no per-call grace
+                    # or minimum timeout can extend the deadline.
+                    async with asyncio.timeout(max(0, deadline - self.clock())):
+                        async with self.limiter.semaphore:
+                            remaining = deadline - self.clock()
+                            if remaining <= 0:
+                                raise ProviderError("timeout", "Истек общий срок ответа AI до отправки запроса.")
+                            timeout = min(self.profile.request_timeout_s, remaining)
+                            if included:
+                                reservation = reserve_quota(request, provider.model_id)
+                                if self.quota_tokens_spent + reservation > self.profile.quota_token_budget:
+                                    raise ProviderError("budget", "Лимит включенной квоты исчерпан; новый вызов не отправлен.")
+                                # Reserve atomically before awaiting I/O, including failures and cancellation.
+                                self.quota_tokens_spent += reservation
+                            network_started = True
+                            sent_at = self.clock()
+                            response = await asyncio.wait_for(provider.generate(_with_timeout(request, timeout)), timeout=timeout)
                 except asyncio.CancelledError:
                     if network_started:
-                        self._log(request, label, attempt, "error", "timeout", None, int(queue_s * 1000),
-                                  int((self.clock() - started) * 1000), correlation_id, "Отменен запрос; расход квоты неизвестен.")
+                        self._log(request, label, attempt, "error", "timeout", None, int((queue_s + sent_at - started) * 1000),
+                                  int((self.clock() - sent_at) * 1000), correlation_id, "Отменен запрос; расход квоты неизвестен.")
                     raise
                 except TimeoutError:
-                    error = ProviderError("timeout", "Тайм-аут запроса к модели.", provider=provider.name, model_id=provider.model_id)
+                    error = ProviderError("timeout", "Тайм-аут запроса к модели." if network_started else
+                                          "Истек общий срок ответа AI в очереди провайдера.", provider=provider.name, model_id=provider.model_id)
                 except ProviderError as exc:
                     error = exc
                 except Exception as exc:  # network stack errors are mapped, never leaked
                     error = ProviderError("unavailable", f"Сбой соединения: {type(exc).__name__}: {str(exc)[:120]}", provider=provider.name)
                 else:
-                    latency = int((self.clock() - started) * 1000)
+                    latency = int((self.clock() - sent_at) * 1000)
                     response.latency_ms = response.latency_ms or latency
                     self.limiter.correct_tokens(estimated, _total_tokens(response))
                     if response.usage.cost_usd is not None:
@@ -345,11 +361,12 @@ class ResilientClient:
                         actual_quota = usage_quota(response.usage, provider.model_id)
                         if actual_quota is not None:
                             self.quota_tokens_spent += actual_quota - reservation
-                    self._log(request, label, attempt, "ok", None, response, int(queue_s * 1000), latency, correlation_id)
+                    self._log(request, label, attempt, "ok", None, response, int((queue_s + sent_at - started) * 1000), latency, correlation_id)
                     self.unhealthy_until.pop(label, None)
                     return CallOutcome(response, attempts, label != self.chain_order()[0], label)
-                latency = int((self.clock() - started) * 1000) if network_started else None
-                self._log(request, label, attempt, "error", error.kind, None, int(queue_s * 1000), latency, correlation_id, str(error)[:200])
+                latency = int((self.clock() - sent_at) * 1000) if network_started else None
+                queue_ms = int((queue_s + (sent_at if network_started else self.clock()) - started) * 1000)
+                self._log(request, label, attempt, "error", error.kind, None, queue_ms, latency, correlation_id, str(error)[:200])
                 last_error = error
                 if not error.retryable:
                     if error.kind in {"auth", "bad_request", "budget"}:
@@ -362,7 +379,7 @@ class ResilientClient:
                     if self.clock() + delay >= deadline:
                         break
                     await self.sleep(delay)
-            if last_error and last_error.retryable:
+            if last_error and last_error.retryable and network_started:
                 cooldown = max(self.cooldown_s, last_error.retry_after_s or 0)
                 self.unhealthy_until[label] = self.clock() + cooldown
             if last_error and last_error.kind == "auth" and index == len(chain) - 1:
