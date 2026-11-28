@@ -3,5 +3,6 @@
 *.png binary
 *.jpg binary
 inputs/** -text -whitespace
+docs/release/integration/**/*.csv -text -whitespace
 analysis/** -whitespace
 *.bat text eol=crlf

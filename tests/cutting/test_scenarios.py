@@ -165,6 +165,8 @@ def test_t15_committed_evidence_is_consistent(evidence_path):
     assert evidence["validator"]["exit_code"] == 0 and evidence["validator"]["invalid"] == "0"
     assert evidence["metrics"]["missing"] == 0 and evidence["metrics"]["invalid"] == 0
     assert Decimal(evidence["metrics"]["coverage_percent"]) >= TARGET_PERCENT - Decimal("0.000001")
-    solution = Path(evidence["solution"]["path"])
+    # Historical evidence was recorded on Windows. Resolve separators portably;
+    # keep the exact byte hash check below, without normalizing file content.
+    solution = Path(evidence["solution"]["path"].replace("\\", "/"))
     solution = solution if solution.is_absolute() else Path(__file__).resolve().parents[2] / solution
     assert hashlib.sha256(solution.read_bytes()).hexdigest() == evidence["solution"]["sha256"]
