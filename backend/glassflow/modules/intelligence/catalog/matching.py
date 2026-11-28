@@ -43,7 +43,9 @@ FAMILY_LEXICON = {
     "checkered": ["квадратик"],
     "reflective": ["отражающ"],
 }
-_CODE = re.compile(r"\b(?=[a-z0-9-]*[a-z])(?=[a-z0-9-]*\d)[a-z0-9]+(?:-[a-z0-9]+)+\b|\b[a-z]{2,}\d+[a-z0-9]*\b")
+_CODE = re.compile(r"\b(?=[a-z0-9-]*[a-z])[a-z0-9]+(?:-[a-z0-9]+)+\b|\b[a-z]+\d+[a-z0-9]*\b")
+_UNIT_CODES = {"m2", "m3", "mm2", "mm3", "cm2", "cm3"}
+UNSUPPORTED_IDENTIFIERS = {"unknown_catalog_code", "unknown_catalog_brand", "unknown_hardware_identity"}
 _DIMS = re.compile(r"\b\d+(?:x\d+)+\b")
 _THICKNESS = re.compile(r"(?<![\dx])(\d{1,2})\s*(?:-?\s*мм|миллиметр\w*|-?ти\s*мм|-?ми\s*мм)\b")
 _NEGATION = re.compile(r"\b(?:без|не)\s+([а-яa-z]+)")
@@ -166,7 +168,7 @@ def query_features(text: str) -> QueryFeatures:
     return QueryFeatures(
         text=value,
         stems=stems,
-        codes=set(_CODE.findall(value)),
+        codes=set(_CODE.findall(value)) - _UNIT_CODES,
         dims=set(_DIMS.findall(value)),
         numbers={token for token in tokens if token.isdigit()},
         thickness={int(match) for match in _THICKNESS.findall(value)},
@@ -199,6 +201,7 @@ class Candidate:
 class MatchResult:
     status: str  # exact | ambiguous | not_found
     candidates: list[Candidate]
+    reason_code: str | None = None
 
     @property
     def product(self) -> Product | None:
@@ -302,9 +305,21 @@ def _score(product: Product, features: list[Feature], query: QueryFeatures, kb_f
 
 def match_products(kb: KnowledgeBase, text: str, *, kinds: set[str] | None = None, limit: int = 6) -> MatchResult:
     query = query_features(text)
+    catalogue_text = " ".join(_matching_text(product.name) for product in kb.products)
+    brands = re.findall(r"\b(?:бренд\w*|марк[аи]|производител[ья])\s*[:—-]?\s*[«\"]?([a-zа-я][a-zа-я0-9-]*)", query.text)
+    if any(not re.search(rf"\b{re.escape(brand)}\b", catalogue_text) for brand in brands):
+        return MatchResult("not_found", [], "unknown_catalog_brand")
+    coded_products = {
+        product.product_id for product in kb.products
+        if query.codes <= (set(_CODE.findall(_matching_text(product.name))) | {normalize(product.product_id)})
+    }
+    if query.codes and not coded_products:
+        return MatchResult("not_found", [], "unknown_catalog_code")
     formats = {product.attributes["sheet_format_mm"] for product in kb.products if "sheet_format_mm" in product.attributes}
     candidates: list[Candidate] = []
     for product in kb.products:
+        if query.codes and product.product_id not in coded_products:
+            continue
         if kinds and product.kind not in kinds:
             continue
         candidate = _score(product, _product_features(product), query, formats)
@@ -315,6 +330,12 @@ def match_products(kb: KnowledgeBase, text: str, *, kinds: set[str] | None = Non
     if any(c.code_hit for c in candidates):
         candidates = [c for c in candidates if c.code_hit]
     candidates.sort(key=lambda c: (-c.score, c.product.position))
+    if candidates[0].product.is_hardware:
+        catalogue_latin = set(re.findall(r"[a-z]+", catalogue_text))
+        unknown_latin = set(re.findall(r"\b[a-z]{2,}\b", query.text)) - catalogue_latin - {"mm", "cm", "kzt", "pcs", "sku", "id"}
+        uncertain = re.search(r"\bнеизвестн\w*", query.text)
+        if unknown_latin or (uncertain and not candidates[0].complete):
+            return MatchResult("not_found", [], "unknown_hardware_identity")
     complete = [c for c in candidates if c.complete]
     if complete:
         best = complete[0]
@@ -323,6 +344,12 @@ def match_products(kb: KnowledgeBase, text: str, *, kinds: set[str] | None = Non
             return MatchResult("exact", [best] + [c for c in candidates if c is not best][: limit - 1])
         return MatchResult("ambiguous", tied[:limit])
     best = candidates[0]
+    distinguishing_hit = len(candidates) > 1 and any(
+        not label.startswith("number:") and all(label not in other.matched for other in candidates[1:])
+        for label in best.matched
+    )
+    if best.product.is_hardware and not distinguishing_hit:
+        return MatchResult("ambiguous", candidates[:limit], "hardware_identity_incomplete")
     # A shorter catalogue name scores higher, but does not identify a SKU.
     mentioned = {value for value in best.matched if not value.startswith("number:")}
     indistinguishable = [candidate for candidate in candidates

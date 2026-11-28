@@ -11,6 +11,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 import re
@@ -20,8 +21,10 @@ from dataclasses import dataclass, field
 
 from ..catalog.kb import KnowledgeBase
 from ..catalog.mapping import MappingDecision
+from ..catalog.matching import UNSUPPORTED_IDENTIFIERS
 from ..catalog.text import normalize
 from ..ports_consumed import CrmPort, InventoryPort, ScenarioPort
+from ..providers.base import ProviderError
 from ..providers.policy import capture_attempts
 from ..providers.settings import AIRuntime
 from .llm import LlmOutcome, run_llm_turn
@@ -184,29 +187,59 @@ class AssistantEngine:
         ctx = ToolContext(
             self.kb, self.mappings, self.dataset_id, self.inventory, self.crm, self.scenario, user_text=text
         )
-        deadline = time.monotonic() + runtime.profile.turn_deadline_s
+        deadline = started + runtime.profile.turn_deadline_s
         tool_names = [name for name in ASSISTANT_TOOLSET if not (name == "find_remnants" and inventory_mode == "none")]
         attempts: list[dict] = []
         with capture_attempts(attempts):
-            llm = await run_llm_turn(
-                runtime.client, ctx, text, (context or TurnContext()).to_dict(), deadline=deadline,
-                correlation_id=correlation_id, tool_names=tool_names,
-            )
+            try:
+                async with asyncio.timeout(max(0, deadline - time.monotonic())):
+                    llm = await run_llm_turn(
+                        runtime.client, ctx, text, (context or TurnContext()).to_dict(), deadline=deadline,
+                        correlation_id=correlation_id, tool_names=tool_names,
+                    )
+            except TimeoutError:
+                llm = LlmOutcome(status="provider_error", error=ProviderError("timeout", "Истек общий срок ответа AI."))
         llm.model_attempts = attempts
         llm.model_calls = len(attempts)
+        if time.monotonic() > deadline and llm.status != "provider_error":
+            llm.status = "provider_error"
+            llm.error = ProviderError("timeout", "Истек общий срок ответа AI.")
         if llm.status == "provider_error":
             why = llm.error.args[0] if llm.error else "AI недоступен."
             return deterministic("fallback", "not_applicable", llm, "local_limited", why)
         if llm.status != "final" or not llm.answer:
             verifier = "unsupported_replaced" if llm.status == "verifier_rejected" else "not_applicable"
-            return deterministic("fallback", verifier, llm)
+            why = ("Ответ AI не прошел предметную проверку фактов; показан проверенный локальный ответ."
+                   if llm.status == "verifier_rejected" else
+                   "AI не завершил ответ за разрешенное число шагов; показан проверенный локальный ответ.")
+            return deterministic("fallback", verifier, llm, why=why)
+        if local.catalog_match_reason in UNSUPPORTED_IDENTIFIERS and (
+            ctx.last_quote is not None or any(f"[[{key}]]" in llm.answer or claim in llm.answer
+                                              for key, claim in ctx.facts.commercial_claims.items())
+        ):
+            llm.status = "verifier_rejected"
+            return deterministic("fallback", "unsupported_replaced", llm,
+                                 why="AI подменил неизвестный артикул или марку каталожным товаром; требуется уточнение.")
+        manager_priced = (local.intent == "mirror_model" or
+                          (local.missing_parameters and set(local.missing_parameters) <= {"per_m2_price", "processing_price"}))
+        if local.needs_manager and manager_priced and llm.clarification:
+            llm.status = "verifier_rejected"
+            return deterministic("fallback", "unsupported_replaced", llm,
+                                 why="AI запросил параметры, которые не устраняют отсутствие ставки; вопрос передан менеджеру.")
         # Model tools cannot turn a user's unresolved product/processing choice
         # into a final offer. The same mandatory-domain gate applies in both modes.
         if local.status == "clarification" and local.missing_parameters and (
             not llm.clarification or ctx.last_quote is not None
         ):
             llm.status = "verifier_rejected"
-            return deterministic("fallback", "unsupported_replaced", llm)
+            return deterministic("fallback", "unsupported_replaced", llm,
+                                 why="AI не разрешил обязательное уточнение; показан проверенный локальный ответ.")
+        if (llm.needs_manager and inventory_mode == "none" and local.intent == "quote"
+            and local.status == "answered" and not local.needs_manager and not local.missing_parameters
+            and ctx.last_quote is not None and ctx.last_quote.total is not None and not ctx.last_quote.unknowns):
+            llm.status = "verifier_rejected"
+            return deterministic("fallback", "unsupported_replaced", llm,
+                                 why="AI пометил полный известный расчет как неразрешенный вопрос менеджеру; показан проверенный локальный ответ.")
         answer = _limit_sentences(llm.answer)
         status = "manager_handoff" if llm.needs_manager else ("clarification" if llm.clarification else "answered")
         result = TurnResult(

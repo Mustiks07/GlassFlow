@@ -390,6 +390,8 @@ class ManagerCorrectionDraft(DatasetRequest):
     reason_code: str
     created_at: str
     requires_human_review: bool = True
+    is_current: bool = True
+    current_kb_version: str | None = None
 
 
 class DialogRequest(DatasetRequest):
@@ -482,6 +484,8 @@ class AIProfileView(DTO):
     included_quota_enabled: bool = False
     quota_token_budget: int = 1_000_000
     quota_tokens_spent: int = 0
+    request_timeout_s: float | None = None
+    turn_deadline_s: float | None = None
     limits: dict[str, int | None] = Field(default_factory=dict)
 
 

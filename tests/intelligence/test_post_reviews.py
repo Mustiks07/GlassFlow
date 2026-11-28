@@ -6,7 +6,12 @@ from sqlalchemy import create_engine, inspect, select
 
 from glassflow.core.models import DatasetRow, SourceRow
 from glassflow.modules.intelligence.migrations import intelligence_reviews_0007
-from glassflow.modules.intelligence.models import POST_INTELLIGENCE_TABLES, QualityCheckRow, TurnRow
+from glassflow.modules.intelligence.models import (
+    POST_INTELLIGENCE_TABLES,
+    ManagerCorrectionRow,
+    QualityCheckRow,
+    TurnRow,
+)
 from glassflow.modules.intelligence.providers.base import ProviderError
 from glassflow.modules.intelligence.reviews import record_accepted_batch_reviews
 from glassflow.modules.intelligence.service import IntelligenceService
@@ -72,6 +77,16 @@ def test_review_resolution_requires_expected_version_and_cannot_cross_dataset(ap
     assert items(app_client, status="open") == []
     app_client.sources.add_kb("other", KB_PATH.read_bytes())
     assert app_client.post(path, json={**body, "dataset_id": "other"}).status_code == 404
+
+
+def test_unit_price_gap_is_not_misclassified_as_a_correct_manager_policy(app_client):
+    turn(app_client, "Какова цена рифленого прозрачного стекла 8 мм за квадратный метр?")
+    gap = items(app_client)
+    assert len(gap) == 1 and gap[0]["category"] == "kb_fact" and "per_m2_price" in gap[0]["reason_codes"]
+    turn(app_client, "Сколько стоит зеркало AB1020?")
+    policies = items(app_client, category="correct_policy")
+    assert len(policies) == 1 and policies[0]["reason_codes"] == ["mirror_model"]
+    assert len(items(app_client, category="kb_fact")) == 1
 
 
 def test_workspace_preview_is_read_only_then_existing_versioned_api_applies_exact_bytes(app_client):
@@ -143,6 +158,24 @@ def test_verified_manager_draft_binds_canonical_product_price_unit_and_source_wi
         assert len(session.scalars(select(QualityCheckRow)).all()) == 0
     saved = app_client.get(f"/api/v1/dialogs/corrections/{draft['draft_id']}", params={"dataset_id": "ds-a"})
     assert saved.status_code == 200 and saved.json() == draft
+
+
+def test_manager_correction_read_projection_detects_new_kb_without_rewriting_history(app_client):
+    draft = correction(app_client, "Стекло 6 мм прозрачное за м²", "Цена 1000 тг за м².", "versioned")
+    with app_client.app.state.session_factory() as session:
+        original_payload = session.get(ManagerCorrectionRow, draft["draft_id"]).payload_json
+    app_client.sources.add_kb("ds-a", modified_kb(9127))
+    current = kb_version(app_client)
+    response = app_client.get(f"/api/v1/dialogs/corrections/{draft['draft_id']}", params={"dataset_id": "ds-a"})
+    assert response.status_code == 409 and response.json()["code"] == "STALE_KB_VERSION"
+    listed = app_client.get("/api/v1/dialogs/corrections", params={"dataset_id": "ds-a"}).json()
+    assert listed[0]["is_current"] is False and listed[0]["current_kb_version"] == current
+    assert listed[0]["kb_version"] == draft["kb_version"] and listed[0]["applicable_price_tg"] == "8000"
+    with app_client.app.state.session_factory() as session:
+        assert session.get(ManagerCorrectionRow, draft["draft_id"]).payload_json == original_payload
+    new = correction(app_client, "Стекло 6 мм прозрачное за м²", "Цена 1000 тг за м².", "versioned")
+    assert new["is_current"] is True and new["current_kb_version"] == current
+    assert new["applicable_price_tg"] == "9127" and new["draft_id"] != draft["draft_id"]
 
 
 def test_ambiguous_unknown_or_already_correct_manager_reply_is_not_invented(app_client):

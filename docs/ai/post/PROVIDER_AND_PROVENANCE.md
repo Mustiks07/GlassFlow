@@ -45,3 +45,27 @@ the integrator must retain cumulative exam debit across runtime recreation and b
 
 Verification here uses `httpx.MockTransport` and scripted providers only. No live network
 requests, quota consumption or product acceptance are claimed by this branch.
+
+## Authorized warmup boundary review
+
+The integrator supplied five actual warmups for inspection (not the independent 79 cases).
+The allowed harness configuration explicitly set timeout_seconds=60; observations near
+60 seconds must not be described as proof of a configured 30-second timeout failure.
+The runtime profile now exposes `request_timeout_s` and `turn_deadline_s` in
+`GET /api/v1/assistant/ai-status` so this can be checked directly.
+
+Concrete boundary fixes: limiter/semaphore waits and all provider/tool turns share an
+absolute whole-turn deadline; HTTP timeouts are recomputed after waiting and have no extra
+one-second grace. Queue rejection has zero HTTP attempts and does not mark the provider
+unhealthy. Cancellation retains quota reservation and attempt provenance. Queue time and
+HTTP latency are accounted separately. A verifier/domain rejection always explains fallback.
+The observed unbound literal amount next to `[[quote]]` remains rejected by C3-F5.
+
+Prompt v5 defines `needs_manager` as an unresolved domain question. Routine confirmation of
+a known preliminary price is not a manager handoff. An inconsistent model handoff flag on
+a complete known quote is rejected into an explicit deterministic fallback, never relabelled
+as a successful model answer. Genuine manager-owned payment/delivery rules remain valid
+model handoffs. Extra questions that cannot unlock a manager-priced rate are rejected.
+
+These changes require a new named preflight on the new prompt/source SHA. Earlier preflight
+reports remain historical evidence and are not overwritten or presented as acceptance.
