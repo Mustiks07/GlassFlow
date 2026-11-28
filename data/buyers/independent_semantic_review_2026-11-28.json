@@ -1,0 +1,867 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-28",
+  "reviewer": "Mustiks07 / independent post-review",
+  "source_csv_sha256": "1419b56a67042fe071186171c8fdb232d3ec3f4834c995efdaa6c5964ccd0a78",
+  "method": "Individually read public web page content and explicit identity/city/activity; HTTP status alone never accepted. No contact with organizations.",
+  "scope": "Public profile evidence only. No organization has confirmed demand or consent to purchase. Re-crawl date is not proof a historic venue remains operational.",
+  "application_policy": "All inherited 100x100..2000x1500 dimensions, thickness/material lists and proposed uses remain engineering hypotheses requiring design/safety/purchasing confirmation, not a sourced order. Do not label them confirmed customer requirements.",
+  "records": [
+    {
+      "entity_id": "B01",
+      "name": "CATRINE (группа компаний)",
+      "city": "Астана",
+      "category_as_supplied": "мебельная фабрика",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://catrine.kz/"
+      ],
+      "supported_paraphrase": "Furniture group, bespoke/corporate/modular furniture; Tashenova19, Astana supported by group member addresses.",
+      "record_uncertainties": [
+        "Group brand, not one established procurement legal entity; glass furniture additionally appears in public directory, not a current purchase order."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B02",
+      "name": "Astana MG — мебель на заказ",
+      "city": "Астана",
+      "category_as_supplied": "мебельная фабрика",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://astanamg.kz/"
+      ],
+      "supported_paraphrase": "Astana Mebel Group; Astana Orlykol10B; own production of custom furniture and wardrobes.",
+      "record_uncertainties": [
+        "Main page does not establish the profile's stronger claims about glass showcases, mirror doors or glass shelving."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B03",
+      "name": "DalaSK (astana-mebel.kz)",
+      "city": "Астана",
+      "category_as_supplied": "мебельная фабрика",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://astana-mebel.kz/"
+      ],
+      "supported_paraphrase": "DalaSK; custom cabinet/upholstered furniture and own production in Astana.",
+      "record_uncertainties": [
+        "Main page does not establish glass shelves, coffee tables or hallway mirrors as its actual products."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B04",
+      "name": "Mebel Ideal",
+      "city": "Астана",
+      "category_as_supplied": "мебельная фабрика",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://mebel-ideal.kz/"
+      ],
+      "supported_paraphrase": "IDEAL; Astana own furniture production; official content explicitly offers glass, mirror and combined facades.",
+      "record_uncertainties": [
+        "Direct open timed out; indexed official content was readable. Exact thickness, dimensions, volume and acceptance of remnants unknown."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B05",
+      "name": "Clever Design",
+      "city": "Астана",
+      "category_as_supplied": "дизайн-студия",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://cleverdesign.kz/"
+      ],
+      "supported_paraphrase": "Clever Design; Astana residential/commercial interior design studio.",
+      "record_uncertainties": [
+        "A designer can specify materials; direct purchase authority or glass procurement is unproven."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B06",
+      "name": "Biar.kz",
+      "city": "Астана",
+      "category_as_supplied": "дизайн-студия",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://biar.kz/"
+      ],
+      "supported_paraphrase": "Biar; Astana Syganak54A; design and renovation of residential/commercial premises.",
+      "record_uncertainties": [
+        "Glass applications are project hypotheses; it is not demonstrated as a glass processor or current remnant buyer."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B07",
+      "name": "DreamArt",
+      "city": "Астана",
+      "category_as_supplied": "дизайн-студия",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://dreamart.kz/",
+        "https://dreamart.kz/kontakty/vystavochnyy-salon-v-mfc-moskva/"
+      ],
+      "supported_paraphrase": "DreamArt official catalogue is principally bespoke furniture, kitchens, wardrobes and retail equipment; official showroom address is in Astana.",
+      "record_uncertainties": [
+        "Recommend furniture-manufacturer category rather than unqualified design-studio classification; directory addresses differ, use official showroom. No proven purchase demand."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B08",
+      "name": "SENSATA GROUP",
+      "city": "Астана",
+      "category_as_supplied": "строительная компания",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://sensata.kz/"
+      ],
+      "supported_paraphrase": "Sensata Group; housing developer with named Astana projects.",
+      "record_uncertainties": [
+        "Construction demand does not prove suitability of small untempered remnants for glazing; safety/project specifications remain unknown."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B09",
+      "name": "SG Holding",
+      "city": "Астана",
+      "category_as_supplied": "строительная компания",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://sgholding.kz/",
+        "https://sgholding.kz/kz/kontakty/"
+      ],
+      "supported_paraphrase": "SG Holding official contact page identifies construction group and Astana AnetBaba11/3.",
+      "record_uncertainties": [
+        "Homepage timed out; official contact page supplies identity/city. No confirmed small-glass order."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B10",
+      "name": "Алкон+",
+      "city": "Астана",
+      "category_as_supplied": "окна и двери",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://alcon.kz/private/metalplastic_designs/proizvodstvo/",
+        "https://alcon.kz/i/src/Preza%20for%20Alcon/%D0%91%D1%80%D0%BE%D1%88%D1%8E%D1%80%D0%B0%20B2B%20%D1%8F%D0%BD%D0%B2%D0%B0%D1%80%D1%8C%202019%20small.pdf"
+      ],
+      "supported_paraphrase": "Alcon+ official site describes window/metal-plastic manufacture; official B2B brochure gives Astana Republic58/1.",
+      "record_uncertainties": [
+        "Do not confuse Alcon+ window firm with Alcon ophthalmology. Insulating-glass specification and minimum stock dimensions unproven."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B11",
+      "name": "VEKA Казахстан (окна ПВХ)",
+      "city": "Астана",
+      "category_as_supplied": "окна и двери",
+      "public_profile_status": "hold_entity",
+      "public_sources": [
+        "https://www.veka.kz/",
+        "https://www.veka.kz/where-buy"
+      ],
+      "supported_paraphrase": "VEKA site supports a window-profile brand and Astana partner-sales page, not a named individual local fabricator.",
+      "record_uncertainties": [
+        "Cannot count an unspecified partner network as one verified independent local buyer. Identify one named operator and public local manufacturing address before eligibility."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": null
+    },
+    {
+      "entity_id": "B12",
+      "name": "Мегастрой",
+      "city": "Астана",
+      "category_as_supplied": "магазин",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://megastroy.kz/",
+        "https://megastroy.kz/contacts/",
+        "https://megastroy.kz/company/kak-stat-postavshchikom/"
+      ],
+      "supported_paraphrase": "Megastroy official contacts show Astana Sembinov19/1; home/decor catalogue includes mirrors and official supplier-cooperation page.",
+      "record_uncertainties": [
+        "Retailer, not automatically glass processor; supplier acceptance and purchases of unprocessed remnants are unknown."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B13",
+      "name": "Строительная компания АстанаСтройДом",
+      "city": "Астана",
+      "category_as_supplied": "строительная компания",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://www.kn.kz/companies/view/id/22789"
+      ],
+      "supported_paraphrase": "kn.kz identifies AstanaStroyDom construction company, Astana AitekeBi9 and residential projects.",
+      "record_uncertainties": [
+        "Third-party company profile; identity supported, current procurement and technical suitability unverified."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B14",
+      "name": "ТРЦ Хан Шатыр",
+      "city": "Астана",
+      "category_as_supplied": "торговый центр",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/han-shatyr"
+      ],
+      "supported_paraphrase": "Sxodim names Khan Shatyr shopping centre, Astana Turan37 and links its official website.",
+      "record_uncertainties": [
+        "Facility/tenants are not one demonstrated glass purchaser; procurement operator and intended fit-out unknown."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B15",
+      "name": "ТРЦ «Керуен»",
+      "city": "Астана",
+      "category_as_supplied": "торговый центр",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/keruen"
+      ],
+      "supported_paraphrase": "Sxodim identifies Keruen shopping centre, Astana Dostyk9.",
+      "record_uncertainties": [
+        "Centre versus tenant purchase authority unknown; small-glass use is a fit-out hypothesis."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B16",
+      "name": "ТРЦ Asia Park Astana",
+      "city": "Астана",
+      "category_as_supplied": "торговый центр",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://astana.asiapark.kz/ru/"
+      ],
+      "supported_paraphrase": "Asia Park official site gives Astana KabanbayBatyr21; operator REM.KZ and shopping/entertainment profile.",
+      "record_uncertainties": [
+        "Explicit facility identity but no glass-remnant procurement requirement; tenants may purchase independently."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B17",
+      "name": "ТРЦ MEGA Silk Way",
+      "city": "Астана",
+      "category_as_supplied": "торговый центр",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/mega-silk-way"
+      ],
+      "supported_paraphrase": "Sxodim identifies MEGA Silk Way shopping centre, Astana KabanbayBatyr62.",
+      "record_uncertainties": [
+        "Centre and its tenants must not be treated as confirmed common purchaser; specification and demand unknown."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B18",
+      "name": "МФК Abu Dhabi Plaza",
+      "city": "Астана",
+      "category_as_supplied": "торговый центр",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://abudhabiplaza.info/"
+      ],
+      "supported_paraphrase": "Abu Dhabi Plaza official site identifies Astana multifunctional offices, mall, apartments and hotel.",
+      "record_uncertainties": [
+        "Name is a complex, not a single established buyer; building safety glazing cannot be assumed from available remnant thickness."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B19",
+      "name": "Talan Towers",
+      "city": "Астана",
+      "category_as_supplied": "торговый центр",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/talan-towers"
+      ],
+      "supported_paraphrase": "Talan Towers public profile identifies offices, EMPORIUM retail and Ritz-Carlton hotel, Astana Dostyk16.",
+      "record_uncertainties": [
+        "Shared complex with B38; not necessarily duplicate but independent purchasing operators are unproven. Keep shared-complex flag."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B20",
+      "name": "ТРЦ «Сарыарка»",
+      "city": "Астана",
+      "category_as_supplied": "торговый центр",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/saryarka"
+      ],
+      "supported_paraphrase": "Sxodim identifies Saryarqa shopping centre, Astana Turan24.",
+      "record_uncertainties": [
+        "Public venue listing does not establish current glass demand or tenant/centre buying authority."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B21",
+      "name": "ТРЦ Astana Mall",
+      "city": "Астана",
+      "category_as_supplied": "торговый центр",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/astana-mall"
+      ],
+      "supported_paraphrase": "Sxodim identifies Astana Mall shopping centre, Astana Tauelsizdik34.",
+      "record_uncertainties": [
+        "2021 publication; present operating status and procurement requirements need fresh operator confirmation."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B22",
+      "name": "KeruenCity",
+      "city": "Астана",
+      "category_as_supplied": "торговый центр",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/keruencity"
+      ],
+      "supported_paraphrase": "Sxodim identifies KeruenCity shopping centre, Astana Korgalzhyn1.",
+      "record_uncertainties": [
+        "Separate named centre from B15; common brand/ownership or shared purchasing not resolved."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B23",
+      "name": "ТРЦ «Аружан»",
+      "city": "Астана",
+      "category_as_supplied": "торговый центр",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/aruzhan"
+      ],
+      "supported_paraphrase": "Sxodim identifies Arujan shopping centre, Astana IlyasZhansugurov8k1.",
+      "record_uncertainties": [
+        "2021 publication; current operation and exact fit-out/glass requirements unverified."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B24",
+      "name": "Торговый центр Green Mall",
+      "city": "Астана",
+      "category_as_supplied": "торговый центр",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/green-mall"
+      ],
+      "supported_paraphrase": "Sxodim identifies Green Mall shopping centre, Astana Syganak17P, commercial/food-hall spaces.",
+      "record_uncertainties": [
+        "Shares address complex with B41; distinct venue names do not prove independent purchasing operators."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B25",
+      "name": "Qazaq Gourmet",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://qazaqgourmet.kz/"
+      ],
+      "supported_paraphrase": "Qazaq Gourmet official restaurant site gives Astana MangilikEl29 and Kazakh dining profile.",
+      "record_uncertainties": [
+        "Decorative glass/mirror use is an engineering proposal, not sourced demand."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B26",
+      "name": "Чайхана NAVAT",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/navat"
+      ],
+      "supported_paraphrase": "Sxodim identifies Navat restaurant, Astana Dostyk13.",
+      "record_uncertainties": [
+        "Public dining profile, no exact dimensions, glass spec or procurement demand."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B27",
+      "name": "Coffee Boom",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/coffee-boom-1"
+      ],
+      "supported_paraphrase": "Coffee Boom public profile establishes an Astana coffee-shop network and links its official site.",
+      "record_uncertainties": [
+        "A chain counted once; no individually identified procurement operator or confirmed small-glass demand."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B28",
+      "name": "Nudu",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/nudu"
+      ],
+      "supported_paraphrase": "Sxodim identifies Nudu noodle restaurant, Dostyk16B on the Astana page.",
+      "record_uncertainties": [
+        "City is supported by page context/address; primary site link alone not independently accepted as proof. Glass application remains hypothesis."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B29",
+      "name": "Starbucks Казахстан",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/starbucks"
+      ],
+      "supported_paraphrase": "Starbucks public profile lists named Astana branches and national website.",
+      "record_uncertainties": [
+        "Brand counted once; franchise procurement, approved materials and supplier policy unknown."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B30",
+      "name": "Ресторан MANNA",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/manna"
+      ],
+      "supported_paraphrase": "Sxodim identifies MANNA restaurant, Astana MangilikEl47, dining/VIP areas.",
+      "record_uncertainties": [
+        "2021 publication and panoramic windows are not evidence of current remnant demand or suitable safety glazing."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B31",
+      "name": "LINE BREW RESERVE",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/line-brew-reserve"
+      ],
+      "supported_paraphrase": "Line Brew Reserve public profile gives Astana KadyrgaliZhalayiri4 and explicitly describes decorative mirrors in its interior.",
+      "record_uncertainties": [
+        "Existing mirrors establish an application precedent, not replacement need, new purchase or proposed dimensions."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B32",
+      "name": "Ресторан Shafran",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/shafran"
+      ],
+      "supported_paraphrase": "Sxodim identifies Shafran restaurant, Astana KereyZhanibek12B.",
+      "record_uncertainties": [
+        "2021 publication; identity/profile only, current procurement and intended glass application unverified."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B33",
+      "name": "Гастро-Площадь Центр",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/gastro-ploshchad-centr"
+      ],
+      "supported_paraphrase": "Gastro-Ploshchad Centre public profile gives Astana Dostyk16P and multi-corner food hall.",
+      "record_uncertainties": [
+        "Food hall and independent corners have unresolved procurement identity; no confirmed remnant demand."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B34",
+      "name": "Кофейня Marrone Rosso",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/marrone-rosso"
+      ],
+      "supported_paraphrase": "Marrone Rosso public profile gives Astana Republic10 and several city coffee shops.",
+      "record_uncertainties": [
+        "Chain is one lead, exact buying operator/approved interior material unknown."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B35",
+      "name": "Bahandi Burger",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://bahandi.kz/"
+      ],
+      "supported_paraphrase": "Bahandi official site identifies burger/fast-food network with Astana listed among service cities.",
+      "record_uncertainties": [
+        "City presence supported, not one named branch procurement contact or glass requirement."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B36",
+      "name": "La Bottega",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/la-bottega"
+      ],
+      "supported_paraphrase": "La Bottega public profile identifies Italian restaurant in Astana Keruen, Dostyk9.",
+      "record_uncertainties": [
+        "Tenant of B15; may have separate procurement, not established. Existing furniture/decor does not prove glass demand."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B37",
+      "name": "OldBoy Barbershop (Астана)",
+      "city": "Астана",
+      "category_as_supplied": "салон",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://oldboybarbershop.com/astana"
+      ],
+      "supported_paraphrase": "OldBoy official Astana page lists barber branches at Amman2 and Kunayev10.",
+      "record_uncertainties": [
+        "Salon category supported; mirrors are plausible professional equipment, but replacements/dimensions/purchase authority unknown."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B38",
+      "name": "The Ritz-Carlton, Astana",
+      "city": "Астана",
+      "category_as_supplied": "другое",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://www.ritzcarlton.com/en/hotels/tserz-the-ritz-carlton-astana/overview/"
+      ],
+      "supported_paraphrase": "Official Marriott/Ritz-Carlton page establishes Astana hotel, rooms, spa and meetings.",
+      "record_uncertainties": [
+        "Shares Talan Towers complex with B19; hotel may be separate operator but independent procurement not confirmed. Hotel safety specs unknown."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B39",
+      "name": "Rixos President Astana",
+      "city": "Астана",
+      "category_as_supplied": "другое",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://all.accor.com/hotel/B1Q3/index.ru.shtml"
+      ],
+      "supported_paraphrase": "Official Accor hotel page identifies Rixos President Astana, Kunayev7, hotel/spa/restaurants.",
+      "record_uncertainties": [
+        "No confirmed glass order or thickness/dimensions. Correct official Accor source resolves the former inaccessible URL."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B40",
+      "name": "World Class Астана",
+      "city": "Астана",
+      "category_as_supplied": "другое",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://worldclass.kz/"
+      ],
+      "supported_paraphrase": "World Class official site identifies Astana fitness club, gym/group training/pool/spa.",
+      "record_uncertainties": [
+        "Training mirrors are plausible but no actual requirement for remnants or proposed dimensions is published."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B41",
+      "name": "Invictus Fitness",
+      "city": "Астана",
+      "category_as_supplied": "другое",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/invictus"
+      ],
+      "supported_paraphrase": "Invictus public profile identifies fitness club in Astana Syganak17P.",
+      "record_uncertainties": [
+        "Shares Green Mall address complex with B24; procurement independence and mirror specification unknown."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B42",
+      "name": "Fitness Palace",
+      "city": "Астана",
+      "category_as_supplied": "другое",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/fitness-palace"
+      ],
+      "supported_paraphrase": "Fitness Palace public profile identifies Astana Turan30 and fitness/pool/group-training facilities.",
+      "record_uncertainties": [
+        "Current procurement and acceptable mirror sizes/thickness are unconfirmed."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B43",
+      "name": "Fitness First (левый берег)",
+      "city": "Астана",
+      "category_as_supplied": "другое",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/fitness-first"
+      ],
+      "supported_paraphrase": "Fitness First public profile identifies gym in Astana Asia Park, KabanbayBatyr21.",
+      "record_uncertainties": [
+        "Source published2018; current operation particularly uncertain. Tenant of B16; distinct purchasing operator unproven."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B44",
+      "name": "PilatesPro",
+      "city": "Астана",
+      "category_as_supplied": "другое",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/pilatespro"
+      ],
+      "supported_paraphrase": "PilatesPro public profile identifies Astana AitekeBi14 and pilates studio; describes stained-glass windows.",
+      "record_uncertainties": [
+        "2021 publication; window mention does not substantiate mirror purchasing or fit of ordinary clear remnants."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B45",
+      "name": "Астана Опера",
+      "city": "Астана",
+      "category_as_supplied": "другое",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://astanaopera.kz/ru"
+      ],
+      "supported_paraphrase": "Astana Opera official site identifies national opera/ballet theatre and public procurement section.",
+      "record_uncertainties": [
+        "Public institution; theatre set/display glass is a proposal, not a confirmed procurement item or safety approval."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B46",
+      "name": "QazExpoCongress (МВЦ EXPO)",
+      "city": "Астана",
+      "category_as_supplied": "другое",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://qazexpocongress.kz/ru/"
+      ],
+      "supported_paraphrase": "QazExpoCongress official site identifies Astana MangilikEl55/13, EXPO exhibition/congress/business facilities and procurement section.",
+      "record_uncertainties": [
+        "EXPO is a facility group; small exhibition components are plausible but current orders and specifications unknown."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B47",
+      "name": "KHS Hub — IT bar",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/khs-hub"
+      ],
+      "supported_paraphrase": "KHS Hub public profile identifies Astana UlyDala5/2 and IT community bar/meetup venue.",
+      "record_uncertainties": [
+        "Primary-domain outage avoided with public profile; no established glass or mirror demand."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B48",
+      "name": "Ресторан Tamaq",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/tamaq"
+      ],
+      "supported_paraphrase": "Tamaq public profile identifies Astana Kazhymukan20 and cafeteria/bakery profile.",
+      "record_uncertainties": [
+        "More precisely cafeteria than restaurant;2022 publication/current operation uncertain. No procurement evidence."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B49",
+      "name": "Ресторан «Saf»",
+      "city": "Астана",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "directory_profile",
+      "public_sources": [
+        "https://sxodim.com/astana/place/restoran-saf"
+      ],
+      "supported_paraphrase": "Saf public profile identifies Astana KasymAmanzholov24, restaurant and VIP/children spaces.",
+      "record_uncertainties": [
+        "2023 publication; no glass/mirror purchase requirement is documented."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    },
+    {
+      "entity_id": "B50",
+      "name": "Hani Cakes & Coffee",
+      "city": "Караганда",
+      "category_as_supplied": "кафе или ресторан",
+      "public_profile_status": "primary_profile",
+      "public_sources": [
+        "https://hanicc.kz/"
+      ],
+      "supported_paraphrase": "Hani official site identifies Karaganda cakes/desserts/brunch delivery business.",
+      "record_uncertainties": [
+        "Karaganda matches CSV; website proves food activity, not that it operates the proposed glass display or needs its replacement."
+      ],
+      "confirmed_buyer_demand": false,
+      "application_status": "engineering_hypothesis",
+      "eligible_as_distinct_organization": "public_profile_lead_only"
+    }
+  ]
+}

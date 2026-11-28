@@ -1,5 +1,11 @@
 # POST_REVIEW — независимый экзамен и baseline
 
+## Second wave: buyer semantics and actual model transport
+
+2026-11-28: all50 original source pages semantically reviewed; record-by-record audit plus additive `buyers.independent-v2.csv`/`evidence.independent-v2.json` generated. B11 unspecified VEKA network replaced by B51 named ТОО «Комфорт Строй Плюс СК» (official Astana manufacture/address), B19 Talan complex replaced by B52 INTERWOOD (official Astana manufacture/glass furniture portfolio) to avoid unproven independent procurement from B38 Ritz. B07 furniture category corrected; B02/B03 unsupported glass-specific facts removed from profile, uses remain explicit hypotheses. Nine categories/50 distinct names/49Astana+1Karaganda, original source bytes unchanged. Real fresh baseline uvicorn API import HTTP200 verified/count50/errors[]; scope remains public research leads, not purchase interest. Full findings/links/old-publication concerns: `docs/reviews/POST_INTEGRATION_BUYERS_SEMANTIC_2026-11-28.md`.
+
+Root-owned actual BasisWeb preflight `.qa/live-preflight-6016aac` independently inspected: five warmups, 10 actual provider calls (3+3+2+1+1), quota debit31359 weighted; origin model3/fallback2. Two503MODEL_UNAVAILABLE errors. WARM01/02 exact complete totals1992.60/3362.51 correct but typed status manager_handoff yields frozen raw refusal penalties; WARM02 swaps length/width while same area. Raw preserved; semantic adjudication must distinguish typed status mismatch and equivalent rectangle orientation. No rubric or oracle changed, no held-out149-turn examination yet. Not live acceptance. Root controls any alternate-model trial and cumulative<=1m weighted quota. Reviewer has not used provider credentials or spent quota independently.
+
 База5648852d64189ffd7269c277002f6fbc40c8039a. Worktree `C:/Users/User/Documents/ChatGPT/GlassFlow-post-review`, ветка `codex/post-review`. Product code/DTO/UI/миграции/original case/spec/official validators не изменялись. Исходный tested EXE3f83310 не тронут.
 
 ## Phase1

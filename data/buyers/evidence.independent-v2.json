@@ -1,0 +1,1035 @@
+{
+  "dedupe_policy": "Одна запись на организацию/бренд: филиалы, точки сети и залы одного бренда объединяются в одну запись; запись указывает город проверенного объекта. Разные юридические бренды одной группы считаются разными только при разных сайтах и профилях.",
+  "source_evidence_sha256": "837feef9e95e4ee1ff0fcf2444ce1ef3326ed1fd669d007bf9e8c94f3f3ed7a1",
+  "source_csv_sha256": "1419b56a67042fe071186171c8fdb232d3ec3f4834c995efdaa6c5964ccd0a78",
+  "transform_version": "independent-semantic-v2-2026-11-28",
+  "application_policy": "Explicit project assumptions; no confirmed interest",
+  "integration_reviewed_ids": [
+    "B01",
+    "B02",
+    "B03",
+    "B04",
+    "B05",
+    "B06",
+    "B07",
+    "B08",
+    "B09",
+    "B10",
+    "B12",
+    "B13",
+    "B14",
+    "B15",
+    "B16",
+    "B17",
+    "B18",
+    "B20",
+    "B21",
+    "B22",
+    "B23",
+    "B24",
+    "B25",
+    "B26",
+    "B27",
+    "B28",
+    "B29",
+    "B30",
+    "B31",
+    "B32",
+    "B33",
+    "B34",
+    "B35",
+    "B36",
+    "B37",
+    "B38",
+    "B39",
+    "B40",
+    "B41",
+    "B42",
+    "B43",
+    "B44",
+    "B45",
+    "B46",
+    "B47",
+    "B48",
+    "B49",
+    "B50",
+    "B51",
+    "B52"
+  ],
+  "records": [
+    {
+      "name": "CATRINE (группа компаний)",
+      "city": "Астана",
+      "profile": "Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://catrine.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B01",
+      "applications": [
+        {
+          "application": "furniture_insert",
+          "material_ids": [
+            "clear-4",
+            "clear-6",
+            "clear-8"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
+          "source_url": "https://catrine.kz/",
+          "checked_at": "2026-11-28"
+        },
+        {
+          "application": "mirror_interior",
+          "material_ids": [
+            "mirror-4"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
+          "source_url": "https://catrine.kz/",
+          "checked_at": "2026-11-28"
+        }
+      ],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Group brand, not one established procurement legal entity; glass furniture additionally appears in public directory, not a current purchase order."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Astana MG — мебель на заказ",
+      "city": "Астана",
+      "profile": "Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.",
+      "source_url": "https://astanamg.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.",
+      "entity_id": "B02",
+      "applications": [
+        {
+          "application": "furniture_insert",
+          "material_ids": [
+            "clear-4",
+            "clear-6",
+            "clear-8"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.",
+          "source_url": "https://astanamg.kz/",
+          "checked_at": "2026-11-28"
+        },
+        {
+          "application": "mirror_interior",
+          "material_ids": [
+            "mirror-4"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.",
+          "source_url": "https://astanamg.kz/",
+          "checked_at": "2026-11-28"
+        }
+      ],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Main page does not establish the profile's stronger claims about glass showcases, mirror doors or glass shelving."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "DalaSK (astana-mebel.kz)",
+      "city": "Астана",
+      "profile": "DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.",
+      "source_url": "https://astana-mebel.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.",
+      "entity_id": "B03",
+      "applications": [
+        {
+          "application": "furniture_insert",
+          "material_ids": [
+            "clear-4",
+            "clear-6",
+            "clear-8"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.",
+          "source_url": "https://astana-mebel.kz/",
+          "checked_at": "2026-11-28"
+        },
+        {
+          "application": "mirror_interior",
+          "material_ids": [
+            "mirror-4"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.",
+          "source_url": "https://astana-mebel.kz/",
+          "checked_at": "2026-11-28"
+        }
+      ],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Main page does not establish glass shelves, coffee tables or hallway mirrors as its actual products."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Mebel Ideal",
+      "city": "Астана",
+      "profile": "Публичный профиль: Mebel Ideal; город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://mebel-ideal.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Mebel Ideal; город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B04",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Direct open timed out; indexed official content was readable. Exact thickness, dimensions, volume and acceptance of remnants unknown."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Clever Design",
+      "city": "Астана",
+      "profile": "Публичный профиль: Clever Design; город Астана; деятельность — дизайн-студия. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://cleverdesign.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Clever Design; город Астана; деятельность — дизайн-студия. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B05",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "A designer can specify materials; direct purchase authority or glass procurement is unproven."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Biar.kz",
+      "city": "Астана",
+      "profile": "Публичный профиль: Biar.kz; город Астана; деятельность — дизайн-студия. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://biar.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Biar.kz; город Астана; деятельность — дизайн-студия. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B06",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Glass applications are project hypotheses; it is not demonstrated as a glass processor or current remnant buyer."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "DreamArt",
+      "city": "Астана",
+      "profile": "Публичный профиль: DreamArt; город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://dreamart.kz/kontakty/vystavochnyy-salon-v-mfc-moskva/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: DreamArt; город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B07",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Recommend furniture-manufacturer category rather than unqualified design-studio classification; directory addresses differ, use official showroom. No proven purchase demand."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "SENSATA GROUP",
+      "city": "Астана",
+      "profile": "Публичный профиль: SENSATA GROUP; город Астана; деятельность — строительная компания. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sensata.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: SENSATA GROUP; город Астана; деятельность — строительная компания. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B08",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Construction demand does not prove suitability of small untempered remnants for glazing; safety/project specifications remain unknown."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "SG Holding",
+      "city": "Астана",
+      "profile": "Публичный профиль: SG Holding; город Астана; деятельность — строительная компания. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sgholding.kz/kz/kontakty/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: SG Holding; город Астана; деятельность — строительная компания. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B09",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Homepage timed out; official contact page supplies identity/city. No confirmed small-glass order."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Алкон+",
+      "city": "Астана",
+      "profile": "Публичный профиль: Алкон+; город Астана; деятельность — окна и двери. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://alcon.kz/private/metalplastic_designs/proizvodstvo/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Алкон+; город Астана; деятельность — окна и двери. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B10",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Do not confuse Alcon+ window firm with Alcon ophthalmology. Insulating-glass specification and minimum stock dimensions unproven."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Мегастрой",
+      "city": "Астана",
+      "profile": "Публичный профиль: Мегастрой; город Астана; деятельность — магазин. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://megastroy.kz/contacts/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Мегастрой; город Астана; деятельность — магазин. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B12",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Retailer, not automatically glass processor; supplier acceptance and purchases of unprocessed remnants are unknown."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Строительная компания АстанаСтройДом",
+      "city": "Астана",
+      "profile": "Публичный профиль: Строительная компания АстанаСтройДом; город Астана; деятельность — строительная компания. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://www.kn.kz/companies/view/id/22789",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Строительная компания АстанаСтройДом; город Астана; деятельность — строительная компания. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B13",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Third-party company profile; identity supported, current procurement and technical suitability unverified."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "ТРЦ Хан Шатыр",
+      "city": "Астана",
+      "profile": "Публичный профиль: ТРЦ Хан Шатыр; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/han-shatyr",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: ТРЦ Хан Шатыр; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B14",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Facility/tenants are not one demonstrated glass purchaser; procurement operator and intended fit-out unknown."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "ТРЦ «Керуен»",
+      "city": "Астана",
+      "profile": "Публичный профиль: ТРЦ «Керуен»; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/keruen",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: ТРЦ «Керуен»; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B15",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Centre versus tenant purchase authority unknown; small-glass use is a fit-out hypothesis."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "ТРЦ Asia Park Astana",
+      "city": "Астана",
+      "profile": "Публичный профиль: ТРЦ Asia Park Astana; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://astana.asiapark.kz/ru/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: ТРЦ Asia Park Astana; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B16",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Explicit facility identity but no glass-remnant procurement requirement; tenants may purchase independently."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "ТРЦ MEGA Silk Way",
+      "city": "Астана",
+      "profile": "Публичный профиль: ТРЦ MEGA Silk Way; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/mega-silk-way",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: ТРЦ MEGA Silk Way; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B17",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Centre and its tenants must not be treated as confirmed common purchaser; specification and demand unknown."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "МФК Abu Dhabi Plaza",
+      "city": "Астана",
+      "profile": "Публичный профиль: МФК Abu Dhabi Plaza; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://abudhabiplaza.info/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: МФК Abu Dhabi Plaza; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B18",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Name is a complex, not a single established buyer; building safety glazing cannot be assumed from available remnant thickness."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "ТРЦ «Сарыарка»",
+      "city": "Астана",
+      "profile": "Публичный профиль: ТРЦ «Сарыарка»; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/saryarka",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: ТРЦ «Сарыарка»; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B20",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Public venue listing does not establish current glass demand or tenant/centre buying authority."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "ТРЦ Astana Mall",
+      "city": "Астана",
+      "profile": "Публичный профиль: ТРЦ Astana Mall; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/astana-mall",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: ТРЦ Astana Mall; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B21",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "2021 publication; present operating status and procurement requirements need fresh operator confirmation."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "KeruenCity",
+      "city": "Астана",
+      "profile": "Публичный профиль: KeruenCity; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/keruencity",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: KeruenCity; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B22",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Separate named centre from B15; common brand/ownership or shared purchasing not resolved."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "ТРЦ «Аружан»",
+      "city": "Астана",
+      "profile": "Публичный профиль: ТРЦ «Аружан»; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/aruzhan",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: ТРЦ «Аружан»; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B23",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "2021 publication; current operation and exact fit-out/glass requirements unverified."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Торговый центр Green Mall",
+      "city": "Астана",
+      "profile": "Публичный профиль: Торговый центр Green Mall; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/green-mall",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Торговый центр Green Mall; город Астана; деятельность — торговый центр. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B24",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Shares address complex with B41; distinct venue names do not prove independent purchasing operators."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Qazaq Gourmet",
+      "city": "Астана",
+      "profile": "Публичный профиль: Qazaq Gourmet; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://qazaqgourmet.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Qazaq Gourmet; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B25",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Decorative glass/mirror use is an engineering proposal, not sourced demand."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Чайхана NAVAT",
+      "city": "Астана",
+      "profile": "Публичный профиль: Чайхана NAVAT; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/navat",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Чайхана NAVAT; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B26",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Public dining profile, no exact dimensions, glass spec or procurement demand."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Coffee Boom",
+      "city": "Астана",
+      "profile": "Публичный профиль: Coffee Boom; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/coffee-boom-1",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Coffee Boom; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B27",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "A chain counted once; no individually identified procurement operator or confirmed small-glass demand."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Nudu",
+      "city": "Астана",
+      "profile": "Публичный профиль: Nudu; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/nudu",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Nudu; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B28",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "City is supported by page context/address; primary site link alone not independently accepted as proof. Glass application remains hypothesis."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Starbucks Казахстан",
+      "city": "Астана",
+      "profile": "Публичный профиль: Starbucks Казахстан; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/starbucks",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Starbucks Казахстан; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B29",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Brand counted once; franchise procurement, approved materials and supplier policy unknown."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Ресторан MANNA",
+      "city": "Астана",
+      "profile": "Публичный профиль: Ресторан MANNA; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/manna",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Ресторан MANNA; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B30",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "2021 publication and panoramic windows are not evidence of current remnant demand or suitable safety glazing."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "LINE BREW RESERVE",
+      "city": "Астана",
+      "profile": "Публичный профиль: LINE BREW RESERVE; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/line-brew-reserve",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: LINE BREW RESERVE; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B31",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Existing mirrors establish an application precedent, not replacement need, new purchase or proposed dimensions."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Ресторан Shafran",
+      "city": "Астана",
+      "profile": "Публичный профиль: Ресторан Shafran; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/shafran",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Ресторан Shafran; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B32",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "2021 publication; identity/profile only, current procurement and intended glass application unverified."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Гастро-Площадь Центр",
+      "city": "Астана",
+      "profile": "Публичный профиль: Гастро-Площадь Центр; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/gastro-ploshchad-centr",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Гастро-Площадь Центр; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B33",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Food hall and independent corners have unresolved procurement identity; no confirmed remnant demand."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Кофейня Marrone Rosso",
+      "city": "Астана",
+      "profile": "Публичный профиль: Кофейня Marrone Rosso; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/marrone-rosso",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Кофейня Marrone Rosso; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B34",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Chain is one lead, exact buying operator/approved interior material unknown."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Bahandi Burger",
+      "city": "Астана",
+      "profile": "Публичный профиль: Bahandi Burger; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://bahandi.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Bahandi Burger; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B35",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "City presence supported, not one named branch procurement contact or glass requirement."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "La Bottega",
+      "city": "Астана",
+      "profile": "Публичный профиль: La Bottega; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/la-bottega",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: La Bottega; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B36",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Tenant of B15; may have separate procurement, not established. Existing furniture/decor does not prove glass demand."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "OldBoy Barbershop (Астана)",
+      "city": "Астана",
+      "profile": "Публичный профиль: OldBoy Barbershop (Астана); город Астана; деятельность — салон. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://oldboybarbershop.com/astana",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: OldBoy Barbershop (Астана); город Астана; деятельность — салон. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B37",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Salon category supported; mirrors are plausible professional equipment, but replacements/dimensions/purchase authority unknown."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "The Ritz-Carlton, Astana",
+      "city": "Астана",
+      "profile": "Публичный профиль: The Ritz-Carlton, Astana; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://www.ritzcarlton.com/en/hotels/tserz-the-ritz-carlton-astana/overview/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: The Ritz-Carlton, Astana; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B38",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Shares Talan Towers complex with B19; hotel may be separate operator but independent procurement not confirmed. Hotel safety specs unknown."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Rixos President Astana",
+      "city": "Астана",
+      "profile": "Публичный профиль: Rixos President Astana; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://all.accor.com/hotel/B1Q3/index.ru.shtml",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Rixos President Astana; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B39",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "No confirmed glass order or thickness/dimensions. Correct official Accor source resolves the former inaccessible URL."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "World Class Астана",
+      "city": "Астана",
+      "profile": "Публичный профиль: World Class Астана; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://worldclass.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: World Class Астана; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B40",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Training mirrors are plausible but no actual requirement for remnants or proposed dimensions is published."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Invictus Fitness",
+      "city": "Астана",
+      "profile": "Публичный профиль: Invictus Fitness; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/invictus",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Invictus Fitness; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B41",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Shares Green Mall address complex with B24; procurement independence and mirror specification unknown."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Fitness Palace",
+      "city": "Астана",
+      "profile": "Публичный профиль: Fitness Palace; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/fitness-palace",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Fitness Palace; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B42",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Current procurement and acceptable mirror sizes/thickness are unconfirmed."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Fitness First (левый берег)",
+      "city": "Астана",
+      "profile": "Публичный профиль: Fitness First (левый берег); город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/fitness-first",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Fitness First (левый берег); город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B43",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Source published2018; current operation particularly uncertain. Tenant of B16; distinct purchasing operator unproven."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "PilatesPro",
+      "city": "Астана",
+      "profile": "Публичный профиль: PilatesPro; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/pilatespro",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: PilatesPro; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B44",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "2021 publication; window mention does not substantiate mirror purchasing or fit of ordinary clear remnants."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Астана Опера",
+      "city": "Астана",
+      "profile": "Публичный профиль: Астана Опера; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://astanaopera.kz/ru",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Астана Опера; город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B45",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Public institution; theatre set/display glass is a proposal, not a confirmed procurement item or safety approval."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "QazExpoCongress (МВЦ EXPO)",
+      "city": "Астана",
+      "profile": "Публичный профиль: QazExpoCongress (МВЦ EXPO); город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://qazexpocongress.kz/ru/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: QazExpoCongress (МВЦ EXPO); город Астана; деятельность — другое. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B46",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "EXPO is a facility group; small exhibition components are plausible but current orders and specifications unknown."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "KHS Hub — IT bar",
+      "city": "Астана",
+      "profile": "Публичный профиль: KHS Hub — IT bar; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/khs-hub",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: KHS Hub — IT bar; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B47",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Primary-domain outage avoided with public profile; no established glass or mirror demand."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Ресторан Tamaq",
+      "city": "Астана",
+      "profile": "Публичный профиль: Ресторан Tamaq; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/tamaq",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Ресторан Tamaq; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B48",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "More precisely cafeteria than restaurant;2022 publication/current operation uncertain. No procurement evidence."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Ресторан «Saf»",
+      "city": "Астана",
+      "profile": "Публичный профиль: Ресторан «Saf»; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://sxodim.com/astana/place/restoran-saf",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Ресторан «Saf»; город Астана; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B49",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "2023 publication; no glass/mirror purchase requirement is documented."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "name": "Hani Cakes & Coffee",
+      "city": "Караганда",
+      "profile": "Публичный профиль: Hani Cakes & Coffee; город Караганда; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "source_url": "https://hanicc.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "confirmation": "Публичный профиль: Hani Cakes & Coffee; город Караганда; деятельность — кафе или ресторан. Источник подтверждает профиль, а не спрос на стекло.",
+      "entity_id": "B50",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "uncertainties": [
+        "Karaganda matches CSV; website proves food activity, not that it operates the proposed glass display or needs its replacement."
+      ],
+      "confirmed_buyer_demand": false
+    },
+    {
+      "entity_id": "B51",
+      "name": "ТОО «Комфорт Строй Плюс СК»",
+      "city": "Астана",
+      "profile": "Астана, Бейсекбаева 32/2. Производство алюминиевых и ПВХ окон, дверей, витражей и перегородок в собственном цеху; название ТОО и адрес опубликованы на официальном сайте.",
+      "confirmation": "Астана, Бейсекбаева 32/2. Производство алюминиевых и ПВХ окон, дверей, витражей и перегородок в собственном цеху; название ТОО и адрес опубликованы на официальном сайте.",
+      "source_url": "https://ksplus.kz/index.htm",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "applications": [],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "confirmed_buyer_demand": false,
+      "uncertainties": [
+        "Потенциальный производственный партнер; размеры, состав стеклопакета и безопасное стекло требуют проектного согласования. Готовность покупать обрезки не подтверждена."
+      ]
+    },
+    {
+      "entity_id": "B52",
+      "name": "INTERWOOD — мебель на заказ",
+      "city": "Астана",
+      "profile": "Астана, Тауелсиздик 34/2, офис 44. Официальный сайт описывает изготовление мебели; портфолио явно показывает шкафы со стеклянными дверцами, витрины и мебель с зеркалами.",
+      "confirmation": "Астана, Тауелсиздик 34/2, офис 44. Официальный сайт описывает изготовление мебели; портфолио явно показывает шкафы со стеклянными дверцами, витрины и мебель с зеркалами.",
+      "source_url": "https://interwood.kz/",
+      "checked_at": "2026-11-28",
+      "reviewer": "Mustiks07 / independent post-review",
+      "applications": [
+        {
+          "application": "furniture_insert",
+          "material_ids": [
+            "clear-4",
+            "clear-6",
+            "clear-8"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "Астана, Тауелсиздик 34/2, офис 44. Официальный сайт описывает изготовление мебели; портфолио явно показывает шкафы со стеклянными дверцами, витрины и мебель с зеркалами.",
+          "source_url": "https://interwood.kz/",
+          "checked_at": "2026-11-28"
+        },
+        {
+          "application": "mirror_interior",
+          "material_ids": [
+            "mirror-4"
+          ],
+          "min_dimensions": {
+            "length_mm": 100,
+            "width_mm": 100
+          },
+          "max_dimensions": {
+            "length_mm": 2000,
+            "width_mm": 1500
+          },
+          "requires_cutting": true,
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "activity": "Астана, Тауелсиздик 34/2, офис 44. Официальный сайт описывает изготовление мебели; портфолио явно показывает шкафы со стеклянными дверцами, витрины и мебель с зеркалами.",
+          "source_url": "https://interwood.kz/",
+          "checked_at": "2026-11-28"
+        }
+      ],
+      "verification_scope": "public_identity_city_activity_not_procurement",
+      "confirmed_buyer_demand": false,
+      "uncertainties": [
+        "Предложение применения: мебельные стеклянные вставки и зеркала, по аналогии с опубликованным портфолио. Конкретные размеры, толщины и текущая закупка не подтверждены."
+      ]
+    }
+  ],
+  "replaced_entity_ids": [
+    "B11",
+    "B19"
+  ],
+  "new_entity_ids": [
+    "B51",
+    "B52"
+  ],
+  "reviewer_scope": "Public identity/city/activity only; actual demand and purchasing independence not asserted.",
+  "validated_csv_sha256": "bfa566ea83e56cb6e49ac42b761a8cd0b29a7842bedc73677a577ff454684e08"
+}
