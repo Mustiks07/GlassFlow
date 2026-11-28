@@ -1,6 +1,7 @@
 """Evaluator regressions, not a product acceptance substitute."""
 
 import importlib.util
+import io
 import json
 from pathlib import Path
 
@@ -154,3 +155,67 @@ def test_other_model_traffic_cannot_prove_the_selected_model_answer():
         "gemini:selected",
     )
     assert result["selected_model_answer_confirmed"]
+
+
+def candidate_reply(**changes):
+    return {
+        "origin": "model",
+        "execution_mode": "model_first",
+        "provider": "basisweb",
+        "model_id": "gpt-6-luna",
+        "selected_provider": "basisweb",
+        "selected_model_id": "gpt-6-luna",
+        "model_call_count": 1,
+        "model_attempts": [{"provider": "basisweb", "model_id": "gpt-6-luna", "status": "ok"}],
+        "cache_hit": False,
+        "verifier_status": "supported",
+        "verifier_reject_count": 0,
+    } | changes
+
+
+def test_candidate_provenance_requires_exact_consistent_selected_attempt():
+    def measure(**changes):
+        return review.provenance(candidate_reply(**changes), {}, {}, "basisweb:gpt-6-luna")
+
+    assert measure()["selected_model_answer_confirmed"]
+    for changes in (
+        {"cache_hit": True},
+        {"origin": "fallback"},
+        {"origin": "reuse"},
+        {"model_call_count": 2},
+        {"selected_model_id": "other"},
+        {"model_id": "other"},
+        {"execution_mode": "hybrid"},
+        {"verifier_reject_count": 1},
+        {"model_attempts": []},
+    ):
+        assert not measure(**changes)["selected_model_answer_confirmed"]
+    failure = measure(
+        model_attempts=[{"provider": "basisweb", "model_id": "gpt-6-luna", "status": "error"}],
+        origin="fallback",
+    )
+    assert failure["selected_model_attempt_confirmed"] and not failure["selected_model_answer_confirmed"]
+
+
+def test_stdin_configuration_is_local_and_does_not_disclose_secret(monkeypatch):
+    import pytest
+
+    secret = "synthetic-key-do-not-print"
+    monkeypatch.setattr(review.sys, "stdin", io.StringIO(json.dumps({"api_key": secret})))
+    with pytest.raises(RuntimeError) as error:
+        review.configure_local_from_stdin(None, "https://public.invalid")
+    assert secret not in str(error.value)
+    monkeypatch.setattr(
+        review.sys, "stdin", io.StringIO(json.dumps({"api_key": secret, "paid_enabled": True}))
+    )
+    with pytest.raises(RuntimeError) as error:
+        review.configure_local_from_stdin(None, "http://127.0.0.1:18173")
+    assert secret not in str(error.value)
+
+
+def test_transport_warmups_are_separate_from_frozen_questions():
+    warmups = review.transport_preflight_cases()
+    assert len(warmups) == 5
+    assert not {c["question"] for c in warmups} & {c["question"] for c in EXAM["cases"]}
+    assert warmups[0]["expected"]["quote"]["total_tg"] == "1992.60"
+    assert warmups[1]["expected"]["quote"]["total_tg"] == "3362.51"

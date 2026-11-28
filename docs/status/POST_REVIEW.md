@@ -22,3 +22,9 @@ Evidence: `tests/post_review/ai_exam_v1.json`, `system_scenarios_v1.json`, `huma
 ## Следующий шаг
 
 Phase1 завершена; текущий tip этой ветки фиксирует evidence/status и освобождает слот Intelligence. Root использует redacted P0 до N04; после первого candidate freeze разрешает раскрытие остальных независимых случаев. Позже — phase2 на общей ветке: исполнимые fault tests новых API, local/допущенный capped live exam, browser/native/material evidence и замечания без само-приёмки собственного продукта.
+# Second wave: BasisWeb transport adapter (2026-11-28)
+
+Prepared strict top-level per-request provenance adapter and loopback-only stdin settings injection for EARLYFREEZE f7aa94d plus root runtime bridge correction. Five distinct transport warmups precede the frozen 149-turn exam. Configuration never automatically enables paid mode or fallback models; output cap <=512, included weighted budget <=1m, serial execution. Counter rollback/profile changes/quota exhaustion stop remaining questions as not_run. Root enforces the cumulative account cap across processes/profile recreation. Reviewer made zero external model calls during preparation.
+
+Validation: `uv run pytest tests/post_review/test_exam_contract.py -q` 15 PASS; scoped Ruff PASS. AST comparison of grade/qualified_catalog_price/money_values/near against d8a628c unchanged; `git diff --quiet c6a7888 -- tests/post_review/ai_exam_v1.json` PASS. Command/protocol: docs/reviews/POST_INTEGRATION_LIVE_RUNNER_2026-11-28.md. Next: root runs five preflight requests with RAM-only secret stdin; reviewer independently audits results and all 50 buyer records, then N01–N19 on integrated candidate.
+

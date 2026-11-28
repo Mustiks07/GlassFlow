@@ -13,11 +13,13 @@ import json
 import math
 import re
 import subprocess
+import sys
 import time
 from collections import Counter
 from datetime import UTC, datetime
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -205,6 +207,59 @@ def provenance(reply, before, after, selected):
     selected_delta = max(
         0, after.get("by_model", {}).get(selected, 0) - before.get("by_model", {}).get(selected, 0)
     )
+    if "origin" in reply:
+        attempts = reply.get("model_attempts") or []
+        count = reply.get("model_call_count", 0)
+        selected_provider, _, selected_model = selected.partition(":")
+        selected_ok = [
+            a
+            for a in attempts
+            if a.get("provider") == selected_provider
+            and a.get("model_id") == selected_model
+            and a.get("status") == "ok"
+        ]
+        selected_attempts = [
+            a
+            for a in attempts
+            if a.get("provider") == selected_provider and a.get("model_id") == selected_model
+        ]
+        rejects = int(reply.get("verifier_reject_count") or 0)
+        consistent = count == len(attempts) and count >= 0
+        confirmed = bool(
+            consistent
+            and selected_ok
+            and reply.get("origin") == "model"
+            and reply.get("execution_mode") == "model_first"
+            and not reply.get("cache_hit")
+            and reply.get("provider") == selected_provider
+            and reply.get("model_id") == selected_model
+            and reply.get("selected_provider") == selected_provider
+            and reply.get("selected_model_id") == selected_model
+            and reply.get("verifier_status") == "supported"
+            and rejects == 0
+        )
+        return {
+            "origin": reply.get("origin"),
+            "selected_model_answer_confirmed": confirmed,
+            "selected_model_attempt_confirmed": bool(consistent and selected_attempts),
+            "provider_calls_delta": delta,
+            "ok_calls_delta": success_delta,
+            "selected_model_calls_delta": len(selected_ok),
+            "verifier_rejected_attempt": bool(
+                consistent
+                and selected_ok
+                and (rejects > 0 or reply.get("verifier_status") == "unsupported_replaced")
+            ),
+            "provenance_consistent": consistent,
+            "cache_hit": bool(reply.get("cache_hit")),
+            "model_call_count": count,
+            "model_attempts": attempts,
+            "declared_provenance": {
+                "selected_provider": reply.get("selected_provider"),
+                "selected_model_id": reply.get("selected_model_id"),
+                "verifier_reject_count": rejects,
+            },
+        }
     path = reply.get("answer_path")
     declared = reply.get("provenance")
     origin = (declared or {}).get("origin") if isinstance(declared, dict) else None
@@ -229,6 +284,12 @@ def provenance(reply, before, after, selected):
     return {
         "origin": classification,
         "selected_model_answer_confirmed": confirmed,
+        "selected_model_attempt_confirmed": confirmed
+        or (
+            reply.get("verifier_status") == "unsupported_replaced"
+            and selected_delta > 0
+            and success_delta > 0
+        ),
         "provider_calls_delta": delta,
         "ok_calls_delta": success_delta,
         "selected_model_calls_delta": selected_delta,
@@ -241,6 +302,180 @@ def provenance(reply, before, after, selected):
 
 def percentile(values, q):
     return sorted(values)[max(0, math.ceil(len(values) * q) - 1)] if values else None
+
+
+def configure_local_from_stdin(client, base):
+    """The caller supplies a RAM-only JSON secret stream; never print it or errors containing it."""
+    parsed = urlsplit(base)
+    if (
+        parsed.hostname not in {"127.0.0.1", "localhost", "::1"}
+        or parsed.username
+        or parsed.query
+        or parsed.fragment
+    ):
+        raise RuntimeError("Secret configuration is restricted to a local application endpoint")
+    try:
+        incoming = json.loads(sys.stdin.read().lstrip("\ufeff"))
+    except (ValueError, TypeError):
+        raise RuntimeError("Invalid stdin settings JSON; content suppressed") from None
+    if not isinstance(incoming, dict):
+        raise RuntimeError("stdin must be a settings object; content suppressed")
+    allowed = {
+        "api_key",
+        "profile",
+        "provider",
+        "model_id",
+        "mode",
+        "paid_enabled",
+        "monthly_budget_tg",
+        "included_quota_enabled",
+        "quota_token_budget",
+        "rpm",
+        "tpm",
+        "rpd",
+        "max_parallel",
+        "timeout_seconds",
+        "max_retries",
+        "max_tool_iterations",
+        "max_output_tokens",
+        "fallback_models",
+    }
+    if any(k not in allowed for k in incoming):
+        raise RuntimeError("Unknown stdin setting; names/content suppressed")
+    defaults = {
+        "profile": "direct",
+        "provider": "basisweb",
+        "model_id": "gpt-6-luna",
+        "mode": "free_only",
+        "paid_enabled": False,
+        "monthly_budget_tg": "0",
+        "included_quota_enabled": True,
+        "quota_token_budget": 1_000_000,
+        "rpm": 60,
+        "tpm": 1_000_000,
+        "rpd": 2000,
+        "max_parallel": 1,
+        "timeout_seconds": 60,
+        "max_retries": 0,
+        "max_tool_iterations": 6,
+        "max_output_tokens": 256,
+        "fallback_models": [],
+    }
+    config = defaults | incoming
+    if not isinstance(config.get("api_key"), str) or not 1 <= len(config["api_key"]) <= 4096:
+        raise RuntimeError("A nonempty supported key is required; value suppressed")
+    if (
+        config["provider"] != "basisweb"
+        or config["profile"] != "direct"
+        or not config["included_quota_enabled"]
+    ):
+        raise RuntimeError("Only the explicitly authorized direct BasisWeb included-quota profile is allowed")
+    if config["paid_enabled"] or config["mode"] != "free_only" or config["fallback_models"]:
+        raise RuntimeError("Paid mode and fallback models are not enabled by this runner")
+    if (
+        not 1 <= config["quota_token_budget"] <= 1_000_000
+        or not 1 <= config["max_output_tokens"] <= 512
+        or config["max_parallel"] != 1
+    ):
+        raise RuntimeError("Settings exceed this trial quota/output/concurrency authorization")
+    current = client.get("/api/v1/settings")
+    current.raise_for_status()
+    session = client.get("/api/v1/session")
+    session.raise_for_status()
+    config["version"] = current.json()["version"]
+    try:
+        response = client.patch(
+            "/api/v1/settings", json=config, headers={"X-GlassFlow-Session": session.json()["session_token"]}
+        )
+    except httpx.HTTPError:
+        raise RuntimeError("Local secret configuration transport failed; details suppressed") from None
+    del config, incoming
+    if response.status_code != 200:
+        raise RuntimeError(f"Local secret configuration rejected HTTP{response.status_code}; body suppressed")
+    profile = client.get("/api/v1/assistant/ai-status").json()
+    if (
+        profile.get("provider") != "basisweb"
+        or not profile.get("included_quota_enabled")
+        or not profile.get("key_configured")
+    ):
+        raise RuntimeError(
+            "Profile not activated; inspect the nonsecret root runtime bridge before any model call"
+        )
+    return profile
+
+
+def transport_preflight_cases():
+    """Five separate warmups. They are not any of the 79 held-out questions."""
+
+    def request(identifier, text, product_id, length, width, qty, rate):
+        amount = (Decimal(length) * width * qty * rate / 1_000_000).quantize(Decimal(".01"))
+        return {
+            "id": identifier,
+            "family": "transport_preflight",
+            "kb_variant": "base",
+            "critical": False,
+            "inventory_mode": "none",
+            "question": text,
+            "expected": {
+                "action": "answer",
+                "no_extra_question": True,
+                "quote": {
+                    "product_id": product_id,
+                    "total_tg": str(amount),
+                    "unit_rate_tg": str(rate),
+                    "components_tg": {"glass": str(amount)},
+                    "quantity": qty,
+                    "basis": "per_m2",
+                    "dimensions": {"length_mm": length, "width_mm": width},
+                    "processing": {"kind": "none", "sides": "all", "selected_sides": []},
+                },
+            },
+        }
+
+    common = {
+        "family": "transport_preflight",
+        "kb_variant": "base",
+        "critical": False,
+        "inventory_mode": "none",
+    }
+    return [
+        request(
+            "WARM01",
+            "Рассчитайте прозрачное стекло 6 мм 615×405 мм, 1 шт., без обработки.",
+            "steklo-6-prozrachnoe",
+            615,
+            405,
+            1,
+            8000,
+        ),
+        request(
+            "WARM02",
+            "Рассчитайте прозрачное стекло 4 мм 615×405 мм, 3 шт., без обработки.",
+            "steklo-4-prozrachnoe",
+            615,
+            405,
+            3,
+            4500,
+        ),
+        common
+        | {
+            "id": "WARM03",
+            "question": "Компания выполняет монтаж стекла?",
+            "expected": {"action": "rule_or_handoff", "contains_all": ["не"], "contains_any": ["монтаж"]},
+        },
+        common
+        | {
+            "id": "WARM04",
+            "question": "Каким образом согласовать доставку?",
+            "expected": {"action": "rule_or_handoff", "contains_all": ["менеджер"]},
+        },
+        common
+        | {
+            "id": "WARM05",
+            "question": "Цена неизвестной модели AB1043 — кто ее уточнит?",
+            "expected": {"action": "manager_handoff", "total_must_be_unknown": True},
+        },
+    ]
 
 
 def evaluate(args):
@@ -257,14 +492,28 @@ def evaluate(args):
         "rubric": "mechanical action+bound structured total+currency+completeness+refusal; manual semantic review still required",
         "rubric_revision": "1.1-adjudicated-before-candidate",
         "baseline_product_commit": exam["baseline_commit"],
+        "candidate_product_commit": args.candidate_code_commit,
+        "transport_preflight": args.preflight,
         "results": [],
         "quality_results": [],
         "live_acceptance": {"status": "NOT_RUN"},
     }
     args.out.mkdir(parents=True, exist_ok=True)
-    cases = [c for c in exam["cases"] if not args.ids or c["id"] in args.ids]
+    cases = (
+        transport_preflight_cases()
+        if args.preflight
+        else [c for c in exam["cases"] if not args.ids or c["id"] in args.ids]
+    )
+    quality_cases = [] if args.preflight else exam["quality_cases"]
+    report["planned_turns"] = sum(
+        exam["critical_repeats"] if c["critical"] and not args.once else 1 for c in cases
+    )
     with httpx.Client(base_url=args.base.rstrip("/"), timeout=args.timeout) as client:
         client.get("/api/v1/session").raise_for_status()
+        if args.configure_stdin:
+            if args.mode != "live":
+                raise RuntimeError("Secret configuration requires explicit live mode")
+            configure_local_from_stdin(client, args.base)
         ready = client.get("/api/v1/ready")
         ready.raise_for_status()
         report["readiness"] = ready.json()
@@ -280,6 +529,7 @@ def evaluate(args):
             json.dumps(profile, sort_keys=True).encode("utf8")
         ).hexdigest()
         report["prompt_version"] = usage0.get("current_prompt_version")
+        report["quota_start"] = {k: profile.get(k) for k in ("quota_token_budget", "quota_tokens_spent")}
         fields = spec.get("components", {}).get("schemas", {}).get("AssistantTurn", {}).get("properties", {})
         model_first_supported = "execution_mode" in fields
         report["public_capabilities"] = {
@@ -287,7 +537,31 @@ def evaluate(args):
             "legacy_cache_hit_public": "cache_hit"
             in spec.get("components", {}).get("schemas", {}).get("AssistantReply", {}).get("properties", {}),
         }
-        if args.mode == "live" and (not model_first_supported or not profile.get("key_configured")):
+        reply_fields = (
+            spec.get("components", {}).get("schemas", {}).get("AssistantReply", {}).get("properties", {})
+        )
+        strict_provenance = all(
+            k in reply_fields
+            for k in (
+                "origin",
+                "execution_mode",
+                "model_call_count",
+                "model_attempts",
+                "selected_provider",
+                "selected_model_id",
+                "verifier_reject_count",
+                "cache_hit",
+            )
+        )
+        report["public_capabilities"]["strict_provenance"] = strict_provenance
+        if args.mode == "live" and (
+            not model_first_supported
+            or not strict_provenance
+            or not profile.get("key_configured")
+            or profile.get("provider") != "basisweb"
+            or not profile.get("included_quota_enabled")
+            or not 0 < profile.get("quota_token_budget", 0) <= 1_000_000
+        ):
             report["live_acceptance"] = {
                 "status": "BLOCKED",
                 "reason": "Public model_first capability or configured selected model missing; no paid/profile mutation attempted",
@@ -305,9 +579,7 @@ def evaluate(args):
             )
         )
         datasets = {}
-        for variant in sorted(
-            {c["kb_variant"] for c in cases} | {q["kb_variant"] for q in exam["quality_cases"]}
-        ):
+        for variant in sorted({c["kb_variant"] for c in cases} | {q["kb_variant"] for q in quality_cases}):
             response = client.post(
                 f"/api/v1/datasets/{source['dataset_id']}/working-copy",
                 json={"name": f"Independent exam {variant}"},
@@ -344,7 +616,11 @@ def evaluate(args):
                 "source_hashes": snapshot["source_hashes"],
             }
         report["datasets"] = datasets
+        previous_spent = profile.get("quota_tokens_spent", 0)
+        stopped = False
         for case in cases:
+            if stopped:
+                break
             scope = datasets[case["kb_variant"]]
             control = None
             if case["expected"]["action"] == "answer":
@@ -372,6 +648,23 @@ def evaluate(args):
                 }
             repeat_count = exam["critical_repeats"] if case["critical"] and not args.once else 1
             for repeat in range(repeat_count):
+                if args.mode == "live":
+                    now = client.get("/api/v1/assistant/ai-status").json()
+                    spent = now.get("quota_tokens_spent", 0)
+                    if spent < previous_spent or any(
+                        now.get(k) != profile.get(k)
+                        for k in ("provider", "model_id", "quota_token_budget", "included_quota_enabled")
+                    ):
+                        report["stop_reason"] = (
+                            "Runtime profile/quota counter changed or rolled back; root must reconcile cumulative account debit"
+                        )
+                        stopped = True
+                        break
+                    if spent >= now.get("quota_token_budget", 0):
+                        report["stop_reason"] = "Included quota exhausted; remaining questions not run"
+                        stopped = True
+                        break
+                    previous_spent = spent
                 payload = dict(
                     dataset_id=scope["dataset_id"],
                     kb_version=scope["kb_version"],
@@ -413,7 +706,20 @@ def evaluate(args):
                     f.write(json.dumps(result, ensure_ascii=False) + "\n")
                 if len(report["results"]) % 10 == 0:
                     print(f"{len(report['results'])} turns completed", flush=True)
-        for case in exam["quality_cases"]:
+                write_json(args.out / "report.partial.json", report)
+                if args.mode == "live" and response.status_code == 200:
+                    error_blob = json.dumps(response.json().get("model_attempts", [])) + str(
+                        response.json().get("ai_unavailable_reason", "")
+                    )
+                    if "quota" in error_blob.lower() and not result.get("provenance", {}).get(
+                        "selected_model_answer_confirmed"
+                    ):
+                        report["stop_reason"] = (
+                            "Quota policy blocked a model call; remaining questions not run"
+                        )
+                        stopped = True
+                        break
+        for case in quality_cases:
             scope = datasets[case["kb_variant"]]
             response = client.post(
                 "/api/v1/quality/check",
@@ -437,11 +743,17 @@ def evaluate(args):
         usage = client.get("/api/v1/assistant/usage").json()
         report["usage_after"] = usage
         report["provider_calls_during_exam"] = usage["calls"] - usage0["calls"]
+        final_profile = client.get("/api/v1/assistant/ai-status").json()
+        report["quota_end"] = {k: final_profile.get(k) for k in ("quota_token_budget", "quota_tokens_spent")}
+        report["weighted_quota_debit"] = final_profile.get("quota_tokens_spent", 0) - profile.get(
+            "quota_tokens_spent", 0
+        )
     results = report["results"]
     ok = sum(bool(r["ok"]) for r in results)
     first = [r for r in results if r["repeat"] == 0]
     report["summary"] = {
         "turns": len(results),
+        "not_run_turns": report["planned_turns"] - len(results),
         "distinct_cases": len(cases),
         "correct": ok,
         "accuracy": round(ok / len(results), 4) if results else None,
@@ -460,12 +772,10 @@ def evaluate(args):
     }
     if args.mode == "live":
         confirmed = [r for r in results if r.get("provenance", {}).get("selected_model_answer_confirmed")]
-        attempts = confirmed + [
-            r for r in results if r.get("provenance", {}).get("verifier_rejected_attempt")
-        ]
+        attempts = [r for r in results if r.get("provenance", {}).get("selected_model_attempt_confirmed")]
         report["live_acceptance"] = {
             "status": "MANUAL_REVIEW_REQUIRED"
-            if len(confirmed) == len(results)
+            if len(confirmed) == len(results) == report["planned_turns"]
             and len(cases) >= 60
             and ok / len(results) >= 0.95
             and report["summary"]["distinct_accuracy"] >= 0.95
@@ -478,6 +788,12 @@ def evaluate(args):
             "cache_fallback_deterministic_do_not_raise_model_score": True,
             "manual_review_required": True,
         }
+        if args.preflight:
+            report["live_acceptance"]["status"] = (
+                "TRANSPORT_OK_NOT_EXAM_ACCEPTANCE"
+                if len(confirmed) == len(results) == 5
+                else "PREFLIGHT_FAILED"
+            )
     write_json(args.out / "report.json", report)
     return report
 
@@ -491,6 +807,17 @@ def main():
     p.add_argument("--timeout", type=float, default=120)
     p.add_argument("--once", action="store_true")
     p.add_argument("--ids", nargs="*")
+    p.add_argument(
+        "--configure-stdin",
+        action="store_true",
+        help="Read RAM-only local settings JSON with api_key from stdin; never repeat between preflight and full run",
+    )
+    p.add_argument(
+        "--preflight",
+        action="store_true",
+        help="Five transport warmups, separate from the frozen independent questions",
+    )
+    p.add_argument("--candidate-code-commit")
     args = p.parse_args()
     report = evaluate(args)
     print(
@@ -500,7 +827,10 @@ def main():
             indent=2,
         )
     )
-    if args.mode == "live" and report["live_acceptance"]["status"] != "PASS":
+    if args.mode == "live" and report["live_acceptance"]["status"] not in {
+        "PASS",
+        "TRANSPORT_OK_NOT_EXAM_ACCEPTANCE",
+    }:
         raise SystemExit(2 if report["live_acceptance"]["status"] == "BLOCKED" else 1)
 
 
