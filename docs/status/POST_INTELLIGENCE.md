@@ -41,3 +41,7 @@ Worktree: `GlassFlow-post-intelligence`, branch `codex/post-intelligence`, base 
 - Affected provider/resilience/provenance subset after hardening: 32 passed. Ruff: all intelligence source/contracts/tests passed.
 - Final full suite is still running; no source changes are planned after this freeze. Only verification/status evidence may follow.
 - No actual provider requests, key access, paid mode enablement, buyer messages, oracle reads or final-material replacement occurred in this worktree.
+
+## N19 final applicability guard
+
+- A self-review reproduction found that legacy dialog quality can return a canonical bulk rate when the manager labels a 3-unit order as wholesale. N19 now checks the source quantity threshold independently: an unconfirmed/ineligible bulk threshold yields NEEDS_REVIEW without applicable price/text. An eligible threshold is rendered explicitly from KB. This isolated draft guard does not change the assistant engine, prompt, provider or independent model exam inputs.
