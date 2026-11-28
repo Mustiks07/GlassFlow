@@ -323,6 +323,12 @@ def match_products(kb: KnowledgeBase, text: str, *, kinds: set[str] | None = Non
             return MatchResult("exact", [best] + [c for c in candidates if c is not best][: limit - 1])
         return MatchResult("ambiguous", tied[:limit])
     best = candidates[0]
+    # A shorter catalogue name scores higher, but does not identify a SKU.
+    mentioned = {value for value in best.matched if not value.startswith("number:")}
+    indistinguishable = [candidate for candidate in candidates
+                         if {value for value in candidate.matched if not value.startswith("number:")} == mentioned]
+    if len(indistinguishable) > 1:
+        return MatchResult("ambiguous", indistinguishable[:limit])
     tied = [c for c in candidates if best.score - c.score < 0.5]
     if len(tied) == 1 and (best.score >= 0.5 or len(candidates) == 1 or best.score - candidates[1].score >= 1.0):
         return MatchResult("exact", [best] + candidates[1:limit])

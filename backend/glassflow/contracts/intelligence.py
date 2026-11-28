@@ -146,6 +146,9 @@ class QuoteDiff(DTO):
 
 
 class Quote(DatasetRequest):
+    origin: Literal["explicit_request", "assistant_deterministic", "assistant_model"] = "explicit_request"
+    origin_conversation_id: str | None = None
+    origin_turn_index: int | None = None
     quote_id: Identifier
     revision: int
     status: Literal["calculated", "needs_review", "ready", "confirmed", "superseded", "cancelled"]
