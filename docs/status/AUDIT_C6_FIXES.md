@@ -92,3 +92,54 @@ Live в3 отдельных профилях: luna503,GLM15s timeouts,terra503.0
 включая нормализатор; typecheck/build и Ruff PASS. Runtime замораживается для
 окончательной EXE/600s серии. 59c1777 CI Linux+Windows PASS; source после него
 менялся только в signed numeric grammar/контракте нормализации, проверяется заново.
+
+
+## Рабочая версия после независимого аудита — итог
+
+База main c6b4b02 сохранена; source commits50f54c9→59c1777→fd1b517→
+a0afb4b39cb185a3f13aed570b4b89c2b73e7dff. Автор Mustiks07, существующая git identity.
+Runtime digest7e981d206ea2fc63d72e44d68909ea7cd58e27f4f2beb349d421c11541a119cf.
+153 tracked Git source/dependency blobs и156 runtime/assets hashes совпали.
+
+Команды: uv sync --locked --all-groups; uv run pytest; uv run ruff check backend tests scripts;
+uv run python scripts/check_foundation.py; export_openapi.py; pnpm contracts:generate;
+pnpm typecheck/test/build; Playwright audit/real/integrated/post/portable/release configs;
+uv run pyinstaller --noconfirm packaging/GlassFlow.spec; smoke_frozen.py; scan_release.py;
+post_frozen_acceptance.py; audit_final_series.py (quick5/1 иextended600/7,seed42,minfree5);
+prepare_audit_examples.py; build_reports.py --only examples; pdftoppm(all6pages);
+audit_open_bundle.py; package_working_build.py. Все версии output сохранены отдельно.
+
+Полный локальный Python725PASS/4SKIP406.20с,25 Vitest/59 fixture отдельно PASS,
+22 настоящих EXE browser scenarios PASS. Native changed-input/partial/cancel/deadline/
+restart63.609с PASS; backup/restore и запуск именно конечной папки PASS.
+Runtime CI Linux+Windows PASS46148987983; окончательный main с документацией получает отдельный CI.
+
+Согласованная серия на тех же7original bytes:55.8080067→59.1256891%,165→201/298
+деталей,28→42/110 целых заказов,960645.25→1020157.25₸ оценки материала.
+Оба official validate.py invalid=missing0. Это59512₸ замещения на набор, не прибыль.
+Первый полный принятый комплект extended10.407с, улучшение принято617.5с.
+Первый observer attempt прерван логированиемkind; сохранён как failed, не результат сравнения.
+V2 не меняет заранее объявленных входов/конфигурации.
+
+Настоящий examples.pdf:6 просмотренных страниц,3cutting/3answers/3local reminders/3QA;
+выпущен отдельно от economics. Readiness реальногоZIP:source/CSV/examples ready,
+economics missing; изменённыйCSV mismatch; contest_acceptedfalse.
+Прежняя презентация6страниц со placeholders просмотрена/сохранена побайтно, не финальная.
+
+Конечная папка/ZIP Genezis/dist/GlassFlow-audit-a0afb4b;ZIP151700045bytes,
+SHA256 f49b085fa0fb75e00652a416203b0fe8e336a15a1932d2841b5cc015725f7d76.
+EXE4658ab7957f9d9846d08a56c887ca8bb613c6ec2520e46f778c5c16db4ac218b.
+Внутри7byte-exact учебных источников и протокол ноутбука/измерений. CRC/scanner PASS.
+
+Live preflight59c1777:0model/15fallback,8provider calls; luna503/GLMtimeouts/terra503.
+Conservative debit142212, прежние199311+5000reserve:346523<1млн первого цикла.
+Actual usage ошибок неизвестен. RAM-only key persistence проверен на3закрытых базах/файлах;paidfalse.
+Local149/149+QA10/10 на a0 — регрессия раскрытого набора, не новый независимый экзамен/неlive.
+
+Доставка рабочей версии: обычный fast-forward/push main без force. Полная конкурсная
+приёмка отдельно: стабильныйlive/tools; новый сотрудник на чистом эталонном ноутбуке;
+10реальных пар/стоимостьчаса/объём/расходы и финальныйeconomics; HTTPSgateway;
+согласованная презентация/видео/репетиция; официальныеclosedinputs/KEY/подача/гостевойдоступ.
+Ноутбуки сокомандников доступны; наблюдение не выполнено. Следующий шаг — эти внешние
+проверки по TEAMMATE_ACCEPTANCE_RU.md. Большой редизайн/ночные research upgrades не включены.
+Подробные SHA/команды/raw reports: docs/release/audit/README.md и FINAL_STATUS.json.

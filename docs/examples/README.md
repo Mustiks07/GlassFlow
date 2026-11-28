@@ -1,12 +1,12 @@
 # Проверяемые примеры
 
-Final `examples.pdf` **BLOCKED** до actual результатов C2/C3 и локальных задач.
+Отдельный настоящий [examples.pdf](../release/audit/final-series-a0afb4b-v2/reports/examples.pdf) выпущен из принятого EXE run на неизменённом открытом наборе:6 просмотренных страниц,3 примера каждой группы. Экономика ему не требуется (`--only examples`). Это не официальная закрытая сдача.
 Не используется исследовательский solution, таблица ответов по ID или выдуманные напоминания.
 
 Общий evidence JSON для `scripts/build_reports.py` содержит:
 
 - `manifest`: actual ready RunManifest, run_id/dataset_id/input_hash/source_hashes.
-- `economics`: поля из `docs/economics/README.md`.
+- `economics`: нужен только для выпуска economics.pdf/обоих документов; для `--only examples` отсутствует.
 - `examples.cutting`: минимум 3 фактические схемы: remnant_id, length_mm/width_mm,
   description, placements с part_id/x_mm/y_mm/rot/length_mm/width_mm. Геометрия не рассчитывается
   генератором: он только рисует проверенные координаты C2 и дает таблицу под схемой.

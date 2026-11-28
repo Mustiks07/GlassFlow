@@ -1,0 +1,436 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+      "C:\\Users\\User\\Documents\\ChatGPT\\GlassFlow-audit-fixes\\apps\\web\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "playwright.real.config.ts"
+    ],
+    "configFile": "C:\\Users\\User\\Documents\\ChatGPT\\GlassFlow-audit-fixes\\apps\\web\\playwright.real.config.ts",
+    "rootDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-audit-fixes/tests/e2e/real",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-audit-fixes/tests/e2e/.results/real",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "real-1366",
+        "name": "real-1366",
+        "testDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-audit-fixes/tests/e2e/real",
+        "testIgnore": [],
+        "testMatch": [
+          "product.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../../tests/e2e/.results/real-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "product.spec.ts",
+      "file": "product.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "real backend",
+          "file": "product.spec.ts",
+          "line": 42,
+          "column": 6,
+          "specs": [
+            {
+              "title": "T01: import preview shows exact counts, excludes KEY, creates an immutable snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "real-1366",
+                  "projectName": "real-1366",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2194,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-28T12:59:17.307Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2fa8ab87beca8e7f39ce-bf59938b69932a4310d5",
+              "file": "product.spec.ts",
+              "line": 43,
+              "column": 7
+            },
+            {
+              "title": "T02: re-importing the same bytes opens the existing snapshot instead of duplicating",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "real-1366",
+                  "projectName": "real-1366",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 774,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-28T12:59:19.671Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2fa8ab87beca8e7f39ce-001ede5b5c196e7c4d56",
+              "file": "product.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "working copy is created explicitly and selected",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "real-1366",
+                  "projectName": "real-1366",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1516,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-28T12:59:20.463Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2fa8ab87beca8e7f39ce-29753173a6b7b182e802",
+              "file": "product.spec.ts",
+              "line": 67,
+              "column": 7
+            },
+            {
+              "title": "T40/T42: 25 picks, grouped queue, open-label precision shown as open-set only",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "real-1366",
+                  "projectName": "real-1366",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 688,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-28T12:59:21.993Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2fa8ab87beca8e7f39ce-5a40ba40bbc3c03c2023",
+              "file": "product.spec.ts",
+              "line": 74,
+              "column": 7
+            },
+            {
+              "title": "T45: seven manager metrics with denominators and drill-down rows",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "real-1366",
+                  "projectName": "real-1366",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1013,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-28T12:59:22.694Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2fa8ab87beca8e7f39ce-eb8c9645ac2fa9d9e6e8",
+              "file": "product.spec.ts",
+              "line": 85,
+              "column": 7
+            },
+            {
+              "title": "T43: local reminder in the working copy; draft → scheduled; no outbound action",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "real-1366",
+                  "projectName": "real-1366",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1093,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-28T12:59:23.727Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2fa8ab87beca8e7f39ce-ea120214eb6a4efadb29",
+              "file": "product.spec.ts",
+              "line": 98,
+              "column": 7
+            },
+            {
+              "title": "T28: workplace quote 450×370 clear-6 with euro edge = 1 988,00",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "real-1366",
+                  "projectName": "real-1366",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1098,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-28T12:59:24.837Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2fa8ab87beca8e7f39ce-bdbff4b7e74c52d247fa",
+              "file": "product.spec.ts",
+              "line": 114,
+              "column": 7
+            },
+            {
+              "title": "cutting workspace lists real remnants with locations (R05)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "real-1366",
+                  "projectName": "real-1366",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 725,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-28T12:59:25.950Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2fa8ab87beca8e7f39ce-ed1895f5583d7eb35bc9",
+              "file": "product.spec.ts",
+              "line": 131,
+              "column": 7
+            },
+            {
+              "title": "settings: AI check reports the real state; backup is created with integrity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "real-1366",
+                  "projectName": "real-1366",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 744,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-28T12:59:26.688Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2fa8ab87beca8e7f39ce-a4856d782883b32c17aa",
+              "file": "product.spec.ts",
+              "line": 138,
+              "column": 7
+            },
+            {
+              "title": "route 4 (CRM module only): contest snapshot → run → export picks.csv of that run",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "real-1366",
+                  "projectName": "real-1366",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5070,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-28T12:59:27.446Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2fa8ab87beca8e7f39ce-53a18165ef07acf4835a",
+              "file": "product.spec.ts",
+              "line": 147,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-28T12:59:16.415Z",
+    "duration": 16226.928999999998,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

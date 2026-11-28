@@ -1,0 +1,75 @@
+{
+  "measured_at": "2026-11-28T13:43:24.861392+00:00",
+  "os": "Windows-10-10.0.19045-SP0",
+  "exe_sha256": "4658ab7957f9d9846d08a56c887ca8bb613c6ec2520e46f778c5c16db4ac218b",
+  "native_worker": {
+    "scipy_x": 2,
+    "ortools_x": 2,
+    "ortools_optimal": true,
+    "frozen_worker": true,
+    "worker_executable": "GlassFlow.exe",
+    "pid": 8896
+  },
+  "pe_subsystem": {
+    "main": 2,
+    "diagnostics": 3
+  },
+  "clean_windows": "not_run",
+  "ui_flow": "browser E2E recorded separately; this smoke drives actual EXE HTTP API",
+  "frozen_web_assets": {
+    "/assets/index-BOhnjsZg.css": "a1161996379022b2b522f94557f20d4b956c81ba52cd61526849b80b74478f2b",
+    "/assets/index-BRfBo2vt.js": "6181c2c1c0401dc1f7a5e35f179c934da6543c05f916086155dcb72bf102d342"
+  },
+  "build_commit": "a0afb4b39cb185a3f13aed570b4b89c2b73e7dff",
+  "runtime_source_digest": "7e981d206ea2fc63d72e44d68909ea7cd58e27f4f2beb349d421c11541a119cf",
+  "official_validator_cli": {
+    "fixture": "synthetic all-NEW; format only, not solver acceptance",
+    "exit_code": 0,
+    "stdout": "деталей всего: 298; из остатков: 0; ошибок: 0; не указано в решении: 0\nплощадь деталей: 187.87 м²; закрыто остатками: 0.00 м²; ДОЛЯ = 0.00 %\nне пришлось резать нового стекла на 0 тг\nRESULT coverage=0.000000 invalid=0 money=0\n",
+    "stderr": ""
+  },
+  "first_start_ms": 3062.999999965541,
+  "singleton": "passed",
+  "downloaded_picks_sha256": "b01cd1035793666d1c7d25db66e087d77c7b59a4c752606148bec311dcd02482",
+  "official_crm_open_evaluation": {
+    "exit_code": 0,
+    "stdout": "точность (доля вернувшихся среди 25 выбранных) 0.80; случайный выбор 0.43; эталон 0.80; ИТОГО за CRM-модуль 10.0 из 10\n",
+    "stderr": "",
+    "closed_accuracy": null
+  },
+  "import_counts": {
+    "materials": 8,
+    "stock": 200,
+    "orders": 298,
+    "kb": 1,
+    "applications": 700,
+    "questions": 18,
+    "dialogs": 8,
+    "distinct_orders": 110
+  },
+  "crm_rows": 25,
+  "upgrade_checks": {
+    "u01": "draft+canonical missing quote404+restart; actual domain check reported separately",
+    "u07": "synthetic scenario+native PDF+same hash+restart; human labor not_run",
+    "u04": "unknown total null+canonical unresolved lines+restart; actual domain check separately",
+    "u06": "migrated shared database+empty actual ledger before confirmation; actual domain check separately",
+    "pdf_sha256": "9c4349f3e01b57d283e13aa82cd250e413794ef9b62521033ab1e056a7028a41",
+    "result_hash": "991c40c2e0bfd2dfca824c641c08ffbb390b6df12e377e39fac23eff0fb100b1"
+  },
+  "actual_domain_checks": {
+    "dataset_id": "710ac594-4efa-49b0-ae87-e757068320ac",
+    "order_id": "aea6407a-eae7-4fed-9865-e35b68aacf3f",
+    "usage_id": "8a7162f2-761b-4ee4-b62d-c82c648a80f5",
+    "confirmed_actual_area_mm2": 166500,
+    "confirmed_actual_material_value_tg": "1332.00",
+    "solver_plan_id": "plan-5afec132b666",
+    "cancelled_job_id": "95309010-7d3a-42d8-9f86-7f4bb7e5bc3f",
+    "cancel_kept_valid_incumbent": true,
+    "status": "passed_actual_ports"
+  },
+  "restart_ms": 2594.000000040978,
+  "persistence": "passed",
+  "backup_restore": "passed",
+  "restore_restart_ms": 2468.999999924563,
+  "status": "passed_on_build_machine"
+}

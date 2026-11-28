@@ -1,0 +1,277 @@
+{
+  "status": "blocked_provider_preflight",
+  "reports": [
+    {
+      "report": "live-preflight-59c1777/report.json",
+      "summary": {
+        "turns": 5,
+        "not_run_turns": 0,
+        "distinct_cases": 5,
+        "correct": 5,
+        "accuracy": 1.0,
+        "distinct_correct": 5,
+        "distinct_accuracy": 1.0,
+        "quality_correct": 0,
+        "quality_total": 0,
+        "failures_by_family": {},
+        "origins": {
+          "fallback": 5
+        },
+        "latency_p50_ms": 31.59,
+        "latency_p95_ms": 1665.15,
+        "fabrication_count": 0,
+        "unnecessary_refusal_count": 0,
+        "incomplete_count": 0,
+        "unnecessary_question_count": 0
+      },
+      "live_acceptance": {
+        "status": "PREFLIGHT_FAILED",
+        "confirmed_model_answers": 0,
+        "model_attempts": 1,
+        "model_accuracy": 0.0,
+        "cache_fallback_deterministic_do_not_raise_model_score": true,
+        "manual_review_required": true
+      },
+      "quota_start": {
+        "quota_token_budget": 150000,
+        "quota_tokens_spent": 0
+      },
+      "quota_end": {
+        "quota_token_budget": 150000,
+        "quota_tokens_spent": 11772
+      },
+      "weighted_quota_debit": 11772,
+      "provider_calls": 1,
+      "errors": [
+        {
+          "case": "WARM01",
+          "attempts": [
+            {
+              "provider": "basisweb",
+              "model_id": "gpt-6-luna",
+              "status": "error",
+              "error_kind": "server"
+            }
+          ],
+          "reason": "BasisWeb 503: {'type': 'model_unavailable', 'code': 'MODEL_UNAVAILABLE', 'message': 'Эта модель сейчас недоступна у провайдера. Выберите другую модель.'}"
+        },
+        {
+          "case": "WARM02",
+          "attempts": [],
+          "reason": "Квота или доступность всех моделей профиля исчерпана; работает локальный режим."
+        },
+        {
+          "case": "WARM03",
+          "attempts": [],
+          "reason": "Квота или доступность всех моделей профиля исчерпана; работает локальный режим."
+        },
+        {
+          "case": "WARM04",
+          "attempts": [],
+          "reason": "Квота или доступность всех моделей профиля исчерпана; работает локальный режим."
+        },
+        {
+          "case": "WARM05",
+          "attempts": [],
+          "reason": "Квота или доступность всех моделей профиля исчерпана; работает локальный режим."
+        }
+      ]
+    },
+    {
+      "report": "live-preflight-59c1777-glm-5_3-flash/report.json",
+      "summary": {
+        "turns": 5,
+        "not_run_turns": 0,
+        "distinct_cases": 5,
+        "correct": 5,
+        "accuracy": 1.0,
+        "distinct_correct": 5,
+        "distinct_accuracy": 1.0,
+        "quality_correct": 0,
+        "quality_total": 0,
+        "failures_by_family": {},
+        "origins": {
+          "fallback": 5
+        },
+        "latency_p50_ms": 15028.83,
+        "latency_p95_ms": 15060.4,
+        "fabrication_count": 0,
+        "unnecessary_refusal_count": 0,
+        "incomplete_count": 0,
+        "unnecessary_question_count": 0
+      },
+      "live_acceptance": {
+        "status": "PREFLIGHT_FAILED",
+        "confirmed_model_answers": 0,
+        "model_attempts": 5,
+        "model_accuracy": 0.0,
+        "cache_fallback_deterministic_do_not_raise_model_score": true,
+        "manual_review_required": true
+      },
+      "quota_start": {
+        "quota_token_budget": 150000,
+        "quota_tokens_spent": 0
+      },
+      "quota_end": {
+        "quota_token_budget": 150000,
+        "quota_tokens_spent": 95124
+      },
+      "weighted_quota_debit": 95124,
+      "provider_calls": 6,
+      "errors": [
+        {
+          "case": "WARM01",
+          "attempts": [
+            {
+              "provider": "basisweb",
+              "model_id": "glm-5.3-flash",
+              "status": "error",
+              "error_kind": "timeout"
+            }
+          ],
+          "reason": "Истек общий срок ответа AI."
+        },
+        {
+          "case": "WARM02",
+          "attempts": [
+            {
+              "provider": "basisweb",
+              "model_id": "glm-5.3-flash",
+              "status": "ok",
+              "error_kind": null
+            }
+          ],
+          "reason": "Истек общий срок ответа AI."
+        },
+        {
+          "case": "WARM03",
+          "attempts": [
+            {
+              "provider": "basisweb",
+              "model_id": "glm-5.3-flash",
+              "status": "error",
+              "error_kind": "timeout"
+            }
+          ],
+          "reason": "Истек общий срок ответа AI."
+        },
+        {
+          "case": "WARM04",
+          "attempts": [
+            {
+              "provider": "basisweb",
+              "model_id": "glm-5.3-flash",
+              "status": "error",
+              "error_kind": "timeout"
+            }
+          ],
+          "reason": "Истек общий срок ответа AI."
+        },
+        {
+          "case": "WARM05",
+          "attempts": [
+            {
+              "provider": "basisweb",
+              "model_id": "glm-5.3-flash",
+              "status": "ok",
+              "error_kind": null
+            },
+            {
+              "provider": "basisweb",
+              "model_id": "glm-5.3-flash",
+              "status": "error",
+              "error_kind": "timeout"
+            }
+          ],
+          "reason": "Истек общий срок ответа AI."
+        }
+      ]
+    },
+    {
+      "report": "live-preflight-59c1777-gpt-6_1-terra/report.json",
+      "summary": {
+        "turns": 5,
+        "not_run_turns": 0,
+        "distinct_cases": 5,
+        "correct": 5,
+        "accuracy": 1.0,
+        "distinct_correct": 5,
+        "distinct_accuracy": 1.0,
+        "quality_correct": 0,
+        "quality_total": 0,
+        "failures_by_family": {},
+        "origins": {
+          "fallback": 5
+        },
+        "latency_p50_ms": 16.06,
+        "latency_p95_ms": 1320.83,
+        "fabrication_count": 0,
+        "unnecessary_refusal_count": 0,
+        "incomplete_count": 0,
+        "unnecessary_question_count": 0
+      },
+      "live_acceptance": {
+        "status": "PREFLIGHT_FAILED",
+        "confirmed_model_answers": 0,
+        "model_attempts": 1,
+        "model_accuracy": 0.0,
+        "cache_fallback_deterministic_do_not_raise_model_score": true,
+        "manual_review_required": true
+      },
+      "quota_start": {
+        "quota_token_budget": 300000,
+        "quota_tokens_spent": 0
+      },
+      "quota_end": {
+        "quota_token_budget": 300000,
+        "quota_tokens_spent": 35316
+      },
+      "weighted_quota_debit": 35316,
+      "provider_calls": 1,
+      "errors": [
+        {
+          "case": "WARM01",
+          "attempts": [
+            {
+              "provider": "basisweb",
+              "model_id": "gpt-6.1-terra",
+              "status": "error",
+              "error_kind": "server"
+            }
+          ],
+          "reason": "BasisWeb 503: {'type': 'model_unavailable', 'code': 'MODEL_UNAVAILABLE', 'message': 'Эта модель сейчас недоступна у провайдера. Выберите другую модель.'}"
+        },
+        {
+          "case": "WARM02",
+          "attempts": [],
+          "reason": "Квота или доступность всех моделей профиля исчерпана; работает локальный режим."
+        },
+        {
+          "case": "WARM03",
+          "attempts": [],
+          "reason": "Квота или доступность всех моделей профиля исчерпана; работает локальный режим."
+        },
+        {
+          "case": "WARM04",
+          "attempts": [],
+          "reason": "Квота или доступность всех моделей профиля исчерпана; работает локальный режим."
+        },
+        {
+          "case": "WARM05",
+          "attempts": [],
+          "reason": "Квота или доступность всех моделей профиля исчерпана; работает локальный режим."
+        }
+      ]
+    }
+  ],
+  "model_answers": 0,
+  "fallback_answers": 15,
+  "provider_calls": 8,
+  "conservative_quota_debit": 142212,
+  "previous_debit": 199311,
+  "previous_probe_reserve": 5000,
+  "actual_provider_token_usage": "unknown_for_errors",
+  "paid_enabled": false,
+  "credential_persistence": "three_closed_runtime_directories_scanned_no_key",
+  "full_live_exam": "not_run_after_failed_preflights"
+}

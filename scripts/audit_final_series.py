@@ -70,7 +70,7 @@ def run_profile(client, source, buyer, config, output, budget):
         if view['manifest'].get('accepted_export_id') and first_ready is None:
             first_ready = elapsed
         if elapsed - report_at >= 20:
-            print(config['profile'], round(elapsed, 1), 'seconds', [(j['kind'], j['state']) for j in view['jobs']], flush=True)
+            print(config['profile'], round(elapsed, 1), 'seconds', [(j.get('stage', ''), j.get('state', '')) for j in view['jobs']], flush=True)
             report_at = elapsed
         if view['status'] != 'running':
             break

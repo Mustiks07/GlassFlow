@@ -1,0 +1,14 @@
+{
+  "status": "reviewed_actual_open_pack_examples",
+  "visual_review": "passed",
+  "evidence_sha256": "87d54bd3fbbe91d308b3b8a54ac567bf2ab56c26d50e7d00e2e08945018bc9f0",
+  "examples": {
+    "run_id": "12f81fed-0abb-4f98-ad71-b60b4561daa5",
+    "pages": 6
+  },
+  "files": {
+    "examples.pdf": "8d6ae7e47bff4cc570418d1d48d8683bd3e4d822b65a4c46a2101793f84bea70"
+  },
+  "document_metadata": "Title/Author/Subject set before rendering; page content unchanged",
+  "visual_review_by": "Codex agent: all six rendered pages checked; human labor not supplied"
+}

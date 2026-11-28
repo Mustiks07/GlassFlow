@@ -1,0 +1,223 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+      "C:\\Users\\User\\Documents\\ChatGPT\\GlassFlow-audit-fixes\\apps\\web\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "playwright.post.config.ts"
+    ],
+    "configFile": "C:\\Users\\User\\Documents\\ChatGPT\\GlassFlow-audit-fixes\\apps\\web\\playwright.post.config.ts",
+    "rootDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-audit-fixes/tests/e2e/real",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-audit-fixes/tests/e2e/.results/post",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "real-1366",
+        "name": "real-1366",
+        "testDir": "C:/Users/User/Documents/ChatGPT/GlassFlow-audit-fixes/tests/e2e/real",
+        "testIgnore": [],
+        "testMatch": [
+          "post-integration.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../../tests/e2e/.results/post-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "post-integration.spec.ts",
+      "file": "post-integration.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "real comparable groups and backend-calculated Russian question",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "real-1366",
+              "projectName": "real-1366",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2327,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T13:24:09.401Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d0938216482438996fb9-aac266d110a06d5b81f0",
+          "file": "post-integration.spec.ts",
+          "line": 17,
+          "column": 5
+        },
+        {
+          "title": "old printed label opens current record without authorizing mutation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "real-1366",
+              "projectName": "real-1366",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1444,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T13:24:11.872Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d0938216482438996fb9-c8ed43201382f5d1f342",
+          "file": "post-integration.spec.ts",
+          "line": 30,
+          "column": 5
+        },
+        {
+          "title": "labor timer records browser operation but does not fabricate human attestation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "real-1366",
+              "projectName": "real-1366",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1653,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T13:24:13.336Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d0938216482438996fb9-0ac1622abdd0d06a4efc",
+          "file": "post-integration.spec.ts",
+          "line": 51,
+          "column": 5
+        },
+        {
+          "title": "actual correction draft is visible without changing original dialogue",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "real-1366",
+              "projectName": "real-1366",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1174,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-28T13:24:15.001Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d0938216482438996fb9-b8ea7bc9085166596b50",
+          "file": "post-integration.spec.ts",
+          "line": 75,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-28T13:24:08.712Z",
+    "duration": 7554.543999999999,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

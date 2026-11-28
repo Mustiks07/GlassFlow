@@ -1,0 +1,14 @@
+{
+  "path": "docs/presentation/GlassFlow_pitch.pdf",
+  "pages": 6,
+  "sha256": "5bea15570970dee0a58345ec5ccaf20a50aed38935bd9593bc1a664d99348ebd",
+  "unchanged_from_audit_base": true,
+  "final_run_placeholder": true,
+  "status": "preserved_draft_not_final_acceptance",
+  "visual_review": "all_six_pages_reviewed_as_outdated_draft",
+  "limitations": [
+    "Final-run placeholders remain",
+    "Screenshots and integration status are from an older build",
+    "Not included in the new portable application bundle"
+  ]
+}

@@ -1,0 +1,905 @@
+{
+  "run_id": "12f81fed-0abb-4f98-ad71-b60b4561daa5",
+  "dataset_id": "2dd8e6d3-c753-44db-b797-59cae9849c40",
+  "source_dataset_id": "10a4655c-019d-4338-8a2e-2eaa3264ae56",
+  "source_hashes": {
+    "materials": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
+    "stock": "4e24ce0a917e506c803bcc1378da5504becaa5f733f05b1900ca2f8f0b8db547",
+    "orders": "9ac222565c2eb05e28137b312f412f3a05544dde0ffa051a694d00338bbcbb00",
+    "kb": "f464c67fb8633008b06c3496a39d19c52909d4ce1f2073226f6bc7fe5aa362b0",
+    "questions": "e6742f9978b8eea28a034e887c63308051f3e32975b945b3dc412a3048c00498",
+    "dialogs": "c3b2209a6370ed7b19d527ad448b713d5e42385c8b0574119dff311b073146f3",
+    "applications": "7df1c35f78f2d83dabb0ff6fa6d564f4ba0553b13e4348da2179c8f037bf4363"
+  },
+  "input_hash": "8750aa8916d9c4700434e67f5513c939426af6c94bf6fbe96d6772e71773812a",
+  "schema_version": "0007_intelligence_reviews",
+  "build": "0.1.0",
+  "build_info": {
+    "commit": "a0afb4b39cb185a3f13aed570b4b89c2b73e7dff",
+    "source_digest": "7e981d206ea2fc63d72e44d68909ea7cd58e27f4f2beb349d421c11541a119cf",
+    "files": {
+      "apps/web/dist/assets/index-BOhnjsZg.css": "a1161996379022b2b522f94557f20d4b956c81ba52cd61526849b80b74478f2b",
+      "apps/web/dist/assets/index-BRfBo2vt.js": "6181c2c1c0401dc1f7a5e35f179c934da6543c05f916086155dcb72bf102d342",
+      "apps/web/dist/index.html": "35af7429abced29b5dfaed85ce0c1de201ac1aaf24410e3784b7eeef7c36ccac",
+      "backend/glassflow/__init__.py": "c0fffb27ca2ecdb4464dff8885099bde49cfd1780e5b8b02eef3a4fa1f38ed42",
+      "backend/glassflow/contracts/__init__.py": "dfaff31941958f28473bed459ecbd7d2838d8346d15b2021d320723afb98e065",
+      "backend/glassflow/contracts/baskets.py": "2449c8929057dbd6c68edf4da7050a3609701d3f88afb7d571ca1d9f50db47d9",
+      "backend/glassflow/contracts/common.py": "ace6cc5c31e55f57124f1b58ff9d909ebb7746c3b88d6bc8f4df452baafcfa3c",
+      "backend/glassflow/contracts/crm.py": "9568135b3f99fc7ff16cd5992fb8e9bc3777cf880129846ce96dac2d84682b4d",
+      "backend/glassflow/contracts/cutting.py": "ecfc2b83ad614a7e2bb356aacc6307f784dbea84602213c9c4e171b3ef6a0420",
+      "backend/glassflow/contracts/economics.py": "9064549d89d85f49a78e80c5aa47517571ce2e5aeabdb4f9c038f6d97e26e75d",
+      "backend/glassflow/contracts/insights.py": "10dc66c1dc900b2272b39e58f9795b5c470c667c5c83f52063ac320acc555e46",
+      "backend/glassflow/contracts/intelligence.py": "76a29ac34249b168ef5bc726ec6635656d907755bc7ff9bd8a14fb0eee5ddc1f",
+      "backend/glassflow/contracts/labor.py": "becac49b39eeab81e62a4b93a0868d9969fcd393d9e721f282bd13b68a252c2e",
+      "backend/glassflow/contracts/material_use.py": "1d65305a4be987297d643a757525113707471da966bd593a2c9758c1366143c8",
+      "backend/glassflow/contracts/orders.py": "8d76b13ee63f5fa43e5fc3c0255d5665d3a26b23e486c33c36b4be5225023f66",
+      "backend/glassflow/contracts/platform.py": "a076a9ad1caf92ec0c43d34fca9388249201b4600bb23a6ad22a75fa6b8e1b90",
+      "backend/glassflow/contracts/readiness.py": "428da615662aefbda3595622506cb89f58dddda9150154bdf807a1fa865ce424",
+      "backend/glassflow/contracts/release.py": "d6732dea510ee6f9c85233380beb1682da77eda834e7d4adf2ba3e118cb9420d",
+      "backend/glassflow/core/__init__.py": "a052551e950d909e12522daacdf2ef2be8776887002999b20f07eb7d20342963",
+      "backend/glassflow/core/composition.py": "e296033b14204233f093a1123956e062a4ef1cc0b2758addde62d68cd4874c7f",
+      "backend/glassflow/core/crm_port.py": "ace2e1f960b1f0c499985ed342cbc94b8ae9df4fccc052d55dfa4702b97a8527",
+      "backend/glassflow/core/db.py": "c19bf99a53d37331e6757e401404430b318fe4a2d6be666aae91957c4eb181e4",
+      "backend/glassflow/core/domain_jobs.py": "d6e508cde323313c739e2829967a68ea3fea5978691a352b26bf235adb36df95",
+      "backend/glassflow/core/domain_runtime.py": "e49de9a4d963b7cbe7de4c392b98daf0fc767beefc6a619fe70cd224bd6c19d1",
+      "backend/glassflow/core/domain_sources.py": "30c3de42c6d43b7d2ac0fa3a629f077b2a97075e68048d4644d6620ec13893bc",
+      "backend/glassflow/core/errors.py": "01cdfe72e6d1b6d1232d82babfebc0ebf473c94e6d7a6d8d8df6b25ef87d4cd1",
+      "backend/glassflow/core/jobs.py": "8f8165a295642c0bead4e85ce1063b1e9798ac4ca5e982d4beab04f0ad12491f",
+      "backend/glassflow/core/memory.py": "7bef892633c26cc5a47ca9c7a4028cbee6859a53a51ee8fdb61c5a86a3354fc4",
+      "backend/glassflow/core/migrations/env.py": "2de8979429ec30bbbf9fcb34584fbd39149fc929774b5c3e53f94a86bdee91df",
+      "backend/glassflow/core/migrations/versions/0001_platform.py": "c9e99e574ba389d4049fd9fae7fa2eb9ba2d88928f9024d5b978dc9a09734c58",
+      "backend/glassflow/core/migrations/versions/0002_immutable_history.py": "eb770beed89b8b12751ffb7867e21b4f820d45906cdf9c6c259b88a75e34e639",
+      "backend/glassflow/core/migrations/versions/0003_material_use.py": "a6ef7f551b89721d49f17cdbbe9511adeab577bd9f2e2abd7dc90e69eaa3d6cd",
+      "backend/glassflow/core/migrations/versions/0004_domains.py": "4ca469a00c96c513ca819532b7b40311716701933ae239ede08ac235c21e1da0",
+      "backend/glassflow/core/migrations/versions/0005_execution_history.py": "dfcf48ad94626edbc505f100c22e79384ed818dda445a55923b7f285bf28f151",
+      "backend/glassflow/core/migrations/versions/0006_operational_documents.py": "e291a8cc0e227a029e543b0148cb17b6139712e6bfac8560288a3b38e7dfc537",
+      "backend/glassflow/core/migrations/versions/0007_intelligence_reviews.py": "5e84d0f06e75c303ba96bb85f97b4fd358342762891d27eb745aec06a881703d",
+      "backend/glassflow/core/models.py": "eee8e9d6f94248aecb7f21c3fef60c2109ce63c08c1cf5ed7832403792a247ff",
+      "backend/glassflow/core/registry.py": "8bbbe1062a13f1104d69bce6ba951e67126ad6e3d01895a03e9150da8ae9ff88",
+      "backend/glassflow/core/resources.py": "53062c58190cddda1ce03ef1f37208ef406e009b46b7ee225bd15d3f8b13d924",
+      "backend/glassflow/core/security.py": "c282d9973380656bb453ca23d1cc6cfa9c39cbba04a12c270dd6006d22a2f7ce",
+      "backend/glassflow/core/snapshots.py": "896cbdc7b2d6fcc5ae7e67d2c53681fa75b0abf10aa4f4ef1bf6e98a2525a2fb",
+      "backend/glassflow/core/sources.py": "58828a910998c0b7889e8717053d02443bbb20b24bd367e6bbd4f0e2d67d351b",
+      "backend/glassflow/core/submission.py": "45b657ee105c55c80e28ae9f5c1248d2c621754aa164b6c2195b607731ae23d4",
+      "backend/glassflow/core/uow.py": "3bd52c8cc2d43cb0ead7d5eb083233b07e128462405ecb9a5072657d21a1990f",
+      "backend/glassflow/launcher.py": "52230374be2c3eca0f930583393e326de9845e319d09616411d509dfd2ff33c7",
+      "backend/glassflow/main.py": "26065b484fcc9e30cc10fe771e85ea887edb5201220abaf0dca9ba8275634314",
+      "backend/glassflow/modules/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/crm/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/crm/competition.py": "6e408996219033111cedf8dab84ad8cf48dd1c48e76fb531b4aabd613aa83f42",
+      "backend/glassflow/modules/crm/evaluation.py": "340e9801c8dc8b851bdcdcaf51f2aba17cc11b4a95102a38fbbb3e099d7a4b89",
+      "backend/glassflow/modules/crm/router.py": "b5c872cc89f71b2a75bd3ba5a212a5a83419fb7ba99ae8f7637b5104abdbf43c",
+      "backend/glassflow/modules/crm/service.py": "2e802004e46693f08c33fc00f3a1cd917a5a9e33bdce2d1594df584c68ce8a07",
+      "backend/glassflow/modules/cutting/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/cutting/cli.py": "3f4ca87a6abe102468e3187c92a2ed4bbd83816062d5a6304c1777b20fc0ef6a",
+      "backend/glassflow/modules/cutting/conversion.py": "47c4cdb39cf22e025931e68504a108ba3bdae3ffd3a40e26b14a26cbeeba5b07",
+      "backend/glassflow/modules/cutting/domain.py": "259216c4837f69f35dcd26f9dfd8145db867b33ad13e05c82adb2b2418750702",
+      "backend/glassflow/modules/cutting/eligibility.py": "36466d2bbe92cafa3ada3ad6e6a2d81666f65933e5a4ec391a3d90f798d4e3fd",
+      "backend/glassflow/modules/cutting/engine.py": "030ba4fe551112240924870f59b0ce72fa177cf2ea372bd032b1f02974c22959",
+      "backend/glassflow/modules/cutting/geometry.py": "bc0d26bb93d18b9f80bd4819903b28a27ab2769d6d9e56ddffcdccb7eaf3865f",
+      "backend/glassflow/modules/cutting/insights.py": "4cf8af79a90086ecf766f59294a53a26f55f137ff83aabae32597eb5eca2ef66",
+      "backend/glassflow/modules/cutting/metrics.py": "d3a9e6e326778bb3f053808f9f867b6cbec94eed51e1a59065a3b781fe3500fb",
+      "backend/glassflow/modules/cutting/migrations/__init__.py": "1a9a1dbb23cda2bafa7f52ed00cdece2d151914f206421277f1b10a49c0d9122",
+      "backend/glassflow/modules/cutting/models.py": "ea22a29247c74f840813c162840ee8aa63f4c0168290f0e521fd5743a049db51",
+      "backend/glassflow/modules/cutting/packing.py": "c470527f4321ae412b334b24d29097d48955f461cf43390a5c2eeee1361acc8c",
+      "backend/glassflow/modules/cutting/router.py": "605f729e8db3e3d58adf3d47c292ebe13a56f92019b32883404d8b6da16a39b7",
+      "backend/glassflow/modules/cutting/sale_readiness.py": "76f0f8d6acf30db66dc9ee4b9151891d61baf8c6ae68b9128972c593f2decf4b",
+      "backend/glassflow/modules/cutting/scarcity.py": "63bbb9f5dea675f2204501db08e932a0e470eae740cfe62d35c70709845cc2b4",
+      "backend/glassflow/modules/cutting/service.py": "89350e5c90ea1a6aad6068a33ca64a7d2e8c36f75ce5162a0c38eccf63fec66e",
+      "backend/glassflow/modules/cutting/solver.py": "166dd01261e8c941124435c4efddf2c3fcd45d334775ffcc139566ac12d21a75",
+      "backend/glassflow/modules/cutting/source_io.py": "437a416c27dab2633cbbe18698210c68f7b2811909846ae54d69a30c40dc7dd8",
+      "backend/glassflow/modules/cutting/uow.py": "d2ee269de40b8cb91c515ac2dfbe49f53edce06d3f4336a116d09fd0b9e76ef2",
+      "backend/glassflow/modules/cutting/workflow_router.py": "e183211cb61d81d362d3ffb60cca172d247745e1352cecb2944e007b402bed9f",
+      "backend/glassflow/modules/cutting/workflows.py": "88959f2775597260a5d790a3ec8eb27519fe8b931997727d151d9fcb7f7d12e6",
+      "backend/glassflow/modules/insights/__init__.py": "f18e51b0bb06cf71423474031039235d6534ca1339a87b7fb1d8b3eaad719df1",
+      "backend/glassflow/modules/insights/comparable.py": "eecd93fce72489484f4bc3fa6293d838ee38a6b8e1bfc362afa5525302bf77b9",
+      "backend/glassflow/modules/insights/documents.py": "0fb8768e76268dbf82e5094130754fa2525e89445a6f68b3b5e2ff151b3425ce",
+      "backend/glassflow/modules/insights/passports.py": "ac33443bc1ca301c6929ec3ce214302fab09ca2f44768f8b02ac9d58a4741a47",
+      "backend/glassflow/modules/insights/router.py": "b9c4b95f6e59b29bd3a7eee0cf8a99f531e646bf8053dac008d1d2de3c6108a0",
+      "backend/glassflow/modules/intelligence/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/intelligence/assistant/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/intelligence/assistant/engine.py": "6d7f73a5c94727d418459f8b8a5bbc3a3f213f07444e4165a2f5ee47f890c316",
+      "backend/glassflow/modules/intelligence/assistant/facts.py": "beda8399f7e76a07bd3acdb837c8a4771a502e7f10071988e9af19c6b2a4cb2a",
+      "backend/glassflow/modules/intelligence/assistant/llm.py": "0bc18445c2378f88a4f0fd22bfee97914b927c3034ebe6cbdbff9fb326375c35",
+      "backend/glassflow/modules/intelligence/assistant/local.py": "f08ad3abff2cbb803b508cf70c2c4a22845abcc7ca2b89583c5e30a4bc5a186f",
+      "backend/glassflow/modules/intelligence/assistant/prompts.py": "ef6fb5b8aad576a1754c1da1dc456761d761db7a3df6b335136bde9728bfb9a3",
+      "backend/glassflow/modules/intelligence/assistant/tools.py": "e766674c1b2faa059eb4b427cbf32be026ecc062ea10656a7ed12ef8eb0ace01",
+      "backend/glassflow/modules/intelligence/assistant/verifier.py": "bbfca36da74a7b0c4273ec16c3006c98027b4619c812c1342a84833261477a64",
+      "backend/glassflow/modules/intelligence/baskets.py": "22a688c6d41239961273af9c3d3a9357290d6ec6c29d5d40588d368bfa3f2f00",
+      "backend/glassflow/modules/intelligence/catalog/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/intelligence/catalog/kb.py": "0be3db970c73158ace93dceec70e7555eeb382dca56c8ff50236cdfc09f7ed38",
+      "backend/glassflow/modules/intelligence/catalog/mapping.py": "0c6936c44a4cae8021d84106f13d6fc5cbb3a3a20b8cc5057c25fa3b8837d565",
+      "backend/glassflow/modules/intelligence/catalog/matching.py": "da7a700497eb0664daf3e65d72a2d719b2d963ab6723f5483be45c3e24b2c482",
+      "backend/glassflow/modules/intelligence/catalog/materials.py": "ca1e389465dab1e1549966574181e9a0a1d2bb85d7e38facc7ff13c347fa177c",
+      "backend/glassflow/modules/intelligence/catalog/text.py": "73f4e62e07aa2c6672ba52f96b422262e4b510f29dc8f457f30c524b79c21698",
+      "backend/glassflow/modules/intelligence/clarifications.py": "1e2bfa3c6020e833a02ce81c67cd0479a6ec9918765f7fc102d5c09832a41d15",
+      "backend/glassflow/modules/intelligence/evaluation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/intelligence/evaluation/__main__.py": "865f69cbb00603bd9e54488517c128898cc02bcb48ca94522bb7000103cd5eb3",
+      "backend/glassflow/modules/intelligence/evaluation/live.py": "8f31b09e56754124e89f156f7555d6bdee1d1613023e372f108f972ac32cc0bd",
+      "backend/glassflow/modules/intelligence/evaluation/post_clarification.py": "2ef1fe8c126b9a6789a733484e0bcd4277d3717c45bb6d05a9b9d1aa59f55175",
+      "backend/glassflow/modules/intelligence/evaluation/runner.py": "7988f64eef05a004369e5d420730b4c17bc763c47acd16a220ecdc006cc7a22c",
+      "backend/glassflow/modules/intelligence/migrations/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/intelligence/migrations/intelligence_0001.py": "05557985db4abb912d1f5bed119c57cb3b8d6c5a9b26c41699b18ab6a0efec57",
+      "backend/glassflow/modules/intelligence/migrations/intelligence_reviews_0007.py": "94a03a1ba13c8f80e0167d02d6cf7a3916ecbead8bf1493446f8d1cf29955e3c",
+      "backend/glassflow/modules/intelligence/models.py": "665a64631ec5d548664114e357b45c2a593728d7b5408a529e3a00a4368e6223",
+      "backend/glassflow/modules/intelligence/nlu/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/intelligence/nlu/extract.py": "8ee697a69dac67ed89d56dad4010cc742136f129e6f3c4c82e694fd396524eb6",
+      "backend/glassflow/modules/intelligence/ports_consumed.py": "d8606e353ed0f4455e91eb72881f9926341b8b4dc49d41a7a406bcce0db8df85",
+      "backend/glassflow/modules/intelligence/pricing.py": "aec7ddbe85cec2f87dc013f9516f1df6a6003fdc4dfd0a1a7c2370bbc584459b",
+      "backend/glassflow/modules/intelligence/providers/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/intelligence/providers/base.py": "0cde438913caf5c491fc415256fe4e8e98cb2227b0557a8587e5272409d2f45c",
+      "backend/glassflow/modules/intelligence/providers/basisweb.py": "233965e18e9768865e57b59fe01a25b1128e15f3c8774460681c4b6792309f16",
+      "backend/glassflow/modules/intelligence/providers/gateway_client.py": "5bf52a270b0de0e8b33a58e43aec2a9205cd1f3c386c1b0e18de026958a3a47a",
+      "backend/glassflow/modules/intelligence/providers/gemini.py": "aa1f3ce71045c6aefa8b30979c57537003687c02eed2813ef0e00bbd51e81564",
+      "backend/glassflow/modules/intelligence/providers/openrouter.py": "f9c599e82e0e3736f322e3af9352e7ac57dc8ddc6415e3e2c22cf1612f0ad56b",
+      "backend/glassflow/modules/intelligence/providers/policy.py": "80c0c063bc00a55b4424acd31b3f92480b26c1c863e3247548b1504d544edd30",
+      "backend/glassflow/modules/intelligence/providers/settings.py": "b915b0dd710d5fa1e21651f383927601429abc4a20c072ecc81b0958cda755a6",
+      "backend/glassflow/modules/intelligence/quality/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/intelligence/quality/dialogs.py": "7dce5e80fb5ca33e814911d357795e3c9d4b34877dd15123deb39910322ca697",
+      "backend/glassflow/modules/intelligence/reviews.py": "abba50ff568db610946629f5ee7a858a6cc4c0fca216056418133ff4002f651d",
+      "backend/glassflow/modules/intelligence/router.py": "46018050f2f9e47b0ced572ddb828c9460c733fa386a0e0948e53fe2906fd7ed",
+      "backend/glassflow/modules/intelligence/service.py": "7e0860724d12468acce055a18f63754c8583cc55914ab4dcaef62f16e9aab181",
+      "backend/glassflow/modules/intelligence/sources.py": "3a68d5dab02edf9858e8a847c3ab7f046d4c5215ff73dc342b29a49011d8c333",
+      "backend/glassflow/modules/intelligence/valuation.py": "6afab5ffb4463326166e3342316eaad62d9c79ef4c0123bd4d0a43797c12d41b",
+      "backend/glassflow/modules/platform/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/platform/basket_router.py": "3413912631e135eebf3b89db73a4e70525b46ce062bb2d8e134491a7015c966a",
+      "backend/glassflow/modules/platform/baskets.py": "ba62538668356501502f60928c9648b14cd4226909d6484d935e32f9500fa2ce",
+      "backend/glassflow/modules/platform/budgets.py": "d0a600478d0a33df86a0facfd050a70b6c851e17bdd3d1e86c98610005705085",
+      "backend/glassflow/modules/platform/checkpoints.py": "0acb026c32b7582e48af44b66178ca7e1ae9cec0e5896ea898cb89bf315cf8ee",
+      "backend/glassflow/modules/platform/economics.py": "2f3d16b70ea01e0a3bf4b7c406cfdb898200ef254a5f9c1201f8131bd4747e87",
+      "backend/glassflow/modules/platform/economics_router.py": "06cf4c6089d36825948e1654b5cee8308bf74790aa91fede7dc6edf0d93b70c5",
+      "backend/glassflow/modules/platform/economics_service.py": "d16bc15fc67838043bc0c967caf5e617404a8d83f9228d429f70ffcb60667a1c",
+      "backend/glassflow/modules/platform/economics_wizard.py": "7f1906de0ac015083037ecf9d66a88990f62a58ec729c8f90b84d5639dec58ea",
+      "backend/glassflow/modules/platform/exports.py": "950b5bb42b5c9cfdf22b592595ee7a0e19b510d71cdb9af27ae342841f44be41",
+      "backend/glassflow/modules/platform/imports.py": "fc801cd39c644957a405780e9abb3ac8fca220948b7d058ab1bc66b162eb2cec",
+      "backend/glassflow/modules/platform/kb.py": "5cba4257ff32db654fa0259bf2aa1673fa8f98b66d2221f72f23fa8b02274c5a",
+      "backend/glassflow/modules/platform/labor.py": "24952682035b5c688fa6a2403b3c7544f2c716d0b55f422452dd5857beffcfdc",
+      "backend/glassflow/modules/platform/labor_router.py": "988461adfd253b4425a5486e3f9bf0e259818b1b0dfd99fb924cd3beaff97525",
+      "backend/glassflow/modules/platform/material_use.py": "a98dfb30fe3cdeefe171aca5634a15b1acdadf68a43ed0fc93951e29211deb1e",
+      "backend/glassflow/modules/platform/material_use_router.py": "b60248f6d25637c867165378a76b30a45fc386b7996c435c0a4e0c3bf7045148",
+      "backend/glassflow/modules/platform/order_router.py": "4279147ecb0fc82f131121a4b6f03cce76264c5483f4f1e8c3a58ae08e9d4306",
+      "backend/glassflow/modules/platform/orders.py": "51be65e568f807992068deeded6cada3bb57e62f338f6fbe524aa06213eebdfa",
+      "backend/glassflow/modules/platform/release_check.py": "3a8494d69225ff3ab4b665aa7ab622882387f7cefd8f1493bd5175825af333e7",
+      "backend/glassflow/modules/platform/reports.py": "8470490fb1064a3628be9990210a9590c4ac93726e154855c8f46fcb88d9e5d5",
+      "backend/glassflow/modules/platform/router.py": "c599e556bf767014fcaea29a369f5be987870173855c2ba5c1889e62fc3a5104",
+      "backend/glassflow/modules/platform/runs.py": "92538e6e81445fd8c1c1b1bb6fb7f4803a05174c9822ff9cf7f999093d18ce8f",
+      "backend/glassflow/modules/platform/system.py": "7fcdbc12a6e3fc838edbd03cb581615d1bfdebc78f165196085f4f0296122f45",
+      "backend/glassflow/modules/platform/workflow.py": "31be1066a51d36b03ad910c7ba61c0fb7cdefa08a26ded93461efac5528748fa",
+      "backend/glassflow/modules/sales/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/glassflow/modules/sales/matching.py": "7efbaa473ea161fa3b7ca6507f2bb43d6bd0c11202d8b397904f9c6e407b2e97",
+      "backend/glassflow/modules/sales/readiness_router.py": "ae9324a8df4f68c1dd1654bb6bd0e94d0292f5619964fa662841937dece7c992",
+      "backend/glassflow/modules/sales/router.py": "3b97b124a1f5916f634e259660e759b5dd8c3658b18c38223a41892d9ab957a0",
+      "backend/glassflow/modules/sales/service.py": "e4f5b66086c76b201cf706f4c4f882481906dc27c1d775fdcfe7182867b9cc66",
+      "backend/glassflow/ports.py": "1708e4ee7f64f89d1d622a7c3d7f8def9c3961d6d01f00cb526ccc41246bc779",
+      "uv.lock": "de6304865f47120207f4fe5c6ef8152b72a9d3acadc958ced03c8ab1c751c151",
+      "pnpm-lock.yaml": "fee015cda13be2072a49615527ab6012932bd1be6415ac9c5e927c22b538afe7",
+      "pyproject.toml": "b92aee9354f81279896f1e31023ef23981cbc75f751bb3f06f0b30528d6f1e30"
+    },
+    "frozen": true
+  },
+  "config_version": "audit-c6-original-open-v1",
+  "python": "3.12.11",
+  "libraries": {
+    "sqlalchemy": "2.1.9",
+    "pydantic": "2.14.4",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1",
+    "ortools": "9.15.6755"
+  },
+  "crm_policy": "reference-v1",
+  "created_at": "2026-11-28T13:26:45.933176+00:00",
+  "modules": [
+    "cutting",
+    "assistant",
+    "crm",
+    "quality",
+    "cards"
+  ],
+  "solver": {
+    "profile": "extended",
+    "seed": 42,
+    "time_limit_seconds": 600,
+    "workers": 7,
+    "minimum_free_remnants": 5,
+    "fixed_work": false,
+    "max_pool_patterns": 80000
+  },
+  "provider": "local_limited",
+  "ai_settings": {
+    "version": 0,
+    "profile": "local_limited",
+    "provider": "gemini",
+    "included_quota_enabled": false,
+    "quota_token_budget": 1000000,
+    "model_id": "",
+    "mode": "free_only",
+    "paid_enabled": false,
+    "monthly_budget_tg": "0",
+    "rpm": 1,
+    "tpm": 1000,
+    "rpd": 100,
+    "max_parallel": 1,
+    "timeout_seconds": 30,
+    "max_retries": 2,
+    "max_tool_iterations": 6,
+    "max_output_tokens": 2048,
+    "fallback_models": [],
+    "gateway_url": null
+  },
+  "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+  "files": {
+    "solution.csv": "ade9dfac5f3570add5b7a746f26ca60dba4b8102d6ffea3a5b1ad54a4a8bff24",
+    "answers.csv": "ffc0783e7c6453bcd17b9da29267d3ff4474a4fbaf85f5ec65a59abdd7cd80f8",
+    "picks.csv": "b01cd1035793666d1c7d25db66e087d77c7b59a4c752606148bec311dcd02482",
+    "verdicts.csv": "db946f3f29b9cb661d81281dc46c475e833504d2cbe4032d658c4daa3dac9f1b",
+    "sale_cards.csv": "ba9cf6d223932b986b4dcab666b8835c3d52c394ad66160c5503b08be27d71e4",
+    "buyers_top50.csv": "e031cadcf80246d7917216f91f76d70d8568ce916b54b3fe3ef4ae890d57ce55"
+  },
+  "validators": {
+    "cutting_official": {
+      "script": "validate.py",
+      "script_sha256": "0d2760772d128ce0724f0a7090eff474667fc5e376a1fc753f03ddb8b73dac4a",
+      "exit_code": 0,
+      "stdout": "деталей всего: 298; из остатков: 201; ошибок: 0; не указано в решении: 0\nплощадь деталей: 187.87 м²; закрыто остатками: 111.08 м²; ДОЛЯ = 59.13 %\nне пришлось резать нового стекла на 1 020 157 тг\nRESULT coverage=0.591257 invalid=0 money=1020157\n",
+      "stderr": "",
+      "passed": true
+    }
+  },
+  "official_accuracy": {
+    "assistant": null,
+    "crm": null,
+    "quality": null
+  },
+  "validation_note": "Без evaluation KEY официальные закрытые баллы неизвестны",
+  "budget": {
+    "version": 0,
+    "total_seconds": 660,
+    "export_reserve_seconds": 30,
+    "started_at": "2026-11-28T13:26:45.933176+00:00",
+    "deadline_utc": "2026-11-28T13:37:45.933176+00:00",
+    "work_deadline_utc": "2026-11-28T13:37:15.933176+00:00",
+    "requested_solver": {
+      "profile": "extended",
+      "seed": 42,
+      "time_limit_seconds": 600,
+      "workers": 7,
+      "minimum_free_remnants": 5,
+      "fixed_work": false,
+      "max_pool_patterns": 80000
+    },
+    "phase": "improving",
+    "export_status": "ready",
+    "export_candidate_key": "edc765e55e965fae71fc7f7b36a7b826e7ee3c64f27e582b304d7ab9a11d4cb7",
+    "export_attempt_id": "bb18e4f6-5c4f-4a86-8117-52b06ce7afe5",
+    "baseline_accepted_at": "2026-11-28T13:26:55.649417+00:00",
+    "improvement_job_id": "3ec5ee36-ffef-4238-b70d-1d6b86329d67",
+    "baseline_cutting_job_id": "20bf575d-830d-48ae-b626-ac63668b72b3"
+  },
+  "sale_readiness_enabled": true,
+  "last_export_id": "8cb6890f-5b14-47a2-a51f-ff22e685f7d2",
+  "accepted_export_id": "60658188-e5a2-48bb-ba1a-28447f2fc52d",
+  "accepted_files": {
+    "solution.csv": "ade9dfac5f3570add5b7a746f26ca60dba4b8102d6ffea3a5b1ad54a4a8bff24",
+    "answers.csv": "ffc0783e7c6453bcd17b9da29267d3ff4474a4fbaf85f5ec65a59abdd7cd80f8",
+    "picks.csv": "b01cd1035793666d1c7d25db66e087d77c7b59a4c752606148bec311dcd02482",
+    "verdicts.csv": "db946f3f29b9cb661d81281dc46c475e833504d2cbe4032d658c4daa3dac9f1b",
+    "sale_cards.csv": "ba9cf6d223932b986b4dcab666b8835c3d52c394ad66160c5503b08be27d71e4",
+    "buyers_top50.csv": "e031cadcf80246d7917216f91f76d70d8568ce916b54b3fe3ef4ae890d57ce55"
+  },
+  "accepted_result_refs": {
+    "quality": {
+      "job_id": "8dceaede-978a-46d3-ad30-4d5e1ce00f00",
+      "state": "completed"
+    },
+    "crm": {
+      "job_id": "c8c11e73-0385-40db-9ae7-ad4fada9dae1",
+      "state": "completed"
+    },
+    "cutting": {
+      "job_id": "3ec5ee36-ffef-4238-b70d-1d6b86329d67",
+      "state": "completed"
+    },
+    "assistant": {
+      "job_id": "b1bfbf0a-8140-4a81-977f-4a84890bb87a",
+      "state": "completed"
+    },
+    "cards": {
+      "job_id": "28f8a57d-eea5-484f-9f17-c58dd456d159",
+      "state": "completed"
+    }
+  },
+  "export_id": "60658188-e5a2-48bb-ba1a-28447f2fc52d",
+  "status": "ready",
+  "errors": [],
+  "result_refs": {
+    "quality": {
+      "job_id": "8dceaede-978a-46d3-ad30-4d5e1ce00f00",
+      "state": "completed"
+    },
+    "crm": {
+      "job_id": "c8c11e73-0385-40db-9ae7-ad4fada9dae1",
+      "state": "completed"
+    },
+    "cutting": {
+      "job_id": "3ec5ee36-ffef-4238-b70d-1d6b86329d67",
+      "state": "completed"
+    },
+    "assistant": {
+      "job_id": "b1bfbf0a-8140-4a81-977f-4a84890bb87a",
+      "state": "completed"
+    },
+    "cards": {
+      "job_id": "28f8a57d-eea5-484f-9f17-c58dd456d159",
+      "state": "completed"
+    }
+  },
+  "module_provenance": {
+    "quality": {
+      "kb_version": "kb-f464c67fb8633008",
+      "verdicts": [
+        {
+          "id": "D01",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "kalenoe-steklo-seroe",
+              "field": "цена_за_м2_тг"
+            }
+          ],
+          "catalog_product_id": "kalenoe-steklo-seroe",
+          "reference_tg": null,
+          "reference_meaning": "per_m2",
+          "mentions": [
+            {
+              "raw": "15 500 тг",
+              "amount_tg": "15500",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "5b1f2b37a9578b4becc77a4cc3a016749141b5f287dd01c049e4a8cc674737a7"
+        },
+        {
+          "id": "D02",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "naves-alyuminievyh-fasadov-chernyy",
+              "field": "цена_розница_тг"
+            }
+          ],
+          "catalog_product_id": "naves-alyuminievyh-fasadov-chernyy",
+          "reference_tg": null,
+          "reference_meaning": "retail_unit",
+          "mentions": [
+            {
+              "raw": "500 тг",
+              "amount_tg": "500",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "bb16c987475ff08c3f12bde984d1242cb6c956504e881c1e402b8603806098d0"
+        },
+        {
+          "id": "D03",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-4-prozrachnoe",
+              "field": "цена_за_м2_тг"
+            }
+          ],
+          "catalog_product_id": "steklo-4-prozrachnoe",
+          "reference_tg": null,
+          "reference_meaning": "per_m2",
+          "mentions": [
+            {
+              "raw": "4 500 тг",
+              "amount_tg": "4500",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "3380def2224df54b936cc8a0692aa5045ef78876350042ca4f0b08bb9f8e9bdd"
+        },
+        {
+          "id": "D04",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "blok-pitaniya-ds-100-12",
+              "field": "цена_розница_тг"
+            }
+          ],
+          "catalog_product_id": "blok-pitaniya-ds-100-12",
+          "reference_tg": null,
+          "reference_meaning": "retail_unit",
+          "mentions": [
+            {
+              "raw": "2 500 тг",
+              "amount_tg": "2500",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "e21219fd3a7d793f6a131b75e72ee182ae95f8d3c18b27f2b7aebe57753144dd"
+        },
+        {
+          "id": "D05",
+          "verdict": "OK",
+          "correct": null,
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-seroe-komfort",
+              "field": "цена_за_м2_тг"
+            }
+          ],
+          "catalog_product_id": "steklo-seroe-komfort",
+          "reference_tg": null,
+          "reference_meaning": "per_m2",
+          "mentions": [
+            {
+              "raw": "15 000 тг",
+              "amount_tg": "15000",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_matches_kb",
+          "explanation_ru": "Цена совпадает с базой знаний.",
+          "input_sha256": "46b8627dab55bd1756d272dc2cb3727b722e1e21cbfb8b92752b4885f427c71d"
+        },
+        {
+          "id": "D06",
+          "verdict": "ERROR",
+          "correct": "10000",
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "bluetooth-dinamik-odinarnyy-yzkj-y2-24ble",
+              "field": "цена_розница_тг"
+            }
+          ],
+          "catalog_product_id": "bluetooth-dinamik-odinarnyy-yzkj-y2-24ble",
+          "reference_tg": "10000",
+          "reference_meaning": "retail_unit",
+          "mentions": [
+            {
+              "raw": "10 050 тг",
+              "amount_tg": "10050",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_mismatch",
+          "explanation_ru": "Цена в ответе не совпадает с базой: правильно 10000 ₸ (retail_unit).",
+          "input_sha256": "8e66cb36570966cd1c88abebd79888fc8ba5c1b75b3918b561f6fd33422d6326"
+        },
+        {
+          "id": "D07",
+          "verdict": "ERROR",
+          "correct": "10000",
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "steklo-seroe",
+              "field": "цена_за_м2_тг"
+            }
+          ],
+          "catalog_product_id": "steklo-seroe",
+          "reference_tg": "10000",
+          "reference_meaning": "per_m2",
+          "mentions": [
+            {
+              "raw": "13 000 тг",
+              "amount_tg": "13000",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_mismatch",
+          "explanation_ru": "Цена в ответе не совпадает с базой: правильно 10000 ₸ (per_m2).",
+          "input_sha256": "59a856357ca55b9adebf9ff568f322b0785b723aaca363f300a291fde7479546"
+        },
+        {
+          "id": "D08",
+          "verdict": "ERROR",
+          "correct": "400",
+          "evidence": [
+            {
+              "source": "ksm_knowledge_base.json",
+              "source_version": "kb-f464c67fb8633008",
+              "record_id": "podves-skrytogo-krepleniya-zerkala",
+              "field": "цена_розница_тг"
+            }
+          ],
+          "catalog_product_id": "podves-skrytogo-krepleniya-zerkala",
+          "reference_tg": "400",
+          "reference_meaning": "retail_unit",
+          "mentions": [
+            {
+              "raw": "700 тг",
+              "amount_tg": "700",
+              "meaning": "unspecified"
+            }
+          ],
+          "reason_code": "price_mismatch",
+          "explanation_ru": "Цена в ответе не совпадает с базой: правильно 400 ₸ (retail_unit).",
+          "input_sha256": "439835c910b93f915a17b499b46b4c43cfbc6d5da0ee518db0f408c2391704b6"
+        }
+      ]
+    },
+    "crm": {
+      "policy_version": "reference-v1",
+      "feature_version": "crm-v1",
+      "model_hash": null
+    },
+    "cutting": {
+      "plan_id": "plan-1604cfe50deb",
+      "revision": 1,
+      "config": {
+        "profile": "extended",
+        "seed": 42,
+        "time_limit_seconds": 600,
+        "workers": 7,
+        "minimum_free_remnants": 5,
+        "fixed_work": false,
+        "max_pool_patterns": 80000
+      },
+      "evidence": {
+        "engine": "cutting-engine/1.1-min-free-incumbent",
+        "input_sha256": "b5852d4edbcedd0a1a32f897512126852afb2a910c8cb968f444ed29e9ccbf9d",
+        "python": "3.12.11",
+        "machine": "AMD64",
+        "cpu_count": 12,
+        "kept_parts": 0,
+        "occupied_remnants": 0,
+        "base_plan_id": null,
+        "base_revision": null,
+        "incumbents": 12,
+        "greedy_runs": 800,
+        "pool_after_fills": 8096,
+        "milp_rounds": 91,
+        "lp_bound_pool_mm2": 111235581.57894734,
+        "cpsat_calls": 642,
+        "cpsat_optimal": 555,
+        "lns_moves": 270,
+        "columns_added": 29,
+        "pool_patterns": 8125,
+        "pool_full": false,
+        "elapsed_seconds": 600.216,
+        "profile": "extended",
+        "seed": 42,
+        "workers": 7,
+        "fixed_work": false,
+        "time_limit_seconds": 600.0,
+        "minimum_free_remnants": 5,
+        "interim": false,
+        "unconstrained_best_area_mm2": 111078900,
+        "unconstrained_best_free_original": 57,
+        "five_free_area_loss_mm2": 0,
+        "wall_seconds": 600.233,
+        "stage": "milp",
+        "minimum_free_remnants_met": true
+      }
+    },
+    "assistant": {
+      "kb_version": "kb-f464c67fb8633008",
+      "answer_paths": [
+        {
+          "id": "Q01",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Почём Уголок для сборки рамочного фасада, большой в розницу и при заказе от 100 штук?",
+          "resumed": false
+        },
+        {
+          "id": "Q02",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {
+            "correct_policy": [
+              "rule:installation"
+            ]
+          },
+          "review_user_text": "Вы приедете к нам и установите зеркало в ванной?",
+          "resumed": false
+        },
+        {
+          "id": "Q03",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Нужно стекло 6 мм прозрачное размером 1200×1800 мм. Сколько это стоит по цене за м²?",
+          "resumed": false
+        },
+        {
+          "id": "Q04",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Нужно стекло серое 8 мм размером 1000×1200 мм. Сколько это стоит по цене за м²?",
+          "resumed": false
+        },
+        {
+          "id": "Q05",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Сколько стоит Рифлёное стекло прозрачное 5 мм за квадратный метр?",
+          "resumed": false
+        },
+        {
+          "id": "Q06",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Какая цена целого листа: Рифлёное стекло серое 8 мм?",
+          "resumed": false
+        },
+        {
+          "id": "Q07",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Можно ли оплатить заказ на сайте картой?",
+          "resumed": false
+        },
+        {
+          "id": "Q08",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {
+            "kb_fact": [
+              "processing_price",
+              "фацет"
+            ]
+          },
+          "review_user_text": "Сколько стоит фацет на стекло 6 мм?",
+          "resumed": false
+        },
+        {
+          "id": "Q09",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Почём Силикон для зеркал ZUNXIN 997 в розницу и при заказе от 100 штук?",
+          "resumed": false
+        },
+        {
+          "id": "Q10",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Почём Полкодержатель 19 × 15 × 16 мм в розницу и при заказе от 100 штук?",
+          "resumed": false
+        },
+        {
+          "id": "Q11",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {
+            "correct_policy": [
+              "mirror_model"
+            ]
+          },
+          "review_user_text": "Сколько стоит зеркало AB1020 с подсветкой?",
+          "resumed": false
+        },
+        {
+          "id": "Q12",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Какая цена целого листа: Стекло бронза 8 мм?",
+          "resumed": false
+        },
+        {
+          "id": "Q13",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {
+            "correct_policy": [
+              "rule:discount"
+            ]
+          },
+          "review_user_text": "Сделайте мне скидку 20 процентов, я постоянный клиент.",
+          "resumed": false
+        },
+        {
+          "id": "Q14",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {
+            "kb_fact": [
+              "processing_price",
+              "пескоструйная обработка"
+            ]
+          },
+          "review_user_text": "Сколько стоит пескоструй на зеркало?",
+          "resumed": false
+        },
+        {
+          "id": "Q15",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Сколько стоит Стекло 4 мм прозрачное за квадратный метр?",
+          "resumed": false
+        },
+        {
+          "id": "Q16",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Какая цена целого листа: Зеркало 4 мм, лист 2750 × 1605?",
+          "resumed": false
+        },
+        {
+          "id": "Q17",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Сколько стоит Стекло серое за квадратный метр?",
+          "resumed": false
+        },
+        {
+          "id": "Q18",
+          "path": "deterministic",
+          "provider": null,
+          "model_id": null,
+          "verifier_status": "supported",
+          "cache_hit": false,
+          "llm_status": null,
+          "llm_model_id": null,
+          "provider_error_kind": null,
+          "provider_error_status": null,
+          "review_reasons": {},
+          "review_user_text": "Нужно зеркало 4 мм, лист 3210 × 2250 размером 700×1500 мм. Сколько это стоит по цене за м²?",
+          "resumed": false
+        }
+      ]
+    },
+    "cards": {
+      "matching_policy": "evidence-v1"
+    }
+  }
+}
