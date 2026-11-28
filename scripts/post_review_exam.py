@@ -202,6 +202,9 @@ def grade(case, reply):
 def provenance(reply, before, after, selected):
     delta = max(0, after.get("calls", 0) - before.get("calls", 0))
     success_delta = max(0, after.get("ok", 0) - before.get("ok", 0))
+    selected_delta = max(
+        0, after.get("by_model", {}).get(selected, 0) - before.get("by_model", {}).get(selected, 0)
+    )
     path = reply.get("answer_path")
     declared = reply.get("provenance")
     origin = (declared or {}).get("origin") if isinstance(declared, dict) else None
@@ -216,13 +219,22 @@ def provenance(reply, before, after, selected):
     else:
         classification = "deterministic"
     label = f"{reply.get('provider')}:{reply.get('model_id')}"
-    confirmed = classification == "model" and delta > 0 and success_delta > 0 and label == selected
+    confirmed = (
+        classification == "model"
+        and delta > 0
+        and success_delta > 0
+        and selected_delta > 0
+        and label == selected
+    )
     return {
         "origin": classification,
         "selected_model_answer_confirmed": confirmed,
         "provider_calls_delta": delta,
         "ok_calls_delta": success_delta,
-        "verifier_rejected_attempt": reply.get("verifier_status") == "unsupported_replaced",
+        "selected_model_calls_delta": selected_delta,
+        "verifier_rejected_attempt": reply.get("verifier_status") == "unsupported_replaced"
+        and selected_delta > 0
+        and success_delta > 0,
         "declared_provenance": declared,
     }
 
@@ -261,6 +273,13 @@ def evaluate(args):
         report["profile"] = profile
         selected = f"{profile.get('provider')}:{profile.get('model_id')}"
         spec = client.get("/openapi.json").json()
+        report["api_schema_sha256"] = hashlib.sha256(
+            json.dumps(spec, sort_keys=True).encode("utf8")
+        ).hexdigest()
+        report["safe_profile_sha256"] = hashlib.sha256(
+            json.dumps(profile, sort_keys=True).encode("utf8")
+        ).hexdigest()
+        report["prompt_version"] = usage0.get("current_prompt_version")
         fields = spec.get("components", {}).get("schemas", {}).get("AssistantTurn", {}).get("properties", {})
         model_first_supported = "execution_mode" in fields
         report["public_capabilities"] = {

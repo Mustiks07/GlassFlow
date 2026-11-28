@@ -69,7 +69,12 @@ def test_cached_or_unconfirmed_model_reply_does_not_raise_live_accuracy():
 
 def test_fallback_after_rejection_is_a_failed_model_attempt():
     reply = {"answer_path": "fallback", "verifier_status": "unsupported_replaced"}
-    result = review.provenance(reply, {"calls": 0, "ok": 0}, {"calls": 2, "ok": 2}, "gemini:selected")
+    result = review.provenance(
+        reply,
+        {"calls": 0, "ok": 0},
+        {"calls": 2, "ok": 2, "by_model": {"gemini:selected": 2}},
+        "gemini:selected",
+    )
     assert result["verifier_rejected_attempt"] and not result["selected_model_answer_confirmed"]
 
 
@@ -131,3 +136,21 @@ def test_missing_area_rate_cannot_be_filled_with_known_sheet_price():
     case = next(c for c in EXAM["cases"] if c["family"] == "unknown_price")
     reply = {"status": "manager_handoff", "answer": "Цена 170000 тенге за м². Подтвердит менеджер."}
     assert review.grade(case, reply)["fabrication"]
+
+
+def test_other_model_traffic_cannot_prove_the_selected_model_answer():
+    reply = {"answer_path": "llm_tools", "provider": "gemini", "model_id": "selected"}
+    result = review.provenance(
+        reply,
+        {"calls": 0, "ok": 0},
+        {"calls": 2, "ok": 2, "by_model": {"openrouter:other": 2}},
+        "gemini:selected",
+    )
+    assert not result["selected_model_answer_confirmed"]
+    result = review.provenance(
+        reply,
+        {"calls": 0, "ok": 0},
+        {"calls": 2, "ok": 2, "by_model": {"gemini:selected": 2}},
+        "gemini:selected",
+    )
+    assert result["selected_model_answer_confirmed"]
