@@ -7,7 +7,7 @@ foundation request shapes remain valid.
 
 from typing import Literal
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from .common import DTO, DatasetRequest, Dimensions, Evidence, Identifier, MoneyString
 
@@ -231,6 +231,20 @@ class AssistantTurn(DatasetRequest):
     kb_version: str
     inventory_mode: Literal["none", "free_whole_remnants", "replan"] = "free_whole_remnants"
     allow_ai: bool = True
+    execution_mode: Literal["hybrid", "model_first"] = "hybrid"
+
+    @model_validator(mode="after")
+    def consistent_execution_mode(self):
+        if self.execution_mode == "model_first" and not self.allow_ai:
+            raise ValueError("model_first requires allow_ai=true")
+        return self
+
+
+class ModelAttempt(DTO):
+    provider: str
+    model_id: str
+    status: Literal["ok", "error", "rejected"]
+    error_kind: str | None = None
 
 
 class ToolCallRecord(DTO):
@@ -280,6 +294,14 @@ class AssistantReply(DTO):
     ai_unavailable_reason: str | None = None
     turn_index: int = 0
     latency_ms: int | None = None
+    execution_mode: Literal["hybrid", "model_first"] = "hybrid"
+    origin: Literal["model", "deterministic", "cache", "fallback", "reuse"] = "deterministic"
+    cache_hit: bool = False
+    model_call_count: int = 0
+    model_attempts: list[ModelAttempt] = Field(default_factory=list)
+    selected_provider: str | None = None
+    selected_model_id: str | None = None
+    verifier_reject_count: int = 0
 
 
 class ConversationTurnView(DTO):
@@ -377,12 +399,15 @@ class AnswerBatchResult(DTO):
 
 class AIProfileView(DTO):
     profile: str
-    provider: Literal["gemini", "openrouter", "judge_gateway", "none"]
+    provider: Literal["gemini", "openrouter", "judge_gateway", "basisweb", "none"]
     model_id: str | None
     mode: Literal["free_only", "paid_enabled"]
     fallback_models: list[str] = Field(default_factory=list)
     key_configured: bool
     budget_limit_usd: MoneyString = "0"
+    included_quota_enabled: bool = False
+    quota_token_budget: int = 1_000_000
+    quota_tokens_spent: int = 0
     limits: dict[str, int | None] = Field(default_factory=dict)
 
 

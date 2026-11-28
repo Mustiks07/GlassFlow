@@ -35,6 +35,7 @@ class LlmOutcome:
     tool_errors: int = 0
     error: ProviderError | None = None
     fallback_used: bool = False
+    model_attempts: list[dict] = field(default_factory=list)
 
 
 def tool_specs(names: list[str] | None = None) -> list[ToolSpec]:

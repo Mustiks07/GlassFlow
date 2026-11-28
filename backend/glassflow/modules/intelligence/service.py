@@ -724,7 +724,8 @@ class IntelligenceService:
                 turn_index = row.version
         engine = self._engine(catalog, turn.allow_ai)
         result = await engine.turn(
-            turn.text, context, inventory_mode=turn.inventory_mode, allow_ai=turn.allow_ai, correlation_id=correlation_id
+            turn.text, context, inventory_mode=turn.inventory_mode, allow_ai=turn.allow_ai, correlation_id=correlation_id,
+            strategy="ai_first" if turn.execution_mode == "model_first" else "hybrid",
         )
         local = result.local
         conversation_id = conversation_id or str(uuid.uuid4())
@@ -813,6 +814,14 @@ class IntelligenceService:
             ai_unavailable_reason=result.ai_unavailable_reason,
             turn_index=turn_index,
             latency_ms=result.latency_ms,
+            execution_mode=turn.execution_mode,
+            origin="cache" if result.cache_hit else {"llm_tools": "model", "fallback": "fallback"}.get(result.answer_path, "deterministic"),
+            cache_hit=result.cache_hit,
+            model_attempts=result.model_attempts,
+            model_call_count=len(result.model_attempts),
+            selected_provider=self.runtime.profile.primary.provider if self.runtime and self.runtime.profile.primary else None,
+            selected_model_id=self.runtime.profile.primary.model_id if self.runtime and self.runtime.profile.primary else None,
+            verifier_reject_count=int(bool(result.llm and result.llm.status == "verifier_rejected")),
         )
         with self.session_factory.begin() as session:
             row = session.get(ConversationRow, conversation_id)
@@ -961,6 +970,9 @@ class IntelligenceService:
             fallback_models=[ref.label for ref in profile.fallbacks],
             key_configured=bool(primary and runtime.key_configured.get(primary.provider)),
             budget_limit_usd=f"{profile.budget_usd:f}",
+            included_quota_enabled=profile.included_quota_enabled,
+            quota_token_budget=profile.quota_token_budget,
+            quota_tokens_spent=runtime.client.quota_tokens_spent if runtime.client else 0,
             limits={"rpm": profile.rpm, "tpm": profile.tpm, "rpd": profile.rpd, "max_tool_iterations": profile.max_tool_iterations,
                     "max_retries": profile.max_retries, "max_concurrency": profile.max_concurrency},
         )

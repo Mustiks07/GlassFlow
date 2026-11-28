@@ -17,6 +17,8 @@ import random
 import time
 import uuid
 from collections import deque
+from contextlib import contextmanager
+from contextvars import ContextVar
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from decimal import Decimal
@@ -25,6 +27,18 @@ from typing import Callable, Literal, Protocol
 from pydantic import BaseModel, ConfigDict, Field
 
 from .base import AIProvider, ProviderError, ProviderRequest, ProviderResponse
+from .basisweb import QUOTA_RATES, reserve_quota, usage_quota
+
+_ATTEMPT_SINK: ContextVar[list[dict] | None] = ContextVar("glassflow_model_attempts", default=None)
+
+
+@contextmanager
+def capture_attempts(sink: list[dict]):
+    token = _ATTEMPT_SINK.set(sink)
+    try:
+        yield
+    finally:
+        _ATTEMPT_SINK.reset(token)
 
 # Free-tier eligibility as published on the official pricing pages, checked 2026-11-27
 # (docs/ai/MODEL_SELECTION.md). Availability in a given account/project is a separate check.
@@ -51,7 +65,7 @@ class PaidPrice(BaseModel):
 
 class ModelRef(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    provider: Literal["gemini", "openrouter", "judge_gateway"]
+    provider: Literal["gemini", "openrouter", "judge_gateway", "basisweb"]
     model_id: str = Field(min_length=1, max_length=200)
     paid_price: PaidPrice | None = None
     verified_on: str | None = None  # date of a successful live contract check
@@ -68,6 +82,8 @@ class AIProfile(BaseModel):
     primary: ModelRef | None = None
     fallbacks: list[ModelRef] = Field(default_factory=list, max_length=4)
     budget_usd: Decimal = Decimal("0")
+    included_quota_enabled: bool = False
+    quota_token_budget: int = Field(default=1_000_000, ge=1, le=5_000_000)
     rpm: int | None = Field(default=10, ge=1)
     tpm: int | None = Field(default=200_000, ge=1)
     rpd: int | None = Field(default=200, ge=1)
@@ -96,11 +112,14 @@ def validate_profile(profile: AIProfile) -> list[str]:
         return ["Не выбрана модель: AI-профиль выключен, работает ограниченный локальный режим."]
     refs = [profile.primary, *profile.fallbacks]
     for ref in refs:
+        included = ref.provider == "basisweb" and profile.included_quota_enabled and ref.model_id in QUOTA_RATES
+        if ref.provider == "basisweb" and not included:
+            errors.append(f"{ref.label}: нужен явный opt-in включенной квоты и проверенный тариф модели.")
         if ref.provider == "openrouter" and ref.model_id in OPENROUTER_FORBIDDEN_ROUTERS:
             errors.append(f"{ref.label}: случайный маршрутизатор запрещен; нужен конкретный model_id.")
-        if profile.mode == "free_only" and not model_is_free(ref):
+        if profile.mode == "free_only" and not model_is_free(ref) and not included:
             errors.append(f"{ref.label}: модель не входит в проверенный бесплатный список при free_only.")
-        if profile.mode == "paid_enabled" and not model_is_free(ref) and ref.paid_price is None:
+        if profile.mode == "paid_enabled" and not model_is_free(ref) and not included and ref.paid_price is None:
             errors.append(f"{ref.label}: для платной модели нужен тариф с датой и источником.")
     if profile.mode == "paid_enabled" and profile.budget_usd <= 0:
         errors.append("Платный режим требует явного положительного бюджета.")
@@ -234,6 +253,7 @@ class ResilientClient:
     sleep: Callable[[float], object] = asyncio.sleep
     clock: Callable[[], float] = time.monotonic
     spent_usd: Decimal = Decimal("0")
+    quota_tokens_spent: int = 0
     cooldown_s: float = 60.0  # circuit breaker: an overloaded model is skipped for this long
 
     def __post_init__(self) -> None:
@@ -246,7 +266,8 @@ class ResilientClient:
             return []
         refs = [self.profile.primary, *self.profile.fallbacks]
         if self.profile.mode == "free_only":
-            refs = [ref for ref in refs if model_is_free(ref)]
+            refs = [ref for ref in refs if model_is_free(ref) or
+                    (ref.provider == "basisweb" and self.profile.included_quota_enabled and ref.model_id in QUOTA_RATES)]
         labels = [ref.label for ref in refs if ref.label in self.providers]
         now = self.clock()
         healthy = [label for label in labels if self.unhealthy_until.get(label, 0) <= now]
@@ -279,7 +300,8 @@ class ResilientClient:
                     raise last_error or ProviderError("timeout", "Истек общий срок ответа AI.")
                 if attempt > 0 and self.clock() >= model_deadline and models_left > 1:
                     break
-                if self.profile.mode == "paid_enabled" and self.spent_usd >= self.profile.budget_usd and not self._is_free(label):
+                included = label.startswith("basisweb:") and self.profile.included_quota_enabled
+                if self.profile.mode == "paid_enabled" and self.spent_usd >= self.profile.budget_usd and not self._is_free(label) and not included:
                     raise ProviderError("budget", "Исчерпан денежный бюджет платного профиля.")
                 estimated = estimate_tokens(request)
                 attempts += 1
@@ -290,8 +312,15 @@ class ResilientClient:
                     raise
                 timeout = min(self.profile.request_timeout_s, max(MIN_ATTEMPT_SECONDS, deadline - self.clock()))
                 started = self.clock()
+                reservation = 0
                 try:
                     async with self.limiter.semaphore:
+                        if included:
+                            reservation = reserve_quota(request, provider.model_id)
+                            if self.quota_tokens_spent + reservation > self.profile.quota_token_budget:
+                                raise ProviderError("budget", "Лимит включенной квоты исчерпан; новый вызов не отправлен.")
+                            # Reserve atomically before awaiting I/O, including failures and cancellation.
+                            self.quota_tokens_spent += reservation
                         response = await asyncio.wait_for(provider.generate(_with_timeout(request, timeout)), timeout=timeout + 1)
                 except TimeoutError:
                     error = ProviderError("timeout", "Тайм-аут запроса к модели.", provider=provider.name, model_id=provider.model_id)
@@ -305,6 +334,10 @@ class ResilientClient:
                     self.limiter.correct_tokens(estimated, _total_tokens(response))
                     if response.usage.cost_usd is not None:
                         self.spent_usd += response.usage.cost_usd
+                    if included:
+                        actual_quota = usage_quota(response.usage, provider.model_id)
+                        if actual_quota is not None:
+                            self.quota_tokens_spent += actual_quota - reservation
                     self._log(request, label, attempt, "ok", None, response, int(queue_s * 1000), latency, correlation_id)
                     self.unhealthy_until.pop(label, None)
                     return CallOutcome(response, attempts, label != self.chain_order()[0], label)
@@ -341,6 +374,11 @@ class ResilientClient:
     def _log(self, request, label, attempt, status, kind, response, queue_ms, latency, correlation_id, message=None) -> None:
         provider, _, model = label.partition(":")
         usage = response.usage if response else None
+        sink = _ATTEMPT_SINK.get()
+        # Preflight/queue rejection has no HTTP attempt. A failed HTTP call does.
+        if sink is not None and latency is not None and not (kind == "budget" and message and "не отправлен" in message):
+            sink.append({"provider": provider, "model_id": response.model_id if response else model,
+                         "status": status, "error_kind": kind})
         self.ledger.record(
             LedgerEntry(
                 call_id=str(uuid.uuid4()),
