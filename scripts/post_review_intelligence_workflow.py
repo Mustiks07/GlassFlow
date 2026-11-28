@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import re
 import time
 from pathlib import Path
 
@@ -142,7 +143,143 @@ def main():
             fresh["draft_id"] != draft["draft_id"] and fresh["applicable_price_tg"] == "9127",
             fresh,
         )
+        historical = c.get("/api/v1/dialogs/corrections", params={"dataset_id": d}).json()
+        historical_old = next(row for row in historical if row["draft_id"] == draft["draft_id"])
+        check(
+            "N19_historical_list_marks_stale_without_rewriting_price",
+            historical_old.get("is_current") is False
+            and historical_old.get("current_kb_version") == fresh_version
+            and historical_old["applicable_price_tg"] == "8000",
+            historical_old,
+        )
+        unknown_identity_checks(c, post, check, d, fresh_version)
     print(json.dumps({"checks": [{"name": r["name"], "ok": r["ok"]} for r in report["checks"]]}, indent=2))
+
+
+def unknown_identity_checks(client, post, check, dataset, version):
+    money = re.compile(r"\d[\d\s,.]*\s*(?:₸|тенге|тг\b)", re.I)
+    replies = []
+    for identity in ("NEXUS-CLIENT-87021", "LQ8V721", "ТЕСТФИКС-717", "981732"):
+        reply = post(
+            "/assistant/turns",
+            {
+                "dataset_id": dataset,
+                "kb_version": version,
+                "text": f"Нужно неизвестное крепление {identity}, 3 шт. Какая цена?",
+                "allow_ai": False,
+                "inventory_mode": "none",
+            },
+        )
+        replies.append(reply)
+    check(
+        "P1_unknown_changed_IDs_never_select_or_price_generic_hardware",
+        all(
+            r["status"] in {"clarification", "manager_handoff"}
+            and r["quote"] is None
+            and r["card"]["catalog_product_id"] is None
+            and not money.search(r["answer"])
+            for r in replies
+        ),
+        replies,
+    )
+    first = post(
+        "/assistant/turns",
+        {
+            "dataset_id": dataset,
+            "kb_version": version,
+            "text": "Прозрачное стекло 6 мм 527×361 мм, 2 шт., без обработки",
+            "allow_ai": False,
+            "inventory_mode": "none",
+        },
+    )
+    unknown = post(
+        "/assistant/turns",
+        {
+            "dataset_id": dataset,
+            "kb_version": version,
+            "conversation_id": first["conversation_id"],
+            "text": "Теперь нужно неизвестное крепление VX-KUND-561, 3 шт.",
+            "allow_ai": False,
+            "inventory_mode": "none",
+        },
+    )
+    followup = post(
+        "/assistant/turns",
+        {
+            "dataset_id": dataset,
+            "kb_version": version,
+            "conversation_id": first["conversation_id"],
+            "text": "А если 4 штуки?",
+            "allow_ai": False,
+            "inventory_mode": "none",
+        },
+    )
+    old = first["quote"]
+    rejected = client.post(
+        f"/api/v1/quotes/{old['quote_id']}/confirm",
+        json={"dataset_id": dataset, "expected_revision": old["revision"], "confirmed_by": "TEST_REVIEWER"},
+    )
+    check(
+        "P1_unknown_retires_prior_quote_and_context",
+        all(r["quote"] is None and r["card"]["catalog_product_id"] is None for r in [unknown, followup])
+        and rejected.status_code == 409,
+        {
+            "first": first,
+            "unknown": unknown,
+            "followup": followup,
+            "old_confirmation_http_status": rejected.status_code,
+        },
+    )
+    batch = post(
+        "/assistant/batch",
+        {
+            "dataset_id": dataset,
+            "kb_version": version,
+            "allow_ai": False,
+            "questions": [
+                {
+                    "id": "TEST-CHANGED-UNKNOWN-ID",
+                    "question": "Нужна цена неизвестного крепления BLINDREG-449, без известной модели.",
+                }
+            ],
+        },
+    )
+    check(
+        "P1_unknown_batch_no_model_guess_or_price",
+        batch["answers"][0]["status"] in {"clarification", "manager_handoff"}
+        and not money.search(batch["answers"][0]["answer"]),
+        batch,
+    )
+    qa = post(
+        "/quality/check",
+        {
+            "dataset_id": dataset,
+            "kb_version": version,
+            "id": "TEST-WRONG-KNOWN-RATE",
+            "client": "Какова цена неизвестного крепления BLINDREG-449?",
+            "manager": "Подвес для скрытого крепления зеркала — 400 тг за штуку.",
+        },
+    )
+    check(
+        "P1_unknown_quality_does_not_whitelist_other_product_price",
+        qa["verdict"] == "NEEDS_REVIEW" and qa["correct"] is None,
+        qa,
+    )
+    known = post(
+        "/assistant/turns",
+        {
+            "dataset_id": dataset,
+            "kb_version": version,
+            "text": "Сенсорный переключатель YZKJ-F2FTC, 3 шт., остальные параметры неизвестны. Цена?",
+            "allow_ai": False,
+            "inventory_mode": "none",
+        },
+    )
+    check(
+        "P1_known_explicit_SKU_not_unnecessarily_refused",
+        known["status"] == "answered" and known["card"]["catalog_product_id"] == "sensor-dvoynoy-yzkj-f2ftc",
+        known,
+    )
 
 
 if __name__ == "__main__":
