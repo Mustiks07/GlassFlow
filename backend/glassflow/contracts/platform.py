@@ -3,6 +3,7 @@ from typing import Literal
 from pydantic import Field
 
 from .common import DTO, DatasetRequest, Identifier
+from .cutting import SolverConfig
 
 
 class Dataset(DTO):
@@ -11,6 +12,10 @@ class Dataset(DTO):
     mode: Literal["source", "workspace", "contest"]
     source_hashes: dict[str, str]
     row_counts: dict[str, int]
+    parent_id: str | None = None
+    version: int = 0
+    created_at: str | None = None
+    schema_version: str = "1"
 
 
 class ImportPreview(DTO):
@@ -27,13 +32,28 @@ class Job(DTO):
     result_ref: str | None = None
     last_valid_result_ref: str | None = None
     error_code: str | None = None
+    run_id: str | None = None
+    dataset_id: str | None = None
+    cancel_requested: bool = False
+    stopped: bool = False
+    completed: int = 0
+    total: int | None = None
+    result: dict | None = None
+    last_valid_result: dict | None = None
+    retry_of: str | None = None
+    created_at: str | None = None
+    started_at: str | None = None
+    finished_at: str | None = None
 
 
 class RunRequest(DatasetRequest):
     modules: list[Literal["cutting", "assistant", "crm", "quality", "cards"]] = Field(
         default_factory=lambda: ["cutting", "assistant", "crm", "quality", "cards"]
     )
-    config_version: str
+    config_version: Identifier
+    solver_config: SolverConfig = Field(default_factory=SolverConfig)
+    ai_profile: Literal["direct", "judge_gateway", "local_limited"] = "local_limited"
+    buyer_registry_version: str | None = None
 
 
 class ExportResult(DTO):
@@ -41,3 +61,64 @@ class ExportResult(DTO):
     status: Literal["ready", "partial", "blocked"]
     files: dict[str, str]
     errors: list[str]
+
+
+class ImportCommit(DTO):
+    name: str = Field(default="Набор данных", min_length=1, max_length=200)
+    mode: Literal["source", "contest"] = "source"
+    explicit_copy: bool = False
+
+
+class WorkingCopy(DTO):
+    name: str = Field(default="Рабочая копия", min_length=1, max_length=200)
+
+
+class VersionAction(DatasetRequest):
+    expected_version: int = Field(ge=0, strict=True)
+
+
+class AISettings(DTO):
+    version: int = Field(default=0, ge=0, strict=True)
+    profile: Literal["direct", "judge_gateway", "local_limited"] = "local_limited"
+    provider: Literal["gemini", "openrouter"] = "gemini"
+    model_id: str = Field(default="", max_length=200)
+    mode: Literal["free_only", "paid_enabled"] = "free_only"
+    paid_enabled: bool = False
+    monthly_budget_tg: str = Field(default="0", pattern=r"^\d+(?:\.\d+)?$")
+    rpm: int = Field(default=1, ge=1, le=1000, strict=True)
+    tpm: int = Field(default=1000, ge=1, le=10_000_000, strict=True)
+    rpd: int = Field(default=100, ge=1, le=1_000_000, strict=True)
+    max_parallel: int = Field(default=1, ge=1, le=8, strict=True)
+    timeout_seconds: int = Field(default=30, ge=1, le=120, strict=True)
+    max_retries: int = Field(default=2, ge=0, le=2, strict=True)
+    max_tool_iterations: int = Field(default=6, ge=1, le=6, strict=True)
+    max_output_tokens: int = Field(default=2048, ge=1, le=32768, strict=True)
+    fallback_models: list[str] = Field(default_factory=list, max_length=3)
+    gateway_url: str | None = None
+    secret_present: bool = False
+
+
+class SettingsUpdate(AISettings):
+    api_key: str | None = Field(default=None, max_length=4096, exclude=True, repr=False)
+
+
+class RestoreRequest(DTO):
+    backup_id: str
+    confirm_replace: bool
+
+
+class KbHead(DatasetRequest):
+    kb_version: str
+    sha256: str
+    version: int
+
+
+class LocalSession(DTO):
+    session_token: str
+
+
+class RunView(DTO):
+    manifest: dict
+    status: Literal["running", "completed", "partial", "blocked"]
+    jobs: list[Job]
+    missing_modules: list[str]

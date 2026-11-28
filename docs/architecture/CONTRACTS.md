@@ -60,3 +60,14 @@ Pro отвечает за PyInstaller, включение frontend dist и nativ
 ## Бесплатный AI
 
 `GLASSFLOW_AI_MODE=free_only` по умолчанию. Provider/model выбираются конфигурацией из реально доступных в аккаунте; не обещать неизменность free quotas. C3 реализует timeouts, bounded retries, backoff 429, JSON schema validation, tool allowlist, injection defenses, audit без PII, explicit opt-in paid fallback. Pro интегрирует settings, budgets и launch/gateway config. При отсутствии ключа offline checks выполняются, live provider test остается blocked с точной причиной.
+
+## Платформенные дополнения U04/U06
+
+[U04_U06_CONTRACTS.md](U04_U06_CONTRACTS.md) фиксирует basket/actual-use DTO и Services.basket_source/material_use.
+Корзина подтверждается целиком; Pro не считает quantity/кромку/geometry повторно. Один C2 joint selection покрывает
+все glass line IDs, один bundle reserve коммитится с platform history/idempotency. Detached snapshots на границах
+не позволяют адаптеру изменить проверяемый исходный DTO. Неизвестные ставки/совместимость блокируют общий итог.
+Actual use подтверждается отдельно по validated C2 execution; резерв/отмена не создают расход. Schema0003 добавляет
+immutable ledger с unique subject/reservation/event, обновляет schema head после pre-migration backup.
+Ledger+canonical consume+subject completed+audit+idempotency — одна transaction, не цепочка независимых commits.
+Плановая оценка и подтвержденное использование показываются раздельно, не складываются как две выгоды.

@@ -1,0 +1,25 @@
+{
+  "protocol_version": "a02-v1",
+  "registered_before_experiment": true,
+  "target": "new_application_within_60_days",
+  "selection_unit": "25 distinct app_id; repeated client_id allowed",
+  "allowed_features": ["прошлых_заявок", "дней_с_последнего_контакта", "жалоба", "manager", "тип_клиента"],
+  "split_only_fields": ["client_id", "день_года"],
+  "forbidden_features": ["вернулся_60д", "app_id", "оплата", "сумма_тг", "скидка", "ответ_через_мин"],
+  "candidates": ["reference-v1", "reference-no-manager-v1", "logistic-manager-v1", "logistic-no-manager-v1"],
+  "training": "inner GroupKFold3 C=[0.1,1,10]; median imputer+indicator/scaler/onehot fit on training only",
+  "splits": "original group5, temporal purge60 day90/110/130, random5 seed42; leave-manager-out diagnostics",
+  "manager_stress": "rotate manager IDs in test without refit, compare selected applications",
+  "primary_folds": "client_group_* and temporal_purge60_*; random and manager holdout are diagnostics",
+  "selection_rule": {
+    "minimum_mean_precision_lift": 0.04,
+    "minimum_worst_temporal_lift": 0.0,
+    "all_primary_folds_required": true,
+    "independent_previously_unseen_control_required": true,
+    "control_minimum_lift": 0.04,
+    "control_attestation_required": true
+  },
+  "control_status": "not_available; entire organizer open dataset was used in prior evaluation; new partitions of it are reused data",
+  "runtime_policy_until_independent_confirmation": "reference-v1",
+  "promotion": "no automatic promotion; reproducible decision report plus independent acceptance required"
+}

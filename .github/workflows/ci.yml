@@ -22,3 +22,28 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck && pnpm test && pnpm build
       - run: pnpm contracts:generate && git diff --exit-code packages/contracts
+  windows-platform:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install uv==0.8.17
+      - run: uv sync --locked --all-groups
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --global pnpm@11.25.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: uv run pytest
+      - run: uv run pyinstaller --noconfirm packaging/GlassFlow.spec
+      - run: uv run python scripts/smoke_frozen.py
+      - run: uv run python scripts/scan_release.py dist/GlassFlow
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-platform-smoke
+          path: |
+            docs/release/frozen-smoke.json
+            dist/GlassFlow/

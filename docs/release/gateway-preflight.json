@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-11-27T17:23:29.402421+00:00",
+  "c3_commit": "e83c211",
+  "engine_merged_here": false,
+  "docker_cli": "28.5.1",
+  "compose_config_exit_code": 0,
+  "docker_daemon": "unavailable",
+  "docker_error_code": "DOCKER_DESKTOP_LINUX_ENGINE_PIPE_MISSING",
+  "container_build": "not_run",
+  "https_endpoint": "not_configured",
+  "provider_key": "not_supplied",
+  "quota": "not_verified",
+  "full_judge_flow": "blocked"
+}
