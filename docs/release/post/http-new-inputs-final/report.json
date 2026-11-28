@@ -1,5 +1,5 @@
 {
-  "source_sha": "4ee5812a65157acd7aa504df3d994497f608e29a",
+  "source_sha": "fc4cca439ced3cbf644af88c186c90e96fc66c86",
   "transport": "actual_tcp_uvicorn",
   "online_ai": "not_run",
   "human_measurements": "not_run",
@@ -62,7 +62,7 @@
     }
   },
   "source": {
-    "dataset_id": "39dc15d4-cfae-44af-a0b3-0f6c23268054",
+    "dataset_id": "4d30c389-71db-4a38-b9e1-413c2667391f",
     "name": "Changed IDs and independent dimensions / HTTP",
     "mode": "source",
     "source_hashes": {
@@ -86,7 +86,7 @@
     },
     "parent_id": null,
     "version": 0,
-    "created_at": "2026-11-28T10:27:47.305224+00:00",
+    "created_at": "2026-11-28T10:35:45.232157+00:00",
     "schema_version": "1",
     "kb_version": "kb-f464c67fb8633008"
   },
@@ -96,13 +96,13 @@
     "errors": [],
     "count": 50
   },
-  "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
-  "first_full_accepted_seconds": 9.781,
+  "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
+  "first_full_accepted_seconds": 8.235,
   "baseline_view": {
     "manifest": {
-      "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
-      "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-      "source_dataset_id": "39dc15d4-cfae-44af-a0b3-0f6c23268054",
+      "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
+      "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+      "source_dataset_id": "4d30c389-71db-4a38-b9e1-413c2667391f",
       "source_hashes": {
         "materials": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
         "stock": "af944d2f464ab25aa90465d09bd72fdffc36cbf1fa5a26d21329892f37fbda19",
@@ -116,8 +116,8 @@
       "schema_version": "0007_intelligence_reviews",
       "build": "0.1.0",
       "build_info": {
-        "commit": "4ee5812a65157acd7aa504df3d994497f608e29a",
-        "source_digest": "fbd7eaad72cfffa0d7f59292ccc214750a2b838f68e599d1331963649b765b8e",
+        "commit": "fc4cca439ced3cbf644af88c186c90e96fc66c86",
+        "source_digest": "6ba6600a50230689379b35c1c0799808a2d8f599202598945af152d8a8d88bad",
         "frozen": false
       },
       "config_version": "post-changed-input-http-v1",
@@ -130,7 +130,7 @@
         "ortools": "9.15.6755"
       },
       "crm_policy": "reference-v1",
-      "created_at": "2026-11-28T10:27:47.959478+00:00",
+      "created_at": "2026-11-28T10:35:45.870736+00:00",
       "modules": [
         "cutting",
         "assistant",
@@ -198,9 +198,9 @@
         "version": 0,
         "total_seconds": 120,
         "export_reserve_seconds": 30,
-        "started_at": "2026-11-28T10:27:47.959478+00:00",
-        "deadline_utc": "2026-11-28T10:29:47.959478+00:00",
-        "work_deadline_utc": "2026-11-28T10:29:17.959478+00:00",
+        "started_at": "2026-11-28T10:35:45.870736+00:00",
+        "deadline_utc": "2026-11-28T10:37:45.870736+00:00",
+        "work_deadline_utc": "2026-11-28T10:37:15.870736+00:00",
         "requested_solver": {
           "profile": "extended",
           "seed": 42,
@@ -210,15 +210,17 @@
           "fixed_work": false,
           "max_pool_patterns": 80000
         },
-        "phase": "baseline",
+        "phase": "improving",
         "export_status": "ready",
-        "export_candidate_key": "4fe09368a4177852da0c5de25168ed2530ef59760430bf68a4779aef3d1101f0",
-        "export_attempt_id": "e040a63f-b896-4298-a13e-1cc510f241f8",
-        "baseline_accepted_at": "2026-11-28T10:27:57.344720+00:00"
+        "export_candidate_key": "67876a34dd9b498894061d5ec78e8aea06161787f34a8a827d791e8683e13bd6",
+        "export_attempt_id": "dbc83394-f618-4b76-9649-4b30b0992c7a",
+        "baseline_accepted_at": "2026-11-28T10:35:53.560987+00:00",
+        "improvement_job_id": "eece681e-9236-4c5c-b35d-ad8d7e7a1c9d",
+        "baseline_cutting_job_id": "287d2dfa-d0d2-4227-9b56-be04d1982abc"
       },
       "sale_readiness_enabled": true,
-      "last_export_id": "98688982-fb6a-4d78-9da8-d4ab5bce1226",
-      "accepted_export_id": "98688982-fb6a-4d78-9da8-d4ab5bce1226",
+      "last_export_id": "04f0e236-880f-49bc-8075-3e73c13a2b87",
+      "accepted_export_id": "04f0e236-880f-49bc-8075-3e73c13a2b87",
       "accepted_files": {
         "solution.csv": "cd62c964f5513e9da4330777958156828f3754f62ef7ca3deb43f7c4995a1a40",
         "answers.csv": "dbc8c1ed3ce355de73bb969c6700fbe4a816b82dbc0876eca25320a893707f7e",
@@ -229,38 +231,38 @@
       },
       "accepted_result_refs": {
         "quality": {
-          "job_id": "0f4bad0f-79c2-4864-a562-4da90834b2c5",
+          "job_id": "ad30aefc-9c8e-4b1f-8f64-46a2471a92f0",
           "state": "completed"
         },
         "crm": {
-          "job_id": "f30f60bc-86a0-4287-b31e-da5079f3375e",
+          "job_id": "f491dfb1-da44-4200-b980-f3b2b1e5ca10",
           "state": "completed"
         },
         "cutting": {
-          "job_id": "05a16831-b86d-4f17-815e-ee02c9220696",
+          "job_id": "287d2dfa-d0d2-4227-9b56-be04d1982abc",
           "state": "completed"
         },
         "assistant": {
-          "job_id": "0031f3a1-c254-41c0-b92b-7d25bb895143",
+          "job_id": "62e02663-3754-4251-bb84-6b4d08ab24c6",
           "state": "completed"
         },
         "cards": {
-          "job_id": "583c0d07-7d9d-4046-a181-b72a76bf17c1",
+          "job_id": "85fe917b-c92b-4298-8f6e-aed9c65f077d",
           "state": "completed"
         }
       }
     },
-    "status": "completed",
+    "status": "running",
     "jobs": [
       {
-        "job_id": "0f4bad0f-79c2-4864-a562-4da90834b2c5",
+        "job_id": "ad30aefc-9c8e-4b1f-8f64-46a2471a92f0",
         "state": "completed",
         "stage": "completed",
-        "result_ref": "0f4bad0f-79c2-4864-a562-4da90834b2c5",
+        "result_ref": "ad30aefc-9c8e-4b1f-8f64-46a2471a92f0",
         "last_valid_result_ref": null,
         "error_code": null,
-        "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
-        "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
+        "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
+        "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
         "cancel_requested": false,
         "stopped": true,
         "completed": 7,
@@ -524,20 +526,20 @@
         },
         "last_valid_result": null,
         "retry_of": null,
-        "created_at": "2026-11-28T10:27:48.024479+00:00",
-        "started_at": "2026-11-28T10:27:48.140476+00:00",
-        "finished_at": "2026-11-28T10:27:50.263163+00:00",
+        "created_at": "2026-11-28T10:35:45.929137+00:00",
+        "started_at": "2026-11-28T10:35:46.007120+00:00",
+        "finished_at": "2026-11-28T10:35:47.534444+00:00",
         "accepted_row_count": 0
       },
       {
-        "job_id": "f30f60bc-86a0-4287-b31e-da5079f3375e",
+        "job_id": "f491dfb1-da44-4200-b980-f3b2b1e5ca10",
         "state": "completed",
         "stage": "completed",
-        "result_ref": "f30f60bc-86a0-4287-b31e-da5079f3375e",
+        "result_ref": "f491dfb1-da44-4200-b980-f3b2b1e5ca10",
         "last_valid_result_ref": null,
         "error_code": null,
-        "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
-        "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
+        "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
+        "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
         "cancel_requested": false,
         "stopped": true,
         "completed": 25,
@@ -630,27 +632,27 @@
         },
         "last_valid_result": null,
         "retry_of": null,
-        "created_at": "2026-11-28T10:27:48.028482+00:00",
-        "started_at": "2026-11-28T10:27:51.081376+00:00",
-        "finished_at": "2026-11-28T10:27:52.263572+00:00",
+        "created_at": "2026-11-28T10:35:45.931129+00:00",
+        "started_at": "2026-11-28T10:35:48.327746+00:00",
+        "finished_at": "2026-11-28T10:35:49.438205+00:00",
         "accepted_row_count": 0
       },
       {
-        "job_id": "05a16831-b86d-4f17-815e-ee02c9220696",
+        "job_id": "287d2dfa-d0d2-4227-9b56-be04d1982abc",
         "state": "completed",
         "stage": "completed",
-        "result_ref": "05a16831-b86d-4f17-815e-ee02c9220696",
-        "last_valid_result_ref": "05a16831-b86d-4f17-815e-ee02c9220696",
+        "result_ref": "287d2dfa-d0d2-4227-9b56-be04d1982abc",
+        "last_valid_result_ref": "287d2dfa-d0d2-4227-9b56-be04d1982abc",
         "error_code": null,
-        "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
-        "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
+        "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
+        "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
         "cancel_requested": false,
         "stopped": true,
         "completed": 0,
         "total": null,
         "result": {
-          "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-          "plan_id": "plan-60a3249a9c3f",
+          "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+          "plan_id": "plan-b1e8a0682a06",
           "revision": 1,
           "status": "validated",
           "placements": [
@@ -3321,7 +3323,7 @@
           "issues": [],
           "evidence": {
             "engine": "cutting-engine/1.1-min-free-incumbent",
-            "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+            "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
             "python": "3.12.11",
             "machine": "AMD64",
             "cpu_count": 12,
@@ -3333,7 +3335,7 @@
             "greedy_runs": 24,
             "pool_patterns": 1174,
             "pool_full": false,
-            "elapsed_seconds": 0.867,
+            "elapsed_seconds": 0.744,
             "profile": "quick",
             "seed": 42,
             "workers": 1,
@@ -3344,11 +3346,11 @@
             "unconstrained_best_area_mm2": 104852350,
             "unconstrained_best_free_original": 62,
             "five_free_area_loss_mm2": 0,
-            "wall_seconds": 0.883,
+            "wall_seconds": 0.76,
             "stage": "greedy",
             "minimum_free_remnants_met": true
           },
-          "created_at": "2026-11-28T10:27:54.834696+00:00",
+          "created_at": "2026-11-28T10:35:51.564580+00:00",
           "source": "solver",
           "requested_locks": [],
           "inventory_version": "200:0",
@@ -5444,7 +5446,7 @@
             }
           ],
           "provenance": {
-            "plan_id": "plan-60a3249a9c3f",
+            "plan_id": "plan-b1e8a0682a06",
             "revision": 1,
             "config": {
               "profile": "quick",
@@ -5457,7 +5459,7 @@
             },
             "evidence": {
               "engine": "cutting-engine/1.1-min-free-incumbent",
-              "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+              "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
               "python": "3.12.11",
               "machine": "AMD64",
               "cpu_count": 12,
@@ -5469,7 +5471,7 @@
               "greedy_runs": 24,
               "pool_patterns": 1174,
               "pool_full": false,
-              "elapsed_seconds": 0.867,
+              "elapsed_seconds": 0.744,
               "profile": "quick",
               "seed": 42,
               "workers": 1,
@@ -5480,17 +5482,17 @@
               "unconstrained_best_area_mm2": 104852350,
               "unconstrained_best_free_original": 62,
               "five_free_area_loss_mm2": 0,
-              "wall_seconds": 0.883,
+              "wall_seconds": 0.76,
               "stage": "greedy",
               "minimum_free_remnants_met": true
             }
           },
           "sale_readiness": {
-            "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
+            "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
             "status": "ready_unchanged",
             "baseline": {
-              "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-              "plan_id": "plan-60a3249a9c3f",
+              "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+              "plan_id": "plan-b1e8a0682a06",
               "revision": 1,
               "status": "validated",
               "placements": [
@@ -8161,7 +8163,7 @@
               "issues": [],
               "evidence": {
                 "engine": "cutting-engine/1.1-min-free-incumbent",
-                "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+                "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
                 "python": "3.12.11",
                 "machine": "AMD64",
                 "cpu_count": 12,
@@ -8173,7 +8175,7 @@
                 "greedy_runs": 24,
                 "pool_patterns": 1174,
                 "pool_full": false,
-                "elapsed_seconds": 0.867,
+                "elapsed_seconds": 0.744,
                 "profile": "quick",
                 "seed": 42,
                 "workers": 1,
@@ -8184,11 +8186,11 @@
                 "unconstrained_best_area_mm2": 104852350,
                 "unconstrained_best_free_original": 62,
                 "five_free_area_loss_mm2": 0,
-                "wall_seconds": 0.883,
+                "wall_seconds": 0.76,
                 "stage": "greedy",
                 "minimum_free_remnants_met": true
               },
-              "created_at": "2026-11-28T10:27:54.834696+00:00",
+              "created_at": "2026-11-28T10:35:51.564580+00:00",
               "source": "solver",
               "requested_locks": [],
               "inventory_version": "200:0",
@@ -8440,9 +8442,9 @@
               "POST18484-R194"
             ],
             "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-            "input_fingerprint": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
-            "inventory_fingerprint": "eba7d354478ad0e757f4381fbcf90d8bce3c0250929b3962e5db3efc2ba95e6b",
-            "registry_fingerprint": "8909ef02297d2c308bec8a5390aa73681451ec5b21f0c89307c810de7a0464d1",
+            "input_fingerprint": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
+            "inventory_fingerprint": "a60efd792a9e8c6b0eb9f6733ce407f6cae8ec306f08f0afa268ab28dcab678f",
+            "registry_fingerprint": "3fb1397f542fbf698264497fb11aa1e78f8c75919542e5084bb2d8d20ac653bd",
             "minimum_free": 5,
             "delta_area_mm2": 0,
             "search_performed": false,
@@ -8450,18 +8452,18 @@
             "reason_ru": "План уже оставляет достаточно исходных кусков с подтвержденными соответствиями; пересчет не нужен."
           },
           "baseline_plan_ref": {
-            "plan_id": "plan-60a3249a9c3f",
+            "plan_id": "plan-b1e8a0682a06",
             "revision": 1
           },
           "selected_plan_ref": {
-            "plan_id": "plan-60a3249a9c3f",
+            "plan_id": "plan-b1e8a0682a06",
             "revision": 1
           },
           "alternative_plan_ref": null,
           "tradeoff_plan_ref": null
         },
         "last_valid_result": {
-          "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
+          "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
           "plan_id": "unsaved",
           "revision": 0,
           "status": "validated",
@@ -11133,7 +11135,7 @@
           "issues": [],
           "evidence": {
             "engine": "cutting-engine/1.1-min-free-incumbent",
-            "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+            "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
             "python": "3.12.11",
             "machine": "AMD64",
             "cpu_count": 12,
@@ -11144,7 +11146,7 @@
             "incumbents": 2,
             "pool_patterns": 141,
             "pool_full": false,
-            "elapsed_seconds": 0.615,
+            "elapsed_seconds": 0.553,
             "profile": "quick",
             "seed": 42,
             "workers": 1,
@@ -11155,7 +11157,7 @@
             "unconstrained_best_area_mm2": 104852350,
             "unconstrained_best_free_original": 62,
             "five_free_area_loss_mm2": 0,
-            "wall_seconds": 0.631,
+            "wall_seconds": 0.568,
             "stage": "greedy",
             "minimum_free_remnants_met": true
           },
@@ -11166,20 +11168,20 @@
           "inventory_current": null
         },
         "retry_of": null,
-        "created_at": "2026-11-28T10:27:48.035493+00:00",
-        "started_at": "2026-11-28T10:27:52.414816+00:00",
-        "finished_at": "2026-11-28T10:27:54.913774+00:00",
+        "created_at": "2026-11-28T10:35:45.937117+00:00",
+        "started_at": "2026-11-28T10:35:49.573514+00:00",
+        "finished_at": "2026-11-28T10:35:51.636195+00:00",
         "accepted_row_count": 0
       },
       {
-        "job_id": "0031f3a1-c254-41c0-b92b-7d25bb895143",
+        "job_id": "62e02663-3754-4251-bb84-6b4d08ab24c6",
         "state": "completed",
         "stage": "completed",
-        "result_ref": "0031f3a1-c254-41c0-b92b-7d25bb895143",
+        "result_ref": "62e02663-3754-4251-bb84-6b4d08ab24c6",
         "last_valid_result_ref": null,
         "error_code": null,
-        "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
-        "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
+        "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
+        "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
         "cancel_requested": false,
         "stopped": true,
         "completed": 17,
@@ -11563,30 +11565,30 @@
         },
         "last_valid_result": null,
         "retry_of": null,
-        "created_at": "2026-11-28T10:27:48.040492+00:00",
-        "started_at": "2026-11-28T10:27:48.141487+00:00",
-        "finished_at": "2026-11-28T10:27:50.877787+00:00",
+        "created_at": "2026-11-28T10:35:45.942126+00:00",
+        "started_at": "2026-11-28T10:35:46.008118+00:00",
+        "finished_at": "2026-11-28T10:35:48.125652+00:00",
         "accepted_row_count": 18
       },
       {
-        "job_id": "583c0d07-7d9d-4046-a181-b72a76bf17c1",
+        "job_id": "85fe917b-c92b-4298-8f6e-aed9c65f077d",
         "state": "completed",
         "stage": "completed",
-        "result_ref": "583c0d07-7d9d-4046-a181-b72a76bf17c1",
+        "result_ref": "85fe917b-c92b-4298-8f6e-aed9c65f077d",
         "last_valid_result_ref": null,
         "error_code": null,
-        "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
-        "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
+        "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
+        "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
         "cancel_requested": false,
         "stopped": true,
         "completed": 0,
         "total": 5,
         "result": {
-          "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-          "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
+          "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+          "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
           "cutting_result": {
-            "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-            "plan_id": "plan-60a3249a9c3f",
+            "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+            "plan_id": "plan-b1e8a0682a06",
             "revision": 1,
             "status": "validated",
             "placements": [
@@ -14257,7 +14259,7 @@
             "issues": [],
             "evidence": {
               "engine": "cutting-engine/1.1-min-free-incumbent",
-              "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+              "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
               "python": "3.12.11",
               "machine": "AMD64",
               "cpu_count": 12,
@@ -14269,7 +14271,7 @@
               "greedy_runs": 24,
               "pool_patterns": 1174,
               "pool_full": false,
-              "elapsed_seconds": 0.867,
+              "elapsed_seconds": 0.744,
               "profile": "quick",
               "seed": 42,
               "workers": 1,
@@ -14280,11 +14282,11 @@
               "unconstrained_best_area_mm2": 104852350,
               "unconstrained_best_free_original": 62,
               "five_free_area_loss_mm2": 0,
-              "wall_seconds": 0.883,
+              "wall_seconds": 0.76,
               "stage": "greedy",
               "minimum_free_remnants_met": true
             },
-            "created_at": "2026-11-28T10:27:54.834696+00:00",
+            "created_at": "2026-11-28T10:35:51.564580+00:00",
             "source": "solver",
             "requested_locks": [],
             "inventory_version": "200:0",
@@ -16380,7 +16382,7 @@
               }
             ],
             "provenance": {
-              "plan_id": "plan-60a3249a9c3f",
+              "plan_id": "plan-b1e8a0682a06",
               "revision": 1,
               "config": {
                 "profile": "quick",
@@ -16393,7 +16395,7 @@
               },
               "evidence": {
                 "engine": "cutting-engine/1.1-min-free-incumbent",
-                "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+                "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
                 "python": "3.12.11",
                 "machine": "AMD64",
                 "cpu_count": 12,
@@ -16405,7 +16407,7 @@
                 "greedy_runs": 24,
                 "pool_patterns": 1174,
                 "pool_full": false,
-                "elapsed_seconds": 0.867,
+                "elapsed_seconds": 0.744,
                 "profile": "quick",
                 "seed": 42,
                 "workers": 1,
@@ -16416,17 +16418,17 @@
                 "unconstrained_best_area_mm2": 104852350,
                 "unconstrained_best_free_original": 62,
                 "five_free_area_loss_mm2": 0,
-                "wall_seconds": 0.883,
+                "wall_seconds": 0.76,
                 "stage": "greedy",
                 "minimum_free_remnants_met": true
               }
             },
             "sale_readiness": {
-              "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
+              "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
               "status": "ready_unchanged",
               "baseline": {
-                "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-                "plan_id": "plan-60a3249a9c3f",
+                "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+                "plan_id": "plan-b1e8a0682a06",
                 "revision": 1,
                 "status": "validated",
                 "placements": [
@@ -19097,7 +19099,7 @@
                 "issues": [],
                 "evidence": {
                   "engine": "cutting-engine/1.1-min-free-incumbent",
-                  "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+                  "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
                   "python": "3.12.11",
                   "machine": "AMD64",
                   "cpu_count": 12,
@@ -19109,7 +19111,7 @@
                   "greedy_runs": 24,
                   "pool_patterns": 1174,
                   "pool_full": false,
-                  "elapsed_seconds": 0.867,
+                  "elapsed_seconds": 0.744,
                   "profile": "quick",
                   "seed": 42,
                   "workers": 1,
@@ -19120,11 +19122,11 @@
                   "unconstrained_best_area_mm2": 104852350,
                   "unconstrained_best_free_original": 62,
                   "five_free_area_loss_mm2": 0,
-                  "wall_seconds": 0.883,
+                  "wall_seconds": 0.76,
                   "stage": "greedy",
                   "minimum_free_remnants_met": true
                 },
-                "created_at": "2026-11-28T10:27:54.834696+00:00",
+                "created_at": "2026-11-28T10:35:51.564580+00:00",
                 "source": "solver",
                 "requested_locks": [],
                 "inventory_version": "200:0",
@@ -19376,9 +19378,9 @@
                 "POST18484-R194"
               ],
               "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-              "input_fingerprint": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
-              "inventory_fingerprint": "eba7d354478ad0e757f4381fbcf90d8bce3c0250929b3962e5db3efc2ba95e6b",
-              "registry_fingerprint": "8909ef02297d2c308bec8a5390aa73681451ec5b21f0c89307c810de7a0464d1",
+              "input_fingerprint": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
+              "inventory_fingerprint": "a60efd792a9e8c6b0eb9f6733ce407f6cae8ec306f08f0afa268ab28dcab678f",
+              "registry_fingerprint": "3fb1397f542fbf698264497fb11aa1e78f8c75919542e5084bb2d8d20ac653bd",
               "minimum_free": 5,
               "delta_area_mm2": 0,
               "search_performed": false,
@@ -19386,25 +19388,25 @@
               "reason_ru": "План уже оставляет достаточно исходных кусков с подтвержденными соответствиями; пересчет не нужен."
             },
             "baseline_plan_ref": {
-              "plan_id": "plan-60a3249a9c3f",
+              "plan_id": "plan-b1e8a0682a06",
               "revision": 1
             },
             "selected_plan_ref": {
-              "plan_id": "plan-60a3249a9c3f",
+              "plan_id": "plan-b1e8a0682a06",
               "revision": 1
             },
             "alternative_plan_ref": null,
             "tradeoff_plan_ref": null
           },
           "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "cutting_job_id": "05a16831-b86d-4f17-815e-ee02c9220696",
+          "cutting_job_id": "287d2dfa-d0d2-4227-9b56-be04d1982abc",
           "run_budget": {
             "version": 0,
             "total_seconds": 120,
             "export_reserve_seconds": 30,
-            "started_at": "2026-11-28T10:27:47.959478+00:00",
-            "deadline_utc": "2026-11-28T10:29:47.959478+00:00",
-            "work_deadline_utc": "2026-11-28T10:29:17.959478+00:00",
+            "started_at": "2026-11-28T10:35:45.870736+00:00",
+            "deadline_utc": "2026-11-28T10:37:45.870736+00:00",
+            "work_deadline_utc": "2026-11-28T10:37:15.870736+00:00",
             "requested_solver": {
               "profile": "extended",
               "seed": 42,
@@ -19417,18 +19419,18 @@
             "phase": "baseline",
             "export_status": "not_started"
           },
-          "checkpoint_lineage": "583c0d07-7d9d-4046-a181-b72a76bf17c1",
-          "attempt_id": "dcfa0767-fdaf-48b7-838e-3f3f72c07d27",
+          "checkpoint_lineage": "85fe917b-c92b-4298-8f6e-aed9c65f077d",
+          "attempt_id": "492ea11f-b8f1-4b4f-811e-d635975bd3a2",
           "accepted_rows": [],
           "accepted_row_count": 0,
-          "plan_id": "plan-60a3249a9c3f",
+          "plan_id": "plan-b1e8a0682a06",
           "plan_revision": 1,
           "card_ids": [
-            "81264fe8-73e4-46d1-b4d6-ec4d5cc1c2ef",
-            "37189bf1-01ab-427f-8cbd-23ecf16c6d79",
-            "81495eef-15cb-4d38-bf4c-efa139eb53fb",
-            "765a2bc7-ed71-45f2-916c-b785bf071029",
-            "a712da1b-cc32-4b07-96b5-742aa8353bb3"
+            "6a39d00a-d35b-4572-9f0a-c86be1955327",
+            "d428a035-6817-45e2-8d4f-c2e73c6f8443",
+            "9591f822-8e35-46a5-a81c-d058fd506232",
+            "e8a49104-5d57-42ad-b647-4b058ee583d6",
+            "0b2c823d-6bba-4cc6-b9a5-f81aee8bf5e2"
           ],
           "provenance": {
             "matching_policy": "evidence-v1"
@@ -19436,9 +19438,9 @@
         },
         "last_valid_result": null,
         "retry_of": null,
-        "created_at": "2026-11-28T10:27:55.069698+00:00",
-        "started_at": "2026-11-28T10:27:55.094805+00:00",
-        "finished_at": "2026-11-28T10:27:56.553760+00:00",
+        "created_at": "2026-11-28T10:35:51.749087+00:00",
+        "started_at": "2026-11-28T10:35:51.771079+00:00",
+        "finished_at": "2026-11-28T10:35:52.966474+00:00",
         "accepted_row_count": 0
       }
     ],
@@ -19448,9 +19450,9 @@
       "version": 0,
       "total_seconds": 120,
       "export_reserve_seconds": 30,
-      "started_at": "2026-11-28T10:27:47.959478+00:00",
-      "deadline_utc": "2026-11-28T10:29:47.959478+00:00",
-      "work_deadline_utc": "2026-11-28T10:29:17.959478+00:00",
+      "started_at": "2026-11-28T10:35:45.870736+00:00",
+      "deadline_utc": "2026-11-28T10:37:45.870736+00:00",
+      "work_deadline_utc": "2026-11-28T10:37:15.870736+00:00",
       "requested_solver": {
         "profile": "extended",
         "seed": 42,
@@ -19460,27 +19462,29 @@
         "fixed_work": false,
         "max_pool_patterns": 80000
       },
-      "phase": "baseline",
+      "phase": "improving",
       "export_status": "ready",
-      "export_candidate_key": "4fe09368a4177852da0c5de25168ed2530ef59760430bf68a4779aef3d1101f0",
-      "export_attempt_id": "e040a63f-b896-4298-a13e-1cc510f241f8",
-      "baseline_accepted_at": "2026-11-28T10:27:57.344720+00:00",
-      "remaining_seconds": 110.489754,
-      "work_remaining_seconds": 80.489754,
+      "export_candidate_key": "67876a34dd9b498894061d5ec78e8aea06161787f34a8a827d791e8683e13bd6",
+      "export_attempt_id": "dbc83394-f618-4b76-9649-4b30b0992c7a",
+      "baseline_accepted_at": "2026-11-28T10:35:53.560987+00:00",
+      "improvement_job_id": "eece681e-9236-4c5c-b35d-ad8d7e7a1c9d",
+      "baseline_cutting_job_id": "287d2dfa-d0d2-4227-9b56-be04d1982abc",
+      "remaining_seconds": 112.032498,
+      "work_remaining_seconds": 82.032498,
       "deadline_met": true
     }
   },
   "export": {
-    "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
+    "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
     "status": "ready",
     "files": {
-      "solution.csv": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/solution.csv",
-      "answers.csv": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/answers.csv",
-      "picks.csv": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/picks.csv",
-      "verdicts.csv": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/verdicts.csv",
-      "sale_cards.csv": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/sale_cards.csv",
-      "buyers_top50.csv": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/buyers_top50.csv",
-      "manifest.json": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/manifest.json"
+      "solution.csv": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/solution.csv",
+      "answers.csv": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/answers.csv",
+      "picks.csv": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/picks.csv",
+      "verdicts.csv": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/verdicts.csv",
+      "sale_cards.csv": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/sale_cards.csv",
+      "buyers_top50.csv": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/buyers_top50.csv",
+      "manifest.json": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/manifest.json"
     },
     "errors": []
   },
@@ -19488,43 +19492,43 @@
     "solution.csv": {
       "sha256": "cd62c964f5513e9da4330777958156828f3754f62ef7ca3deb43f7c4995a1a40",
       "bytes": 9560,
-      "uri": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/solution.csv",
+      "uri": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/solution.csv",
       "rows": 298
     },
     "answers.csv": {
       "sha256": "dbc8c1ed3ce355de73bb969c6700fbe4a816b82dbc0876eca25320a893707f7e",
       "bytes": 4780,
-      "uri": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/answers.csv",
+      "uri": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/answers.csv",
       "rows": 18
     },
     "picks.csv": {
       "sha256": "58a6632affe2c8c1a2f71117ac9368f4b7e9f213dc2ad6370ba30b3e1fbfeb5f",
       "bytes": 433,
-      "uri": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/picks.csv",
+      "uri": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/picks.csv",
       "rows": 25
     },
     "verdicts.csv": {
       "sha256": "42f61db104cee04369116c326d89d389167222111d377f6df9857a5adf40fef1",
       "bytes": 194,
-      "uri": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/verdicts.csv",
+      "uri": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/verdicts.csv",
       "rows": 8
     },
     "sale_cards.csv": {
       "sha256": "9c110dc3b380185094dbc59402694ed05650694123850a374a76047b802a729f",
       "bytes": 2909,
-      "uri": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/sale_cards.csv",
+      "uri": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/sale_cards.csv",
       "rows": 5
     },
     "buyers_top50.csv": {
       "sha256": "e031cadcf80246d7917216f91f76d70d8568ce916b54b3fe3ef4ae890d57ce55",
       "bytes": 22129,
-      "uri": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/buyers_top50.csv",
+      "uri": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/buyers_top50.csv",
       "rows": 50
     },
     "manifest.json": {
-      "sha256": "6e45916031e8b0e6438b6189432e34775ad8f3b48cb87cad91ede8da4bf36d8d",
-      "bytes": 27061,
-      "uri": "/api/v1/runs/f1a32e9d-ab47-4767-92ef-19e929b8f6db/files/e30f4bed-64a5-49f8-8b1f-ba908f678cea/manifest.json"
+      "sha256": "e4cb7086d60918c0b42b9c0618a3f48160cb9af007cc0807746ca5acd105c62e",
+      "bytes": 27060,
+      "uri": "/api/v1/runs/19c6804e-cfff-4cd0-9c48-748167936253/files/d6acf5ef-2e71-44f6-8aa7-a739532f9bd8/manifest.json"
     }
   },
   "download_contract_checks": {
@@ -19536,15 +19540,15 @@
     "pinned_manifest_file_hashes": true
   },
   "accepted_passport": {
-    "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-    "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
+    "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+    "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
     "view": "accepted",
-    "export_id": "e30f4bed-64a5-49f8-8b1f-ba908f678cea",
+    "export_id": "d6acf5ef-2e71-44f6-8aa7-a739532f9bd8",
     "status": "ready",
     "manifest": {
-      "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
-      "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-      "source_dataset_id": "39dc15d4-cfae-44af-a0b3-0f6c23268054",
+      "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
+      "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+      "source_dataset_id": "4d30c389-71db-4a38-b9e1-413c2667391f",
       "source_hashes": {
         "materials": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
         "stock": "af944d2f464ab25aa90465d09bd72fdffc36cbf1fa5a26d21329892f37fbda19",
@@ -19558,8 +19562,8 @@
       "schema_version": "0007_intelligence_reviews",
       "build": "0.1.0",
       "build_info": {
-        "commit": "4ee5812a65157acd7aa504df3d994497f608e29a",
-        "source_digest": "fbd7eaad72cfffa0d7f59292ccc214750a2b838f68e599d1331963649b765b8e",
+        "commit": "fc4cca439ced3cbf644af88c186c90e96fc66c86",
+        "source_digest": "6ba6600a50230689379b35c1c0799808a2d8f599202598945af152d8a8d88bad",
         "frozen": false
       },
       "config_version": "post-changed-input-http-v1",
@@ -19572,7 +19576,7 @@
         "ortools": "9.15.6755"
       },
       "crm_policy": "reference-v1",
-      "created_at": "2026-11-28T10:27:47.959478+00:00",
+      "created_at": "2026-11-28T10:35:45.870736+00:00",
       "modules": [
         "cutting",
         "assistant",
@@ -19640,9 +19644,9 @@
         "version": 0,
         "total_seconds": 120,
         "export_reserve_seconds": 30,
-        "started_at": "2026-11-28T10:27:47.959478+00:00",
-        "deadline_utc": "2026-11-28T10:29:47.959478+00:00",
-        "work_deadline_utc": "2026-11-28T10:29:17.959478+00:00",
+        "started_at": "2026-11-28T10:35:45.870736+00:00",
+        "deadline_utc": "2026-11-28T10:37:45.870736+00:00",
+        "work_deadline_utc": "2026-11-28T10:37:15.870736+00:00",
         "requested_solver": {
           "profile": "extended",
           "seed": 42,
@@ -19654,15 +19658,15 @@
         },
         "phase": "improving",
         "export_status": "ready",
-        "export_candidate_key": "4fe09368a4177852da0c5de25168ed2530ef59760430bf68a4779aef3d1101f0",
-        "export_attempt_id": "e040a63f-b896-4298-a13e-1cc510f241f8",
-        "baseline_accepted_at": "2026-11-28T10:27:57.344720+00:00",
-        "improvement_job_id": "ecbd9118-b8b0-42d9-b39e-df80bf78b8c1",
-        "baseline_cutting_job_id": "05a16831-b86d-4f17-815e-ee02c9220696"
+        "export_candidate_key": "67876a34dd9b498894061d5ec78e8aea06161787f34a8a827d791e8683e13bd6",
+        "export_attempt_id": "dbc83394-f618-4b76-9649-4b30b0992c7a",
+        "baseline_accepted_at": "2026-11-28T10:35:53.560987+00:00",
+        "improvement_job_id": "eece681e-9236-4c5c-b35d-ad8d7e7a1c9d",
+        "baseline_cutting_job_id": "287d2dfa-d0d2-4227-9b56-be04d1982abc"
       },
       "sale_readiness_enabled": true,
-      "last_export_id": "98688982-fb6a-4d78-9da8-d4ab5bce1226",
-      "accepted_export_id": "e30f4bed-64a5-49f8-8b1f-ba908f678cea",
+      "last_export_id": "04f0e236-880f-49bc-8075-3e73c13a2b87",
+      "accepted_export_id": "d6acf5ef-2e71-44f6-8aa7-a739532f9bd8",
       "accepted_files": {
         "solution.csv": "cd62c964f5513e9da4330777958156828f3754f62ef7ca3deb43f7c4995a1a40",
         "answers.csv": "dbc8c1ed3ce355de73bb969c6700fbe4a816b82dbc0876eca25320a893707f7e",
@@ -19673,48 +19677,48 @@
       },
       "accepted_result_refs": {
         "quality": {
-          "job_id": "0f4bad0f-79c2-4864-a562-4da90834b2c5",
+          "job_id": "ad30aefc-9c8e-4b1f-8f64-46a2471a92f0",
           "state": "completed"
         },
         "crm": {
-          "job_id": "f30f60bc-86a0-4287-b31e-da5079f3375e",
+          "job_id": "f491dfb1-da44-4200-b980-f3b2b1e5ca10",
           "state": "completed"
         },
         "cutting": {
-          "job_id": "05a16831-b86d-4f17-815e-ee02c9220696",
+          "job_id": "287d2dfa-d0d2-4227-9b56-be04d1982abc",
           "state": "completed"
         },
         "assistant": {
-          "job_id": "0031f3a1-c254-41c0-b92b-7d25bb895143",
+          "job_id": "62e02663-3754-4251-bb84-6b4d08ab24c6",
           "state": "completed"
         },
         "cards": {
-          "job_id": "583c0d07-7d9d-4046-a181-b72a76bf17c1",
+          "job_id": "85fe917b-c92b-4298-8f6e-aed9c65f077d",
           "state": "completed"
         }
       },
-      "export_id": "e30f4bed-64a5-49f8-8b1f-ba908f678cea",
+      "export_id": "d6acf5ef-2e71-44f6-8aa7-a739532f9bd8",
       "status": "ready",
       "errors": [],
       "result_refs": {
         "quality": {
-          "job_id": "0f4bad0f-79c2-4864-a562-4da90834b2c5",
+          "job_id": "ad30aefc-9c8e-4b1f-8f64-46a2471a92f0",
           "state": "completed"
         },
         "crm": {
-          "job_id": "f30f60bc-86a0-4287-b31e-da5079f3375e",
+          "job_id": "f491dfb1-da44-4200-b980-f3b2b1e5ca10",
           "state": "completed"
         },
         "cutting": {
-          "job_id": "05a16831-b86d-4f17-815e-ee02c9220696",
+          "job_id": "287d2dfa-d0d2-4227-9b56-be04d1982abc",
           "state": "completed"
         },
         "assistant": {
-          "job_id": "0031f3a1-c254-41c0-b92b-7d25bb895143",
+          "job_id": "62e02663-3754-4251-bb84-6b4d08ab24c6",
           "state": "completed"
         },
         "cards": {
-          "job_id": "583c0d07-7d9d-4046-a181-b72a76bf17c1",
+          "job_id": "85fe917b-c92b-4298-8f6e-aed9c65f077d",
           "state": "completed"
         }
       },
@@ -19938,7 +19942,7 @@
           "model_hash": null
         },
         "cutting": {
-          "plan_id": "plan-60a3249a9c3f",
+          "plan_id": "plan-b1e8a0682a06",
           "revision": 1,
           "config": {
             "profile": "quick",
@@ -19951,7 +19955,7 @@
           },
           "evidence": {
             "engine": "cutting-engine/1.1-min-free-incumbent",
-            "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+            "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
             "python": "3.12.11",
             "machine": "AMD64",
             "cpu_count": 12,
@@ -19963,7 +19967,7 @@
             "greedy_runs": 24,
             "pool_patterns": 1174,
             "pool_full": false,
-            "elapsed_seconds": 0.867,
+            "elapsed_seconds": 0.744,
             "profile": "quick",
             "seed": 42,
             "workers": 1,
@@ -19974,7 +19978,7 @@
             "unconstrained_best_area_mm2": 104852350,
             "unconstrained_best_free_original": 62,
             "five_free_area_loss_mm2": 0,
-            "wall_seconds": 0.883,
+            "wall_seconds": 0.76,
             "stage": "greedy",
             "minimum_free_remnants_met": true
           }
@@ -20306,21 +20310,21 @@
     "modules": [
       {
         "module": "quality",
-        "job_id": "0f4bad0f-79c2-4864-a562-4da90834b2c5",
+        "job_id": "ad30aefc-9c8e-4b1f-8f64-46a2471a92f0",
         "state": "completed",
         "stage": "completed",
-        "started_at": "2026-11-28T10:27:48.140476+00:00",
-        "finished_at": "2026-11-28T10:27:50.263163+00:00",
+        "started_at": "2026-11-28T10:35:46.007120+00:00",
+        "finished_at": "2026-11-28T10:35:47.534444+00:00",
         "error_code": null,
         "stop_reason": null,
         "metrics": null,
         "history": [
           {
             "action": "job.stopped",
-            "created_at": "2026-11-28T10:27:50.264158+00:00",
+            "created_at": "2026-11-28T10:35:47.535445+00:00",
             "state": "completed",
             "error_code": null,
-            "elapsed_seconds": 2.094000000040978,
+            "elapsed_seconds": 1.5,
             "elapsed_basis": "coordinator_monotonic_since_dispatch"
           }
         ],
@@ -20541,21 +20545,21 @@
       },
       {
         "module": "crm",
-        "job_id": "f30f60bc-86a0-4287-b31e-da5079f3375e",
+        "job_id": "f491dfb1-da44-4200-b980-f3b2b1e5ca10",
         "state": "completed",
         "stage": "completed",
-        "started_at": "2026-11-28T10:27:51.081376+00:00",
-        "finished_at": "2026-11-28T10:27:52.263572+00:00",
+        "started_at": "2026-11-28T10:35:48.327746+00:00",
+        "finished_at": "2026-11-28T10:35:49.438205+00:00",
         "error_code": null,
         "stop_reason": null,
         "metrics": null,
         "history": [
           {
             "action": "job.stopped",
-            "created_at": "2026-11-28T10:27:52.264585+00:00",
+            "created_at": "2026-11-28T10:35:49.438205+00:00",
             "state": "completed",
             "error_code": null,
-            "elapsed_seconds": 1.1410000000614673,
+            "elapsed_seconds": 1.0780000000959262,
             "elapsed_basis": "coordinator_monotonic_since_dispatch"
           }
         ],
@@ -20568,11 +20572,11 @@
       },
       {
         "module": "cutting",
-        "job_id": "05a16831-b86d-4f17-815e-ee02c9220696",
+        "job_id": "287d2dfa-d0d2-4227-9b56-be04d1982abc",
         "state": "completed",
         "stage": "completed",
-        "started_at": "2026-11-28T10:27:52.414816+00:00",
-        "finished_at": "2026-11-28T10:27:54.913774+00:00",
+        "started_at": "2026-11-28T10:35:49.573514+00:00",
+        "finished_at": "2026-11-28T10:35:51.636195+00:00",
         "error_code": null,
         "stop_reason": "completed",
         "metrics": {
@@ -20780,8 +20784,8 @@
         "history": [
           {
             "action": "job.valid_incumbent",
-            "created_at": "2026-11-28T10:27:53.771722+00:00",
-            "result_digest": "62cc2108d342fbf419776c926a38ca3d1ebb12c3297ae4a9c7d21ee3c5f3c9a4",
+            "created_at": "2026-11-28T10:35:50.833278+00:00",
+            "result_digest": "aeccfae40ed2ba84d70381d53deb3da257e479bb03f67d1b32dd74f9fb0b5364",
             "metrics": {
               "covered_area_mm2": 0,
               "total_area_mm2": 187877140,
@@ -20799,13 +20803,13 @@
               "score": 0.0,
               "coverage_percent": "0E-7"
             },
-            "elapsed_seconds": 1.265999999945052,
+            "elapsed_seconds": 1.2349999999860302,
             "elapsed_basis": "coordinator_monotonic_since_dispatch"
           },
           {
             "action": "job.valid_incumbent",
-            "created_at": "2026-11-28T10:27:54.455712+00:00",
-            "result_digest": "bf608e05cf3b9f4752a34ac72b1f7d6fc7251797cfcb694e30fa6d00de184482",
+            "created_at": "2026-11-28T10:35:51.297488+00:00",
+            "result_digest": "0d3ee280f026d7e5fb8f0d37d83c0d34eed0bb992f49e6bcc5e9719dd27a8da0",
             "metrics": {
               "covered_area_mm2": 104852350,
               "total_area_mm2": 187877140,
@@ -20823,21 +20827,21 @@
               "score": 7.745331,
               "coverage_percent": "55.8089984"
             },
-            "elapsed_seconds": 1.937999999965541,
+            "elapsed_seconds": 1.702999999979511,
             "elapsed_basis": "coordinator_monotonic_since_dispatch"
           },
           {
             "action": "job.stopped",
-            "created_at": "2026-11-28T10:27:54.913774+00:00",
+            "created_at": "2026-11-28T10:35:51.636195+00:00",
             "state": "completed",
             "error_code": null,
-            "elapsed_seconds": 2.405999999959022,
+            "elapsed_seconds": 2.047000000020489,
             "elapsed_basis": "coordinator_monotonic_since_dispatch"
           }
         ],
         "history_available": true,
         "provenance": {
-          "plan_id": "plan-60a3249a9c3f",
+          "plan_id": "plan-b1e8a0682a06",
           "revision": 1,
           "config": {
             "profile": "quick",
@@ -20850,7 +20854,7 @@
           },
           "evidence": {
             "engine": "cutting-engine/1.1-min-free-incumbent",
-            "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+            "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
             "python": "3.12.11",
             "machine": "AMD64",
             "cpu_count": 12,
@@ -20862,7 +20866,7 @@
             "greedy_runs": 24,
             "pool_patterns": 1174,
             "pool_full": false,
-            "elapsed_seconds": 0.867,
+            "elapsed_seconds": 0.744,
             "profile": "quick",
             "seed": 42,
             "workers": 1,
@@ -20873,7 +20877,7 @@
             "unconstrained_best_area_mm2": 104852350,
             "unconstrained_best_free_original": 62,
             "five_free_area_loss_mm2": 0,
-            "wall_seconds": 0.883,
+            "wall_seconds": 0.76,
             "stage": "greedy",
             "minimum_free_remnants_met": true
           }
@@ -20881,21 +20885,21 @@
       },
       {
         "module": "assistant",
-        "job_id": "0031f3a1-c254-41c0-b92b-7d25bb895143",
+        "job_id": "62e02663-3754-4251-bb84-6b4d08ab24c6",
         "state": "completed",
         "stage": "completed",
-        "started_at": "2026-11-28T10:27:48.141487+00:00",
-        "finished_at": "2026-11-28T10:27:50.877787+00:00",
+        "started_at": "2026-11-28T10:35:46.008118+00:00",
+        "finished_at": "2026-11-28T10:35:48.125652+00:00",
         "error_code": null,
         "stop_reason": null,
         "metrics": null,
         "history": [
           {
             "action": "job.stopped",
-            "created_at": "2026-11-28T10:27:50.877787+00:00",
+            "created_at": "2026-11-28T10:35:48.125652+00:00",
             "state": "completed",
             "error_code": null,
-            "elapsed_seconds": 2.6089999999385327,
+            "elapsed_seconds": 2.030999999959022,
             "elapsed_basis": "coordinator_monotonic_since_dispatch"
           }
         ],
@@ -21204,21 +21208,21 @@
       },
       {
         "module": "cards",
-        "job_id": "583c0d07-7d9d-4046-a181-b72a76bf17c1",
+        "job_id": "85fe917b-c92b-4298-8f6e-aed9c65f077d",
         "state": "completed",
         "stage": "completed",
-        "started_at": "2026-11-28T10:27:55.094805+00:00",
-        "finished_at": "2026-11-28T10:27:56.553760+00:00",
+        "started_at": "2026-11-28T10:35:51.771079+00:00",
+        "finished_at": "2026-11-28T10:35:52.966474+00:00",
         "error_code": null,
         "stop_reason": null,
         "metrics": null,
         "history": [
           {
             "action": "job.stopped",
-            "created_at": "2026-11-28T10:27:56.554761+00:00",
+            "created_at": "2026-11-28T10:35:52.966474+00:00",
             "state": "completed",
             "error_code": null,
-            "elapsed_seconds": 1.4380000000819564,
+            "elapsed_seconds": 1.187000000034459,
             "elapsed_basis": "coordinator_monotonic_since_dispatch"
           }
         ],
@@ -21233,430 +21237,6 @@
   },
   "five_cards_three_matches": [
     {
-      "remnant_id": "POST18484-R183",
-      "title": "Стекло 8 мм прозрачное, 410×400 мм",
-      "price_tg": "984.00",
-      "description": "Целый исходный остаток 410×400 мм, без отмеченного дефекта. Место: Стеллаж E, ячейка 23. Возможное применение: вставки и элементы интерьера после проверки размеров. Совместимость уточняет менеджер.",
-      "target_buyer": "CATRINE (группа компаний)",
-      "top3_buyers": [
-        "CATRINE (группа компаний)",
-        "Astana MG — мебель на заказ",
-        "DalaSK (astana-mebel.kz)"
-      ],
-      "card_id": "37189bf1-01ab-427f-8cbd-23ecf16c6d79",
-      "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-      "plan_id": "plan-60a3249a9c3f",
-      "plan_revision": 1,
-      "remnant_version": 0,
-      "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-      "version": 0,
-      "status": "ready",
-      "factor": "0.50",
-      "top3_buyer_ids": [
-        "ef19564ae326a63ccca1df2b",
-        "8479025f7b8409d8b4a14853",
-        "c3d6c521904f64f382191e8d"
-      ],
-      "assumptions": "Коэффициент - проектное допущение, не рыночная оценка и не факт продажи",
-      "buyer_matches": [
-        {
-          "buyer_id": "ef19564ae326a63ccca1df2b",
-          "name": "CATRINE (группа компаний)",
-          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "remnant_id": "POST18484-R183",
-          "remnant_version": 0,
-          "material_id": "clear-8",
-          "dimensions": {
-            "length_mm": 410,
-            "width_mm": 400
-          },
-          "application": "мебельная вставка",
-          "activity": "Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
-          "source_url": "https://catrine.kz/",
-          "checked_at": "2026-11-28",
-          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-          "constraints": [
-            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-            "Нет подтверждения интереса организации или факта покупки.",
-            "Подрезка требует отдельной проверки и расчета C2."
-          ],
-          "explanation": "Стекло 8 мм прозрачное, 410×400 мм: предполагается мебельная вставка. Публичная деятельность: Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-          "interest_confirmed": false,
-          "policy_version": "evidence-v1"
-        },
-        {
-          "buyer_id": "8479025f7b8409d8b4a14853",
-          "name": "Astana MG — мебель на заказ",
-          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "remnant_id": "POST18484-R183",
-          "remnant_version": 0,
-          "material_id": "clear-8",
-          "dimensions": {
-            "length_mm": 410,
-            "width_mm": 400
-          },
-          "application": "мебельная вставка",
-          "activity": "Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.",
-          "source_url": "https://astanamg.kz/",
-          "checked_at": "2026-11-28",
-          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-          "constraints": [
-            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-            "Нет подтверждения интереса организации или факта покупки.",
-            "Подрезка требует отдельной проверки и расчета C2."
-          ],
-          "explanation": "Стекло 8 мм прозрачное, 410×400 мм: предполагается мебельная вставка. Публичная деятельность: Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-          "interest_confirmed": false,
-          "policy_version": "evidence-v1"
-        },
-        {
-          "buyer_id": "c3d6c521904f64f382191e8d",
-          "name": "DalaSK (astana-mebel.kz)",
-          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "remnant_id": "POST18484-R183",
-          "remnant_version": 0,
-          "material_id": "clear-8",
-          "dimensions": {
-            "length_mm": 410,
-            "width_mm": 400
-          },
-          "application": "мебельная вставка",
-          "activity": "DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.",
-          "source_url": "https://astana-mebel.kz/",
-          "checked_at": "2026-11-28",
-          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-          "constraints": [
-            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-            "Нет подтверждения интереса организации или факта покупки.",
-            "Подрезка требует отдельной проверки и расчета C2."
-          ],
-          "explanation": "Стекло 8 мм прозрачное, 410×400 мм: предполагается мебельная вставка. Публичная деятельность: DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-          "interest_confirmed": false,
-          "policy_version": "evidence-v1"
-        }
-      ],
-      "matching_policy": "evidence-v1",
-      "match_snapshot_hash": "a77e193692ac88dcb6aa9ccfeae255a8f7d860ed62038ef1834f97f6d3f62a34"
-    },
-    {
-      "remnant_id": "POST18484-R166",
-      "title": "Зеркало 4 мм, 360×290 мм",
-      "price_tg": "495.90",
-      "description": "Целый исходный остаток 360×290 мм, без отмеченного дефекта. Место: Стеллаж E, ячейка 6. Возможное применение: вставки и элементы интерьера после проверки размеров. Совместимость уточняет менеджер.",
-      "target_buyer": "CATRINE (группа компаний)",
-      "top3_buyers": [
-        "CATRINE (группа компаний)",
-        "Astana MG — мебель на заказ",
-        "DalaSK (astana-mebel.kz)"
-      ],
-      "card_id": "765a2bc7-ed71-45f2-916c-b785bf071029",
-      "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-      "plan_id": "plan-60a3249a9c3f",
-      "plan_revision": 1,
-      "remnant_version": 0,
-      "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-      "version": 0,
-      "status": "ready",
-      "factor": "0.50",
-      "top3_buyer_ids": [
-        "ef19564ae326a63ccca1df2b",
-        "8479025f7b8409d8b4a14853",
-        "c3d6c521904f64f382191e8d"
-      ],
-      "assumptions": "Коэффициент - проектное допущение, не рыночная оценка и не факт продажи",
-      "buyer_matches": [
-        {
-          "buyer_id": "ef19564ae326a63ccca1df2b",
-          "name": "CATRINE (группа компаний)",
-          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "remnant_id": "POST18484-R166",
-          "remnant_version": 0,
-          "material_id": "mirror-4",
-          "dimensions": {
-            "length_mm": 360,
-            "width_mm": 290
-          },
-          "application": "зеркальный элемент интерьера",
-          "activity": "Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
-          "source_url": "https://catrine.kz/",
-          "checked_at": "2026-11-28",
-          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-          "constraints": [
-            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-            "Нет подтверждения интереса организации или факта покупки.",
-            "Подрезка требует отдельной проверки и расчета C2."
-          ],
-          "explanation": "Зеркало 4 мм, 360×290 мм: предполагается зеркальный элемент интерьера. Публичная деятельность: Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-          "interest_confirmed": false,
-          "policy_version": "evidence-v1"
-        },
-        {
-          "buyer_id": "8479025f7b8409d8b4a14853",
-          "name": "Astana MG — мебель на заказ",
-          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "remnant_id": "POST18484-R166",
-          "remnant_version": 0,
-          "material_id": "mirror-4",
-          "dimensions": {
-            "length_mm": 360,
-            "width_mm": 290
-          },
-          "application": "зеркальный элемент интерьера",
-          "activity": "Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.",
-          "source_url": "https://astanamg.kz/",
-          "checked_at": "2026-11-28",
-          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-          "constraints": [
-            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-            "Нет подтверждения интереса организации или факта покупки.",
-            "Подрезка требует отдельной проверки и расчета C2."
-          ],
-          "explanation": "Зеркало 4 мм, 360×290 мм: предполагается зеркальный элемент интерьера. Публичная деятельность: Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-          "interest_confirmed": false,
-          "policy_version": "evidence-v1"
-        },
-        {
-          "buyer_id": "c3d6c521904f64f382191e8d",
-          "name": "DalaSK (astana-mebel.kz)",
-          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "remnant_id": "POST18484-R166",
-          "remnant_version": 0,
-          "material_id": "mirror-4",
-          "dimensions": {
-            "length_mm": 360,
-            "width_mm": 290
-          },
-          "application": "зеркальный элемент интерьера",
-          "activity": "DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.",
-          "source_url": "https://astana-mebel.kz/",
-          "checked_at": "2026-11-28",
-          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-          "constraints": [
-            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-            "Нет подтверждения интереса организации или факта покупки.",
-            "Подрезка требует отдельной проверки и расчета C2."
-          ],
-          "explanation": "Зеркало 4 мм, 360×290 мм: предполагается зеркальный элемент интерьера. Публичная деятельность: DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-          "interest_confirmed": false,
-          "policy_version": "evidence-v1"
-        }
-      ],
-      "matching_policy": "evidence-v1",
-      "match_snapshot_hash": "72349fb48b1073b67eaeca3b4d2bc6c135ed906e2b3cff499f21d0830cef5096"
-    },
-    {
-      "remnant_id": "POST18484-R194",
-      "title": "Стекло 4 мм прозрачное, 500×250 мм",
-      "price_tg": "281.25",
-      "description": "Целый исходный остаток 500×250 мм, без отмеченного дефекта. Место: Стеллаж E, ячейка 34. Возможное применение: вставки и элементы интерьера после проверки размеров. Совместимость уточняет менеджер.",
-      "target_buyer": "CATRINE (группа компаний)",
-      "top3_buyers": [
-        "CATRINE (группа компаний)",
-        "Astana MG — мебель на заказ",
-        "DalaSK (astana-mebel.kz)"
-      ],
-      "card_id": "81264fe8-73e4-46d1-b4d6-ec4d5cc1c2ef",
-      "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-      "plan_id": "plan-60a3249a9c3f",
-      "plan_revision": 1,
-      "remnant_version": 0,
-      "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-      "version": 0,
-      "status": "ready",
-      "factor": "0.50",
-      "top3_buyer_ids": [
-        "ef19564ae326a63ccca1df2b",
-        "8479025f7b8409d8b4a14853",
-        "c3d6c521904f64f382191e8d"
-      ],
-      "assumptions": "Коэффициент - проектное допущение, не рыночная оценка и не факт продажи",
-      "buyer_matches": [
-        {
-          "buyer_id": "ef19564ae326a63ccca1df2b",
-          "name": "CATRINE (группа компаний)",
-          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "remnant_id": "POST18484-R194",
-          "remnant_version": 0,
-          "material_id": "clear-4",
-          "dimensions": {
-            "length_mm": 500,
-            "width_mm": 250
-          },
-          "application": "мебельная вставка",
-          "activity": "Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
-          "source_url": "https://catrine.kz/",
-          "checked_at": "2026-11-28",
-          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-          "constraints": [
-            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-            "Нет подтверждения интереса организации или факта покупки.",
-            "Подрезка требует отдельной проверки и расчета C2."
-          ],
-          "explanation": "Стекло 4 мм прозрачное, 500×250 мм: предполагается мебельная вставка. Публичная деятельность: Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-          "interest_confirmed": false,
-          "policy_version": "evidence-v1"
-        },
-        {
-          "buyer_id": "8479025f7b8409d8b4a14853",
-          "name": "Astana MG — мебель на заказ",
-          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "remnant_id": "POST18484-R194",
-          "remnant_version": 0,
-          "material_id": "clear-4",
-          "dimensions": {
-            "length_mm": 500,
-            "width_mm": 250
-          },
-          "application": "мебельная вставка",
-          "activity": "Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.",
-          "source_url": "https://astanamg.kz/",
-          "checked_at": "2026-11-28",
-          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-          "constraints": [
-            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-            "Нет подтверждения интереса организации или факта покупки.",
-            "Подрезка требует отдельной проверки и расчета C2."
-          ],
-          "explanation": "Стекло 4 мм прозрачное, 500×250 мм: предполагается мебельная вставка. Публичная деятельность: Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-          "interest_confirmed": false,
-          "policy_version": "evidence-v1"
-        },
-        {
-          "buyer_id": "c3d6c521904f64f382191e8d",
-          "name": "DalaSK (astana-mebel.kz)",
-          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "remnant_id": "POST18484-R194",
-          "remnant_version": 0,
-          "material_id": "clear-4",
-          "dimensions": {
-            "length_mm": 500,
-            "width_mm": 250
-          },
-          "application": "мебельная вставка",
-          "activity": "DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.",
-          "source_url": "https://astana-mebel.kz/",
-          "checked_at": "2026-11-28",
-          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-          "constraints": [
-            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-            "Нет подтверждения интереса организации или факта покупки.",
-            "Подрезка требует отдельной проверки и расчета C2."
-          ],
-          "explanation": "Стекло 4 мм прозрачное, 500×250 мм: предполагается мебельная вставка. Публичная деятельность: DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-          "interest_confirmed": false,
-          "policy_version": "evidence-v1"
-        }
-      ],
-      "matching_policy": "evidence-v1",
-      "match_snapshot_hash": "753dd659da0688440b8a055d128728b9fdfd7059e7fb546e18be17dd75562bba"
-    },
-    {
-      "remnant_id": "POST18484-R180",
-      "title": "Зеркало 4 мм, 450×250 мм",
-      "price_tg": "534.38",
-      "description": "Целый исходный остаток 450×250 мм, без отмеченного дефекта. Место: Стеллаж E, ячейка 20. Возможное применение: вставки и элементы интерьера после проверки размеров. Совместимость уточняет менеджер.",
-      "target_buyer": "CATRINE (группа компаний)",
-      "top3_buyers": [
-        "CATRINE (группа компаний)",
-        "Astana MG — мебель на заказ",
-        "DalaSK (astana-mebel.kz)"
-      ],
-      "card_id": "81495eef-15cb-4d38-bf4c-efa139eb53fb",
-      "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-      "plan_id": "plan-60a3249a9c3f",
-      "plan_revision": 1,
-      "remnant_version": 0,
-      "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-      "version": 0,
-      "status": "ready",
-      "factor": "0.50",
-      "top3_buyer_ids": [
-        "ef19564ae326a63ccca1df2b",
-        "8479025f7b8409d8b4a14853",
-        "c3d6c521904f64f382191e8d"
-      ],
-      "assumptions": "Коэффициент - проектное допущение, не рыночная оценка и не факт продажи",
-      "buyer_matches": [
-        {
-          "buyer_id": "ef19564ae326a63ccca1df2b",
-          "name": "CATRINE (группа компаний)",
-          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "remnant_id": "POST18484-R180",
-          "remnant_version": 0,
-          "material_id": "mirror-4",
-          "dimensions": {
-            "length_mm": 450,
-            "width_mm": 250
-          },
-          "application": "зеркальный элемент интерьера",
-          "activity": "Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
-          "source_url": "https://catrine.kz/",
-          "checked_at": "2026-11-28",
-          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-          "constraints": [
-            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-            "Нет подтверждения интереса организации или факта покупки.",
-            "Подрезка требует отдельной проверки и расчета C2."
-          ],
-          "explanation": "Зеркало 4 мм, 450×250 мм: предполагается зеркальный элемент интерьера. Публичная деятельность: Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-          "interest_confirmed": false,
-          "policy_version": "evidence-v1"
-        },
-        {
-          "buyer_id": "8479025f7b8409d8b4a14853",
-          "name": "Astana MG — мебель на заказ",
-          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "remnant_id": "POST18484-R180",
-          "remnant_version": 0,
-          "material_id": "mirror-4",
-          "dimensions": {
-            "length_mm": 450,
-            "width_mm": 250
-          },
-          "application": "зеркальный элемент интерьера",
-          "activity": "Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.",
-          "source_url": "https://astanamg.kz/",
-          "checked_at": "2026-11-28",
-          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-          "constraints": [
-            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-            "Нет подтверждения интереса организации или факта покупки.",
-            "Подрезка требует отдельной проверки и расчета C2."
-          ],
-          "explanation": "Зеркало 4 мм, 450×250 мм: предполагается зеркальный элемент интерьера. Публичная деятельность: Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-          "interest_confirmed": false,
-          "policy_version": "evidence-v1"
-        },
-        {
-          "buyer_id": "c3d6c521904f64f382191e8d",
-          "name": "DalaSK (astana-mebel.kz)",
-          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-          "remnant_id": "POST18484-R180",
-          "remnant_version": 0,
-          "material_id": "mirror-4",
-          "dimensions": {
-            "length_mm": 450,
-            "width_mm": 250
-          },
-          "application": "зеркальный элемент интерьера",
-          "activity": "DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.",
-          "source_url": "https://astana-mebel.kz/",
-          "checked_at": "2026-11-28",
-          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
-          "constraints": [
-            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-            "Нет подтверждения интереса организации или факта покупки.",
-            "Подрезка требует отдельной проверки и расчета C2."
-          ],
-          "explanation": "Зеркало 4 мм, 450×250 мм: предполагается зеркальный элемент интерьера. Публичная деятельность: DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
-          "interest_confirmed": false,
-          "policy_version": "evidence-v1"
-        }
-      ],
-      "matching_policy": "evidence-v1",
-      "match_snapshot_hash": "1a44a83c68503b8cdcb2102dfe8a49f8217529c7b423ffc4b491666ebfa6f895"
-    },
-    {
       "remnant_id": "POST18484-R157",
       "title": "Зеркало 4 мм, 1670×330 мм",
       "price_tg": "2617.73",
@@ -21667,9 +21247,9 @@
         "Astana MG — мебель на заказ",
         "DalaSK (astana-mebel.kz)"
       ],
-      "card_id": "a712da1b-cc32-4b07-96b5-742aa8353bb3",
-      "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-      "plan_id": "plan-60a3249a9c3f",
+      "card_id": "0b2c823d-6bba-4cc6-b9a5-f81aee8bf5e2",
+      "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+      "plan_id": "plan-b1e8a0682a06",
       "plan_revision": 1,
       "remnant_version": 0,
       "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
@@ -21763,7 +21343,431 @@
         }
       ],
       "matching_policy": "evidence-v1",
-      "match_snapshot_hash": "dbecadc28eb545b04b996e6dfdcedea29544ea1f90d9d4a940c55069edc4c9dc"
+      "match_snapshot_hash": "efd566d13c7b1a3b942e5c117602dd7a7dbec14d0e2d8f2339e4fe524336f5a2"
+    },
+    {
+      "remnant_id": "POST18484-R194",
+      "title": "Стекло 4 мм прозрачное, 500×250 мм",
+      "price_tg": "281.25",
+      "description": "Целый исходный остаток 500×250 мм, без отмеченного дефекта. Место: Стеллаж E, ячейка 34. Возможное применение: вставки и элементы интерьера после проверки размеров. Совместимость уточняет менеджер.",
+      "target_buyer": "CATRINE (группа компаний)",
+      "top3_buyers": [
+        "CATRINE (группа компаний)",
+        "Astana MG — мебель на заказ",
+        "DalaSK (astana-mebel.kz)"
+      ],
+      "card_id": "6a39d00a-d35b-4572-9f0a-c86be1955327",
+      "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+      "plan_id": "plan-b1e8a0682a06",
+      "plan_revision": 1,
+      "remnant_version": 0,
+      "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+      "version": 0,
+      "status": "ready",
+      "factor": "0.50",
+      "top3_buyer_ids": [
+        "ef19564ae326a63ccca1df2b",
+        "8479025f7b8409d8b4a14853",
+        "c3d6c521904f64f382191e8d"
+      ],
+      "assumptions": "Коэффициент - проектное допущение, не рыночная оценка и не факт продажи",
+      "buyer_matches": [
+        {
+          "buyer_id": "ef19564ae326a63ccca1df2b",
+          "name": "CATRINE (группа компаний)",
+          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+          "remnant_id": "POST18484-R194",
+          "remnant_version": 0,
+          "material_id": "clear-4",
+          "dimensions": {
+            "length_mm": 500,
+            "width_mm": 250
+          },
+          "application": "мебельная вставка",
+          "activity": "Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
+          "source_url": "https://catrine.kz/",
+          "checked_at": "2026-11-28",
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "constraints": [
+            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+            "Нет подтверждения интереса организации или факта покупки.",
+            "Подрезка требует отдельной проверки и расчета C2."
+          ],
+          "explanation": "Стекло 4 мм прозрачное, 500×250 мм: предполагается мебельная вставка. Публичная деятельность: Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+          "interest_confirmed": false,
+          "policy_version": "evidence-v1"
+        },
+        {
+          "buyer_id": "8479025f7b8409d8b4a14853",
+          "name": "Astana MG — мебель на заказ",
+          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+          "remnant_id": "POST18484-R194",
+          "remnant_version": 0,
+          "material_id": "clear-4",
+          "dimensions": {
+            "length_mm": 500,
+            "width_mm": 250
+          },
+          "application": "мебельная вставка",
+          "activity": "Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.",
+          "source_url": "https://astanamg.kz/",
+          "checked_at": "2026-11-28",
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "constraints": [
+            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+            "Нет подтверждения интереса организации или факта покупки.",
+            "Подрезка требует отдельной проверки и расчета C2."
+          ],
+          "explanation": "Стекло 4 мм прозрачное, 500×250 мм: предполагается мебельная вставка. Публичная деятельность: Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+          "interest_confirmed": false,
+          "policy_version": "evidence-v1"
+        },
+        {
+          "buyer_id": "c3d6c521904f64f382191e8d",
+          "name": "DalaSK (astana-mebel.kz)",
+          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+          "remnant_id": "POST18484-R194",
+          "remnant_version": 0,
+          "material_id": "clear-4",
+          "dimensions": {
+            "length_mm": 500,
+            "width_mm": 250
+          },
+          "application": "мебельная вставка",
+          "activity": "DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.",
+          "source_url": "https://astana-mebel.kz/",
+          "checked_at": "2026-11-28",
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "constraints": [
+            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+            "Нет подтверждения интереса организации или факта покупки.",
+            "Подрезка требует отдельной проверки и расчета C2."
+          ],
+          "explanation": "Стекло 4 мм прозрачное, 500×250 мм: предполагается мебельная вставка. Публичная деятельность: DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+          "interest_confirmed": false,
+          "policy_version": "evidence-v1"
+        }
+      ],
+      "matching_policy": "evidence-v1",
+      "match_snapshot_hash": "6baec167481640dbcbda0c3b6501eacd8194e6651b14f3dd85a61d04c59693ba"
+    },
+    {
+      "remnant_id": "POST18484-R180",
+      "title": "Зеркало 4 мм, 450×250 мм",
+      "price_tg": "534.38",
+      "description": "Целый исходный остаток 450×250 мм, без отмеченного дефекта. Место: Стеллаж E, ячейка 20. Возможное применение: вставки и элементы интерьера после проверки размеров. Совместимость уточняет менеджер.",
+      "target_buyer": "CATRINE (группа компаний)",
+      "top3_buyers": [
+        "CATRINE (группа компаний)",
+        "Astana MG — мебель на заказ",
+        "DalaSK (astana-mebel.kz)"
+      ],
+      "card_id": "9591f822-8e35-46a5-a81c-d058fd506232",
+      "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+      "plan_id": "plan-b1e8a0682a06",
+      "plan_revision": 1,
+      "remnant_version": 0,
+      "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+      "version": 0,
+      "status": "ready",
+      "factor": "0.50",
+      "top3_buyer_ids": [
+        "ef19564ae326a63ccca1df2b",
+        "8479025f7b8409d8b4a14853",
+        "c3d6c521904f64f382191e8d"
+      ],
+      "assumptions": "Коэффициент - проектное допущение, не рыночная оценка и не факт продажи",
+      "buyer_matches": [
+        {
+          "buyer_id": "ef19564ae326a63ccca1df2b",
+          "name": "CATRINE (группа компаний)",
+          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+          "remnant_id": "POST18484-R180",
+          "remnant_version": 0,
+          "material_id": "mirror-4",
+          "dimensions": {
+            "length_mm": 450,
+            "width_mm": 250
+          },
+          "application": "зеркальный элемент интерьера",
+          "activity": "Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
+          "source_url": "https://catrine.kz/",
+          "checked_at": "2026-11-28",
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "constraints": [
+            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+            "Нет подтверждения интереса организации или факта покупки.",
+            "Подрезка требует отдельной проверки и расчета C2."
+          ],
+          "explanation": "Зеркало 4 мм, 450×250 мм: предполагается зеркальный элемент интерьера. Публичная деятельность: Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+          "interest_confirmed": false,
+          "policy_version": "evidence-v1"
+        },
+        {
+          "buyer_id": "8479025f7b8409d8b4a14853",
+          "name": "Astana MG — мебель на заказ",
+          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+          "remnant_id": "POST18484-R180",
+          "remnant_version": 0,
+          "material_id": "mirror-4",
+          "dimensions": {
+            "length_mm": 450,
+            "width_mm": 250
+          },
+          "application": "зеркальный элемент интерьера",
+          "activity": "Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.",
+          "source_url": "https://astanamg.kz/",
+          "checked_at": "2026-11-28",
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "constraints": [
+            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+            "Нет подтверждения интереса организации или факта покупки.",
+            "Подрезка требует отдельной проверки и расчета C2."
+          ],
+          "explanation": "Зеркало 4 мм, 450×250 мм: предполагается зеркальный элемент интерьера. Публичная деятельность: Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+          "interest_confirmed": false,
+          "policy_version": "evidence-v1"
+        },
+        {
+          "buyer_id": "c3d6c521904f64f382191e8d",
+          "name": "DalaSK (astana-mebel.kz)",
+          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+          "remnant_id": "POST18484-R180",
+          "remnant_version": 0,
+          "material_id": "mirror-4",
+          "dimensions": {
+            "length_mm": 450,
+            "width_mm": 250
+          },
+          "application": "зеркальный элемент интерьера",
+          "activity": "DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.",
+          "source_url": "https://astana-mebel.kz/",
+          "checked_at": "2026-11-28",
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "constraints": [
+            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+            "Нет подтверждения интереса организации или факта покупки.",
+            "Подрезка требует отдельной проверки и расчета C2."
+          ],
+          "explanation": "Зеркало 4 мм, 450×250 мм: предполагается зеркальный элемент интерьера. Публичная деятельность: DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+          "interest_confirmed": false,
+          "policy_version": "evidence-v1"
+        }
+      ],
+      "matching_policy": "evidence-v1",
+      "match_snapshot_hash": "e0983188400888e863582a82aad5a0cea2b50abb7bff1bf58082afb8ecbe08ab"
+    },
+    {
+      "remnant_id": "POST18484-R183",
+      "title": "Стекло 8 мм прозрачное, 410×400 мм",
+      "price_tg": "984.00",
+      "description": "Целый исходный остаток 410×400 мм, без отмеченного дефекта. Место: Стеллаж E, ячейка 23. Возможное применение: вставки и элементы интерьера после проверки размеров. Совместимость уточняет менеджер.",
+      "target_buyer": "CATRINE (группа компаний)",
+      "top3_buyers": [
+        "CATRINE (группа компаний)",
+        "Astana MG — мебель на заказ",
+        "DalaSK (astana-mebel.kz)"
+      ],
+      "card_id": "d428a035-6817-45e2-8d4f-c2e73c6f8443",
+      "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+      "plan_id": "plan-b1e8a0682a06",
+      "plan_revision": 1,
+      "remnant_version": 0,
+      "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+      "version": 0,
+      "status": "ready",
+      "factor": "0.50",
+      "top3_buyer_ids": [
+        "ef19564ae326a63ccca1df2b",
+        "8479025f7b8409d8b4a14853",
+        "c3d6c521904f64f382191e8d"
+      ],
+      "assumptions": "Коэффициент - проектное допущение, не рыночная оценка и не факт продажи",
+      "buyer_matches": [
+        {
+          "buyer_id": "ef19564ae326a63ccca1df2b",
+          "name": "CATRINE (группа компаний)",
+          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+          "remnant_id": "POST18484-R183",
+          "remnant_version": 0,
+          "material_id": "clear-8",
+          "dimensions": {
+            "length_mm": 410,
+            "width_mm": 400
+          },
+          "application": "мебельная вставка",
+          "activity": "Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
+          "source_url": "https://catrine.kz/",
+          "checked_at": "2026-11-28",
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "constraints": [
+            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+            "Нет подтверждения интереса организации или факта покупки.",
+            "Подрезка требует отдельной проверки и расчета C2."
+          ],
+          "explanation": "Стекло 8 мм прозрачное, 410×400 мм: предполагается мебельная вставка. Публичная деятельность: Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+          "interest_confirmed": false,
+          "policy_version": "evidence-v1"
+        },
+        {
+          "buyer_id": "8479025f7b8409d8b4a14853",
+          "name": "Astana MG — мебель на заказ",
+          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+          "remnant_id": "POST18484-R183",
+          "remnant_version": 0,
+          "material_id": "clear-8",
+          "dimensions": {
+            "length_mm": 410,
+            "width_mm": 400
+          },
+          "application": "мебельная вставка",
+          "activity": "Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.",
+          "source_url": "https://astanamg.kz/",
+          "checked_at": "2026-11-28",
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "constraints": [
+            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+            "Нет подтверждения интереса организации или факта покупки.",
+            "Подрезка требует отдельной проверки и расчета C2."
+          ],
+          "explanation": "Стекло 8 мм прозрачное, 410×400 мм: предполагается мебельная вставка. Публичная деятельность: Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+          "interest_confirmed": false,
+          "policy_version": "evidence-v1"
+        },
+        {
+          "buyer_id": "c3d6c521904f64f382191e8d",
+          "name": "DalaSK (astana-mebel.kz)",
+          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+          "remnant_id": "POST18484-R183",
+          "remnant_version": 0,
+          "material_id": "clear-8",
+          "dimensions": {
+            "length_mm": 410,
+            "width_mm": 400
+          },
+          "application": "мебельная вставка",
+          "activity": "DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.",
+          "source_url": "https://astana-mebel.kz/",
+          "checked_at": "2026-11-28",
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "constraints": [
+            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+            "Нет подтверждения интереса организации или факта покупки.",
+            "Подрезка требует отдельной проверки и расчета C2."
+          ],
+          "explanation": "Стекло 8 мм прозрачное, 410×400 мм: предполагается мебельная вставка. Публичная деятельность: DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+          "interest_confirmed": false,
+          "policy_version": "evidence-v1"
+        }
+      ],
+      "matching_policy": "evidence-v1",
+      "match_snapshot_hash": "ee6ba96e3a24cce61ae1265c87482b640245c2bfb608b9f6e520c15c6e57d8b7"
+    },
+    {
+      "remnant_id": "POST18484-R166",
+      "title": "Зеркало 4 мм, 360×290 мм",
+      "price_tg": "495.90",
+      "description": "Целый исходный остаток 360×290 мм, без отмеченного дефекта. Место: Стеллаж E, ячейка 6. Возможное применение: вставки и элементы интерьера после проверки размеров. Совместимость уточняет менеджер.",
+      "target_buyer": "CATRINE (группа компаний)",
+      "top3_buyers": [
+        "CATRINE (группа компаний)",
+        "Astana MG — мебель на заказ",
+        "DalaSK (astana-mebel.kz)"
+      ],
+      "card_id": "e8a49104-5d57-42ad-b647-4b058ee583d6",
+      "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+      "plan_id": "plan-b1e8a0682a06",
+      "plan_revision": 1,
+      "remnant_version": 0,
+      "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+      "version": 0,
+      "status": "ready",
+      "factor": "0.50",
+      "top3_buyer_ids": [
+        "ef19564ae326a63ccca1df2b",
+        "8479025f7b8409d8b4a14853",
+        "c3d6c521904f64f382191e8d"
+      ],
+      "assumptions": "Коэффициент - проектное допущение, не рыночная оценка и не факт продажи",
+      "buyer_matches": [
+        {
+          "buyer_id": "ef19564ae326a63ccca1df2b",
+          "name": "CATRINE (группа компаний)",
+          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+          "remnant_id": "POST18484-R166",
+          "remnant_version": 0,
+          "material_id": "mirror-4",
+          "dimensions": {
+            "length_mm": 360,
+            "width_mm": 290
+          },
+          "application": "зеркальный элемент интерьера",
+          "activity": "Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.",
+          "source_url": "https://catrine.kz/",
+          "checked_at": "2026-11-28",
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "constraints": [
+            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+            "Нет подтверждения интереса организации или факта покупки.",
+            "Подрезка требует отдельной проверки и расчета C2."
+          ],
+          "explanation": "Зеркало 4 мм, 360×290 мм: предполагается зеркальный элемент интерьера. Публичная деятельность: Публичный профиль: CATRINE (группа компаний); город Астана; деятельность — мебельная фабрика. Источник подтверждает профиль, а не спрос на стекло.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+          "interest_confirmed": false,
+          "policy_version": "evidence-v1"
+        },
+        {
+          "buyer_id": "8479025f7b8409d8b4a14853",
+          "name": "Astana MG — мебель на заказ",
+          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+          "remnant_id": "POST18484-R166",
+          "remnant_version": 0,
+          "material_id": "mirror-4",
+          "dimensions": {
+            "length_mm": 360,
+            "width_mm": 290
+          },
+          "application": "зеркальный элемент интерьера",
+          "activity": "Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.",
+          "source_url": "https://astanamg.kz/",
+          "checked_at": "2026-11-28",
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "constraints": [
+            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+            "Нет подтверждения интереса организации или факта покупки.",
+            "Подрезка требует отдельной проверки и расчета C2."
+          ],
+          "explanation": "Зеркало 4 мм, 360×290 мм: предполагается зеркальный элемент интерьера. Публичная деятельность: Astana Mebel Group: собственное изготовление мебели на заказ, в том числе шкафов; Астана, Орлыкол 10Б. Наличие стеклянных полок и зеркальных фасадов на просмотренной странице не установлено.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+          "interest_confirmed": false,
+          "policy_version": "evidence-v1"
+        },
+        {
+          "buyer_id": "c3d6c521904f64f382191e8d",
+          "name": "DalaSK (astana-mebel.kz)",
+          "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
+          "remnant_id": "POST18484-R166",
+          "remnant_version": 0,
+          "material_id": "mirror-4",
+          "dimensions": {
+            "length_mm": 360,
+            "width_mm": 290
+          },
+          "application": "зеркальный элемент интерьера",
+          "activity": "DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.",
+          "source_url": "https://astana-mebel.kz/",
+          "checked_at": "2026-11-28",
+          "dimensions_basis": "Проектное допущение интегратора для небольших мебельных вставок: 100×100–2000×1500 мм; материал/толщина и конечный размер требуют согласования. Сайт не заявляет такую потребность или диапазон закупки.",
+          "constraints": [
+            "Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+            "Нет подтверждения интереса организации или факта покупки.",
+            "Подрезка требует отдельной проверки и расчета C2."
+          ],
+          "explanation": "Зеркало 4 мм, 360×290 мм: предполагается зеркальный элемент интерьера. Публичная деятельность: DalaSK: собственное производство корпусной и мягкой мебели в Астане. Стеклянные полки, журнальные столики и зеркала для прихожей на просмотренной странице не установлены.. Предполагаемое применение; размеры и пригодность подтверждает менеджер.",
+          "interest_confirmed": false,
+          "policy_version": "evidence-v1"
+        }
+      ],
+      "matching_policy": "evidence-v1",
+      "match_snapshot_hash": "20447d6c31262756c9ab66fd3215995b02af9341134f21e1d018b3eade8daa3e"
     }
   ],
   "original_official_validator": {
@@ -21773,7 +21777,7 @@
     "stderr": ""
   },
   "unknown_request": {
-    "conversation_id": "056250f3-d716-4548-94e0-7dec2d39e60f",
+    "conversation_id": "b14a038c-1e57-45f0-bf8d-717590bf5e05",
     "answer": "Такой позиции нет в базе KSM — ее наличие и цену уточнит менеджер. Если нужно стекло или зеркало из каталога, напишите вид, цвет, толщину и размеры в мм.",
     "clarification": null,
     "quote": null,
@@ -21843,9 +21847,9 @@
   "partial_failure": {
     "run": {
       "manifest": {
-        "run_id": "d60665cd-0806-4cce-9032-6b45fc4e28e6",
-        "dataset_id": "740523a0-b39b-40a0-82f1-77d829f2456b",
-        "source_dataset_id": "9cba2f5c-ac20-49b1-9675-0603267ae5e2",
+        "run_id": "909f3093-cca2-4316-8afb-a2eebd97f903",
+        "dataset_id": "9d505800-157c-4f37-be8c-da460c5e4ab0",
+        "source_dataset_id": "bca68bb3-207a-49c0-beb3-e99811f6beba",
         "source_hashes": {
           "materials": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
           "stock": "6d0ed08e269aa2be1e809157221da755780c11435764930ee497d034d48922f8",
@@ -21859,8 +21863,8 @@
         "schema_version": "0007_intelligence_reviews",
         "build": "0.1.0",
         "build_info": {
-          "commit": "4ee5812a65157acd7aa504df3d994497f608e29a",
-          "source_digest": "fbd7eaad72cfffa0d7f59292ccc214750a2b838f68e599d1331963649b765b8e",
+          "commit": "fc4cca439ced3cbf644af88c186c90e96fc66c86",
+          "source_digest": "6ba6600a50230689379b35c1c0799808a2d8f599202598945af152d8a8d88bad",
           "frozen": false
         },
         "config_version": "post-changed-input-http-v1",
@@ -21873,7 +21877,7 @@
           "ortools": "9.15.6755"
         },
         "crm_policy": "reference-v1",
-        "created_at": "2026-11-28T10:27:59.493824+00:00",
+        "created_at": "2026-11-28T10:35:55.498261+00:00",
         "modules": [
           "cutting",
           "assistant",
@@ -21925,9 +21929,9 @@
           "version": 0,
           "total_seconds": 12,
           "export_reserve_seconds": 4,
-          "started_at": "2026-11-28T10:27:59.493824+00:00",
-          "deadline_utc": "2026-11-28T10:28:11.493824+00:00",
-          "work_deadline_utc": "2026-11-28T10:28:07.493824+00:00",
+          "started_at": "2026-11-28T10:35:55.498261+00:00",
+          "deadline_utc": "2026-11-28T10:36:07.498261+00:00",
+          "work_deadline_utc": "2026-11-28T10:36:03.498261+00:00",
           "requested_solver": {
             "profile": "extended",
             "seed": 42,
@@ -21945,14 +21949,14 @@
       "status": "blocked",
       "jobs": [
         {
-          "job_id": "5e4f81c5-2410-488e-95ee-45def20cc638",
+          "job_id": "e6794c0d-0d5c-4524-998d-3f8b37a64b62",
           "state": "failed",
           "stage": "failed",
           "result_ref": null,
           "last_valid_result_ref": null,
           "error_code": "RUN_WORK_BUDGET_EXCEEDED",
-          "run_id": "d60665cd-0806-4cce-9032-6b45fc4e28e6",
-          "dataset_id": "740523a0-b39b-40a0-82f1-77d829f2456b",
+          "run_id": "909f3093-cca2-4316-8afb-a2eebd97f903",
+          "dataset_id": "9d505800-157c-4f37-be8c-da460c5e4ab0",
           "cancel_requested": false,
           "stopped": true,
           "completed": 0,
@@ -21960,20 +21964,20 @@
           "result": null,
           "last_valid_result": null,
           "retry_of": null,
-          "created_at": "2026-11-28T10:27:59.551603+00:00",
-          "started_at": "2026-11-28T10:28:07.492129+00:00",
-          "finished_at": "2026-11-28T10:28:08.068052+00:00",
+          "created_at": "2026-11-28T10:35:55.549836+00:00",
+          "started_at": "2026-11-28T10:36:03.337995+00:00",
+          "finished_at": "2026-11-28T10:36:03.979561+00:00",
           "accepted_row_count": 0
         },
         {
-          "job_id": "ea1a7f38-58ca-488c-8348-f5dc1267de5d",
+          "job_id": "50a495f7-f70e-40af-8628-ff1922021c3a",
           "state": "failed",
           "stage": "budget",
           "result_ref": null,
           "last_valid_result_ref": null,
           "error_code": "RUN_WORK_BUDGET_EXCEEDED",
-          "run_id": "d60665cd-0806-4cce-9032-6b45fc4e28e6",
-          "dataset_id": "740523a0-b39b-40a0-82f1-77d829f2456b",
+          "run_id": "909f3093-cca2-4316-8afb-a2eebd97f903",
+          "dataset_id": "9d505800-157c-4f37-be8c-da460c5e4ab0",
           "cancel_requested": false,
           "stopped": true,
           "completed": 0,
@@ -21981,20 +21985,20 @@
           "result": null,
           "last_valid_result": null,
           "retry_of": null,
-          "created_at": "2026-11-28T10:27:59.554603+00:00",
+          "created_at": "2026-11-28T10:35:55.552837+00:00",
           "started_at": null,
-          "finished_at": "2026-11-28T10:28:08.181437+00:00",
+          "finished_at": "2026-11-28T10:36:04.112547+00:00",
           "accepted_row_count": 0
         },
         {
-          "job_id": "014561f4-bbde-4bbc-ab81-a516000ec5c5",
+          "job_id": "7c112461-19a6-4bdd-ae9f-5d7a6e79ad65",
           "state": "failed",
           "stage": "budget",
           "result_ref": null,
           "last_valid_result_ref": null,
           "error_code": "RUN_WORK_BUDGET_EXCEEDED",
-          "run_id": "d60665cd-0806-4cce-9032-6b45fc4e28e6",
-          "dataset_id": "740523a0-b39b-40a0-82f1-77d829f2456b",
+          "run_id": "909f3093-cca2-4316-8afb-a2eebd97f903",
+          "dataset_id": "9d505800-157c-4f37-be8c-da460c5e4ab0",
           "cancel_requested": false,
           "stopped": true,
           "completed": 0,
@@ -22002,41 +22006,41 @@
           "result": null,
           "last_valid_result": null,
           "retry_of": null,
-          "created_at": "2026-11-28T10:27:59.562606+00:00",
+          "created_at": "2026-11-28T10:35:55.558836+00:00",
           "started_at": null,
-          "finished_at": "2026-11-28T10:28:08.181437+00:00",
+          "finished_at": "2026-11-28T10:36:04.112547+00:00",
           "accepted_row_count": 0
         },
         {
-          "job_id": "84118544-6458-4af0-9e98-5413ce21384f",
+          "job_id": "0cc3a532-ce4b-428f-bc3d-f9445e7408df",
           "state": "failed",
           "stage": "budget",
           "result_ref": null,
           "last_valid_result_ref": null,
           "error_code": "RUN_WORK_BUDGET_EXCEEDED",
-          "run_id": "d60665cd-0806-4cce-9032-6b45fc4e28e6",
-          "dataset_id": "740523a0-b39b-40a0-82f1-77d829f2456b",
+          "run_id": "909f3093-cca2-4316-8afb-a2eebd97f903",
+          "dataset_id": "9d505800-157c-4f37-be8c-da460c5e4ab0",
           "cancel_requested": false,
           "stopped": true,
-          "completed": 150,
+          "completed": 151,
           "total": 1000,
           "result": null,
           "last_valid_result": null,
           "retry_of": null,
-          "created_at": "2026-11-28T10:27:59.567613+00:00",
-          "started_at": "2026-11-28T10:27:59.758799+00:00",
-          "finished_at": "2026-11-28T10:28:07.642053+00:00",
-          "accepted_row_count": 150
+          "created_at": "2026-11-28T10:35:55.562844+00:00",
+          "started_at": "2026-11-28T10:35:55.809966+00:00",
+          "finished_at": "2026-11-28T10:36:03.529037+00:00",
+          "accepted_row_count": 151
         },
         {
-          "job_id": "6ba9d342-cf2f-4047-ad84-ad9a037846ae",
+          "job_id": "c2d8b8a3-4e25-4663-bcff-24475865c9f8",
           "state": "failed",
           "stage": "dependency",
           "result_ref": null,
           "last_valid_result_ref": null,
           "error_code": "CUTTING_NOT_COMPLETED",
-          "run_id": "d60665cd-0806-4cce-9032-6b45fc4e28e6",
-          "dataset_id": "740523a0-b39b-40a0-82f1-77d829f2456b",
+          "run_id": "909f3093-cca2-4316-8afb-a2eebd97f903",
+          "dataset_id": "9d505800-157c-4f37-be8c-da460c5e4ab0",
           "cancel_requested": false,
           "stopped": true,
           "completed": 0,
@@ -22044,9 +22048,9 @@
           "result": null,
           "last_valid_result": null,
           "retry_of": null,
-          "created_at": "2026-11-28T10:28:08.319937+00:00",
+          "created_at": "2026-11-28T10:36:04.289625+00:00",
           "started_at": null,
-          "finished_at": "2026-11-28T10:28:08.319937+00:00",
+          "finished_at": "2026-11-28T10:36:04.289625+00:00",
           "accepted_row_count": 0
         }
       ],
@@ -22062,9 +22066,9 @@
         "version": 0,
         "total_seconds": 12,
         "export_reserve_seconds": 4,
-        "started_at": "2026-11-28T10:27:59.493824+00:00",
-        "deadline_utc": "2026-11-28T10:28:11.493824+00:00",
-        "work_deadline_utc": "2026-11-28T10:28:07.493824+00:00",
+        "started_at": "2026-11-28T10:35:55.498261+00:00",
+        "deadline_utc": "2026-11-28T10:36:07.498261+00:00",
+        "work_deadline_utc": "2026-11-28T10:36:03.498261+00:00",
         "requested_solver": {
           "profile": "extended",
           "seed": 42,
@@ -22076,17 +22080,17 @@
         },
         "phase": "baseline",
         "export_status": "not_started",
-        "remaining_seconds": 3.071996,
+        "remaining_seconds": 3.058161,
         "work_remaining_seconds": 0.0,
         "deadline_met": null
       }
     },
     "export": {
-      "run_id": "d60665cd-0806-4cce-9032-6b45fc4e28e6",
+      "run_id": "909f3093-cca2-4316-8afb-a2eebd97f903",
       "status": "partial",
       "files": {
-        "buyers_top50.csv": "/api/v1/runs/d60665cd-0806-4cce-9032-6b45fc4e28e6/files/930255d7-0691-4d82-9ad8-c368a1120138/buyers_top50.csv",
-        "manifest.json": "/api/v1/runs/d60665cd-0806-4cce-9032-6b45fc4e28e6/files/930255d7-0691-4d82-9ad8-c368a1120138/manifest.json"
+        "buyers_top50.csv": "/api/v1/runs/909f3093-cca2-4316-8afb-a2eebd97f903/files/d6e462a2-2aa3-4966-af90-19ce5ea4c7d5/buyers_top50.csv",
+        "manifest.json": "/api/v1/runs/909f3093-cca2-4316-8afb-a2eebd97f903/files/d6e462a2-2aa3-4966-af90-19ce5ea4c7d5/manifest.json"
       },
       "errors": [
         "cutting: результат не завершен",
@@ -22100,23 +22104,23 @@
       "buyers_top50.csv": {
         "sha256": "e031cadcf80246d7917216f91f76d70d8568ce916b54b3fe3ef4ae890d57ce55",
         "bytes": 22129,
-        "uri": "/api/v1/runs/d60665cd-0806-4cce-9032-6b45fc4e28e6/files/930255d7-0691-4d82-9ad8-c368a1120138/buyers_top50.csv",
+        "uri": "/api/v1/runs/909f3093-cca2-4316-8afb-a2eebd97f903/files/d6e462a2-2aa3-4966-af90-19ce5ea4c7d5/buyers_top50.csv",
         "rows": 50
       },
       "manifest.json": {
-        "sha256": "20a03408f6e9feb8bcf09a8ff3b593f01692c9c9d9afc4a0bcdb37502d35d7ff",
+        "sha256": "01f8b49fc8aaeb665f856cb1b56fd8e0b9a6678a061b90d2b1116aec11865758",
         "bytes": 4698,
-        "uri": "/api/v1/runs/d60665cd-0806-4cce-9032-6b45fc4e28e6/files/930255d7-0691-4d82-9ad8-c368a1120138/manifest.json"
+        "uri": "/api/v1/runs/909f3093-cca2-4316-8afb-a2eebd97f903/files/d6e462a2-2aa3-4966-af90-19ce5ea4c7d5/manifest.json"
       }
     },
-    "stable_terminal_dependency_id": "6ba9d342-cf2f-4047-ad84-ad9a037846ae"
+    "stable_terminal_dependency_id": "c2d8b8a3-4e25-4663-bcff-24475865c9f8"
   },
   "cancelled_partial": {
     "run": {
       "manifest": {
-        "run_id": "5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139",
-        "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
-        "source_dataset_id": "9cba2f5c-ac20-49b1-9675-0603267ae5e2",
+        "run_id": "21b8b21b-dc62-4e40-92c1-41f764a9bc5c",
+        "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
+        "source_dataset_id": "bca68bb3-207a-49c0-beb3-e99811f6beba",
         "source_hashes": {
           "materials": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
           "stock": "6d0ed08e269aa2be1e809157221da755780c11435764930ee497d034d48922f8",
@@ -22130,8 +22134,8 @@
         "schema_version": "0007_intelligence_reviews",
         "build": "0.1.0",
         "build_info": {
-          "commit": "4ee5812a65157acd7aa504df3d994497f608e29a",
-          "source_digest": "fbd7eaad72cfffa0d7f59292ccc214750a2b838f68e599d1331963649b765b8e",
+          "commit": "fc4cca439ced3cbf644af88c186c90e96fc66c86",
+          "source_digest": "6ba6600a50230689379b35c1c0799808a2d8f599202598945af152d8a8d88bad",
           "frozen": false
         },
         "config_version": "post-changed-input-http-v1",
@@ -22144,7 +22148,7 @@
           "ortools": "9.15.6755"
         },
         "crm_policy": "reference-v1",
-        "created_at": "2026-11-28T10:28:09.572655+00:00",
+        "created_at": "2026-11-28T10:36:05.742200+00:00",
         "modules": [
           "cutting",
           "assistant",
@@ -22196,9 +22200,9 @@
           "version": 0,
           "total_seconds": 120,
           "export_reserve_seconds": 30,
-          "started_at": "2026-11-28T10:28:09.572655+00:00",
-          "deadline_utc": "2026-11-28T10:30:09.572655+00:00",
-          "work_deadline_utc": "2026-11-28T10:29:39.572655+00:00",
+          "started_at": "2026-11-28T10:36:05.742200+00:00",
+          "deadline_utc": "2026-11-28T10:38:05.742200+00:00",
+          "work_deadline_utc": "2026-11-28T10:37:35.742200+00:00",
           "requested_solver": {
             "profile": "extended",
             "seed": 42,
@@ -22216,14 +22220,14 @@
       "status": "partial",
       "jobs": [
         {
-          "job_id": "043d5f2a-133f-43a1-8cd2-48f7da405922",
+          "job_id": "7c504e60-928c-4bd0-b67b-ec37e28dcd6f",
           "state": "completed",
           "stage": "completed",
-          "result_ref": "043d5f2a-133f-43a1-8cd2-48f7da405922",
+          "result_ref": "7c504e60-928c-4bd0-b67b-ec37e28dcd6f",
           "last_valid_result_ref": null,
           "error_code": null,
-          "run_id": "5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139",
-          "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
+          "run_id": "21b8b21b-dc62-4e40-92c1-41f764a9bc5c",
+          "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
           "cancel_requested": false,
           "stopped": true,
           "completed": 7,
@@ -22474,20 +22478,20 @@
           },
           "last_valid_result": null,
           "retry_of": null,
-          "created_at": "2026-11-28T10:28:09.623231+00:00",
-          "started_at": "2026-11-28T10:28:09.835042+00:00",
-          "finished_at": "2026-11-28T10:28:11.656729+00:00",
+          "created_at": "2026-11-28T10:36:05.793181+00:00",
+          "started_at": "2026-11-28T10:36:06.021170+00:00",
+          "finished_at": "2026-11-28T10:36:07.654592+00:00",
           "accepted_row_count": 0
         },
         {
-          "job_id": "080478b9-d5a3-41a3-9e14-336ce512112c",
+          "job_id": "8795126d-207a-4e5f-b4f1-d7b287ffcf65",
           "state": "completed",
           "stage": "completed",
-          "result_ref": "080478b9-d5a3-41a3-9e14-336ce512112c",
+          "result_ref": "8795126d-207a-4e5f-b4f1-d7b287ffcf65",
           "last_valid_result_ref": null,
           "error_code": null,
-          "run_id": "5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139",
-          "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
+          "run_id": "21b8b21b-dc62-4e40-92c1-41f764a9bc5c",
+          "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
           "cancel_requested": false,
           "stopped": true,
           "completed": 25,
@@ -22580,27 +22584,27 @@
           },
           "last_valid_result": null,
           "retry_of": null,
-          "created_at": "2026-11-28T10:28:09.625248+00:00",
-          "started_at": "2026-11-28T10:28:13.729362+00:00",
-          "finished_at": "2026-11-28T10:28:16.919762+00:00",
+          "created_at": "2026-11-28T10:36:05.796192+00:00",
+          "started_at": "2026-11-28T10:36:09.444890+00:00",
+          "finished_at": "2026-11-28T10:36:12.097688+00:00",
           "accepted_row_count": 0
         },
         {
-          "job_id": "b207031a-92c7-4af4-aed1-44a954bbdf22",
+          "job_id": "8219250d-d71e-479f-a194-e81cd8d4d29f",
           "state": "completed",
           "stage": "completed",
-          "result_ref": "b207031a-92c7-4af4-aed1-44a954bbdf22",
-          "last_valid_result_ref": "b207031a-92c7-4af4-aed1-44a954bbdf22",
+          "result_ref": "8219250d-d71e-479f-a194-e81cd8d4d29f",
+          "last_valid_result_ref": "8219250d-d71e-479f-a194-e81cd8d4d29f",
           "error_code": null,
-          "run_id": "5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139",
-          "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
+          "run_id": "21b8b21b-dc62-4e40-92c1-41f764a9bc5c",
+          "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
           "cancel_requested": false,
           "stopped": true,
           "completed": 0,
           "total": null,
           "result": {
-            "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
-            "plan_id": "plan-0489882ac8ed",
+            "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
+            "plan_id": "plan-83d6b8ccc939",
             "revision": 1,
             "status": "validated",
             "placements": [
@@ -25271,7 +25275,7 @@
             "issues": [],
             "evidence": {
               "engine": "cutting-engine/1.1-min-free-incumbent",
-              "input_sha256": "90d26027544d39768b5ff6f57c11a525432f9cca290fdd7d8c854cd5580aa7ab",
+              "input_sha256": "8a8535160b226054296fdbd7255484e35e48faa5ca1a76151ee9dd71a95f562d",
               "python": "3.12.11",
               "machine": "AMD64",
               "cpu_count": 12,
@@ -25283,7 +25287,7 @@
               "greedy_runs": 24,
               "pool_patterns": 1174,
               "pool_full": false,
-              "elapsed_seconds": 4.693,
+              "elapsed_seconds": 3.616,
               "profile": "quick",
               "seed": 42,
               "workers": 1,
@@ -25294,11 +25298,11 @@
               "unconstrained_best_area_mm2": 104852350,
               "unconstrained_best_free_original": 62,
               "five_free_area_loss_mm2": 0,
-              "wall_seconds": 4.712,
+              "wall_seconds": 3.631,
               "stage": "greedy",
               "minimum_free_remnants_met": true
             },
-            "created_at": "2026-11-28T10:28:26.370487+00:00",
+            "created_at": "2026-11-28T10:36:18.734711+00:00",
             "source": "solver",
             "requested_locks": [],
             "inventory_version": "200:0",
@@ -27394,7 +27398,7 @@
               }
             ],
             "provenance": {
-              "plan_id": "plan-0489882ac8ed",
+              "plan_id": "plan-83d6b8ccc939",
               "revision": 1,
               "config": {
                 "profile": "quick",
@@ -27407,7 +27411,7 @@
               },
               "evidence": {
                 "engine": "cutting-engine/1.1-min-free-incumbent",
-                "input_sha256": "90d26027544d39768b5ff6f57c11a525432f9cca290fdd7d8c854cd5580aa7ab",
+                "input_sha256": "8a8535160b226054296fdbd7255484e35e48faa5ca1a76151ee9dd71a95f562d",
                 "python": "3.12.11",
                 "machine": "AMD64",
                 "cpu_count": 12,
@@ -27419,7 +27423,7 @@
                 "greedy_runs": 24,
                 "pool_patterns": 1174,
                 "pool_full": false,
-                "elapsed_seconds": 4.693,
+                "elapsed_seconds": 3.616,
                 "profile": "quick",
                 "seed": 42,
                 "workers": 1,
@@ -27430,17 +27434,17 @@
                 "unconstrained_best_area_mm2": 104852350,
                 "unconstrained_best_free_original": 62,
                 "five_free_area_loss_mm2": 0,
-                "wall_seconds": 4.712,
+                "wall_seconds": 3.631,
                 "stage": "greedy",
                 "minimum_free_remnants_met": true
               }
             },
             "sale_readiness": {
-              "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
+              "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
               "status": "ready_unchanged",
               "baseline": {
-                "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
-                "plan_id": "plan-0489882ac8ed",
+                "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
+                "plan_id": "plan-83d6b8ccc939",
                 "revision": 1,
                 "status": "validated",
                 "placements": [
@@ -30111,7 +30115,7 @@
                 "issues": [],
                 "evidence": {
                   "engine": "cutting-engine/1.1-min-free-incumbent",
-                  "input_sha256": "90d26027544d39768b5ff6f57c11a525432f9cca290fdd7d8c854cd5580aa7ab",
+                  "input_sha256": "8a8535160b226054296fdbd7255484e35e48faa5ca1a76151ee9dd71a95f562d",
                   "python": "3.12.11",
                   "machine": "AMD64",
                   "cpu_count": 12,
@@ -30123,7 +30127,7 @@
                   "greedy_runs": 24,
                   "pool_patterns": 1174,
                   "pool_full": false,
-                  "elapsed_seconds": 4.693,
+                  "elapsed_seconds": 3.616,
                   "profile": "quick",
                   "seed": 42,
                   "workers": 1,
@@ -30134,11 +30138,11 @@
                   "unconstrained_best_area_mm2": 104852350,
                   "unconstrained_best_free_original": 62,
                   "five_free_area_loss_mm2": 0,
-                  "wall_seconds": 4.712,
+                  "wall_seconds": 3.631,
                   "stage": "greedy",
                   "minimum_free_remnants_met": true
                 },
-                "created_at": "2026-11-28T10:28:26.370487+00:00",
+                "created_at": "2026-11-28T10:36:18.734711+00:00",
                 "source": "solver",
                 "requested_locks": [],
                 "inventory_version": "200:0",
@@ -30390,9 +30394,9 @@
                 "POST18484-FAIL-R194"
               ],
               "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-              "input_fingerprint": "90d26027544d39768b5ff6f57c11a525432f9cca290fdd7d8c854cd5580aa7ab",
-              "inventory_fingerprint": "54d510473a042ab7a1fb2b89a9615f12546780e7bea51fa48dc9eb1c53c4c931",
-              "registry_fingerprint": "9f630a0c14a6f7f636fd074696b935d0feb559276652233fe2b39fe1e44be075",
+              "input_fingerprint": "8a8535160b226054296fdbd7255484e35e48faa5ca1a76151ee9dd71a95f562d",
+              "inventory_fingerprint": "28923698b51aaf7a5db5f354957f9c4b57d319bc54462c45016aa3df5830ad81",
+              "registry_fingerprint": "f86354782894ff2601bf4a18fab97e2e9baef8e0035c552f5423d85747200442",
               "minimum_free": 5,
               "delta_area_mm2": 0,
               "search_performed": false,
@@ -30400,18 +30404,18 @@
               "reason_ru": "План уже оставляет достаточно исходных кусков с подтвержденными соответствиями; пересчет не нужен."
             },
             "baseline_plan_ref": {
-              "plan_id": "plan-0489882ac8ed",
+              "plan_id": "plan-83d6b8ccc939",
               "revision": 1
             },
             "selected_plan_ref": {
-              "plan_id": "plan-0489882ac8ed",
+              "plan_id": "plan-83d6b8ccc939",
               "revision": 1
             },
             "alternative_plan_ref": null,
             "tradeoff_plan_ref": null
           },
           "last_valid_result": {
-            "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
+            "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
             "plan_id": "unsaved",
             "revision": 0,
             "status": "validated",
@@ -33083,7 +33087,7 @@
             "issues": [],
             "evidence": {
               "engine": "cutting-engine/1.1-min-free-incumbent",
-              "input_sha256": "90d26027544d39768b5ff6f57c11a525432f9cca290fdd7d8c854cd5580aa7ab",
+              "input_sha256": "8a8535160b226054296fdbd7255484e35e48faa5ca1a76151ee9dd71a95f562d",
               "python": "3.12.11",
               "machine": "AMD64",
               "cpu_count": 12,
@@ -33094,7 +33098,7 @@
               "incumbents": 2,
               "pool_patterns": 141,
               "pool_full": false,
-              "elapsed_seconds": 2.927,
+              "elapsed_seconds": 2.175,
               "profile": "quick",
               "seed": 42,
               "workers": 1,
@@ -33105,7 +33109,7 @@
               "unconstrained_best_area_mm2": 104852350,
               "unconstrained_best_free_original": 62,
               "five_free_area_loss_mm2": 0,
-              "wall_seconds": 2.945,
+              "wall_seconds": 2.19,
               "stage": "greedy",
               "minimum_free_remnants_met": true
             },
@@ -33116,20 +33120,20 @@
             "inventory_current": null
           },
           "retry_of": null,
-          "created_at": "2026-11-28T10:28:09.631248+00:00",
-          "started_at": "2026-11-28T10:28:17.049624+00:00",
-          "finished_at": "2026-11-28T10:28:26.448802+00:00",
+          "created_at": "2026-11-28T10:36:05.802200+00:00",
+          "started_at": "2026-11-28T10:36:12.264681+00:00",
+          "finished_at": "2026-11-28T10:36:18.779226+00:00",
           "accepted_row_count": 0
         },
         {
-          "job_id": "cdcbb284-5828-4e4b-a39c-552d18657e85",
+          "job_id": "6d460b89-1fa6-4a8b-8baf-341b74947949",
           "state": "cancelled",
           "stage": "cancelled",
           "result_ref": null,
           "last_valid_result_ref": null,
           "error_code": null,
-          "run_id": "5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139",
-          "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
+          "run_id": "21b8b21b-dc62-4e40-92c1-41f764a9bc5c",
+          "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
           "cancel_requested": true,
           "stopped": true,
           "completed": 357,
@@ -33137,30 +33141,30 @@
           "result": null,
           "last_valid_result": null,
           "retry_of": null,
-          "created_at": "2026-11-28T10:28:09.635248+00:00",
-          "started_at": "2026-11-28T10:28:09.835042+00:00",
-          "finished_at": "2026-11-28T10:28:32.921664+00:00",
+          "created_at": "2026-11-28T10:36:05.806180+00:00",
+          "started_at": "2026-11-28T10:36:06.022172+00:00",
+          "finished_at": "2026-11-28T10:36:24.189881+00:00",
           "accepted_row_count": 300
         },
         {
-          "job_id": "427bfe9c-efb7-42f9-9970-cd21215e1792",
+          "job_id": "49de8357-0f1b-44a2-beb3-46e6af9da616",
           "state": "completed",
           "stage": "completed",
-          "result_ref": "427bfe9c-efb7-42f9-9970-cd21215e1792",
+          "result_ref": "49de8357-0f1b-44a2-beb3-46e6af9da616",
           "last_valid_result_ref": null,
           "error_code": null,
-          "run_id": "5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139",
-          "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
+          "run_id": "21b8b21b-dc62-4e40-92c1-41f764a9bc5c",
+          "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
           "cancel_requested": false,
           "stopped": true,
           "completed": 0,
           "total": 5,
           "result": {
-            "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
-            "run_id": "5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139",
+            "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
+            "run_id": "21b8b21b-dc62-4e40-92c1-41f764a9bc5c",
             "cutting_result": {
-              "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
-              "plan_id": "plan-0489882ac8ed",
+              "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
+              "plan_id": "plan-83d6b8ccc939",
               "revision": 1,
               "status": "validated",
               "placements": [
@@ -35831,7 +35835,7 @@
               "issues": [],
               "evidence": {
                 "engine": "cutting-engine/1.1-min-free-incumbent",
-                "input_sha256": "90d26027544d39768b5ff6f57c11a525432f9cca290fdd7d8c854cd5580aa7ab",
+                "input_sha256": "8a8535160b226054296fdbd7255484e35e48faa5ca1a76151ee9dd71a95f562d",
                 "python": "3.12.11",
                 "machine": "AMD64",
                 "cpu_count": 12,
@@ -35843,7 +35847,7 @@
                 "greedy_runs": 24,
                 "pool_patterns": 1174,
                 "pool_full": false,
-                "elapsed_seconds": 4.693,
+                "elapsed_seconds": 3.616,
                 "profile": "quick",
                 "seed": 42,
                 "workers": 1,
@@ -35854,11 +35858,11 @@
                 "unconstrained_best_area_mm2": 104852350,
                 "unconstrained_best_free_original": 62,
                 "five_free_area_loss_mm2": 0,
-                "wall_seconds": 4.712,
+                "wall_seconds": 3.631,
                 "stage": "greedy",
                 "minimum_free_remnants_met": true
               },
-              "created_at": "2026-11-28T10:28:26.370487+00:00",
+              "created_at": "2026-11-28T10:36:18.734711+00:00",
               "source": "solver",
               "requested_locks": [],
               "inventory_version": "200:0",
@@ -37954,7 +37958,7 @@
                 }
               ],
               "provenance": {
-                "plan_id": "plan-0489882ac8ed",
+                "plan_id": "plan-83d6b8ccc939",
                 "revision": 1,
                 "config": {
                   "profile": "quick",
@@ -37967,7 +37971,7 @@
                 },
                 "evidence": {
                   "engine": "cutting-engine/1.1-min-free-incumbent",
-                  "input_sha256": "90d26027544d39768b5ff6f57c11a525432f9cca290fdd7d8c854cd5580aa7ab",
+                  "input_sha256": "8a8535160b226054296fdbd7255484e35e48faa5ca1a76151ee9dd71a95f562d",
                   "python": "3.12.11",
                   "machine": "AMD64",
                   "cpu_count": 12,
@@ -37979,7 +37983,7 @@
                   "greedy_runs": 24,
                   "pool_patterns": 1174,
                   "pool_full": false,
-                  "elapsed_seconds": 4.693,
+                  "elapsed_seconds": 3.616,
                   "profile": "quick",
                   "seed": 42,
                   "workers": 1,
@@ -37990,17 +37994,17 @@
                   "unconstrained_best_area_mm2": 104852350,
                   "unconstrained_best_free_original": 62,
                   "five_free_area_loss_mm2": 0,
-                  "wall_seconds": 4.712,
+                  "wall_seconds": 3.631,
                   "stage": "greedy",
                   "minimum_free_remnants_met": true
                 }
               },
               "sale_readiness": {
-                "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
+                "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
                 "status": "ready_unchanged",
                 "baseline": {
-                  "dataset_id": "289f59d5-2297-4684-a9d2-cb4552bbfffd",
-                  "plan_id": "plan-0489882ac8ed",
+                  "dataset_id": "66fb8241-f58a-4120-96e1-4beed3d18807",
+                  "plan_id": "plan-83d6b8ccc939",
                   "revision": 1,
                   "status": "validated",
                   "placements": [
@@ -40671,7 +40675,7 @@
                   "issues": [],
                   "evidence": {
                     "engine": "cutting-engine/1.1-min-free-incumbent",
-                    "input_sha256": "90d26027544d39768b5ff6f57c11a525432f9cca290fdd7d8c854cd5580aa7ab",
+                    "input_sha256": "8a8535160b226054296fdbd7255484e35e48faa5ca1a76151ee9dd71a95f562d",
                     "python": "3.12.11",
                     "machine": "AMD64",
                     "cpu_count": 12,
@@ -40683,7 +40687,7 @@
                     "greedy_runs": 24,
                     "pool_patterns": 1174,
                     "pool_full": false,
-                    "elapsed_seconds": 4.693,
+                    "elapsed_seconds": 3.616,
                     "profile": "quick",
                     "seed": 42,
                     "workers": 1,
@@ -40694,11 +40698,11 @@
                     "unconstrained_best_area_mm2": 104852350,
                     "unconstrained_best_free_original": 62,
                     "five_free_area_loss_mm2": 0,
-                    "wall_seconds": 4.712,
+                    "wall_seconds": 3.631,
                     "stage": "greedy",
                     "minimum_free_remnants_met": true
                   },
-                  "created_at": "2026-11-28T10:28:26.370487+00:00",
+                  "created_at": "2026-11-28T10:36:18.734711+00:00",
                   "source": "solver",
                   "requested_locks": [],
                   "inventory_version": "200:0",
@@ -40950,9 +40954,9 @@
                   "POST18484-FAIL-R194"
                 ],
                 "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-                "input_fingerprint": "90d26027544d39768b5ff6f57c11a525432f9cca290fdd7d8c854cd5580aa7ab",
-                "inventory_fingerprint": "54d510473a042ab7a1fb2b89a9615f12546780e7bea51fa48dc9eb1c53c4c931",
-                "registry_fingerprint": "9f630a0c14a6f7f636fd074696b935d0feb559276652233fe2b39fe1e44be075",
+                "input_fingerprint": "8a8535160b226054296fdbd7255484e35e48faa5ca1a76151ee9dd71a95f562d",
+                "inventory_fingerprint": "28923698b51aaf7a5db5f354957f9c4b57d319bc54462c45016aa3df5830ad81",
+                "registry_fingerprint": "f86354782894ff2601bf4a18fab97e2e9baef8e0035c552f5423d85747200442",
                 "minimum_free": 5,
                 "delta_area_mm2": 0,
                 "search_performed": false,
@@ -40960,25 +40964,25 @@
                 "reason_ru": "План уже оставляет достаточно исходных кусков с подтвержденными соответствиями; пересчет не нужен."
               },
               "baseline_plan_ref": {
-                "plan_id": "plan-0489882ac8ed",
+                "plan_id": "plan-83d6b8ccc939",
                 "revision": 1
               },
               "selected_plan_ref": {
-                "plan_id": "plan-0489882ac8ed",
+                "plan_id": "plan-83d6b8ccc939",
                 "revision": 1
               },
               "alternative_plan_ref": null,
               "tradeoff_plan_ref": null
             },
             "buyer_registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-            "cutting_job_id": "b207031a-92c7-4af4-aed1-44a954bbdf22",
+            "cutting_job_id": "8219250d-d71e-479f-a194-e81cd8d4d29f",
             "run_budget": {
               "version": 0,
               "total_seconds": 120,
               "export_reserve_seconds": 30,
-              "started_at": "2026-11-28T10:28:09.572655+00:00",
-              "deadline_utc": "2026-11-28T10:30:09.572655+00:00",
-              "work_deadline_utc": "2026-11-28T10:29:39.572655+00:00",
+              "started_at": "2026-11-28T10:36:05.742200+00:00",
+              "deadline_utc": "2026-11-28T10:38:05.742200+00:00",
+              "work_deadline_utc": "2026-11-28T10:37:35.742200+00:00",
               "requested_solver": {
                 "profile": "extended",
                 "seed": 42,
@@ -40991,18 +40995,18 @@
               "phase": "baseline",
               "export_status": "not_started"
             },
-            "checkpoint_lineage": "427bfe9c-efb7-42f9-9970-cd21215e1792",
-            "attempt_id": "60375d2b-b392-45f9-be40-d4ecde661298",
+            "checkpoint_lineage": "49de8357-0f1b-44a2-beb3-46e6af9da616",
+            "attempt_id": "43e2f610-6c2c-4edc-b727-6474ca55fb74",
             "accepted_rows": [],
             "accepted_row_count": 0,
-            "plan_id": "plan-0489882ac8ed",
+            "plan_id": "plan-83d6b8ccc939",
             "plan_revision": 1,
             "card_ids": [
-              "c7306503-307e-4903-b9c6-3062d9ca3783",
-              "94ec2643-4482-4503-aa80-cc05936d210c",
-              "1dd39e78-0ba4-47fe-9c73-fe3a99ae5b77",
-              "cd01fbd6-e0d6-4bbd-a84d-6bef0d1358d7",
-              "346ae617-516a-4a87-a602-f905b6893238"
+              "63e78015-10a7-405b-a22a-a44559be53e4",
+              "2a2e1cdb-e80b-4ab3-8d64-234eab9af8eb",
+              "1a871315-b438-4046-839e-efd21b77211f",
+              "2dd0e62f-3b38-4d0d-8302-594ae9b8aa1d",
+              "6e0720d0-c18f-49ac-938f-a9c3b98e5def"
             ],
             "provenance": {
               "matching_policy": "evidence-v1"
@@ -41010,9 +41014,9 @@
           },
           "last_valid_result": null,
           "retry_of": null,
-          "created_at": "2026-11-28T10:28:26.606192+00:00",
-          "started_at": "2026-11-28T10:28:26.747626+00:00",
-          "finished_at": "2026-11-28T10:28:30.205753+00:00",
+          "created_at": "2026-11-28T10:36:18.992307+00:00",
+          "started_at": "2026-11-28T10:36:19.055304+00:00",
+          "finished_at": "2026-11-28T10:36:21.982114+00:00",
           "accepted_row_count": 0
         }
       ],
@@ -41024,9 +41028,9 @@
         "version": 0,
         "total_seconds": 120,
         "export_reserve_seconds": 30,
-        "started_at": "2026-11-28T10:28:09.572655+00:00",
-        "deadline_utc": "2026-11-28T10:30:09.572655+00:00",
-        "work_deadline_utc": "2026-11-28T10:29:39.572655+00:00",
+        "started_at": "2026-11-28T10:36:05.742200+00:00",
+        "deadline_utc": "2026-11-28T10:38:05.742200+00:00",
+        "work_deadline_utc": "2026-11-28T10:37:35.742200+00:00",
         "requested_solver": {
           "profile": "extended",
           "seed": 42,
@@ -41038,20 +41042,20 @@
         },
         "phase": "baseline",
         "export_status": "not_started",
-        "remaining_seconds": 96.51468,
-        "work_remaining_seconds": 66.51468,
+        "remaining_seconds": 101.441039,
+        "work_remaining_seconds": 71.441039,
         "deadline_met": null
       }
     },
     "export": {
-      "run_id": "5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139",
+      "run_id": "21b8b21b-dc62-4e40-92c1-41f764a9bc5c",
       "status": "partial",
       "files": {
-        "solution.csv": "/api/v1/runs/5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139/files/8e72bb42-dc1f-4068-9890-f630c8fb96f1/solution.csv",
-        "picks.csv": "/api/v1/runs/5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139/files/8e72bb42-dc1f-4068-9890-f630c8fb96f1/picks.csv",
-        "sale_cards.csv": "/api/v1/runs/5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139/files/8e72bb42-dc1f-4068-9890-f630c8fb96f1/sale_cards.csv",
-        "buyers_top50.csv": "/api/v1/runs/5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139/files/8e72bb42-dc1f-4068-9890-f630c8fb96f1/buyers_top50.csv",
-        "manifest.json": "/api/v1/runs/5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139/files/8e72bb42-dc1f-4068-9890-f630c8fb96f1/manifest.json"
+        "solution.csv": "/api/v1/runs/21b8b21b-dc62-4e40-92c1-41f764a9bc5c/files/8bf32b45-4a97-4f90-bac9-14dcc3a9f548/solution.csv",
+        "picks.csv": "/api/v1/runs/21b8b21b-dc62-4e40-92c1-41f764a9bc5c/files/8bf32b45-4a97-4f90-bac9-14dcc3a9f548/picks.csv",
+        "sale_cards.csv": "/api/v1/runs/21b8b21b-dc62-4e40-92c1-41f764a9bc5c/files/8bf32b45-4a97-4f90-bac9-14dcc3a9f548/sale_cards.csv",
+        "buyers_top50.csv": "/api/v1/runs/21b8b21b-dc62-4e40-92c1-41f764a9bc5c/files/8bf32b45-4a97-4f90-bac9-14dcc3a9f548/buyers_top50.csv",
+        "manifest.json": "/api/v1/runs/21b8b21b-dc62-4e40-92c1-41f764a9bc5c/files/8bf32b45-4a97-4f90-bac9-14dcc3a9f548/manifest.json"
       },
       "errors": [
         "assistant: результат не завершен",
@@ -41062,50 +41066,50 @@
       "solution.csv": {
         "sha256": "7e7630837a620f319a6076c87c294e1ed75e962fa21ee4bea8a1af4158e842db",
         "bytes": 11875,
-        "uri": "/api/v1/runs/5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139/files/8e72bb42-dc1f-4068-9890-f630c8fb96f1/solution.csv",
+        "uri": "/api/v1/runs/21b8b21b-dc62-4e40-92c1-41f764a9bc5c/files/8bf32b45-4a97-4f90-bac9-14dcc3a9f548/solution.csv",
         "rows": 298
       },
       "picks.csv": {
         "sha256": "c7d005ab917f164debb230c639c1b9180e728b24ae3a6a28d064bb31c5449cde",
         "bytes": 558,
-        "uri": "/api/v1/runs/5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139/files/8e72bb42-dc1f-4068-9890-f630c8fb96f1/picks.csv",
+        "uri": "/api/v1/runs/21b8b21b-dc62-4e40-92c1-41f764a9bc5c/files/8bf32b45-4a97-4f90-bac9-14dcc3a9f548/picks.csv",
         "rows": 25
       },
       "sale_cards.csv": {
         "sha256": "e5324d341ebfdfddbd962ba14b138a8b18fb0e9a62be489426fa36a0eddce763",
         "bytes": 2934,
-        "uri": "/api/v1/runs/5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139/files/8e72bb42-dc1f-4068-9890-f630c8fb96f1/sale_cards.csv",
+        "uri": "/api/v1/runs/21b8b21b-dc62-4e40-92c1-41f764a9bc5c/files/8bf32b45-4a97-4f90-bac9-14dcc3a9f548/sale_cards.csv",
         "rows": 5
       },
       "buyers_top50.csv": {
         "sha256": "e031cadcf80246d7917216f91f76d70d8568ce916b54b3fe3ef4ae890d57ce55",
         "bytes": 22129,
-        "uri": "/api/v1/runs/5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139/files/8e72bb42-dc1f-4068-9890-f630c8fb96f1/buyers_top50.csv",
+        "uri": "/api/v1/runs/21b8b21b-dc62-4e40-92c1-41f764a9bc5c/files/8bf32b45-4a97-4f90-bac9-14dcc3a9f548/buyers_top50.csv",
         "rows": 50
       },
       "manifest.json": {
-        "sha256": "4f73ec88c4c9835f2dfef35400aae4f31496149cebd1da1835a7a7725bc82a8f",
+        "sha256": "e896e0c615fa959ade75c3e098900d73a385a87951928f02339d38ba6f66947f",
         "bytes": 14281,
-        "uri": "/api/v1/runs/5bfd1077-d4a4-4fcd-bbe9-95e4a7f52139/files/8e72bb42-dc1f-4068-9890-f630c8fb96f1/manifest.json"
+        "uri": "/api/v1/runs/21b8b21b-dc62-4e40-92c1-41f764a9bc5c/files/8bf32b45-4a97-4f90-bac9-14dcc3a9f548/manifest.json"
       }
     }
   },
   "bounded_improvement_attempt": {
-    "job_id": "ecbd9118-b8b0-42d9-b39e-df80bf78b8c1",
+    "job_id": "eece681e-9236-4c5c-b35d-ad8d7e7a1c9d",
     "state": "completed",
     "stage": "completed",
-    "result_ref": "ecbd9118-b8b0-42d9-b39e-df80bf78b8c1",
-    "last_valid_result_ref": "ecbd9118-b8b0-42d9-b39e-df80bf78b8c1",
+    "result_ref": "eece681e-9236-4c5c-b35d-ad8d7e7a1c9d",
+    "last_valid_result_ref": "eece681e-9236-4c5c-b35d-ad8d7e7a1c9d",
     "error_code": null,
-    "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
-    "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
+    "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
+    "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
     "cancel_requested": false,
     "stopped": true,
     "completed": 0,
     "total": null,
     "result": {
-      "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-      "plan_id": "plan-022f2a3f6609",
+      "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+      "plan_id": "plan-c92c98133446",
       "revision": 1,
       "status": "validated",
       "placements": [
@@ -43776,7 +43780,7 @@
       "issues": [],
       "evidence": {
         "engine": "cutting-engine/1.1-min-free-incumbent",
-        "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+        "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
         "python": "3.12.11",
         "machine": "AMD64",
         "cpu_count": 12,
@@ -43785,10 +43789,10 @@
         "base_plan_id": null,
         "base_revision": null,
         "incumbents": 2,
-        "greedy_runs": 586,
-        "pool_patterns": 5809,
+        "greedy_runs": 554,
+        "pool_patterns": 5667,
         "pool_full": false,
-        "elapsed_seconds": 6.004,
+        "elapsed_seconds": 6.011,
         "profile": "extended",
         "seed": 42,
         "workers": 1,
@@ -43799,11 +43803,11 @@
         "unconstrained_best_area_mm2": 104852350,
         "unconstrained_best_free_original": 62,
         "five_free_area_loss_mm2": 0,
-        "wall_seconds": 6.021,
+        "wall_seconds": 6.028,
         "stage": "greedy",
         "minimum_free_remnants_met": true
       },
-      "created_at": "2026-11-28T10:28:05.628147+00:00",
+      "created_at": "2026-11-28T10:36:01.484454+00:00",
       "source": "solver",
       "requested_locks": [],
       "inventory_version": "200:0",
@@ -45899,7 +45903,7 @@
         }
       ],
       "provenance": {
-        "plan_id": "plan-022f2a3f6609",
+        "plan_id": "plan-c92c98133446",
         "revision": 1,
         "config": {
           "profile": "extended",
@@ -45912,7 +45916,7 @@
         },
         "evidence": {
           "engine": "cutting-engine/1.1-min-free-incumbent",
-          "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+          "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
           "python": "3.12.11",
           "machine": "AMD64",
           "cpu_count": 12,
@@ -45921,10 +45925,10 @@
           "base_plan_id": null,
           "base_revision": null,
           "incumbents": 2,
-          "greedy_runs": 586,
-          "pool_patterns": 5809,
+          "greedy_runs": 554,
+          "pool_patterns": 5667,
           "pool_full": false,
-          "elapsed_seconds": 6.004,
+          "elapsed_seconds": 6.011,
           "profile": "extended",
           "seed": 42,
           "workers": 1,
@@ -45935,17 +45939,17 @@
           "unconstrained_best_area_mm2": 104852350,
           "unconstrained_best_free_original": 62,
           "five_free_area_loss_mm2": 0,
-          "wall_seconds": 6.021,
+          "wall_seconds": 6.028,
           "stage": "greedy",
           "minimum_free_remnants_met": true
         }
       },
       "sale_readiness": {
-        "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
+        "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
         "status": "ready_unchanged",
         "baseline": {
-          "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-          "plan_id": "plan-022f2a3f6609",
+          "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+          "plan_id": "plan-c92c98133446",
           "revision": 1,
           "status": "validated",
           "placements": [
@@ -48616,7 +48620,7 @@
           "issues": [],
           "evidence": {
             "engine": "cutting-engine/1.1-min-free-incumbent",
-            "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+            "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
             "python": "3.12.11",
             "machine": "AMD64",
             "cpu_count": 12,
@@ -48625,10 +48629,10 @@
             "base_plan_id": null,
             "base_revision": null,
             "incumbents": 2,
-            "greedy_runs": 586,
-            "pool_patterns": 5809,
+            "greedy_runs": 554,
+            "pool_patterns": 5667,
             "pool_full": false,
-            "elapsed_seconds": 6.004,
+            "elapsed_seconds": 6.011,
             "profile": "extended",
             "seed": 42,
             "workers": 1,
@@ -48639,11 +48643,11 @@
             "unconstrained_best_area_mm2": 104852350,
             "unconstrained_best_free_original": 62,
             "five_free_area_loss_mm2": 0,
-            "wall_seconds": 6.021,
+            "wall_seconds": 6.028,
             "stage": "greedy",
             "minimum_free_remnants_met": true
           },
-          "created_at": "2026-11-28T10:28:05.628147+00:00",
+          "created_at": "2026-11-28T10:36:01.484454+00:00",
           "source": "solver",
           "requested_locks": [],
           "inventory_version": "200:0",
@@ -48895,9 +48899,9 @@
           "POST18484-R194"
         ],
         "registry_version": "f7c3c0e2e5f3c5c9cc93814f0b024571e2e2a02fe13efeeb86730d29e92f726e",
-        "input_fingerprint": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
-        "inventory_fingerprint": "eba7d354478ad0e757f4381fbcf90d8bce3c0250929b3962e5db3efc2ba95e6b",
-        "registry_fingerprint": "8909ef02297d2c308bec8a5390aa73681451ec5b21f0c89307c810de7a0464d1",
+        "input_fingerprint": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
+        "inventory_fingerprint": "a60efd792a9e8c6b0eb9f6733ce407f6cae8ec306f08f0afa268ab28dcab678f",
+        "registry_fingerprint": "3fb1397f542fbf698264497fb11aa1e78f8c75919542e5084bb2d8d20ac653bd",
         "minimum_free": 5,
         "delta_area_mm2": 0,
         "search_performed": false,
@@ -48905,11 +48909,11 @@
         "reason_ru": "План уже оставляет достаточно исходных кусков с подтвержденными соответствиями; пересчет не нужен."
       },
       "baseline_plan_ref": {
-        "plan_id": "plan-022f2a3f6609",
+        "plan_id": "plan-c92c98133446",
         "revision": 1
       },
       "selected_plan_ref": {
-        "plan_id": "plan-022f2a3f6609",
+        "plan_id": "plan-c92c98133446",
         "revision": 1
       },
       "alternative_plan_ref": null,
@@ -49122,7 +49126,7 @@
       }
     },
     "last_valid_result": {
-      "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
+      "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
       "plan_id": "unsaved",
       "revision": 0,
       "status": "validated",
@@ -51794,7 +51798,7 @@
       "issues": [],
       "evidence": {
         "engine": "cutting-engine/1.1-min-free-incumbent",
-        "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+        "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
         "python": "3.12.11",
         "machine": "AMD64",
         "cpu_count": 12,
@@ -51805,7 +51809,7 @@
         "incumbents": 2,
         "pool_patterns": 141,
         "pool_full": false,
-        "elapsed_seconds": 0.734,
+        "elapsed_seconds": 0.588,
         "profile": "extended",
         "seed": 42,
         "workers": 1,
@@ -51816,7 +51820,7 @@
         "unconstrained_best_area_mm2": 104852350,
         "unconstrained_best_free_original": 62,
         "five_free_area_loss_mm2": 0,
-        "wall_seconds": 0.753,
+        "wall_seconds": 0.604,
         "stage": "greedy",
         "minimum_free_remnants_met": true
       },
@@ -51827,23 +51831,23 @@
       "inventory_current": null
     },
     "retry_of": null,
-    "created_at": "2026-11-28T10:27:57.438751+00:00",
-    "started_at": "2026-11-28T10:27:57.844893+00:00",
-    "finished_at": "2026-11-28T10:28:05.664150+00:00",
+    "created_at": "2026-11-28T10:35:53.731238+00:00",
+    "started_at": "2026-11-28T10:35:53.812229+00:00",
+    "finished_at": "2026-11-28T10:36:01.661177+00:00",
     "accepted_row_count": 0
   },
   "restart": {
     "same_accepted_passport": true,
     "old_download_bytes_preserved": true,
-    "accepted_export_id": "e30f4bed-64a5-49f8-8b1f-ba908f678cea",
+    "accepted_export_id": "d6acf5ef-2e71-44f6-8aa7-a739532f9bd8",
     "durable_partial_row_counts": {
-      "5e4f81c5-2410-488e-95ee-45def20cc638": 0,
-      "ea1a7f38-58ca-488c-8348-f5dc1267de5d": 0,
-      "014561f4-bbde-4bbc-ab81-a516000ec5c5": 0,
-      "84118544-6458-4af0-9e98-5413ce21384f": 150,
-      "6ba9d342-cf2f-4047-ad84-ad9a037846ae": 0
+      "e6794c0d-0d5c-4524-998d-3f8b37a64b62": 0,
+      "50a495f7-f70e-40af-8628-ff1922021c3a": 0,
+      "7c112461-19a6-4bdd-ae9f-5d7a6e79ad65": 0,
+      "0cc3a532-ce4b-428f-bc3d-f9445e7408df": 151,
+      "c2d8b8a3-4e25-4663-bcff-24475865c9f8": 0
     },
     "host_stop": "owned_process_tree_after_API_coordinator_stop"
   },
-  "total_observer_seconds": 53.922
+  "total_observer_seconds": 47.453
 }

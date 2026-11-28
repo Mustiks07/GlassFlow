@@ -1,7 +1,7 @@
 {
-  "run_id": "f1a32e9d-ab47-4767-92ef-19e929b8f6db",
-  "dataset_id": "609a824e-513c-48a3-9edb-3cc35f6ab9e7",
-  "source_dataset_id": "39dc15d4-cfae-44af-a0b3-0f6c23268054",
+  "run_id": "19c6804e-cfff-4cd0-9c48-748167936253",
+  "dataset_id": "451db6a4-4ef7-4cac-b2d9-5b9a7e466305",
+  "source_dataset_id": "4d30c389-71db-4a38-b9e1-413c2667391f",
   "source_hashes": {
     "materials": "1391e1fa6600d028c0e98ea3dd4b20b573ed92610271c16f7ee2a6b86957c7b1",
     "stock": "af944d2f464ab25aa90465d09bd72fdffc36cbf1fa5a26d21329892f37fbda19",
@@ -15,8 +15,8 @@
   "schema_version": "0007_intelligence_reviews",
   "build": "0.1.0",
   "build_info": {
-    "commit": "4ee5812a65157acd7aa504df3d994497f608e29a",
-    "source_digest": "fbd7eaad72cfffa0d7f59292ccc214750a2b838f68e599d1331963649b765b8e",
+    "commit": "fc4cca439ced3cbf644af88c186c90e96fc66c86",
+    "source_digest": "6ba6600a50230689379b35c1c0799808a2d8f599202598945af152d8a8d88bad",
     "frozen": false
   },
   "config_version": "post-changed-input-http-v1",
@@ -29,7 +29,7 @@
     "ortools": "9.15.6755"
   },
   "crm_policy": "reference-v1",
-  "created_at": "2026-11-28T10:27:47.959478+00:00",
+  "created_at": "2026-11-28T10:35:45.870736+00:00",
   "modules": [
     "cutting",
     "assistant",
@@ -97,9 +97,9 @@
     "version": 0,
     "total_seconds": 120,
     "export_reserve_seconds": 30,
-    "started_at": "2026-11-28T10:27:47.959478+00:00",
-    "deadline_utc": "2026-11-28T10:29:47.959478+00:00",
-    "work_deadline_utc": "2026-11-28T10:29:17.959478+00:00",
+    "started_at": "2026-11-28T10:35:45.870736+00:00",
+    "deadline_utc": "2026-11-28T10:37:45.870736+00:00",
+    "work_deadline_utc": "2026-11-28T10:37:15.870736+00:00",
     "requested_solver": {
       "profile": "extended",
       "seed": 42,
@@ -111,15 +111,15 @@
     },
     "phase": "improving",
     "export_status": "ready",
-    "export_candidate_key": "4fe09368a4177852da0c5de25168ed2530ef59760430bf68a4779aef3d1101f0",
-    "export_attempt_id": "e040a63f-b896-4298-a13e-1cc510f241f8",
-    "baseline_accepted_at": "2026-11-28T10:27:57.344720+00:00",
-    "improvement_job_id": "ecbd9118-b8b0-42d9-b39e-df80bf78b8c1",
-    "baseline_cutting_job_id": "05a16831-b86d-4f17-815e-ee02c9220696"
+    "export_candidate_key": "67876a34dd9b498894061d5ec78e8aea06161787f34a8a827d791e8683e13bd6",
+    "export_attempt_id": "dbc83394-f618-4b76-9649-4b30b0992c7a",
+    "baseline_accepted_at": "2026-11-28T10:35:53.560987+00:00",
+    "improvement_job_id": "eece681e-9236-4c5c-b35d-ad8d7e7a1c9d",
+    "baseline_cutting_job_id": "287d2dfa-d0d2-4227-9b56-be04d1982abc"
   },
   "sale_readiness_enabled": true,
-  "last_export_id": "98688982-fb6a-4d78-9da8-d4ab5bce1226",
-  "accepted_export_id": "e30f4bed-64a5-49f8-8b1f-ba908f678cea",
+  "last_export_id": "04f0e236-880f-49bc-8075-3e73c13a2b87",
+  "accepted_export_id": "d6acf5ef-2e71-44f6-8aa7-a739532f9bd8",
   "accepted_files": {
     "solution.csv": "cd62c964f5513e9da4330777958156828f3754f62ef7ca3deb43f7c4995a1a40",
     "answers.csv": "dbc8c1ed3ce355de73bb969c6700fbe4a816b82dbc0876eca25320a893707f7e",
@@ -130,48 +130,48 @@
   },
   "accepted_result_refs": {
     "quality": {
-      "job_id": "0f4bad0f-79c2-4864-a562-4da90834b2c5",
+      "job_id": "ad30aefc-9c8e-4b1f-8f64-46a2471a92f0",
       "state": "completed"
     },
     "crm": {
-      "job_id": "f30f60bc-86a0-4287-b31e-da5079f3375e",
+      "job_id": "f491dfb1-da44-4200-b980-f3b2b1e5ca10",
       "state": "completed"
     },
     "cutting": {
-      "job_id": "05a16831-b86d-4f17-815e-ee02c9220696",
+      "job_id": "287d2dfa-d0d2-4227-9b56-be04d1982abc",
       "state": "completed"
     },
     "assistant": {
-      "job_id": "0031f3a1-c254-41c0-b92b-7d25bb895143",
+      "job_id": "62e02663-3754-4251-bb84-6b4d08ab24c6",
       "state": "completed"
     },
     "cards": {
-      "job_id": "583c0d07-7d9d-4046-a181-b72a76bf17c1",
+      "job_id": "85fe917b-c92b-4298-8f6e-aed9c65f077d",
       "state": "completed"
     }
   },
-  "export_id": "e30f4bed-64a5-49f8-8b1f-ba908f678cea",
+  "export_id": "d6acf5ef-2e71-44f6-8aa7-a739532f9bd8",
   "status": "ready",
   "errors": [],
   "result_refs": {
     "quality": {
-      "job_id": "0f4bad0f-79c2-4864-a562-4da90834b2c5",
+      "job_id": "ad30aefc-9c8e-4b1f-8f64-46a2471a92f0",
       "state": "completed"
     },
     "crm": {
-      "job_id": "f30f60bc-86a0-4287-b31e-da5079f3375e",
+      "job_id": "f491dfb1-da44-4200-b980-f3b2b1e5ca10",
       "state": "completed"
     },
     "cutting": {
-      "job_id": "05a16831-b86d-4f17-815e-ee02c9220696",
+      "job_id": "287d2dfa-d0d2-4227-9b56-be04d1982abc",
       "state": "completed"
     },
     "assistant": {
-      "job_id": "0031f3a1-c254-41c0-b92b-7d25bb895143",
+      "job_id": "62e02663-3754-4251-bb84-6b4d08ab24c6",
       "state": "completed"
     },
     "cards": {
-      "job_id": "583c0d07-7d9d-4046-a181-b72a76bf17c1",
+      "job_id": "85fe917b-c92b-4298-8f6e-aed9c65f077d",
       "state": "completed"
     }
   },
@@ -395,7 +395,7 @@
       "model_hash": null
     },
     "cutting": {
-      "plan_id": "plan-60a3249a9c3f",
+      "plan_id": "plan-b1e8a0682a06",
       "revision": 1,
       "config": {
         "profile": "quick",
@@ -408,7 +408,7 @@
       },
       "evidence": {
         "engine": "cutting-engine/1.1-min-free-incumbent",
-        "input_sha256": "3373156b47ed3eb59407f38452577d45f3a2c5cdf1d990cacf426105f2e5264a",
+        "input_sha256": "3fc74aadbe2e66e82bd70ea45a29226ebd4d26fcce1cbf817ffce36f10d5571b",
         "python": "3.12.11",
         "machine": "AMD64",
         "cpu_count": 12,
@@ -420,7 +420,7 @@
         "greedy_runs": 24,
         "pool_patterns": 1174,
         "pool_full": false,
-        "elapsed_seconds": 0.867,
+        "elapsed_seconds": 0.744,
         "profile": "quick",
         "seed": 42,
         "workers": 1,
@@ -431,7 +431,7 @@
         "unconstrained_best_area_mm2": 104852350,
         "unconstrained_best_free_original": 62,
         "five_free_area_loss_mm2": 0,
-        "wall_seconds": 0.883,
+        "wall_seconds": 0.76,
         "stage": "greedy",
         "minimum_free_remnants_met": true
       }

@@ -266,3 +266,13 @@ Terminal failed/exhausted cards остаются partial; dedup dependency fix �
 `uv run pytest tests/post_acceptance -q -o addopts=''` —13 PASS/6.09s, Ruff scoped PASS.
 Следующий шаг: новый fresh полный TCP acceptance с этим минимальным product commit; прежний4ee5812 PASS
 сохраняется как evidence предыдущей базы, не объявляется проверкой нового guard.
+
+Полный fresh HTTP повтор после fc4cca4: **PASS**, exit0,47.453s, baseline accepted8.235s.
+Runtime SHA fc4cca439ced3cbf644af88c186c90e96fc66c86, `.qa/new-inputs-dispatch-final`.
+Unknown strict probe manager_handoff/no pricefacts/no amounts/no readyquote/0modelcalls;5cards×3matches;
+official downloadedCSV coverage0.558090 invalid0 missing0. Improvement completed/not promoted/baseline preserved.
+Actual deadline retained151acceptedrows; API cancel300, unknown quality remains UNRESOLVED_VERDICT (verdicts
+and answers withheld), partial export3resultCSV+buyers. Actual host restart sameacceptedpassport/all oldbytes/151rows/
+stabledependencyID PASS. Current final artifacts overwritten only with this newer actual run; prior4ee evidence remains Git history.
+Scoped raw-byte evidence attrs now recognize CR-at-EOL with default blank/space checks retained, avoiding false
+trailing-whitespace warnings for required original HTTP CRLF; byte hashes remain authoritative and are rechecked in Git blobs.
