@@ -115,9 +115,6 @@ def test_network_secret_only_memory_and_retry_idempotent(client, imported):
     ).json()
     result = wait_job(client, started["job_id"], {"completed", "failed"})
     assert result["state"] == "completed" and result["result"]["key_present"] is True
-    assert not any(
-        b"synthetic-session-key" in p.read_bytes() for p in client.app.state.data_dir.glob("*.db*")
-    )
     factory = client.app.state.session_factory
     with write_transaction(factory) as session:
         previous = enqueue(session, imported["dataset_id"], "assistant", {"ai_profile": "local_limited"})
@@ -134,3 +131,11 @@ def test_network_secret_only_memory_and_retry_idempotent(client, imported):
     assert again.json() == response.json()
     retried = wait_job(client, response.json()["job_id"], {"completed"})
     assert retried["retry_of"] == previous_id and retried["result"]["retried"] is True
+    # Windows may deny ordinary reads of SQLite's live memory-mapped SHM index.
+    # Drain the real coordinator and close its DB handles before scanning every
+    # remaining database/sidecar byte; do not skip unreadable files or this check.
+    client.app.state.coordinator.stop()
+    client.app.state.engine.dispose()
+    database_files = list(client.app.state.data_dir.glob("*.db*"))
+    assert any(p.name == "glassflow.db" and p.stat().st_size for p in database_files)
+    assert not any(b"synthetic-session-key" in p.read_bytes() for p in database_files)
