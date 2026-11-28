@@ -52,3 +52,13 @@ Worktree: `GlassFlow-post-intelligence`, branch `codex/post-intelligence`, base 
 - N19 reuses that shared applicability rule: known eligible retail correction can now produce a verified draft; unknown applicability stays review-only; explicit conditional bulk correction preserves its canonical threshold in the text.
 - `uv run pytest tests/intelligence/test_post_bulk_applicability.py tests/intelligence/test_post_reviews.py tests/intelligence/test_dialog_quality.py tests/intelligence/test_review_regressions.py tests/intelligence/test_commercial_binding.py tests/intelligence/test_verifier_completeness.py -q --junitxml=docs/ai/post/bulk-qa-regressions.xml`: 77 passed. Existing verifier/commercial completeness rules unchanged and passed. Ruff passed.
 - Full suite on the source freeze before this isolated shared QA change: 340 tests, 337 passed, 3 skipped. Full final suite will follow; the independent live assistant exam uses unchanged assistant/prompt/provider code.
+
+## Final verification checkpoint
+
+- Final source SHA: `8d48d15` (assistant/prompt/provider source freeze `12f4b6d`; shared QA applicability added afterward, unchanged assistant execution path).
+- `uv run pytest tests/intelligence -q --junitxml=docs/ai/post/intelligence-tests.xml --tb=short`: exit 0, **354 tests: 351 passed, 3 skipped**, no failures/errors. The three skips are the parametrized generic unit-price sweep for patterned clear/bronze/grey 8 mm whose KB has no unit rate (`no unit price in KB`); separate unknown-price/handoff/NEEDS_REVIEW regressions pass. They are not live/key skips.
+- `uv run ruff check backend tests scripts`: passed.
+- `uv run python scripts/check_foundation.py`: passed; 14 immutable inputs, 66 requirements, 67 assigned acceptance scenarios, exact specification PDF preserved.
+- Raw JUnit: `docs/ai/post/intelligence-tests.xml`; targeted commercial/QA JUnit: `docs/ai/post/bulk-qa-regressions.xml` (77 passed). Raw author N04 before/after and interpretation are in `docs/ai/post/`.
+- Completed assigned independent scope: P0, provenance/model-first/BasisWeb adapter, N04, N07, N19, N17 no-promotion decision. Parent owns live independent exam, merged contracts/UI/coordinator hook, actual browser E2E, EXE and release. No live AI acceptance claim is made here.
+- Next exact step for root: merge `8d48d15` plus this evidence-only checkpoint, regenerate shared OpenAPI/TypeScript, verify coordinator accepted-batch review hook/UI, run the sealed live assistant/QA exam and all release checks on the integrated SHA. No further child source changes pending.
