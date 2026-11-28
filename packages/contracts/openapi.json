@@ -3294,6 +3294,61 @@
               "type": "string",
               "title": "Dataset Id"
             }
+          },
+          {
+            "name": "material_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Material Id"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
           }
         ],
         "responses": {
@@ -3400,16 +3455,6 @@
               }
             },
             "description": "Service Unavailable"
-          },
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            },
-            "description": "Not Implemented"
           }
         }
       },
@@ -3529,8 +3574,212 @@
               }
             },
             "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/datasets/{dataset_id}/remnants": {
+      "get": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "List Remnants Page",
+        "operationId": "list_remnants_page_api_v1_datasets__dataset_id__remnants_get",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
           },
-          "501": {
+          {
+            "name": "material_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Material Id"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "available",
+                    "reserved",
+                    "consumed",
+                    "withdrawn"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "defect",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Defect"
+            }
+          },
+          {
+            "name": "original",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Original"
+            }
+          },
+          {
+            "name": "min_length_mm",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "exclusiveMinimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Min Length Mm"
+            }
+          },
+          {
+            "name": "min_width_mm",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "exclusiveMinimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Min Width Mm"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Search"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "remnant_id",
+                "area",
+                "age_days",
+                "material_id",
+                "status",
+                "source_order"
+              ],
+              "type": "string",
+              "default": "source_order",
+              "title": "Sort"
+            }
+          },
+          {
+            "name": "descending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Descending"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemnantPage"
+                }
+              }
+            }
+          },
+          "400": {
             "content": {
               "application/json": {
                 "schema": {
@@ -3538,7 +3787,1767 @@
                 }
               }
             },
-            "description": "Not Implemented"
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Add Remnant Scoped",
+        "operationId": "add_remnant_scoped_api_v1_datasets__dataset_id__remnants_post",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewRemnant"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Remnant"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/remnants/{remnant_id}": {
+      "get": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Get Remnant",
+        "operationId": "get_remnant_api_v1_remnants__remnant_id__get",
+        "parameters": [
+          {
+            "name": "remnant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Remnant Id"
+            }
+          },
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Remnant"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Update Remnant",
+        "operationId": "update_remnant_api_v1_remnants__remnant_id__patch",
+        "parameters": [
+          {
+            "name": "remnant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Remnant Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemnantUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Remnant"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/remnants/{remnant_id}/measurement": {
+      "patch": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Update Measurement",
+        "operationId": "update_measurement_api_v1_remnants__remnant_id__measurement_patch",
+        "parameters": [
+          {
+            "name": "remnant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Remnant Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeasurementUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/remnants/{remnant_id}/withdraw": {
+      "post": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Withdraw Remnant",
+        "operationId": "withdraw_remnant_api_v1_remnants__remnant_id__withdraw_post",
+        "parameters": [
+          {
+            "name": "remnant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Remnant Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WithdrawRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryChange"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/remnants/{remnant_id}/restore": {
+      "post": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Restore Remnant",
+        "operationId": "restore_remnant_api_v1_remnants__remnant_id__restore_post",
+        "parameters": [
+          {
+            "name": "remnant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Remnant Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryChange"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/remnants/{remnant_id}/reserve": {
+      "post": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Reserve Remnant",
+        "operationId": "reserve_remnant_api_v1_remnants__remnant_id__reserve_post",
+        "parameters": [
+          {
+            "name": "remnant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Remnant Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReserveRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryChange"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/remnants/{remnant_id}/consume": {
+      "post": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Consume Remnant",
+        "operationId": "consume_remnant_api_v1_remnants__remnant_id__consume_post",
+        "parameters": [
+          {
+            "name": "remnant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Remnant Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsumeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryChange"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/remnants/{remnant_id}/release": {
+      "post": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Release Remnant",
+        "operationId": "release_remnant_api_v1_remnants__remnant_id__release_post",
+        "parameters": [
+          {
+            "name": "remnant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Remnant Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryChange"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/reservations/{reservation_id}/release": {
+      "post": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Release Reservation",
+        "operationId": "release_reservation_api_v1_reservations__reservation_id__release_post",
+        "parameters": [
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Reservation Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryChange"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/remnants/{remnant_id}/children": {
+      "post": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Add Children",
+        "operationId": "add_children_api_v1_remnants__remnant_id__children_post",
+        "parameters": [
+          {
+            "name": "remnant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Remnant Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChildRemnantsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryChange"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/cutting/events": {
+      "get": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Cutting Events",
+        "operationId": "cutting_events_api_v1_cutting_events_get",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Object Id"
+            }
+          },
+          {
+            "name": "after_seq",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "After Seq"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 200,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditEvent"
+                  },
+                  "title": "Response Cutting Events Api V1 Cutting Events Get"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
           }
         }
       }
@@ -3660,9 +5669,121 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/cutting/solve-input": {
+      "post": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Solve Input",
+        "description": "The exact serialisable snapshot a solve job would receive (for the platform worker and audits).",
+        "operationId": "solve_input_api_v1_cutting_solve_input_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolveRequest"
+              }
+            }
           },
-          "501": {
-            "description": "Not Implemented",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolveInput"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -3692,7 +5813,7 @@
           "required": true
         },
         "responses": {
-          "200": {
+          "202": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -3791,9 +5912,509 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/cutting/impact": {
+      "post": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Impact",
+        "operationId": "impact_api_v1_cutting_impact_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImpactRequest"
+              }
+            }
           },
-          "501": {
-            "description": "Not Implemented",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/plans": {
+      "get": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "List Plans",
+        "operationId": "list_plans_api_v1_plans_get",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanSummary"
+                  },
+                  "title": "Response List Plans Api V1 Plans Get"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/plans/active": {
+      "get": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Active Plan",
+        "operationId": "active_plan_api_v1_plans_active_get",
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/CutPlan"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Response Active Plan Api V1 Plans Active Get"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/plans/compare": {
+      "post": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Compare Plans",
+        "operationId": "compare_plans_api_v1_plans_compare_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompareRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanComparison"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -3829,6 +6450,23 @@
             "schema": {
               "type": "string",
               "title": "Dataset Id"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Revision"
             }
           }
         ],
@@ -3932,8 +6570,66 @@
               }
             },
             "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/plans/{plan_id}/layout": {
+      "get": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Plan Layout",
+        "operationId": "plan_layout_api_v1_plans__plan_id__layout_get",
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plan Id"
+            }
           },
-          "501": {
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Revision"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanLayout"
+                }
+              }
+            }
+          },
+          "400": {
             "content": {
               "application/json": {
                 "schema": {
@@ -3941,7 +6637,516 @@
                 }
               }
             },
-            "description": "Not Implemented"
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/plans/{plan_id}/export": {
+      "get": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Plan Export",
+        "operationId": "plan_export_api_v1_plans__plan_id__export_get",
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plan Id"
+            }
+          },
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Revision"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolutionExport"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/plans/{plan_id}/free-remnants": {
+      "get": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Plan Free Remnants",
+        "description": "Live re-check of fully free original pieces (sale cards must call it right before create/confirm).",
+        "operationId": "plan_free_remnants_api_v1_plans__plan_id__free_remnants_get",
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plan Id"
+            }
+          },
+          {
+            "name": "dataset_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Dataset Id"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Revision"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FreeRemnantsCheck"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/plans/{plan_id}/draft": {
+      "post": {
+        "tags": [
+          "cutting"
+        ],
+        "summary": "Draft Plan",
+        "operationId": "draft_plan_api_v1_plans__plan_id__draft_post",
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Service Unavailable"
           }
         }
       }
@@ -3970,6 +7175,23 @@
             "schema": {
               "type": "string",
               "title": "Dataset Id"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Revision"
             }
           }
         ],
@@ -4073,16 +7295,6 @@
               }
             },
             "description": "Service Unavailable"
-          },
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            },
-            "description": "Not Implemented"
           }
         }
       }
@@ -4103,6 +7315,23 @@
               "type": "string",
               "title": "Plan Id"
             }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
           }
         ],
         "requestBody": {
@@ -4121,7 +7350,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CutPlan"
+                  "$ref": "#/components/schemas/CommitResult"
                 }
               }
             }
@@ -4215,16 +7444,6 @@
               }
             },
             "description": "Service Unavailable"
-          },
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            },
-            "description": "Not Implemented"
           }
         }
       }
@@ -11243,6 +14462,108 @@
         ],
         "title": "AssistantTurn"
       },
+      "AuditEvent": {
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "title": "Event Id"
+          },
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "action": {
+            "type": "string",
+            "title": "Action"
+          },
+          "object_type": {
+            "type": "string",
+            "title": "Object Type"
+          },
+          "object_id": {
+            "type": "string",
+            "title": "Object Id"
+          },
+          "before_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Before Version"
+          },
+          "after_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "After Version"
+          },
+          "actor": {
+            "type": "string",
+            "title": "Actor"
+          },
+          "correlation_id": {
+            "type": "string",
+            "title": "Correlation Id"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "details": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Details"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "event_id",
+          "dataset_id",
+          "action",
+          "object_type",
+          "object_id",
+          "before_version",
+          "after_version",
+          "actor",
+          "correlation_id",
+          "created_at"
+        ],
+        "title": "AuditEvent"
+      },
       "Basket": {
         "properties": {
           "dataset_id": {
@@ -12292,6 +15613,45 @@
           "location_raw": {
             "type": "string",
             "title": "Location Raw"
+          },
+          "copy_index": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Copy Index",
+            "default": 0
+          },
+          "remnant_dimensions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Dimensions"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "waste_area_mm2": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Waste Area Mm2",
+            "default": 0
+          },
+          "age_days": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age Days"
+          },
+          "shares_remnant_with_plan": {
+            "type": "boolean",
+            "title": "Shares Remnant With Plan",
+            "default": false
           }
         },
         "additionalProperties": false,
@@ -12325,6 +15685,30 @@
           "scope": {
             "type": "string",
             "title": "Scope"
+          },
+          "covered_quantity": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Covered Quantity",
+            "default": 0
+          },
+          "requested_quantity": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Requested Quantity",
+            "default": 1
+          },
+          "reasons_ru": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons Ru"
+          },
+          "inventory_version": {
+            "type": "string",
+            "title": "Inventory Version",
+            "default": ""
           }
         },
         "additionalProperties": false,
@@ -12510,6 +15894,69 @@
         ],
         "title": "CatalogProduct"
       },
+      "ChildRemnant": {
+        "properties": {
+          "dimensions": {
+            "$ref": "#/components/schemas/Dimensions"
+          },
+          "location_raw": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Location Raw"
+          },
+          "remnant_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remnant Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dimensions",
+          "location_raw"
+        ],
+        "title": "ChildRemnant"
+      },
+      "ChildRemnantsRequest": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/ChildRemnant"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Children"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "expected_version",
+          "children"
+        ],
+        "title": "ChildRemnantsRequest"
+      },
       "CommitPlan": {
         "properties": {
           "dataset_id": {
@@ -12530,6 +15977,11 @@
             },
             "type": "object",
             "title": "Expected Remnant Versions"
+          },
+          "owner_context": {
+            "type": "string",
+            "title": "Owner Context",
+            "default": ""
           }
         },
         "additionalProperties": false,
@@ -12540,6 +15992,103 @@
           "expected_remnant_versions"
         ],
         "title": "CommitPlan"
+      },
+      "CommitResult": {
+        "properties": {
+          "plan": {
+            "$ref": "#/components/schemas/CutPlan"
+          },
+          "reservations": {
+            "items": {
+              "$ref": "#/components/schemas/Reservation"
+            },
+            "type": "array",
+            "title": "Reservations"
+          },
+          "released_reservation_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Released Reservation Ids"
+          },
+          "superseded_plan": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Superseded Plan"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "plan",
+          "reservations"
+        ],
+        "title": "CommitResult"
+      },
+      "CompareRequest": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "base": {
+            "$ref": "#/components/schemas/PlanRef"
+          },
+          "candidate": {
+            "$ref": "#/components/schemas/PlanRef"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "base",
+          "candidate"
+        ],
+        "title": "CompareRequest"
+      },
+      "ConsumeRequest": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "reservation_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Reservation Id"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "expected_version",
+          "reservation_id"
+        ],
+        "title": "ConsumeRequest"
       },
       "CutMetrics": {
         "properties": {
@@ -12578,6 +16127,66 @@
             "type": "integer",
             "minimum": 0.0,
             "title": "Fully Covered Orders"
+          },
+          "total_orders": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total Orders",
+            "default": 0
+          },
+          "covered_parts": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Covered Parts",
+            "default": 0
+          },
+          "total_parts": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total Parts",
+            "default": 0
+          },
+          "used_original_remnants": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Used Original Remnants",
+            "default": 0
+          },
+          "free_original_remnants": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Free Original Remnants",
+            "default": 0
+          },
+          "used_remnants": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Used Remnants",
+            "default": 0
+          },
+          "score": {
+            "type": "number",
+            "title": "Score",
+            "default": 0.0
+          },
+          "coverage_percent": {
+            "type": "string",
+            "title": "Coverage Percent",
+            "default": "0"
+          },
+          "value_by_material": {
+            "items": {
+              "$ref": "#/components/schemas/MaterialValue"
+            },
+            "type": "array",
+            "title": "Value By Material"
+          },
+          "new_reasons": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "New Reasons"
           }
         },
         "additionalProperties": false,
@@ -12650,6 +16259,118 @@
               "infeasible"
             ],
             "title": "Search Status"
+          },
+          "parent_plan_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Plan Id"
+          },
+          "parent_revision": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Revision"
+          },
+          "stop_reason": {
+            "type": "string",
+            "title": "Stop Reason",
+            "default": "completed"
+          },
+          "config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SolverConfig"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/PlanIssue"
+            },
+            "type": "array",
+            "title": "Issues"
+          },
+          "evidence": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Evidence"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "solver",
+              "edit",
+              "import"
+            ],
+            "title": "Source",
+            "default": "solver"
+          },
+          "requested_locks": {
+            "items": {
+              "$ref": "#/components/schemas/Placement"
+            },
+            "type": "array",
+            "title": "Requested Locks"
+          },
+          "inventory_version": {
+            "type": "string",
+            "title": "Inventory Version",
+            "default": ""
+          },
+          "inventory_current": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inventory Current"
           }
         },
         "additionalProperties": false,
@@ -12866,6 +16587,149 @@
           "width_mm"
         ],
         "title": "Dimensions"
+      },
+      "DraftEdit": {
+        "properties": {
+          "part_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Part Id"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "move",
+              "unplace",
+              "lock",
+              "unlock"
+            ],
+            "title": "Action",
+            "default": "move"
+          },
+          "remnant_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remnant Id"
+          },
+          "x_mm": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "X Mm"
+          },
+          "y_mm": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Y Mm"
+          },
+          "rot": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rot"
+          },
+          "lock_kind": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "assignment",
+                  "placement"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lock Kind"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "part_id"
+        ],
+        "title": "DraftEdit"
+      },
+      "DraftRequest": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "base_revision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Base Revision"
+          },
+          "edits": {
+            "items": {
+              "$ref": "#/components/schemas/DraftEdit"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Edits"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "base_revision",
+          "edits"
+        ],
+        "title": "DraftRequest"
+      },
+      "DraftResult": {
+        "properties": {
+          "plan": {
+            "$ref": "#/components/schemas/CutPlan"
+          },
+          "validation": {
+            "$ref": "#/components/schemas/ValidationResult"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "plan",
+          "validation"
+        ],
+        "title": "DraftResult"
       },
       "EconomicInputs": {
         "properties": {
@@ -13417,6 +17281,40 @@
         ],
         "title": "Evidence"
       },
+      "ExportRow": {
+        "properties": {
+          "part_id": {
+            "type": "string",
+            "title": "Part Id"
+          },
+          "remnant_id": {
+            "type": "string",
+            "title": "Remnant Id"
+          },
+          "x_mm": {
+            "type": "string",
+            "title": "X Mm"
+          },
+          "y_mm": {
+            "type": "string",
+            "title": "Y Mm"
+          },
+          "rot": {
+            "type": "string",
+            "title": "Rot"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "part_id",
+          "remnant_id",
+          "x_mm",
+          "y_mm",
+          "rot"
+        ],
+        "title": "ExportRow"
+      },
       "FindRequest": {
         "properties": {
           "dataset_id": {
@@ -13458,6 +17356,13 @@
               }
             ],
             "title": "Base Plan Id"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Quantity",
+            "default": 1
           }
         },
         "additionalProperties": false,
@@ -13468,6 +17373,127 @@
           "dimensions"
         ],
         "title": "FindRequest"
+      },
+      "FreeRemnant": {
+        "properties": {
+          "remnant_id": {
+            "type": "string",
+            "title": "Remnant Id"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Version"
+          },
+          "material_id": {
+            "type": "string",
+            "title": "Material Id"
+          },
+          "dimensions": {
+            "$ref": "#/components/schemas/Dimensions"
+          },
+          "defect": {
+            "type": "boolean",
+            "title": "Defect"
+          },
+          "location_raw": {
+            "type": "string",
+            "title": "Location Raw"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "remnant_id",
+          "version",
+          "material_id",
+          "dimensions",
+          "defect",
+          "location_raw"
+        ],
+        "title": "FreeRemnant"
+      },
+      "FreeRemnantsCheck": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "plan_id": {
+            "type": "string",
+            "title": "Plan Id"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Revision"
+          },
+          "plan_status": {
+            "type": "string",
+            "title": "Plan Status"
+          },
+          "as_of": {
+            "type": "string",
+            "title": "As Of"
+          },
+          "inventory_version": {
+            "type": "string",
+            "title": "Inventory Version"
+          },
+          "free_original": {
+            "items": {
+              "$ref": "#/components/schemas/FreeRemnant"
+            },
+            "type": "array",
+            "title": "Free Original"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Count"
+          },
+          "minimum_free_remnants": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Minimum Free Remnants"
+          },
+          "minimum_free_remnants_met": {
+            "type": "boolean",
+            "title": "Minimum Free Remnants Met"
+          },
+          "plan_free_original_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Plan Free Original Remnant Ids"
+          },
+          "no_longer_free_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "No Longer Free Remnant Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "plan_id",
+          "revision",
+          "plan_status",
+          "as_of",
+          "inventory_version",
+          "free_original",
+          "count",
+          "minimum_free_remnants",
+          "minimum_free_remnants_met",
+          "plan_free_original_remnant_ids",
+          "no_longer_free_remnant_ids"
+        ],
+        "title": "FreeRemnantsCheck",
+        "description": "Final re-check before a sale card / confirmation: fully free ORIGINAL pieces of a plan, now."
       },
       "Health": {
         "properties": {
@@ -13491,6 +17517,161 @@
         "additionalProperties": false,
         "type": "object",
         "title": "Health"
+      },
+      "ImpactReport": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "remnant_id": {
+            "type": "string",
+            "title": "Remnant Id"
+          },
+          "remnant_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Remnant Version"
+          },
+          "plan_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Id"
+          },
+          "plan_revision": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Revision"
+          },
+          "affected_part_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Affected Part Ids"
+          },
+          "new_part_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "New Part Ids"
+          },
+          "delta_covered_area_mm2": {
+            "type": "integer",
+            "title": "Delta Covered Area Mm2"
+          },
+          "delta_value_tg": {
+            "type": "string",
+            "title": "Delta Value Tg"
+          },
+          "affected_reservation_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Affected Reservation Ids"
+          },
+          "affected_order_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Affected Order Ids"
+          },
+          "requires_commit": {
+            "type": "boolean",
+            "title": "Requires Commit",
+            "default": true
+          },
+          "note_ru": {
+            "type": "string",
+            "title": "Note Ru",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "remnant_id",
+          "remnant_version",
+          "plan_id",
+          "plan_revision",
+          "affected_part_ids",
+          "new_part_ids",
+          "delta_covered_area_mm2",
+          "delta_value_tg",
+          "affected_reservation_ids",
+          "affected_order_ids"
+        ],
+        "title": "ImpactReport"
+      },
+      "ImpactRequest": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "remnant_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Remnant Id"
+          },
+          "change": {
+            "type": "string",
+            "enum": [
+              "exclude",
+              "measurement"
+            ],
+            "title": "Change"
+          },
+          "dimensions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Dimensions"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "plan_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "remnant_id",
+          "change"
+        ],
+        "title": "ImpactRequest"
       },
       "ImportCommit": {
         "properties": {
@@ -13560,6 +17741,42 @@
           "warnings"
         ],
         "title": "ImportPreview"
+      },
+      "InventoryChange": {
+        "properties": {
+          "remnant": {
+            "$ref": "#/components/schemas/Remnant"
+          },
+          "reservation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Reservation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "audit_event_id": {
+            "type": "string",
+            "title": "Audit Event Id"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/Remnant"
+            },
+            "type": "array",
+            "title": "Children"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "remnant",
+          "audit_event_id"
+        ],
+        "title": "InventoryChange",
+        "description": "Result of reserve/consume/release/withdraw: the new state and the audit event id."
       },
       "Job": {
         "properties": {
@@ -13903,6 +18120,69 @@
         ],
         "title": "LaborStudy"
       },
+      "LayoutPart": {
+        "properties": {
+          "part_id": {
+            "type": "string",
+            "title": "Part Id"
+          },
+          "order_id": {
+            "type": "string",
+            "title": "Order Id"
+          },
+          "x_mm": {
+            "type": "integer",
+            "title": "X Mm"
+          },
+          "y_mm": {
+            "type": "integer",
+            "title": "Y Mm"
+          },
+          "w_mm": {
+            "type": "integer",
+            "title": "W Mm"
+          },
+          "h_mm": {
+            "type": "integer",
+            "title": "H Mm"
+          },
+          "rot": {
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ],
+            "title": "Rot"
+          },
+          "lock_kind": {
+            "type": "string",
+            "enum": [
+              "none",
+              "assignment",
+              "placement"
+            ],
+            "title": "Lock Kind",
+            "default": "none"
+          },
+          "premium": {
+            "type": "boolean",
+            "title": "Premium",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "part_id",
+          "order_id",
+          "x_mm",
+          "y_mm",
+          "w_mm",
+          "h_mm",
+          "rot"
+        ],
+        "title": "LayoutPart"
+      },
       "LocalSession": {
         "properties": {
           "session_token": {
@@ -14003,6 +18283,43 @@
           "discounts"
         ],
         "title": "ManagerMetrics"
+      },
+      "Material": {
+        "properties": {
+          "material_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Material Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "thickness_mm": {
+            "type": "integer",
+            "title": "Thickness Mm"
+          },
+          "unit_price_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Unit Price Tg"
+          },
+          "tempered": {
+            "type": "boolean",
+            "title": "Tempered"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "material_id",
+          "name",
+          "thickness_mm",
+          "unit_price_tg",
+          "tempered"
+        ],
+        "title": "Material"
       },
       "MaterialUseAssessment": {
         "properties": {
@@ -14360,6 +18677,81 @@
         ],
         "title": "MaterialUseSummary"
       },
+      "MaterialValue": {
+        "properties": {
+          "material_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Material Id"
+          },
+          "covered_area_mm2": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Covered Area Mm2"
+          },
+          "unit_price_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Unit Price Tg"
+          },
+          "value_tg": {
+            "type": "string",
+            "pattern": "^\\d+(?:\\.\\d+)?$",
+            "title": "Value Tg"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "material_id",
+          "covered_area_mm2",
+          "unit_price_tg",
+          "value_tg"
+        ],
+        "title": "MaterialValue"
+      },
+      "MeasurementUpdate": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "dimensions": {
+            "$ref": "#/components/schemas/Dimensions"
+          },
+          "previous_dimensions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Dimensions"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "expected_version",
+          "dimensions"
+        ],
+        "title": "MeasurementUpdate"
+      },
       "MetricEvidence": {
         "properties": {
           "numerator": {
@@ -14455,6 +18847,7 @@
           },
           "location_raw": {
             "type": "string",
+            "minLength": 1,
             "title": "Location Raw"
           },
           "age_days": {
@@ -14468,6 +18861,19 @@
               }
             ],
             "title": "Age Days"
+          },
+          "remnant_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remnant Id"
           }
         },
         "additionalProperties": false,
@@ -15040,6 +19446,50 @@
         ],
         "title": "OrderSheet"
       },
+      "Part": {
+        "properties": {
+          "part_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Part Id"
+          },
+          "order_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Order Id"
+          },
+          "material_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Material Id"
+          },
+          "dimensions": {
+            "$ref": "#/components/schemas/Dimensions"
+          },
+          "premium": {
+            "type": "boolean",
+            "title": "Premium"
+          },
+          "product_type": {
+            "type": "string",
+            "title": "Product Type",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "part_id",
+          "order_id",
+          "material_id",
+          "dimensions",
+          "premium"
+        ],
+        "title": "Part"
+      },
       "Placement": {
         "properties": {
           "part_id": {
@@ -15111,6 +19561,311 @@
           "remnant_id"
         ],
         "title": "Placement"
+      },
+      "PlacementChange": {
+        "properties": {
+          "part_id": {
+            "type": "string",
+            "title": "Part Id"
+          },
+          "before": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Placement"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "after": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Placement"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "added",
+              "removed",
+              "moved",
+              "reassigned",
+              "unchanged"
+            ],
+            "title": "Kind"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "part_id",
+          "before",
+          "after",
+          "kind"
+        ],
+        "title": "PlacementChange"
+      },
+      "PlanComparison": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "base": {
+            "$ref": "#/components/schemas/PlanRef"
+          },
+          "candidate": {
+            "$ref": "#/components/schemas/PlanRef"
+          },
+          "delta_covered_area_mm2": {
+            "type": "integer",
+            "title": "Delta Covered Area Mm2"
+          },
+          "delta_coverage": {
+            "type": "number",
+            "title": "Delta Coverage"
+          },
+          "delta_value_tg": {
+            "type": "string",
+            "title": "Delta Value Tg"
+          },
+          "delta_fully_covered_orders": {
+            "type": "integer",
+            "title": "Delta Fully Covered Orders"
+          },
+          "delta_free_original_remnants": {
+            "type": "integer",
+            "title": "Delta Free Original Remnants"
+          },
+          "newly_new_part_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Newly New Part Ids"
+          },
+          "newly_covered_part_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Newly Covered Part Ids"
+          },
+          "changes": {
+            "items": {
+              "$ref": "#/components/schemas/PlacementChange"
+            },
+            "type": "array",
+            "title": "Changes"
+          },
+          "affected_reserved_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Affected Reserved Remnant Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "base",
+          "candidate",
+          "delta_covered_area_mm2",
+          "delta_coverage",
+          "delta_value_tg",
+          "delta_fully_covered_orders",
+          "delta_free_original_remnants",
+          "newly_new_part_ids",
+          "newly_covered_part_ids",
+          "changes",
+          "affected_reserved_remnant_ids"
+        ],
+        "title": "PlanComparison"
+      },
+      "PlanIssue": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message_ru": {
+            "type": "string",
+            "title": "Message Ru"
+          },
+          "part_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Part Id"
+          },
+          "remnant_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remnant Id"
+          },
+          "other_part_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Other Part Id"
+          },
+          "coordinates": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Coordinates"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "message_ru"
+        ],
+        "title": "PlanIssue"
+      },
+      "PlanLayout": {
+        "properties": {
+          "plan_id": {
+            "type": "string",
+            "title": "Plan Id"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Revision"
+          },
+          "remnants": {
+            "items": {
+              "$ref": "#/components/schemas/RemnantLayout"
+            },
+            "type": "array",
+            "title": "Remnants"
+          },
+          "new_part_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "New Part Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "plan_id",
+          "revision",
+          "remnants",
+          "new_part_ids"
+        ],
+        "title": "PlanLayout"
+      },
+      "PlanRef": {
+        "properties": {
+          "plan_id": {
+            "type": "string",
+            "title": "Plan Id"
+          },
+          "revision": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revision"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "plan_id"
+        ],
+        "title": "PlanRef"
+      },
+      "PlanSummary": {
+        "properties": {
+          "plan_id": {
+            "type": "string",
+            "title": "Plan Id"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Revision"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "search_status": {
+            "type": "string",
+            "title": "Search Status"
+          },
+          "coverage": {
+            "type": "number",
+            "title": "Coverage"
+          },
+          "covered_area_mm2": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Covered Area Mm2"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "plan_id",
+          "revision",
+          "status",
+          "search_status",
+          "coverage",
+          "covered_area_mm2",
+          "source"
+        ],
+        "title": "PlanSummary"
       },
       "Processing": {
         "properties": {
@@ -15537,6 +20292,33 @@
         ],
         "title": "Readiness"
       },
+      "ReleaseRequest": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "expected_version"
+        ],
+        "title": "ReleaseRequest"
+      },
       "Reminder": {
         "properties": {
           "dataset_id": {
@@ -15940,6 +20722,87 @@
             "minimum": 0.0,
             "title": "Version",
             "default": 0
+          },
+          "internal_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Internal Id"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "source",
+              "working",
+              "child"
+            ],
+            "title": "Origin",
+            "default": "source"
+          },
+          "original": {
+            "type": "boolean",
+            "title": "Original",
+            "default": true
+          },
+          "rack": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rack"
+          },
+          "cell": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cell"
+          },
+          "parent_remnant_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Remnant Id"
+          },
+          "active_reservation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Active Reservation Id"
+          },
+          "status_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status Reason"
           }
         },
         "additionalProperties": false,
@@ -15953,6 +20816,372 @@
           "location_raw"
         ],
         "title": "Remnant"
+      },
+      "RemnantLayout": {
+        "properties": {
+          "remnant_id": {
+            "type": "string",
+            "title": "Remnant Id"
+          },
+          "material_id": {
+            "type": "string",
+            "title": "Material Id"
+          },
+          "length_mm": {
+            "type": "integer",
+            "title": "Length Mm"
+          },
+          "width_mm": {
+            "type": "integer",
+            "title": "Width Mm"
+          },
+          "trim_mm": {
+            "type": "integer",
+            "title": "Trim Mm"
+          },
+          "gap_mm": {
+            "type": "integer",
+            "title": "Gap Mm"
+          },
+          "tempered": {
+            "type": "boolean",
+            "title": "Tempered"
+          },
+          "tempered_tolerance_mm": {
+            "type": "integer",
+            "title": "Tempered Tolerance Mm",
+            "default": 2
+          },
+          "defect": {
+            "type": "boolean",
+            "title": "Defect"
+          },
+          "location_raw": {
+            "type": "string",
+            "title": "Location Raw"
+          },
+          "rack": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rack"
+          },
+          "cell": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cell"
+          },
+          "parts": {
+            "items": {
+              "$ref": "#/components/schemas/LayoutPart"
+            },
+            "type": "array",
+            "title": "Parts"
+          },
+          "used_area_mm2": {
+            "type": "integer",
+            "title": "Used Area Mm2"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "remnant_id",
+          "material_id",
+          "length_mm",
+          "width_mm",
+          "trim_mm",
+          "gap_mm",
+          "tempered",
+          "defect",
+          "location_raw",
+          "parts",
+          "used_area_mm2"
+        ],
+        "title": "RemnantLayout"
+      },
+      "RemnantPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Remnant"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Offset"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "RemnantPage"
+      },
+      "RemnantUpdate": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "location_raw": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location Raw"
+          },
+          "defect": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Defect"
+          },
+          "age_days": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age Days"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "expected_version"
+        ],
+        "title": "RemnantUpdate"
+      },
+      "Reservation": {
+        "properties": {
+          "reservation_id": {
+            "type": "string",
+            "title": "Reservation Id"
+          },
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "remnant_id": {
+            "type": "string",
+            "title": "Remnant Id"
+          },
+          "plan_id": {
+            "type": "string",
+            "title": "Plan Id"
+          },
+          "plan_revision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Plan Revision"
+          },
+          "owner_context": {
+            "type": "string",
+            "title": "Owner Context"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "released",
+              "consumed"
+            ],
+            "title": "Status"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Version"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "released_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Released At"
+          },
+          "consumed_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Consumed At"
+          },
+          "part_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Part Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reservation_id",
+          "dataset_id",
+          "remnant_id",
+          "plan_id",
+          "plan_revision",
+          "owner_context",
+          "status",
+          "version",
+          "created_at"
+        ],
+        "title": "Reservation"
+      },
+      "ReserveRequest": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "owner_context": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Owner Context"
+          },
+          "material_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Material Id"
+          },
+          "dimensions": {
+            "$ref": "#/components/schemas/Dimensions"
+          },
+          "premium": {
+            "type": "boolean",
+            "title": "Premium",
+            "default": false
+          },
+          "x_mm": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "X Mm"
+          },
+          "y_mm": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Y Mm"
+          },
+          "rot": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rot"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "expected_version",
+          "owner_context",
+          "material_id",
+          "dimensions"
+        ],
+        "title": "ReserveRequest",
+        "description": "Whole-piece reservation after an explicit manager confirmation (e.g. a confirmed quote)."
       },
       "RestoreRequest": {
         "properties": {
@@ -16393,6 +21622,203 @@
         "type": "object",
         "title": "SettingsUpdate"
       },
+      "SolutionExport": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "plan_id": {
+            "type": "string",
+            "title": "Plan Id"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Revision"
+          },
+          "header": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Header"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/ExportRow"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/CutMetrics"
+          },
+          "free_original_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Free Original Remnant Ids"
+          },
+          "validation": {
+            "$ref": "#/components/schemas/ValidationResult"
+          },
+          "as_of": {
+            "type": "string",
+            "title": "As Of",
+            "default": ""
+          },
+          "inventory_version": {
+            "type": "string",
+            "title": "Inventory Version",
+            "default": ""
+          },
+          "plan_inventory_version": {
+            "type": "string",
+            "title": "Plan Inventory Version",
+            "default": ""
+          },
+          "inventory_changed_since_plan": {
+            "type": "boolean",
+            "title": "Inventory Changed Since Plan",
+            "default": false
+          },
+          "plan_free_original_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Plan Free Original Remnant Ids"
+          },
+          "no_longer_free_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "No Longer Free Remnant Ids"
+          },
+          "minimum_free_remnants": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Minimum Free Remnants",
+            "default": 5
+          },
+          "minimum_free_remnants_met": {
+            "type": "boolean",
+            "title": "Minimum Free Remnants Met",
+            "default": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "plan_id",
+          "revision",
+          "header",
+          "rows",
+          "metrics",
+          "free_original_remnant_ids",
+          "validation"
+        ],
+        "title": "SolutionExport",
+        "description": "Rows for solution.csv in input order plus metadata; Pro serialises and re-runs validators.\n\nSemantics: LIVE. Validation, ``metrics`` and ``free_original_remnant_ids`` are computed in one read of the\ncurrent stock at ``as_of`` / ``inventory_version``. The historical list stored with the revision is\nseparate (``plan_free_original_remnant_ids``) and must not be used for sale cards."
+      },
+      "SolveInput": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "materials": {
+            "items": {
+              "$ref": "#/components/schemas/Material"
+            },
+            "type": "array",
+            "title": "Materials"
+          },
+          "remnants": {
+            "items": {
+              "$ref": "#/components/schemas/Remnant"
+            },
+            "type": "array",
+            "title": "Remnants"
+          },
+          "parts": {
+            "items": {
+              "$ref": "#/components/schemas/Part"
+            },
+            "type": "array",
+            "title": "Parts"
+          },
+          "locks": {
+            "items": {
+              "$ref": "#/components/schemas/Placement"
+            },
+            "type": "array",
+            "title": "Locks"
+          },
+          "config": {
+            "$ref": "#/components/schemas/SolverConfig"
+          },
+          "unavailable_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Unavailable Remnant Ids"
+          },
+          "occupied_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Occupied Remnant Ids"
+          },
+          "previous_placements": {
+            "items": {
+              "$ref": "#/components/schemas/Placement"
+            },
+            "type": "array",
+            "title": "Previous Placements"
+          },
+          "base_plan_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Plan Id"
+          },
+          "base_revision": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Revision"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "materials",
+          "remnants",
+          "parts"
+        ],
+        "title": "SolveInput"
+      },
       "SolveRequest": {
         "properties": {
           "dataset_id": {
@@ -16421,6 +21847,22 @@
           },
           "config": {
             "$ref": "#/components/schemas/SolverConfig"
+          },
+          "excluded_remnant_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Excluded Remnant Ids"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "replan",
+              "keep_committed"
+            ],
+            "title": "Mode",
+            "default": "replan"
           }
         },
         "additionalProperties": false,
@@ -16464,6 +21906,17 @@
             "minimum": 0.0,
             "title": "Minimum Free Remnants",
             "default": 5
+          },
+          "fixed_work": {
+            "type": "boolean",
+            "title": "Fixed Work",
+            "default": false
+          },
+          "max_pool_patterns": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Max Pool Patterns",
+            "default": 80000
           }
         },
         "additionalProperties": false,
@@ -16496,6 +21949,25 @@
             },
             "type": "array",
             "title": "Missing Part Ids"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/PlanIssue"
+            },
+            "type": "array",
+            "title": "Issues"
+          },
+          "plan_revision": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Revision"
           }
         },
         "additionalProperties": false,
@@ -16598,6 +22070,34 @@
           "human_check"
         ],
         "title": "WarehouseTask"
+      },
+      "WithdrawRequest": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "expected_version",
+          "reason"
+        ],
+        "title": "WithdrawRequest"
       },
       "WorkingCopy": {
         "properties": {
