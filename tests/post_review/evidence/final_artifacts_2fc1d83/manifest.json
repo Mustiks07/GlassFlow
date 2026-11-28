@@ -1,0 +1,52 @@
+{
+  "runtime_commit": "2fc1d83496a84e4ecfe1845158671d425039bfac",
+  "artifact_gate": "PASS_WORKING_HYBRID_NOT_FULL_CONTEST",
+  "scope": "Read-only filesystem/ZIP/PYZ/SQLite/native GET; no code/runtime/config changes or provider requests",
+  "reports": [
+    {
+      "path": "tests/post_review/evidence/final_artifacts_2fc1d83/bundle-inventory.json",
+      "sha256": "537e5c4098516e51b8adb52ccc2ebe4d4d93c535c3298b114f423e7e3ef8748f",
+      "source_raw_sha256": "537e5c4098516e51b8adb52ccc2ebe4d4d93c535c3298b114f423e7e3ef8748f"
+    },
+    {
+      "path": "tests/post_review/evidence/final_artifacts_2fc1d83/CSV-native-correct-host-audit.json",
+      "sha256": "200760987ae0c7a68e8e49716dbeea37a075f7ce450465596864131d1f78a702",
+      "source_raw_sha256": "200760987ae0c7a68e8e49716dbeea37a075f7ce450465596864131d1f78a702"
+    },
+    {
+      "path": "tests/post_review/evidence/final_artifacts_2fc1d83/native-correct-host-readonly.json",
+      "sha256": "c0e83f570b5c5077793e173044fda97d7f40693e6b2ec13358f32a25a28f633a",
+      "source_raw_sha256": "c0e83f570b5c5077793e173044fda97d7f40693e6b2ec13358f32a25a28f633a"
+    },
+    {
+      "path": "tests/post_review/evidence/final_artifacts_2fc1d83/preservation.json",
+      "sha256": "4743fd021835bc8dd359268eaa0010f685abc5ad2b0afbcc370c1d7b8fe2c9f8",
+      "source_raw_sha256": "4743fd021835bc8dd359268eaa0010f685abc5ad2b0afbcc370c1d7b8fe2c9f8"
+    },
+    {
+      "path": "tests/post_review/evidence/final_artifacts_2fc1d83/public-preflight-secret-audit.json",
+      "sha256": "3dc79e9289fcef0c013534d57fdf7ed48f12cf4f78ca27b3c4e52cd12dae9104",
+      "source_raw_sha256": "3dc79e9289fcef0c013534d57fdf7ed48f12cf4f78ca27b3c4e52cd12dae9104"
+    },
+    {
+      "path": "tests/post_review/evidence/final_artifacts_2fc1d83/relocated-package-audit.json",
+      "sha256": "cd34dfd655fb6c31cd569ec1195d342444fe6302687e21d4c0b2631bdaaf7e94",
+      "source_raw_sha256": "cd34dfd655fb6c31cd569ec1195d342444fe6302687e21d4c0b2631bdaaf7e94"
+    },
+    {
+      "path": "tests/post_review/evidence/final_artifacts_2fc1d83/preserved-old-package.json",
+      "sha256": "af7e909ee57755c11f33453b7a711a2db0fa2a12512e74fb94dbafe563028e1b",
+      "source_raw_sha256": "af7e909ee57755c11f33453b7a711a2db0fa2a12512e74fb94dbafe563028e1b"
+    },
+    {
+      "path": "tests/post_review/evidence/final_artifacts_2fc1d83/README-and-root-checks.json",
+      "sha256": "6d127b7994732c68295ee141e6b7c8eca80c62a3ef737e8d601dc7fcf240fe23",
+      "source_raw_sha256": "6d127b7994732c68295ee141e6b7c8eca80c62a3ef737e8d601dc7fcf240fe23"
+    }
+  ],
+  "wrong_initial_host_note": "Initial18884 was a different fresh browser dataset. RUN_NOT_FOUND was not treated as an artifact defect. Root supplied19284/PID14948 for frozen-post-2fc; all export GET checks then passed. Prior local debugging report remains in ignored .qa, not substituted.",
+  "preserved_initial_probe_hashes": {
+    ".qa\\final-artifact-review\\CSV-native-byte-audit-no-session.json": "530e33899075f8c237c2ef52ceb183806529c4d265146ef4985d86ec12e5ef5d",
+    ".qa\\final-artifact-review\\CSV-native-byte-audit.json": "530e33899075f8c237c2ef52ceb183806529c4d265146ef4985d86ec12e5ef5d"
+  }
+}

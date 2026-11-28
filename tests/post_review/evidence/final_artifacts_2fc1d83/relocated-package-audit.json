@@ -1,0 +1,58 @@
+{
+  "runtime_commit": "2fc1d83496a84e4ecfe1845158671d425039bfac",
+  "package_status": "working_build_not_full_contest_acceptance",
+  "manifest_entries_except_self": 1404,
+  "actual_file_count": 1405,
+  "missing": [],
+  "hash_mismatches": [],
+  "extra_files": [],
+  "zip_sha256": "89ffa59e672fd9b488bff7521106d2c318434264f18eb2838af5b8986783deae",
+  "zip_expected_sha_matches": true,
+  "zip_CRC_error": null,
+  "zip_member_count": 1405,
+  "zip_folder_byte_mismatches": [],
+  "input_ZIP_members": [
+    "materials.csv",
+    "stock_open.csv",
+    "orders_open.csv",
+    "ksm_knowledge_base.json",
+    "questions_open.csv",
+    "dialogs_open.csv",
+    "applications_open.csv"
+  ],
+  "input_ZIP_sources": [
+    {
+      "name": "materials.csv",
+      "byte_identical_to_original": true
+    },
+    {
+      "name": "stock_open.csv",
+      "byte_identical_to_original": true
+    },
+    {
+      "name": "orders_open.csv",
+      "byte_identical_to_original": true
+    },
+    {
+      "name": "ksm_knowledge_base.json",
+      "byte_identical_to_original": true
+    },
+    {
+      "name": "questions_open.csv",
+      "byte_identical_to_original": true
+    },
+    {
+      "name": "dialogs_open.csv",
+      "byte_identical_to_original": true
+    },
+    {
+      "name": "applications_open.csv",
+      "byte_identical_to_original": true
+    }
+  ],
+  "no_KEY_in_input_ZIP": true,
+  "original_bundle_UI_and_build": {
+    "js_hash": "efe5df4c41fd51b369fb1a4be8abfdb3668036ad813e7ddbdc0f1abbf8265c4e",
+    "build_info_hash": "6eb206814b59692a0baa5d53221a2fc18d13a8da4511ded5495140242d5ba285"
+  }
+}

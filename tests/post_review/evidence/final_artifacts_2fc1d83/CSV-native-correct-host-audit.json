@@ -1,0 +1,296 @@
+{
+  "kind": "Read-only actual native exported files, source SQLite and GET byte checks; no provider/config/POST",
+  "snapshots": [
+    {
+      "run_id": "14d28c50-ac18-499b-8d91-c7da8041695b",
+      "export_id": "1e0e93a6-65fd-4160-8cb2-e97a7b4b9904",
+      "status": "partial",
+      "build_commit": "2fc1d83496a84e4ecfe1845158671d425039bfac",
+      "files": {
+        "buyers_top50.csv": {
+          "bytes": 22129,
+          "rows": 50,
+          "sha256": "e031cadcf80246d7917216f91f76d70d8568ce916b54b3fe3ef4ae890d57ce55",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        }
+      },
+      "issues": []
+    },
+    {
+      "run_id": "298a17ff-cca6-4181-8aa6-ce34a00a6aa2",
+      "export_id": "55e94d6e-3425-4ea0-9fa7-9a5f3ee65493",
+      "status": "partial",
+      "build_commit": "2fc1d83496a84e4ecfe1845158671d425039bfac",
+      "files": {
+        "solution.csv": {
+          "bytes": 11875,
+          "rows": 298,
+          "sha256": "7e7630837a620f319a6076c87c294e1ed75e962fa21ee4bea8a1af4158e842db",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "picks.csv": {
+          "bytes": 558,
+          "rows": 25,
+          "sha256": "c7d005ab917f164debb230c639c1b9180e728b24ae3a6a28d064bb31c5449cde",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "sale_cards.csv": {
+          "bytes": 2934,
+          "rows": 5,
+          "sha256": "e5324d341ebfdfddbd962ba14b138a8b18fb0e9a62be489426fa36a0eddce763",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "buyers_top50.csv": {
+          "bytes": 22129,
+          "rows": 50,
+          "sha256": "e031cadcf80246d7917216f91f76d70d8568ce916b54b3fe3ef4ae890d57ce55",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        }
+      },
+      "issues": []
+    },
+    {
+      "run_id": "de14a8f6-33c2-4fd2-a973-6a325bdf5cf9",
+      "export_id": "0397a3c2-a418-4851-a38a-1e420e9e8b21",
+      "status": "ready",
+      "build_commit": "2fc1d83496a84e4ecfe1845158671d425039bfac",
+      "files": {
+        "solution.csv": {
+          "bytes": 9560,
+          "rows": 298,
+          "sha256": "cd62c964f5513e9da4330777958156828f3754f62ef7ca3deb43f7c4995a1a40",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "answers.csv": {
+          "bytes": 4780,
+          "rows": 18,
+          "sha256": "dbc8c1ed3ce355de73bb969c6700fbe4a816b82dbc0876eca25320a893707f7e",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "picks.csv": {
+          "bytes": 433,
+          "rows": 25,
+          "sha256": "58a6632affe2c8c1a2f71117ac9368f4b7e9f213dc2ad6370ba30b3e1fbfeb5f",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "verdicts.csv": {
+          "bytes": 194,
+          "rows": 8,
+          "sha256": "42f61db104cee04369116c326d89d389167222111d377f6df9857a5adf40fef1",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "sale_cards.csv": {
+          "bytes": 2909,
+          "rows": 5,
+          "sha256": "9c110dc3b380185094dbc59402694ed05650694123850a374a76047b802a729f",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "buyers_top50.csv": {
+          "bytes": 22129,
+          "rows": 50,
+          "sha256": "e031cadcf80246d7917216f91f76d70d8568ce916b54b3fe3ef4ae890d57ce55",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        }
+      },
+      "issues": [],
+      "domain_checks": {
+        "solution_exact_parts": true,
+        "solution_original_or_NEW": true,
+        "answers_exact_IDs": true,
+        "verdicts_exact_IDs": true,
+        "picks25_unique_members": true,
+        "buyers50_unique": true,
+        "cards5_original_free": true,
+        "cards_matching_names_and_price_bounds": true
+      },
+      "cards": [
+        {
+          "remnant_id": "POST18484-R194",
+          "three_distinct_registry_buyers": true,
+          "price_in_30_to_70_percent": true,
+          "price_tg": "281.25"
+        },
+        {
+          "remnant_id": "POST18484-R183",
+          "three_distinct_registry_buyers": true,
+          "price_in_30_to_70_percent": true,
+          "price_tg": "984.00"
+        },
+        {
+          "remnant_id": "POST18484-R180",
+          "three_distinct_registry_buyers": true,
+          "price_in_30_to_70_percent": true,
+          "price_tg": "534.38"
+        },
+        {
+          "remnant_id": "POST18484-R166",
+          "three_distinct_registry_buyers": true,
+          "price_in_30_to_70_percent": true,
+          "price_tg": "495.90"
+        },
+        {
+          "remnant_id": "POST18484-R157",
+          "three_distinct_registry_buyers": true,
+          "price_in_30_to_70_percent": true,
+          "price_tg": "2617.73"
+        }
+      ]
+    },
+    {
+      "run_id": "de14a8f6-33c2-4fd2-a973-6a325bdf5cf9",
+      "export_id": "9c6f512c-95f2-4fd2-bcfe-5d0c5eb1cc25",
+      "status": "ready",
+      "build_commit": "2fc1d83496a84e4ecfe1845158671d425039bfac",
+      "files": {
+        "solution.csv": {
+          "bytes": 9560,
+          "rows": 298,
+          "sha256": "cd62c964f5513e9da4330777958156828f3754f62ef7ca3deb43f7c4995a1a40",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "answers.csv": {
+          "bytes": 4780,
+          "rows": 18,
+          "sha256": "dbc8c1ed3ce355de73bb969c6700fbe4a816b82dbc0876eca25320a893707f7e",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "picks.csv": {
+          "bytes": 433,
+          "rows": 25,
+          "sha256": "58a6632affe2c8c1a2f71117ac9368f4b7e9f213dc2ad6370ba30b3e1fbfeb5f",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "verdicts.csv": {
+          "bytes": 194,
+          "rows": 8,
+          "sha256": "42f61db104cee04369116c326d89d389167222111d377f6df9857a5adf40fef1",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "sale_cards.csv": {
+          "bytes": 2909,
+          "rows": 5,
+          "sha256": "9c110dc3b380185094dbc59402694ed05650694123850a374a76047b802a729f",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        },
+        "buyers_top50.csv": {
+          "bytes": 22129,
+          "rows": 50,
+          "sha256": "e031cadcf80246d7917216f91f76d70d8568ce916b54b3fe3ef4ae890d57ce55",
+          "manifest_hash_matches": true,
+          "GET_HTTP_status": 200,
+          "GET_same_bytes": true,
+          "exact_header": true,
+          "UTF8_no_BOM": true
+        }
+      },
+      "issues": [],
+      "domain_checks": {
+        "solution_exact_parts": true,
+        "solution_original_or_NEW": true,
+        "answers_exact_IDs": true,
+        "verdicts_exact_IDs": true,
+        "picks25_unique_members": true,
+        "buyers50_unique": true,
+        "cards5_original_free": true,
+        "cards_matching_names_and_price_bounds": true
+      },
+      "cards": [
+        {
+          "remnant_id": "POST18484-R194",
+          "three_distinct_registry_buyers": true,
+          "price_in_30_to_70_percent": true,
+          "price_tg": "281.25"
+        },
+        {
+          "remnant_id": "POST18484-R183",
+          "three_distinct_registry_buyers": true,
+          "price_in_30_to_70_percent": true,
+          "price_tg": "984.00"
+        },
+        {
+          "remnant_id": "POST18484-R180",
+          "three_distinct_registry_buyers": true,
+          "price_in_30_to_70_percent": true,
+          "price_tg": "534.38"
+        },
+        {
+          "remnant_id": "POST18484-R166",
+          "three_distinct_registry_buyers": true,
+          "price_in_30_to_70_percent": true,
+          "price_tg": "495.90"
+        },
+        {
+          "remnant_id": "POST18484-R157",
+          "three_distinct_registry_buyers": true,
+          "price_in_30_to_70_percent": true,
+          "price_tg": "2617.73"
+        }
+      ]
+    }
+  ],
+  "ok": true
+}

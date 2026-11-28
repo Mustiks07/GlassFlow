@@ -1,0 +1,25 @@
+{
+  "base": "http://127.0.0.1:19284",
+  "expected_data_prefix": ".runtime/frozen-post-2fc",
+  "runtime_commit": "2fc1d83496a84e4ecfe1845158671d425039bfac",
+  "runtime_source_digest": "c60673f1556aa92bcdb03b3a38542ba7296e6d54ce9a1f2add6e7a5db840ce8d",
+  "kind": "Read-only independent native GET, no POST/model/config mutation",
+  "ready": {
+    "status": "ready",
+    "database": true,
+    "business_modules_ready": true,
+    "schema": true,
+    "worker": true,
+    "ai": "unavailable",
+    "modules": {
+      "cutting": true,
+      "assistant": true,
+      "quality": true,
+      "crm": true,
+      "cards": true
+    }
+  },
+  "index_sha256": "8042d394e0b67c37f0b48003e2416ac390dee532a542d0322b9af9fc7e4c051a",
+  "index_matches_final_bundle": true,
+  "README_working_snapshot_sha256": "6eb62cea2873e8ca02e5dc7d54adc94cbbda95b1305a0234355e07b9539f111c"
+}
