@@ -683,7 +683,7 @@ function EditorPanel({ dataset, plan, remnants, parts, materials }: { dataset: D
           affected={[
             { label: 'Покрытие', value: formatPercent(commitTarget.metrics.coverage, 4) },
             { label: 'Используемых кусков', value: String(new Set(commitTarget.placements.filter(item => item.remnant_id !== 'NEW').map(item => item.remnant_id)).size) },
-            { label: 'Деталей NEW', value: String(commitTarget.placements.filter(item => item.remnant_id === 'NEW').length) },
+          { label: 'Деталей из нового материала', value: String(commitTarget.placements.filter(item => item.remnant_id === 'NEW').length) },
           ]}
           confirmLabel="Подтвердить план"
           onConfirm={() => commit.mutate(commitTarget)}

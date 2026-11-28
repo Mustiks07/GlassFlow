@@ -7,7 +7,7 @@ export const REASON_LABEL: Record<string, string> = {
   occupied_by_reservation: 'Подходящие куски заняты текущими резервами',
   lock_conflict: 'Конфликт с закреплениями',
   search_limited: 'Поиск не нашел решение за лимит (это не доказательство невозможности)',
-  unknown: 'Причина не определена (UNKNOWN не означает невозможность)',
+  unknown: 'Причина не определена. Невозможность размещения не доказана',
   no_free_whole_remnant: 'Нет свободного целого куска при текущих закреплениях',
   tempered_tolerance: 'Калёное: нет куска в допуске ±2 мм',
   unmapped_material: 'Товар каталога не сопоставлен складскому материалу',
@@ -21,7 +21,7 @@ export const REASON_LABEL: Record<string, string> = {
   REMNANT_UNAVAILABLE: 'Подходящие остатки списаны, исключены или зарезервированы',
   SIZE_TOO_LARGE: 'Деталь не помещается в рабочую область остатка с отступом 5 мм',
   TEMPERED_SIZE_MISMATCH: 'Калёное стекло: размеры не совпадают с целым куском в пределах ±2 мм',
-  UNKNOWN_MATERIAL: 'Материал отсутствует в materials',
+  UNKNOWN_MATERIAL: 'Материал отсутствует в справочнике',
 };
 
 export function reasonLabel(code: string | UnplacedReason): string {

@@ -59,5 +59,5 @@ test('T44: a reminder for a specific remnant becomes stale when the remnant is t
 test('validated_model policy that was not promoted is shown as a conflict, not as results', async ({ page }) => {
   await open(page, 'clients');
   await page.getByLabel('Политика отбора').selectOption('validated_model');
-  await expect(page.getByText(/Модель не доказала улучшение/)).toBeVisible();
+  await expect(page.getByRole('paragraph').filter({ hasText: 'Модель не доказала улучшение; зафиксирована reference-v1.' })).toBeVisible();
 });

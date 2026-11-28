@@ -9,7 +9,7 @@ test('route 4: contest run produces five files of one run; no official closed sc
   await page.getByRole('button', { name: 'Запустить прогон' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Запустить' }).click();
   await expect(page.getByText('Все запрошенные модули завершены')).toBeVisible({ timeout: 20_000 });
-  await expect(page.getByText(/Официальные баллы ассистента, CRM и диалогов неизвестны без KEY/)).toBeVisible();
+  await expect(page.getByText(/Официальные баллы ассистента, отбора заявок и диалогов неизвестны без эталонных ответов организаторов/)).toBeVisible();
   await page.getByRole('button', { name: 'Проверить и подготовить файлы' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Проверить и подготовить' }).click();
   await expect(page.getByText(/Пакет готов/)).toBeVisible();
@@ -27,7 +27,7 @@ test('T53: assistant failure gives a partial package, never a fake complete one'
   await page.getByRole('button', { name: 'Запустить прогон' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Запустить' }).click();
   await expect(page.getByText('Частично готово: часть модулей не завершена')).toBeVisible({ timeout: 20_000 });
-  await expect(page.getByText(/Не завершены: assistant/)).toBeVisible();
+  await expect(page.getByText(/Не завершены: Ассистент/)).toBeVisible();
   await page.getByRole('button', { name: 'Проверить и подготовить файлы' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Проверить и подготовить' }).click();
   await expect(page.getByText(/Частичный пакет — не выдавайте за полный/)).toBeVisible();

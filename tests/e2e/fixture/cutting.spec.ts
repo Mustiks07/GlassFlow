@@ -18,7 +18,7 @@ test('T22: invalid edit → visible reason → server invalid → active plan un
   // The editor continues on the invalid draft revision; the committed plan is still the active one.
   const versions = page.getByRole('combobox', { name: 'Версия плана' });
   await expect(versions).toContainText('рев. 2 · Недопустим');
-  await expect(versions.locator('option', { hasText: 'PLAN-1 · рев. 1 · Подтвержден' })).toHaveCount(1);
+  await expect(versions.locator('option', { hasText: 'План · рев. 1 · Подтвержден' })).toHaveCount(1);
   await expect(table.getByText('сервер: недопустимо')).toBeVisible();
   await table.getByLabel('x для P0002').fill('5');
   await table.getByLabel('x для P0002').press('Enter');
@@ -54,7 +54,7 @@ test('solve job shows real stages, last valid plan and comparison; plan not appl
   await expect(page.getByText('Поиск раскроя')).toBeVisible();
   await expect(page.getByText('Сравнение версий')).toBeVisible({ timeout: 20_000 });
   await expect(page.getByText(/Δ покрытой площади/)).toBeVisible();
-  await expect(page.getByRole('combobox', { name: 'Версия плана' })).toContainText('PLAN-1');
+  await expect(page.getByRole('combobox', { name: 'Версия плана' }).locator('option').filter({ hasText: 'План · рев. 1 · Подтвержден' })).toHaveValue('PLAN-1');
 });
 
 test('NEW parts show distinct reasons; UNKNOWN is not called impossible', async ({ page }) => {

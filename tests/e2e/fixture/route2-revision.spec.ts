@@ -18,7 +18,7 @@ test('route 2: 450→451 marks the old total stale and creates revision 2 with a
   await expect(diff.getByText('1 988,00 ₸')).toBeVisible();
   await expect(diff.getByText('1 991,76 ₸')).toBeVisible();
   await expect(page.getByText(/Свободного подходящего куска нет/)).toBeVisible();
-  await expect(page.getByText(/не доказывает невозможность после общего перепланирования/)).toBeVisible();
+  await expect(page.getByText(/Подходящий остаток может появиться после общего перепланирования/)).toBeVisible();
 });
 
 test('T28: quantity 2 of the original part is 3 976,00', async ({ page }) => {
