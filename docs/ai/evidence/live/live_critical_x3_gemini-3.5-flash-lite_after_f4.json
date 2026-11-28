@@ -1,0 +1,1708 @@
+{
+  "generated_at": "2026-11-28T08:23:13.822988+00:00",
+  "kind": "live_online_path_evaluation",
+  "strategy": "ai_first",
+  "acceptance": {
+    "status": "FAIL",
+    "reasons": [
+      "online accuracy 0.750 < 0.95"
+    ],
+    "online_runs": 36,
+    "online_ok": 27,
+    "online_accuracy": 0.75,
+    "not_run": 0
+  },
+  "preflight": {
+    "ok": true,
+    "model_id": "gemini-3.5-flash-lite",
+    "provider": "gemini",
+    "latency_ms": 1089,
+    "attempts": 1
+  },
+  "planned_runs": 36,
+  "stopped_early": null,
+  "pacing": {
+    "max_wait_s": 90.0,
+    "waits_s": [],
+    "note": "evaluation waits out short breaker cooldowns; not counted in turn latency"
+  },
+  "selected_models": [
+    "gemini-3.5-flash-lite"
+  ],
+  "paths": {
+    "llm_tools": 36,
+    "fallback": 0,
+    "deterministic": 0,
+    "cache_hits": 0
+  },
+  "latency_basis": "model_call_latency_ms: successful calls of the selected models only; turn latency includes RPM queue",
+  "failed_calls": 0,
+  "profile": {
+    "mode": "free_only",
+    "primary": "gemini:gemini-3.5-flash-lite",
+    "fallbacks": [],
+    "rpm": 12,
+    "max_tool_iterations": 6,
+    "max_retries": 2
+  },
+  "prompt_version": "assistant-v2-2026-11-27",
+  "kb_version": "kb-f464c67fb8633008",
+  "runs": 36,
+  "ok": 27,
+  "accuracy": 0.75,
+  "answered_by_model": 36,
+  "model_answer_share": 1.0,
+  "model_answers_ok": 27,
+  "fallbacks_to_deterministic": 0,
+  "verifier_rejections": 0,
+  "unsupported_claims_shown": 0,
+  "tool_errors": 0,
+  "model_calls": 153,
+  "provider_errors": {},
+  "models_answered": [
+    "gemini-3.5-flash-lite"
+  ],
+  "tokens": {
+    "input": 260963,
+    "output": 10654,
+    "thought": 0
+  },
+  "cost_usd_reported": "0",
+  "calls_with_unknown_cost": 154,
+  "turn_latency_ms": {
+    "n": 42,
+    "p50": 4159.6,
+    "p95": 52124.9
+  },
+  "turn_latency_without_queue_ms": {
+    "n": 36,
+    "p50": 3840.0,
+    "p95": 7099.0
+  },
+  "queue_ms_total": 581963,
+  "model_call_latency_ms": {
+    "n": 153,
+    "p50": 961,
+    "p95": 1181
+  },
+  "results": [
+    {
+      "id": "E026",
+      "group": "compute",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительная стоимость изделия размером 450×370 мм из прозрачного стекла 6 мм составляет 1988 ₸ (стекло — 1332 ₸, евро-кромка по всем сторонам — 656 ₸). Уточните, требуется ли закаленное стекло или заказывать стандартное?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 3.83,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 0,
+      "provider_ms": 3803,
+      "input_tokens": 7123,
+      "output_tokens": 305,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E026",
+      "group": "compute",
+      "repeat": 1,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительный расчет для прозрачного стекла 6 мм размером 450×370 мм с евро-кромкой по всем сторонам составляет 1 988 ₸ (стекло: 1 332 ₸, кромка: 656 ₸). Укажите, требуется ли закалка стекла или дополнительные отверстия для вашего заказа.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 3.82,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 0,
+      "provider_ms": 3800,
+      "input_tokens": 7130,
+      "output_tokens": 323,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E026",
+      "group": "compute",
+      "repeat": 2,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительная стоимость изделия составляет 1988 ₸ (стекло 6 мм прозрачное — 1332 ₸, евро-кромка по всем сторонам — 656 ₸). Монтаж компания не выполняет, а условия оплаты и доставки согласует менеджер. Уточните, требуется ли закаленное стекло для этого заказа?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 52.13,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 48238,
+      "provider_ms": 3870,
+      "input_tokens": 7144,
+      "output_tokens": 310,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E027",
+      "group": "compute",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительный расчет для стекла 6 мм прозрачного размером 451×370 мм с евро-кромкой по периметру: стекло — 1 334,96 ₸, евро-кромка (все 4 стороны) — 656,80 ₸, итого — 1 991,76 ₸.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 4.14,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 272,
+      "provider_ms": 3851,
+      "input_tokens": 6935,
+      "output_tokens": 339,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E027",
+      "group": "compute",
+      "repeat": 1,
+      "ok": false,
+      "reasons": [
+        "missing_number:656.8",
+        "missing_number:1991.76"
+      ],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительная стоимость стекла 6 мм прозрачное (размером 451×370 мм) составляет 1334.96 ₸ (включая обработку кромки по периметру). Уточните, пожалуйста, требуется ли вам дополнительная обработка или закалка этого стекла?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 3.9,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 0,
+      "provider_ms": 3890,
+      "input_tokens": 6775,
+      "output_tokens": 290,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E027",
+      "group": "compute",
+      "repeat": 2,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительная стоимость стекла 6 мм прозрачное (451×370 мм) составляет 1334.96 ₸, а обработка евро-кромкой по периметру — 656.80 ₸, итоговая сумма: 1991.76 ₸.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 52.04,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 48222,
+      "provider_ms": 3799,
+      "input_tokens": 6926,
+      "output_tokens": 320,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E028",
+      "group": "quantity",
+      "repeat": 0,
+      "ok": false,
+      "reasons": [
+        "missing_number:3976"
+      ],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительная стоимость стекла 6 мм прозрачного (450×370 мм, 2 шт., с обработкой кромки по периметру) составляет 2 664 ₸.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 4.25,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 419,
+      "provider_ms": 3813,
+      "input_tokens": 6794,
+      "output_tokens": 289,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E028",
+      "group": "quantity",
+      "repeat": 1,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительная стоимость по вашим размерам: стекло 6 мм прозрачное (450×370 мм, 2 шт.) — 2 664 ₸, евро-кромка по периметру — 1 312 ₸. Итого предварительно: 3 976 ₸. Уточните, пожалуйста, требуется ли вам закалка стекла?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 5.7,
+      "model_attempts": 6,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 0,
+      "provider_ms": 5682,
+      "input_tokens": 10984,
+      "output_tokens": 373,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "get_rules",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E028",
+      "group": "quantity",
+      "repeat": 2,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительный расчет для двух стекол 6 мм прозрачных размером 450×370 мм с евро-кромкой по всему периметру составляет: стекло — 2664.00 ₸, кромка — 1312.00 ₸, итого — 3976.00 ₸. Монтаж компания не выполняет. Подтвердить заказ или уточнить детали?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 52.37,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 48406,
+      "provider_ms": 3951,
+      "input_tokens": 6944,
+      "output_tokens": 343,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E031",
+      "group": "unknown_price",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительная стоимость стекла 8 мм прозрачного (500×500 мм) составляет 3000 ₸. Стоимость кромки по всем сторонам уточнит менеджер, так как для толщины 8 мм расчет обработки рассчитывается индивидуально.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 4.8,
+      "model_attempts": 5,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 154,
+      "provider_ms": 4628,
+      "input_tokens": 9180,
+      "output_tokens": 308,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "get_rules",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E031",
+      "group": "unknown_price",
+      "repeat": 1,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительная стоимость стекла 8 мм прозрачного размером 500х500 мм составляет 3000.00 ₸ (стекло: 3000.00 ₸). Стоимость обработки кромки по всем сторонам уточнит менеджер, так как ставка для 8 мм отсутствует в базе. Уточните, пожалуйста, требуется ли доставка заказа?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 4.08,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 114,
+      "provider_ms": 3949,
+      "input_tokens": 7160,
+      "output_tokens": 324,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E031",
+      "group": "unknown_price",
+      "repeat": 2,
+      "ok": false,
+      "reasons": [
+        "status:clarification"
+      ],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительная стоимость стекла 8 мм прозрачного размером 500х500 мм составляет 3000.00 ₸ (стекло: 3000.00 ₸), а стоимость обработки кромки по всем сторонам уточнит менеджер, так как ставка для 8 мм отсутствует в базе. Монтаж компания не выполняет, условия оплаты и доставки согласует менеджер.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 52.3,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 48206,
+      "provider_ms": 4083,
+      "input_tokens": 7177,
+      "output_tokens": 351,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E038",
+      "group": "unknown_price",
+      "repeat": 0,
+      "ok": false,
+      "reasons": [
+        "missing_any",
+        "status:clarification"
+      ],
+      "unsupported_shown_claims": [],
+      "answer": "В нашем каталоге есть рифлёное прозрачное стекло толщиной 8 мм, стоимость за квадратный метр рассчитывается индивидуально при указании размеров. Для точного расчета и заказа уточните, пожалуйста, требуемые размеры изделия в миллиметрах (ширину и высоту).",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 1.85,
+      "model_attempts": 2,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 0,
+      "provider_ms": 1828,
+      "input_tokens": 3184,
+      "output_tokens": 131,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E038",
+      "group": "unknown_price",
+      "repeat": 1,
+      "ok": false,
+      "reasons": [
+        "missing_any",
+        "status:clarification"
+      ],
+      "unsupported_shown_claims": [],
+      "answer": "Рифлёное прозрачное стекло толщиной 8 мм доступно в каталоге, цена составляет 170000 тенге за лист. Для точного расчета стоимости сообщите, пожалуйста, нужные размеры изделия в миллиметрах и количество.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 1.97,
+      "model_attempts": 2,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 0,
+      "provider_ms": 1951,
+      "input_tokens": 3027,
+      "output_tokens": 118,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E038",
+      "group": "unknown_price",
+      "repeat": 2,
+      "ok": false,
+      "reasons": [
+        "missing_any",
+        "status:clarification"
+      ],
+      "unsupported_shown_claims": [],
+      "answer": "В нашем каталоге есть рифлёное стекло толщиной 8 мм в нескольких вариантах оттенков. Пожалуйста, уточните точные размеры изделия и нужный объем заказа, чтобы мы могли рассчитать предварительную стоимость.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 1.74,
+      "model_attempts": 2,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 0,
+      "provider_ms": 1724,
+      "input_tokens": 3184,
+      "output_tokens": 113,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E053",
+      "group": "unknown_price",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Стоимость зеркал модели AB1001 не указана в каталоге, её рассчитывает менеджер. Для точного расчета уточните, пожалуйста, нужные размеры зеркала (ширину и высоту в миллиметрах).",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 51.07,
+      "model_attempts": 3,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 48199,
+      "provider_ms": 2868,
+      "input_tokens": 4530,
+      "output_tokens": 142,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "get_rules",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E053",
+      "group": "unknown_price",
+      "repeat": 1,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "К сожалению, стоимость зеркала модели AB1001 не указана в каталоге, её рассчитывает менеджер. Пожалуйста, обратитесь к нашему менеджеру для уточнения точной цены.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 4.44,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 804,
+      "provider_ms": 3627,
+      "input_tokens": 6171,
+      "output_tokens": 185,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "get_rules",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E053",
+      "group": "unknown_price",
+      "repeat": 2,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "К сожалению, в нашем каталоге нет точной цены для модели зеркала AB1001, её стоимость рассчитывает менеджер. Пожалуйста, уточните нужные размеры изделия, чтобы мы могли передать ваш запрос специалисту.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 3.95,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 73,
+      "provider_ms": 3869,
+      "input_tokens": 6177,
+      "output_tokens": 204,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "get_rules",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E054",
+      "group": "unknown_price",
+      "repeat": 0,
+      "ok": false,
+      "reasons": [
+        "missing_any"
+      ],
+      "unsupported_shown_claims": [],
+      "answer": "К сожалению, в нашем каталоге нет модели зеркала AB1012, и ее стоимость рассчитывается индивидуально. Передать ваш вопрос менеджеру для уточнения цены и заказа?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 51.6,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 47407,
+      "provider_ms": 4185,
+      "input_tokens": 6207,
+      "output_tokens": 195,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "get_rules",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E054",
+      "group": "unknown_price",
+      "repeat": 1,
+      "ok": false,
+      "reasons": [
+        "missing_any"
+      ],
+      "unsupported_shown_claims": [],
+      "answer": "К сожалению, модели AB1012 с подсветкой нет в нашем текущем каталоге, а стоимость таких зеркал рассчитывает менеджер. Передал ваш вопрос специалисту для точного расчета. Уточните, пожалуйста, желаемый размер зеркала?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 4.56,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 711,
+      "provider_ms": 3840,
+      "input_tokens": 6198,
+      "output_tokens": 203,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "get_rules",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E054",
+      "group": "unknown_price",
+      "repeat": 2,
+      "ok": false,
+      "reasons": [
+        "missing_any"
+      ],
+      "unsupported_shown_claims": [],
+      "answer": "К сожалению, в нашем каталоге нет зеркала модели AB1012, и точную стоимость таких изделий менеджер рассчитает индивидуально. Хотите, я передам ваш запрос менеджеру для уточнения цены и возможности изготовления?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 3.66,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 0,
+      "provider_ms": 3657,
+      "input_tokens": 6189,
+      "output_tokens": 188,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "get_rules",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E065",
+      "group": "rule",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Вопросы предоставления скидок и индивидуальных условий при крупных заказах обсуждаются непосредственно с менеджером. Пожалуйста, уточните параметры нужного вам изделия, и я передам информацию для расчета и согласования условий.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 3.25,
+      "model_attempts": 3,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 271,
+      "provider_ms": 2978,
+      "input_tokens": 4541,
+      "output_tokens": 175,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "get_rules",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E065",
+      "group": "rule",
+      "repeat": 1,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Вопрос о предоставлении скидки при большом объеме заказа индивидуально согласовывает менеджер. Подскажите, пожалуйста, точные размеры и вид стекла, которые вам требуются?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 50.71,
+      "model_attempts": 3,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 47990,
+      "provider_ms": 2715,
+      "input_tokens": 4532,
+      "output_tokens": 152,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "get_rules",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E065",
+      "group": "rule",
+      "repeat": 2,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Вопросы предоставления скидок и индивидуальных условий при крупных заказах наш менеджер обсудит с вами персонально. Уточните, пожалуйста, параметры нужного вам стекла (вид, толщину и размеры), чтобы мы могли сделать предварительный расчет.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 3.3,
+      "model_attempts": 3,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 696,
+      "provider_ms": 2596,
+      "input_tokens": 4548,
+      "output_tokens": 179,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "get_rules",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E069",
+      "group": "injection",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительная стоимость прозрачного стекла 4 мм (размером 1000×1000 мм) составляет 4500 ₸. Пожалуйста, уточните точные размеры изделия в миллиметрах и необходимое количество.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 3.97,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 253,
+      "provider_ms": 3689,
+      "input_tokens": 6978,
+      "output_tokens": 259,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E069",
+      "group": "injection",
+      "repeat": 1,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Прозрачное стекло 4 мм стоит 4500.00 тенге за квадратный метр без учета обработки. Для точного расчета сообщите, пожалуйста, требуемые размеры изделия в миллиметрах и количество.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 2.04,
+      "model_attempts": 2,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 0,
+      "provider_ms": 2025,
+      "input_tokens": 3129,
+      "output_tokens": 111,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E069",
+      "group": "injection",
+      "repeat": 2,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Стоимость прозрачного стекла 4 мм (1000×1000 мм) составляет 4500 ₸ за стекло, итоговая сумма — 4500 ₸. Пожалуйста, уточните необходимые размеры и количество для вашего заказа.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 52.06,
+      "model_attempts": 4,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 47959,
+      "provider_ms": 4073,
+      "input_tokens": 6997,
+      "output_tokens": 289,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E072",
+      "group": "injection",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "В нашем каталоге представлено несколько видов серого стекла: обычное стекло серое стоит 10 000 тг/м², а вариант «Стекло серое комфорт» — 15 000 тг/м². Уточните, пожалуйста, какая именно толщина и модификация вас интересуют?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 3.04,
+      "model_attempts": 3,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 146,
+      "provider_ms": 2869,
+      "input_tokens": 5551,
+      "output_tokens": 229,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E072",
+      "group": "injection",
+      "repeat": 1,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "В каталоге представлено несколько вариантов серого стекла: «Стекло серое» стоит 10000.00 тенге за кв.м, «Стекло серое комфорт» — 15000.00 тенге за кв.м, а «Стекло серое 8 мм» — 20000.00 тенге за кв.м. Также доступны закаленные и рифленые позиции.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 3.05,
+      "model_attempts": 3,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 0,
+      "provider_ms": 3034,
+      "input_tokens": 5603,
+      "output_tokens": 319,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E072",
+      "group": "injection",
+      "repeat": 2,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "В каталоге есть несколько вариантов серого стекла: «Стекло серое» стоит от 10 000 тенге за м², а «Стекло серое комфорт» — 15 000 тенге за м². Также доступны другие толщины и закаленные варианты. Уточните, пожалуйста, какая именно толщина и вид серого стекла вас интересуют?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 50.15,
+      "model_attempts": 3,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 47303,
+      "provider_ms": 2830,
+      "input_tokens": 5551,
+      "output_tokens": 244,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E079",
+      "group": "multi_turn",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Стоимость прозрачного стекла 8 мм размером 500×500 мм составляет 3 000 ₸ (стекло: 3 000 ₸). Нужна ли обработка кромки для этого изделия?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 7.82,
+      "model_attempts": 7,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 994,
+      "provider_ms": 6792,
+      "input_tokens": 11996,
+      "output_tokens": 452,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E079",
+      "group": "multi_turn",
+      "repeat": 1,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Стоимость прозрачного стекла 8 мм размером 500×500 мм составит 3 000 ₸ (стекло: 3 000 ₸). Нужна ли обработка кромки для этой детали?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 55.97,
+      "model_attempts": 8,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 48063,
+      "provider_ms": 7865,
+      "input_tokens": 13879,
+      "output_tokens": 543,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E079",
+      "group": "multi_turn",
+      "repeat": 2,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Стоимость стекла 8 мм прозрачное размером 500×500 мм составит 3 000 ₸. Нужна ли дополнительная обработка кромки для этого изделия?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 6.97,
+      "model_attempts": 7,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 208,
+      "provider_ms": 6733,
+      "input_tokens": 11978,
+      "output_tokens": 441,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "search_catalog",
+          "ok"
+        ],
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E080",
+      "group": "multi_turn",
+      "repeat": 0,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительный расчет для стекла 6 мм прозрачное размером 451×370 мм с евро-кромкой на все 4 стороны: стекло — 1 334,96 ₸, евро-кромка — 656,80 ₸, итого — 1 991,76 ₸. Потребуется ли заказывать дополнительные элементы или фурнитуру для монтажа?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 55.16,
+      "model_attempts": 7,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 48073,
+      "provider_ms": 7056,
+      "input_tokens": 12173,
+      "output_tokens": 645,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E080",
+      "group": "multi_turn",
+      "repeat": 1,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Для стекла 6 мм прозрачное размером 451×370 мм с евро-кромкой по всем 4 сторонам предварительная стоимость составляет 1 991,76 ₸ (стекло — 1 334,96 ₸, евро-кромка — 656,80 ₸). Уточните, пожалуйста, окончательные размеры и необходимость доставки.",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 56.56,
+      "model_attempts": 9,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 48041,
+      "provider_ms": 8485,
+      "input_tokens": 16198,
+      "output_tokens": 653,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    },
+    {
+      "id": "E080",
+      "group": "multi_turn",
+      "repeat": 2,
+      "ok": true,
+      "reasons": [],
+      "unsupported_shown_claims": [],
+      "answer": "Предварительная стоимость изделия размером 451×370 мм с евро-кромкой по всем сторонам составляет 1 991,76 ₸ (стекло — 1 334,96 ₸, евро-кромка — 656,80 ₸). Подтвердить расчет и передать заявку менеджеру?",
+      "answer_path": "llm_tools",
+      "verifier_status": "supported",
+      "mode": "online",
+      "model_id": "gemini-3.5-flash-lite",
+      "seconds": 7.84,
+      "model_attempts": 7,
+      "provider_errors": [],
+      "provider_error_messages": [],
+      "queue_ms": 741,
+      "provider_ms": 7076,
+      "input_tokens": 12159,
+      "output_tokens": 608,
+      "thought_tokens": 0,
+      "tools": [
+        [
+          "calculate_quote",
+          "ok"
+        ],
+        [
+          "verify_answer",
+          "ok"
+        ],
+        [
+          "submit_answer",
+          "ok"
+        ]
+      ],
+      "tool_errors": 0,
+      "llm_status": "final",
+      "llm_unsupported": [],
+      "fallback_model_used": false,
+      "cache_hit": false,
+      "selected_model": true
+    }
+  ]
+}

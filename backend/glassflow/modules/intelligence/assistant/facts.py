@@ -16,12 +16,21 @@ class Fact:
     numeric: Decimal | None = None
 
 
+@dataclass(frozen=True)
+class QuoteTotal:
+    """A calculated quote with several lines: naming a line without the total is incomplete."""
+
+    lines: tuple[Decimal, ...]
+    total: Decimal
+
+
 @dataclass
 class FactSet:
     facts: list[Fact] = field(default_factory=list)
     # Complete claims rendered by trusted domain code, including subject, role,
     # unit, quantity and source version. LLM may select a reference, never edit it.
     commercial_claims: dict[str, str] = field(default_factory=dict)
+    quotes: list[QuoteTotal] = field(default_factory=list)
 
     def claim(self, text: str, key: str | None = None, source_ref: str = "renderer:domain") -> str:
         key = key or f"c{len(self.commercial_claims) + 1}"
@@ -33,6 +42,11 @@ class FactSet:
         for key, claim in self.commercial_claims.items():
             text = text.replace(f"[[{key}]]", claim)
         return text
+
+    def add_quote(self, lines, total: Decimal) -> None:
+        amounts = tuple(Decimal(amount) for amount in lines)
+        if len(amounts) > 1:
+            self.quotes.append(QuoteTotal(amounts, Decimal(total)))
 
     def add(self, kind: str, value, unit: str | None, source_ref: str) -> Fact:
         numeric = value if isinstance(value, Decimal) else None
@@ -50,3 +64,4 @@ class FactSet:
     def extend(self, other: "FactSet") -> None:
         for fact in other.facts:
             self.add(fact.kind, fact.numeric if fact.numeric is not None else fact.value, fact.unit, fact.source_ref)
+        self.quotes.extend(other.quotes)

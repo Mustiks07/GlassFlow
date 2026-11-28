@@ -1,8 +1,9 @@
 """verify_answer: check free text against verified facts before it reaches a client.
 
-Flags numbers that are not in the facts or the user's own input, and commercial promises the
+Flags numbers that are not in the facts or the user's own input, commercial promises the
 KB does not support (discounts, deadlines, delivery, installation, availability, compatibility,
-payment). ``unknown`` is never upgraded to a fact; any unsupported claim makes the caller fall
+payment), and an incomplete quote: a line of a multi-line calculation (glass, edge) named
+without the known total — a true number shown as if it were the whole price. ``unknown`` is never upgraded to a fact; any unsupported claim makes the caller fall
 back to the deterministic rendering or a manager hand-off.
 """
 
@@ -48,6 +49,10 @@ def _numbers(text: str) -> list[Decimal]:
     return values
 
 
+def _close(a: Decimal, b: Decimal) -> bool:
+    return abs(a - b) <= Decimal("0.005")
+
+
 def verify_answer(answer: str, facts: FactSet, user_text: str = "", *, remnant_checked: bool = False) -> VerificationResult:
     # C3-F5: membership in a numeric whitelist does not establish a commercial
     # assertion. Only complete domain-rendered claims can carry money or stock.
@@ -62,9 +67,14 @@ def verify_answer(answer: str, facts: FactSet, user_text: str = "", *, remnant_c
     unsupported: list[str] = []
     if re.search(r"\[\[|₸|тенге|\bтг\b|tg/|\b(?:цена|стоимость|итого|стоит|ставка)\b.{0,60}\d", remainder, re.I):
         unsupported.append("claim:unbound_commercial")
-    for value in _numbers(answer):
+    shown = _numbers(facts.render(answer))
+    for value in shown:
         if not any(abs(value - known) <= Decimal("0.005") for known in allowed):
             unsupported.append(f"number:{value}")
+    for quote in facts.quotes:
+        names_line = any(_close(value, line) for value in shown for line in quote.lines)
+        if names_line and not any(_close(value, quote.total) for value in shown):
+            unsupported.append(f"claim:incomplete_total:{quote.total}")
     lowered = remainder.lower().replace("ё", "е")
     for kind, pattern in _CLAIMS:
         if re.search(pattern, lowered):
